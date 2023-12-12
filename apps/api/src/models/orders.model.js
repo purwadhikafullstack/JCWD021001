@@ -23,6 +23,8 @@ export const init = (sequelize) => {
     },
     {
       sequelize,
+      createdAt: 'orderDate',
+      updatedAt: false,
       modelName: 'Orders',
     },
   );

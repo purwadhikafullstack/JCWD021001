@@ -22,6 +22,8 @@ export const init = (sequelize) => {
     },
     {
       sequelize,
+      createdAt: 'paymentDate',
+      updatedAt: false,
       modelName: 'Payments',
     },
   );
