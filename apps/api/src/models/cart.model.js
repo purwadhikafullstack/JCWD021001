@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 
-export default class Cart extends Model {
+export default class Carts extends Model {
   /**
    * Helper method for defining associations.
    * This method is not a part of Sequelize lifecycle.
@@ -12,7 +12,7 @@ export default class Cart extends Model {
 }
 
 export const init = (sequelize) => {
-  Cart.init(
+  Carts.init(
     {
       userId: DataTypes.INTEGER,
       productId: DataTypes.INTEGER,
@@ -21,7 +21,7 @@ export const init = (sequelize) => {
     },
     {
       sequelize,
-      modelName: 'Cart',
+      modelName: 'Carts',
     },
   );
 };
