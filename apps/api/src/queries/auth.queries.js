@@ -37,3 +37,11 @@ export const findUserQuery = async ({ email = null, username = null }) => {
       throw err;
     }
   };
+
+  export const setPasswordQuery = async (email, password) => {
+    try{
+        // await User.
+    } catch(err){
+        throw err;
+    }
+  }

@@ -28,5 +28,8 @@
     "hooks": {
       "pre-commit": "npx lint-staged"
     }
+  },
+  "dependencies": {
+    "express-validator": "^7.0.1"
   }
 }
