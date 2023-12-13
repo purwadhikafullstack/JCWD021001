@@ -20,6 +20,7 @@ export const init = (sequelize) => {
     {
       sequelize,
       modelName: 'Role',
+      timestamps: false,
     },
   );
 };

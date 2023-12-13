@@ -27,6 +27,7 @@ export const init = (sequelize) => {
     {
       sequelize,
       modelName: 'User',
+      timestamps: false,
     },
   );
 };

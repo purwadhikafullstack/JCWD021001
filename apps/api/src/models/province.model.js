@@ -20,6 +20,7 @@ export const init = (sequelize) => {
     {
       sequelize,
       modelName: 'Province',
+      timestamps: false,
     },
   );
 };
