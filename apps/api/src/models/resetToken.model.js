@@ -22,6 +22,7 @@ export const init = (sequelize) => {
     {
       sequelize,
       modelName: 'ResetToken',
+      timestamps: false,
     },
   );
 };
