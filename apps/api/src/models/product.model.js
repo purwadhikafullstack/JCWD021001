@@ -29,18 +29,18 @@ export const init = (sequelize) => {
         allowNull: false,
         type: DataTypes.STRING,
       },
-      productGroupId: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
-      },
-      productTypeId: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
-      },
-      colourId: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
-      },
+      // productGroupId: {
+      //   allowNull: false,
+      //   type: DataTypes.INTEGER,
+      // },
+      // productTypeId: {
+      //   allowNull: false,
+      //   type: DataTypes.INTEGER,
+      // },
+      // colourId: {
+      //   allowNull: false,
+      //   type: DataTypes.INTEGER,
+      // },
     },
     {
       sequelize,
