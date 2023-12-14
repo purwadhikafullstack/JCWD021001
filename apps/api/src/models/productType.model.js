@@ -1,6 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
+import ProductCategory from './productCategory.model';
 
-export default class ProductCategory extends Model {
+export default class ProductType extends Model {
   /**
    * Helper method for defining associations.
    * This method is not a part of Sequelize lifecycle.
@@ -8,28 +9,28 @@ export default class ProductCategory extends Model {
    */
   static associate(models) {
     // define association here
-    ProductCategory.hasMany(models.ProductType);
+    ProductType.belongsTo(ProductCategory, {
+      foreignKey: 'productCategoryId',
+    });
+    ProductCategory.hasMany(ProductType);
   }
 }
 
 export const init = (sequelize) => {
-  ProductCategory.init(
+  ProductType.init(
     {
       name: {
         allowNull: false,
         type: DataTypes.STRING,
-        unique: true,
-        validate: {
-          isAlpha: true,
-        },
       },
-      image: {
-        type: DataTypes.STRING,
+      productCategoryId: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
       },
     },
     {
       sequelize,
-      modelName: 'ProductCategory',
+      modelName: 'ProductType',
     },
   );
 };
