@@ -21,6 +21,7 @@ export const init = (sequelize) => {
     },
     {
       sequelize,
+      timestamps: false,
       modelName: 'Carts',
     },
   );

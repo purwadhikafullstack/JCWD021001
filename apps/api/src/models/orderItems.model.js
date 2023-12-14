@@ -14,7 +14,6 @@ export default class OrderItems extends Model {
 export const init = (sequelize) => {
   OrderItems.init(
     {
-      userId: DataTypes.INTEGER,
       orderId: DataTypes.INTEGER,
       productId: DataTypes.INTEGER,
       quantity: DataTypes.INTEGER,
@@ -22,6 +21,7 @@ export const init = (sequelize) => {
     },
     {
       sequelize,
+      timestamps: false,
       modelName: 'OrderItems',
     },
   );
