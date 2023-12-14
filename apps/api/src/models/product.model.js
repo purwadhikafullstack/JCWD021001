@@ -8,6 +8,9 @@ export default class Product extends Model {
    */
   static associate(models) {
     // define association here
+    Product.belongsTo(models.ProductGroup);
+    Product.belongsTo(models.ProductType);
+    Product.belongsTo(models.Colour);
   }
 }
 
@@ -25,6 +28,18 @@ export const init = (sequelize) => {
       description: {
         allowNull: false,
         type: DataTypes.STRING,
+      },
+      productGroupId: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
+      productTypeId: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
+      colourId: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
       },
     },
     {
