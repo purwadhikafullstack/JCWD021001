@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import { registerController } from "../controllers/auth.controller.router";
+import { registerController, emailVerificationController } from "../controllers/auth.controller.router";
 import { validator } from '../middleware/validator.middleware';
+import { emailVerificationMiddleware } from '../middleware/auth.middleware';
 import { body } from "express-validator";
 const authRouter = Router();
 
@@ -11,7 +12,10 @@ const validations = [
 	body("username").notEmpty().withMessage("Username cannot be emptied"),
 ];
 
-//POST
-authRouter.post("/register", validator(validations),registerController);
+//POST USER REGISTRATION
+authRouter.post("/user-registration", validator(validations),registerController);
+
+// SET PASSWORD AND VERIFY EMAIL
+authRouter.put("/email-verification", emailVerificationController);
 
 export {authRouter};

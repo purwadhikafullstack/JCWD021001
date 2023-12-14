@@ -8,11 +8,13 @@ export default class User extends Model {
    */
   static associate(models) {
     // define association here
-    User.belongsTo(models.Role, { foreignKey: 'roleId' });
-    User.hasMany(models.Warehouse, { foreignKey: 'userId' });
-    User.hasMany(models.UserAddress, {foreignkey: 'userId'})
+    this.belongsTo(models.Role, { foreignKey: 'roleId' });
+    this.hasMany(models.Warehouse, { foreignKey: 'userId' });
+    this.hasMany(models.UserAddress, {foreignkey: 'userId'});
   }
 }
+
+// one-to-many => hasMany belongsTo
 
 export const init = (sequelize) => {
   User.init(

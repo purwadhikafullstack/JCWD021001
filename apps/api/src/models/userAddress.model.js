@@ -8,8 +8,8 @@ export default class UserAddress extends Model {
    */
   static associate(models) {
     // define association here
-    UserAddress.belongsTo(models.User, { foreignKey: 'userId' });
-    UserAddress.belongsTo(models.City, { foreignKey: 'cityId' });
+    this.belongsTo(models.User, { foreignKey: 'userId' });
+    this.belongsTo(models.City, { foreignKey: 'cityId' });
   }
 }
 
@@ -19,6 +19,7 @@ export const init = (sequelize) => {
       specificAddress: DataTypes.STRING,
       addressStatus: DataTypes.STRING,
       cityId: DataTypes.INTEGER,
+      userId: DataTypes.INTEGER,
     },
     {
       sequelize,
