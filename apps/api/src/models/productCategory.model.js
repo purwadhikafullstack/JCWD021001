@@ -9,6 +9,7 @@ export default class ProductCategory extends Model {
   static associate(models) {
     // define association here
     ProductCategory.hasMany(models.ProductType);
+    ProductCategory.hasMany(models.Size);
   }
 }
 
