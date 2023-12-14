@@ -66,3 +66,17 @@ export const findUserQuery = async ({ email = null, username = null }) => {
       throw err;
     }
   };
+
+ export const keepLoginQuery = async (id) => {
+  try {
+    const res = await User.findByPk(id, {
+      attributes: {
+        exclude: ["password"],
+      },
+    });
+
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};

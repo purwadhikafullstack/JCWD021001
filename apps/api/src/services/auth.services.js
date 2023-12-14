@@ -1,4 +1,4 @@
-import { registerQuery, findUserQuery, emailVerificationQuery, verifiedUserQuery } from "../queries/auth.queries";
+import { registerQuery, findUserQuery, emailVerificationQuery, verifiedUserQuery, keepLoginQuery } from "../queries/auth.queries";
 import bcrypt from "bcrypt"
 import jwt, {Secret} from "jsonwebtoken";
 import handlebars from "handlebars";
@@ -67,7 +67,7 @@ export const registerService = async (email, username) => {
       if (!decoded?.email) throw new Error("Invalid token");
   
       const isAlreadyVerified = await verifiedUserQuery(decoded.email);
-      if (isAlreadyVerified) throw new Error("Uwes");
+      if (isAlreadyVerified) throw new Error("User has already been verified");
   
       const salt = await bcrypt.genSalt(10);
       const hashPassword = await bcrypt.hash(password, salt);
@@ -78,4 +78,40 @@ export const registerService = async (email, username) => {
     } catch (err) {
       throw err;
     }
+};
+
+export const loginService = async (email, password) => {
+  try {
+    const check = await findUserQuery({ email });
+    if (!check) throw new Error("Email doesn't exist");
+
+    const isValid = await bcrypt.compare(password, check.password);
+    if (!isValid) throw new Error("Password is incorrect");
+
+    let payload = {
+      id: check.id,
+      email: check.email,
+      username: check.username,
+      roleId: check.roleId,
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+      expiresIn: "1hr",
+    });
+    return { user: check, token };
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const keepLoginService = async (id) => {
+  try {
+    const res = await keepLoginQuery(id);
+
+    if (!res) throw new Error("User doesnt exist");
+
+    return res;
+  } catch (err) {
+    throw err;
+  }
 };

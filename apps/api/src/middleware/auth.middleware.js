@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const verifyToken = (req, res, next) => {
+export const verifyToken = (req, res, next) => {
   try {
     let token = req.headers.authorization;
 
@@ -12,6 +12,7 @@ const verifyToken = (req, res, next) => {
       return res.status(500).send("Unauthorized Token");
 
     let verifiedUser = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    console.log(verifiedUser);
     if (!verifiedUser) return res.status(500).send("Unauthorized token");
 
     req.user = verifiedUser;
