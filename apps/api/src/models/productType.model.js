@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 
-export default class Province extends Model {
+export default class ProductType extends Model {
   /**
    * Helper method for defining associations.
    * This method is not a part of Sequelize lifecycle.
@@ -8,19 +8,27 @@ export default class Province extends Model {
    */
   static associate(models) {
     // define association here
-    this.hasMany(models.City, { foreignKey: 'provinceId' });
+    ProductType.belongsTo(models.ProductCategory, {
+      foreignKey: 'productCategoryId',
+    });
   }
 }
 
 export const init = (sequelize) => {
-  Province.init(
+  ProductType.init(
     {
-      name: DataTypes.STRING,
+      name: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      productCategoryId: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
     },
     {
       sequelize,
-      modelName: 'Province',
-      timestamps: false,
+      modelName: 'ProductType',
     },
   );
 };

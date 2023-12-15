@@ -8,8 +8,8 @@ export default class Warehouse extends Model {
    */
   static associate(models) {
     // define association here
-    Warehouse.hasMany(models.User, { foreignKey: 'userId' });
-    Warehouse.hasMany(models.City, { foreignKey: 'cityId' });
+    this.belongsTo(models.User, { foreignKey: 'userId' });
+    this.hasMany(models.City, { foreignKey: 'cityId' });
   }
 }
 
