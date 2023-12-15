@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import { registerController } from "../controllers/auth.controller.router";
+import { registerController, emailVerificationController, loginController, keepLoginController, forgotPasswordController } from "../controllers/auth.controller";
 import { validator } from '../middleware/validator.middleware';
+import { verifyToken } from '../middleware/auth.middleware';
 import { body } from "express-validator";
 const authRouter = Router();
 
@@ -12,6 +13,19 @@ const validations = [
 ];
 
 //POST
-authRouter.post("/register", validator(validations),registerController);
+authRouter.post("/user-registration", validator(validations),registerController);
+authRouter.post("/login", loginController);
+
+// GET
+authRouter.get("/keep-login", verifyToken, keepLoginController);
+
+// PUT
+authRouter.put("/email-verification", emailVerificationController);
+authRouter.put("/request-password-reset", forgotPasswordController)
+
+
+
+
+
 
 export {authRouter};
