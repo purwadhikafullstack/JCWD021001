@@ -1,4 +1,5 @@
 import User from '../models/user.model';
+import ResetToken from '../models/resetToken.model';
 import { Op } from 'sequelize';
 
 //POST USER REGISTRATION
@@ -80,3 +81,46 @@ export const findUserQuery = async ({ email = null, username = null }) => {
     throw err;
   }
 };
+
+export const forgotPasswordQuery = async (email, resetToken) => {
+  try {
+    const user = await User.findOne({
+      where: { email: email }
+    });
+
+    if (user) {
+      const userId = user.id;
+      await ResetToken.update({ 
+          resetToken,
+          isUsed: false},
+          {where: 
+            {userId: userId}
+          }
+      );
+    } else {
+      console.log('User not found');
+    }
+      
+  } catch (err) {
+      throw err;
+  }
+};
+
+// export const resetPasswordQuery = async (email, password) => {
+//   try{
+//     const userId = await User.findById(email).select('id');
+//     if(userId) {
+//       await ResetToken.update({ 
+//           isUsed: true,
+//       })}
+//     await User.update(
+//       {password},
+//       {where: 
+//         {email: email}
+//       }
+//     )
+    
+//   } catch (err){
+
+//   }
+// }

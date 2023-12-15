@@ -1,4 +1,4 @@
-import { registerService, emailVerificationService, loginService, keepLoginService } from "../services/auth.services";
+import { registerService, emailVerificationService, loginService, keepLoginService, forgotPasswordService } from "../services/auth.services";
 
 //POST USER REGISTRATION
 export const registerController = async (req, res) => {
@@ -70,3 +70,17 @@ export const keepLoginController = async (req, res) => {
     return res.status(500).send(err.message);
   }
 };
+
+export const forgotPasswordController = async (req, res) => {
+  try{
+      const {email} = req.body;
+      const result = await forgotPasswordService(String(email));
+      return res.status(200).json({
+          message: "Success",
+          data: result,
+        });
+  } catch (err){
+      return res.status(500).send(err.message)
+  }
+};
+

@@ -1,4 +1,4 @@
-import { registerQuery, findUserQuery, emailVerificationQuery, verifiedUserQuery, keepLoginQuery } from "../queries/auth.queries";
+import { registerQuery, findUserQuery, emailVerificationQuery, verifiedUserQuery, keepLoginQuery, forgotPasswordQuery } from "../queries/auth.queries";
 import bcrypt from "bcrypt"
 import jwt, {Secret} from "jsonwebtoken";
 import handlebars from "handlebars";
@@ -14,6 +14,8 @@ export const registerService = async (email, username) => {
       const check = await findUserQuery({ email, username });
       if (check) throw new Error("Email or username already exist");
       
+      const res = await registerQuery(email, username);
+
       // GENERATE TOKEN FOR NEW USER TO VERIFY THEIR EMAILS
       const secretKey= process.env.JWT_SECRET_KEY;
         if (!secretKey) {
@@ -50,8 +52,6 @@ export const registerService = async (email, username) => {
             html: tempResult,
           });
           
-      const res = await registerQuery(email, username);
-      
       return res;
     } catch (err) {
       throw err;
@@ -111,6 +111,52 @@ export const keepLoginService = async (id) => {
     if (!res) throw new Error("User doesnt exist");
 
     return res;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const forgotPasswordService = async (email) => {
+  try {
+
+    // GENERATE TOKEN TO SET PASSWORD BASED ON THE TOKEN
+    const secretKey= process.env.JWT_SECRET_KEY;
+      if (!secretKey) {
+          throw new Error("JWT_SECRET_KEY is not set in the environment");
+      }
+    const resetToken = jwt.sign({email}, secretKey, {
+      expiresIn: "1hr"
+    });
+    
+    await forgotPasswordQuery (email, resetToken)
+    
+    // TEMPLATE EMAIL
+    const temp = await fs.readFileSync(
+      path.join(__dirname, "../template", "reset-password.html"),
+      "utf-8"
+    );
+    
+    // SEND EMAIL FOR PASSWORD RESET
+    const resetPasswordLink = `${process.env.FE_BASE_URL}/auth/password-reset?token=${resetToken}`
+      const tempCompile = await handlebars.compile(temp);
+      const tempResult = tempCompile({ email: email, link: resetPasswordLink });
+      const gmailUser = process.env.GMAIL_USER;
+      if (typeof gmailUser !== 'string') {
+          throw new Error("GMAIL_USER is not set in the environment");
+      }
+
+      if (typeof email !== 'string') {
+          throw new Error("Recipient email is invalid");
+      }
+
+      await transporter.sendMail({
+          from: gmailUser,
+          to: email,
+          subject: "Reset Password",
+          html: tempResult,
+        });
+    
+    
   } catch (err) {
     throw err;
   }
