@@ -1,7 +1,9 @@
 import User from '../models/user.model';
+import ResetToken from '../models/resetToken.model';
 import { Op } from 'sequelize';
 
-export const registerQuery = async (email, username, roleId) => {
+//POST USER REGISTRATION
+export const registerQuery = async (email, username) => {
   const t = await User.sequelize.transaction();
   try {
 
@@ -9,7 +11,8 @@ export const registerQuery = async (email, username, roleId) => {
       {
         email,
         username,
-        roleId,
+        roleId: 3,
+        isVerified: false
       },
       { transaction: t }
     );
@@ -21,6 +24,7 @@ export const registerQuery = async (email, username, roleId) => {
   }
 };
 
+// FIND USER
 export const findUserQuery = async ({ email = null, username = null }) => {
     try {
       const res = await User.findOne({
@@ -38,10 +42,85 @@ export const findUserQuery = async ({ email = null, username = null }) => {
     }
   };
 
-  export const setPasswordQuery = async (email, password) => {
+  export const emailVerificationQuery = async (email, password) => {
     try{
-        // await User.
+        await User.update(
+          {isVerified: true,
+          password},
+          {where: 
+            {email: email}}
+        )
     } catch(err){
         throw err;
     }
+  };
+
+  export const verifiedUserQuery = async (email) => {
+    try {
+      return await User.findOne({
+        where: {
+          email: email,
+          isVerified: true,
+        },
+      });
+    } catch (err) {
+      throw err;
+    }
+  };
+
+ export const keepLoginQuery = async (id) => {
+  try {
+    const res = await User.findByPk(id, {
+      attributes: {
+        exclude: ["password"],
+      },
+    });
+
+    return res;
+  } catch (err) {
+    throw err;
   }
+};
+
+export const forgotPasswordQuery = async (email, resetToken) => {
+  try {
+    const user = await User.findOne({
+      where: { email: email }
+    });
+
+    if (user) {
+      const userId = user.id;
+      await ResetToken.update({ 
+          resetToken,
+          isUsed: false},
+          {where: 
+            {userId: userId}
+          }
+      );
+    } else {
+      console.log('User not found');
+    }
+      
+  } catch (err) {
+      throw err;
+  }
+};
+
+// export const resetPasswordQuery = async (email, password) => {
+//   try{
+//     const userId = await User.findById(email).select('id');
+//     if(userId) {
+//       await ResetToken.update({ 
+//           isUsed: true,
+//       })}
+//     await User.update(
+//       {password},
+//       {where: 
+//         {email: email}
+//       }
+//     )
+    
+//   } catch (err){
+
+//   }
+// }

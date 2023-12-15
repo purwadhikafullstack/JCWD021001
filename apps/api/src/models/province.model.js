@@ -8,7 +8,7 @@ export default class Province extends Model {
    */
   static associate(models) {
     // define association here
-    Province.hasMany(models.City, { foreignKey: 'provinceId' });
+    this.hasMany(models.City, { foreignKey: 'provinceId' });
   }
 }
 

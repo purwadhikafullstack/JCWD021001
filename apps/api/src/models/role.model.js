@@ -8,7 +8,7 @@ export default class Role extends Model {
    */
   static associate(models) {
     // define association here
-    Role.hasMany(models.User, { foreignKey: 'roleId' });
+    this.hasMany(models.User, { foreignKey: 'roleId' });
   }
 }
 
