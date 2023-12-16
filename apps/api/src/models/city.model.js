@@ -8,9 +8,9 @@ export default class City extends Model {
    */
   static associate(models) {
     // define association here
-    City.belongsTo(models.Province, { foreignKey: 'provinceId' });
-    City.hasMany(models.UserAddress, { foreignKey: 'cityId' });
-    City.hasMany(models.Warehouse, { foreignKey: 'cityId' });
+    this.belongsTo(models.Province, { foreignKey: 'provinceId' });
+    this.hasMany(models.UserAddress, { foreignKey: 'cityId' });
+    this.hasMany(models.Warehouse, { foreignKey: 'cityId' });
   }
 }
 

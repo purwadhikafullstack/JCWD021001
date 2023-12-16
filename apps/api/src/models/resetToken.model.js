@@ -8,7 +8,7 @@ export default class ResetToken extends Model {
    */
   static associate(models) {
     // define association here
-    ResetToken.belongsTo(models.User, { foreignKey: 'userId' });
+    this.belongsTo(models.User, { foreignKey: 'userId' });
   }
 }
 
