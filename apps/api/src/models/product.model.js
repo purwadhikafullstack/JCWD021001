@@ -29,6 +29,16 @@ export const init = (sequelize) => {
         allowNull: false,
         type: DataTypes.STRING,
       },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: Date.now(),
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: Date.now(),
+      },
       productGroupId: {
         allowNull: false,
         type: DataTypes.INTEGER,
