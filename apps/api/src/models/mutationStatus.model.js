@@ -10,20 +10,21 @@ export default class MutationStatus extends Model {
     // define association here
   }
 }
-MutationStatus.init(
-  {
-    name: {
-      allowNull: false,
-      type: DataTypes.STRING,
-      unique: true,
-      validate: {
-        isAlpha: true,
+export const init = (sequelize) => {
+  MutationStatus.init(
+    {
+      name: {
+        allowNull: false,
+        type: DataTypes.STRING,
+        unique: true,
+        validate: {
+          isAlpha: true,
+        },
       },
     },
-  },
-  {
-    sequelize,
-    modelName: 'MutationStatus',
-  },
-);
-return MutationStatus;
+    {
+      sequelize,
+      modelName: 'MutationStatus',
+    },
+  );
+};
