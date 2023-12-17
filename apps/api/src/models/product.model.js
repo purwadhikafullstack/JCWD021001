@@ -11,6 +11,7 @@ export default class Product extends Model {
     Product.belongsTo(models.ProductGroup);
     Product.belongsTo(models.ProductType);
     Product.belongsTo(models.Colour);
+    Product.hasMany(models.CartProducts, { foreignKey: 'productId' });
   }
 }
 
