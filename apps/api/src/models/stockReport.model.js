@@ -1,6 +1,6 @@
-import { Model, DataTypes } from 'sequelize';
-
-export default class Product extends Model {
+'use strict';
+import { DataTypes, Model } from 'sequelize';
+export default class StockReport extends Model {
   /**
    * Helper method for defining associations.
    * This method is not a part of Sequelize lifecycle.
@@ -8,44 +8,38 @@ export default class Product extends Model {
    */
   static associate(models) {
     // define association here
-    Product.belongsTo(models.ProductGroup);
-    Product.belongsTo(models.ProductType);
-    Product.belongsTo(models.Colour);
-    Product.hasMany(models.CartProducts, { foreignKey: 'productId' });
+    StockReport.hasOne(models.Product);
+    StockReport.hasMany(models.Warehouse);
+    StockReport.hasOne(models.Mutation);
   }
 }
-
 export const init = (sequelize) => {
-  Product.init(
+  StockReport.init(
     {
-      name: {
-        allowNull: false,
-        type: DataTypes.STRING,
-      },
-      price: {
-        allowNull: false,
-        type: DataTypes.DECIMAL(10, 0),
-      },
-      description: {
-        allowNull: false,
-        type: DataTypes.STRING,
-      },
-      productGroupId: {
+      productId: {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
-      productTypeId: {
+      warehouseId: {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
-      colourId: {
+      qtyBefore: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
+      qtyAfter: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
+      mutationId: {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
     },
     {
       sequelize,
-      modelName: 'Product',
+      modelName: 'StockReport',
     },
   );
 };

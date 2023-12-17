@@ -1,27 +1,31 @@
 import { Model, DataTypes } from 'sequelize';
 
-export default class Carts extends Model {
+export default class ProductImage extends Model {
   /**
    * Helper method for defining associations.
    * This method is not a part of Sequelize lifecycle.
    * The `models/index` file will call this method automatically.
    */
   static associate(models) {
-    this.belongsTo(models.User, { foreignKey: 'userId' });
-    this.hasMany(models.CartProducts, { foreignKey: 'cartId' });
+    // define association here
   }
 }
 
 export const init = (sequelize) => {
-  Carts.init(
+  ProductImage.init(
     {
-      userId: DataTypes.INTEGER,
-      priceTotal: DataTypes.DECIMAL,
+      imageUrl: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      productId: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
     },
     {
       sequelize,
-      timestamps: false,
-      modelName: 'Carts',
+      modelName: 'ProductImage',
     },
   );
 };

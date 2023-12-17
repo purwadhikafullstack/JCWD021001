@@ -1,27 +1,30 @@
+'use strict';
 import { Model, DataTypes } from 'sequelize';
-
-export default class Carts extends Model {
+export default class MutationStatus extends Model {
   /**
    * Helper method for defining associations.
    * This method is not a part of Sequelize lifecycle.
    * The `models/index` file will call this method automatically.
    */
   static associate(models) {
-    this.belongsTo(models.User, { foreignKey: 'userId' });
-    this.hasMany(models.CartProducts, { foreignKey: 'cartId' });
+    // define association here
   }
 }
-
 export const init = (sequelize) => {
-  Carts.init(
+  MutationStatus.init(
     {
-      userId: DataTypes.INTEGER,
-      priceTotal: DataTypes.DECIMAL,
+      name: {
+        allowNull: false,
+        type: DataTypes.STRING,
+        unique: true,
+        validate: {
+          isAlpha: true,
+        },
+      },
     },
     {
       sequelize,
-      timestamps: false,
-      modelName: 'Carts',
+      modelName: 'MutationStatus',
     },
   );
 };
