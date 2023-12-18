@@ -9,6 +9,7 @@ export default class Size extends Model {
   static associate(models) {
     // define association here
     Size.belongsTo(models.ProductCategory, {
+      as: 'Category',
       foreignKey: 'productCategoryId',
     });
   }
@@ -33,6 +34,7 @@ export const init = (sequelize) => {
     {
       sequelize,
       modelName: 'Size',
+      timestamps: false,
     },
   );
 };
