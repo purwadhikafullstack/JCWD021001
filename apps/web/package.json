@@ -20,10 +20,7 @@
     "framer-motion": "^10.16.16",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-<<<<<<< HEAD
     "react-hot-toast": "^2.4.1",
-=======
->>>>>>> cd758c2da386351c41d417a5c274349798eef889
     "react-redux": "^9.0.4",
     "react-router-dom": "^6.21.0",
     "yup": "^1.3.3"
