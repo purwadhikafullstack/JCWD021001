@@ -32,12 +32,10 @@ export const init = (sequelize) => {
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
-        defaultValue: Date.now(),
       },
       updatedAt: {
         allowNull: false,
         type: DataTypes.DATE,
-        defaultValue: Date.now(),
       },
       productGroupId: {
         allowNull: false,
@@ -55,6 +53,7 @@ export const init = (sequelize) => {
     {
       sequelize,
       modelName: 'Product',
+      timestamps: true,
     },
   );
 };
