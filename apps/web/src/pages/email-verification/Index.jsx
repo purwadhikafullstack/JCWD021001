@@ -2,7 +2,7 @@ import { Box, Button, Flex, FormControl, Icon, Image, Input, InputGroup, InputLe
 import model from '../../assets/images/signup-model.jpeg'
 import {LockClosedIcon} from '@heroicons/react/24/outline'
 import { useFormik } from "formik"
-import { verification } from "./services/VerificationFunction"
+import { verification } from "./services/EditUser"
 function Verification() {
 
     const formik = useFormik({

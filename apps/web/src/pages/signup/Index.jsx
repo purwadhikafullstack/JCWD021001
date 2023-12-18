@@ -3,7 +3,7 @@ import model from '../../assets/images/signup-model.jpeg'
 import { UserCircleIcon, EnvelopeIcon} from '@heroicons/react/24/outline'
 import { instagram } from "../../assets/Icons/Icons"
 import { useFormik } from "formik"
-import { register } from "./services/RegisterFunction"
+import { register } from "./services/CreateUser"
 import logo from "../../assets/images/logo.png"
 function Signup() {
 
