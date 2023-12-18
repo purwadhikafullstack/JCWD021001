@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import reactLogo from '../../assets/react.svg';
 import viteLogo from '/vite.svg';
-import './Home.css';
+// import './Home.css';
+import Navbar from '../../components/Navbar/Navbar';
 
 function Home() {
   const [sampleData, setSampleData] = useState([]);
@@ -18,6 +19,7 @@ function Home() {
 
   return (
     <>
+    <Navbar/>
       <div>
         <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
           <img src={viteLogo} className="logo" alt="Vite logo" />
