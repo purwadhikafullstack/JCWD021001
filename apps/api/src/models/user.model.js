@@ -11,6 +11,7 @@ export default class User extends Model {
     this.belongsTo(models.Role, { foreignKey: 'roleId' });
     this.hasMany(models.Warehouse, { foreignKey: 'userId' });
     this.hasMany(models.UserAddress, {foreignkey: 'userId'});
+    this.hasMany(models.Carts, {foreignKey: 'userId'})
   }
 }
 

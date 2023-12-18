@@ -1,6 +1,6 @@
+'use strict';
 import { Model, DataTypes } from 'sequelize';
-
-export default class ProductCategory extends Model {
+export default class MutationStatus extends Model {
   /**
    * Helper method for defining associations.
    * This method is not a part of Sequelize lifecycle.
@@ -10,9 +10,8 @@ export default class ProductCategory extends Model {
     // define association here
   }
 }
-
 export const init = (sequelize) => {
-  ProductCategory.init(
+  MutationStatus.init(
     {
       name: {
         allowNull: false,
@@ -22,15 +21,10 @@ export const init = (sequelize) => {
           isAlpha: true,
         },
       },
-      imageUrl: {
-        allowNull: true,
-        type: DataTypes.STRING,
-      },
     },
     {
       sequelize,
-      modelName: 'ProductCategory',
-      timestamps: false,
+      modelName: 'MutationStatus',
     },
   );
 };

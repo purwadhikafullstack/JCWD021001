@@ -8,9 +8,18 @@ export default class Product extends Model {
    */
   static associate(models) {
     // define association here
-    Product.belongsTo(models.ProductGroup);
-    Product.belongsTo(models.ProductType);
-    Product.belongsTo(models.Colour);
+    Product.belongsTo(models.ProductType, {
+      as: 'Type',
+      foreignKey: 'productTypeId',
+    });
+    Product.belongsTo(models.ProductGroup, {
+      as: 'Group',
+      foreignKey: 'productGroupId',
+    });
+    Product.belongsTo(models.Colour, {
+      as: 'Colour',
+      foreignKey: 'colourId',
+    });
   }
 }
 
@@ -29,6 +38,14 @@ export const init = (sequelize) => {
         allowNull: false,
         type: DataTypes.STRING,
       },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
       productGroupId: {
         allowNull: false,
         type: DataTypes.INTEGER,
@@ -45,6 +62,7 @@ export const init = (sequelize) => {
     {
       sequelize,
       modelName: 'Product',
+      timestamps: true,
     },
   );
 };
