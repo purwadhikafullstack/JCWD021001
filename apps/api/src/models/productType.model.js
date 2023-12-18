@@ -29,6 +29,7 @@ export const init = (sequelize) => {
     {
       sequelize,
       modelName: 'ProductType',
+      timestamps: false,
     },
   );
 };
