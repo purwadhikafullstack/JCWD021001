@@ -17,5 +17,9 @@ router.use('/sample', sampleRouter);
 router.use('/auth', authRouter)
 router.use("/cart", cartRouter)
 router.use("/order", orderRouter)
+router.use('/auth', authRouter);
+
+router.use('/cart', cartRouter);
+
 router.use('/product', productRouter);
 export default router;
