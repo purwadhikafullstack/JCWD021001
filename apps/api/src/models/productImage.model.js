@@ -26,6 +26,7 @@ export const init = (sequelize) => {
     {
       sequelize,
       modelName: 'ProductImage',
+      timestamps: false,
     },
   );
 };

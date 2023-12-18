@@ -8,8 +8,6 @@ export default class ProductCategory extends Model {
    */
   static associate(models) {
     // define association here
-    ProductCategory.hasMany(models.ProductType);
-    ProductCategory.hasMany(models.Size);
   }
 }
 
@@ -24,13 +22,15 @@ export const init = (sequelize) => {
           isAlpha: true,
         },
       },
-      image: {
+      imageUrl: {
+        allowNull: true,
         type: DataTypes.STRING,
       },
     },
     {
       sequelize,
       modelName: 'ProductCategory',
+      timestamps: false,
     },
   );
 };

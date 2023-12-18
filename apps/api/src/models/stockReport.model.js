@@ -8,9 +8,9 @@ export default class StockReport extends Model {
    */
   static associate(models) {
     // define association here
-    StockReport.hasOne(models.Product);
-    StockReport.hasMany(models.Warehouse);
-    StockReport.hasOne(models.Mutation);
+    StockReport.belongsTo(models.Product);
+    StockReport.belongsTo(models.Warehouse);
+    StockReport.belongsTo(models.Mutation);
   }
 }
 export const init = (sequelize) => {
