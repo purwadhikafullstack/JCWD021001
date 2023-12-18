@@ -9,7 +9,7 @@ export default class Colour extends Model {
    */
   static associate(models) {
     // define association here
-    Colour.hasMany(models.Product);
+    // Colour.hasMany(models.Product);
   }
 }
 

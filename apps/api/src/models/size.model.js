@@ -33,6 +33,7 @@ export const init = (sequelize) => {
     {
       sequelize,
       modelName: 'Size',
+      timestamps: false,
     },
   );
 };
