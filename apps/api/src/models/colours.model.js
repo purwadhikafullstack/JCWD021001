@@ -1,3 +1,4 @@
+import { FastField } from 'formik';
 import { Model, DataTypes } from 'sequelize';
 
 export default class Colour extends Model {
@@ -8,6 +9,7 @@ export default class Colour extends Model {
    */
   static associate(models) {
     // define association here
+    Colour.hasMany(models.Product);
   }
 }
 
@@ -25,6 +27,7 @@ export const init = (sequelize) => {
     {
       sequelize,
       modelName: 'Colour',
+      timestamps: false,
     },
   );
 };
