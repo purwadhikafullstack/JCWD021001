@@ -9,7 +9,7 @@ export default class ProductImage extends Model {
   static associate(models) {
     // define association here
     ProductImage.belongsTo(models.Product, {
-      as: 'Product',
+      as: 'product',
       foreignKey: 'productId',
     });
   }
