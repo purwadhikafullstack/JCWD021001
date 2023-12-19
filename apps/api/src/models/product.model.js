@@ -20,6 +20,7 @@ export default class Product extends Model {
       as: 'Colour',
       foreignKey: 'colourId',
     });
+    Product.hasMany(models.ProductImage);
   }
 }
 
