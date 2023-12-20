@@ -1,9 +1,31 @@
 import Product from '../models/product.model';
-import ProductCategory from '../models/productCategory.model';
-import ProductType from '../models/productType.model';
-
-export const getProductQuery = async () => {
+import { Op } from 'sequelize';
+export const getProductQuery = async (
+  productGroup = null,
+  productType = null,
+  productCategory = null,
+) => {
   try {
+    const filter = {};
+    if (productGroup)
+      filter.where = {
+        [Op.and]: [
+          {
+            productGroupId: productGroup,
+          },
+          {
+            [Op.or]: [
+              {
+                productCategoryId: productCategory,
+              },
+              {
+                productTypeId: productType,
+              },
+            ],
+          },
+        ],
+      };
+    console.log('FILTER', filter);
     const res = await Product.findAll({
       include: [
         {
@@ -11,6 +33,7 @@ export const getProductQuery = async () => {
           nested: true,
         },
       ],
+      ...filter,
     });
     return res;
   } catch (err) {

@@ -20,6 +20,10 @@ export default class Product extends Model {
       as: 'colour',
       foreignKey: 'colourId',
     });
+    Product.belongsTo(models.ProductCategory, {
+      as: 'category',
+      foreignKey: 'productCategoryId',
+    });
     Product.hasMany(models.ProductImage, {
       as: 'images',
     });
@@ -50,6 +54,10 @@ export const init = (sequelize) => {
         type: DataTypes.DATE,
       },
       productGroupId: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
+      productTypeId: {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
