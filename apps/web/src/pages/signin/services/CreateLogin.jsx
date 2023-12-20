@@ -1,5 +1,5 @@
 import axios from "axios";
-import toast from "react-hot-toast";
+
 
 export const login = async (email, password) => {
     try {
@@ -8,9 +8,9 @@ export const login = async (email, password) => {
             email,
             password
         });
-        toast.success("Account created");
+        // toast.success("Account created");
     } catch (err){
-        toast.error("Error occurred")
+        // toast.error("Error occurred")
     }
 }
 

@@ -1,16 +1,21 @@
 import axios from "axios";
-import toast from "react-hot-toast";
 
-export const register = async (email, username) => {
+
+export const register = async (email, username, setLoading, openSuccessModal, openErrorModal) => {
     try {
+        setLoading(true);
         await axios.post("http://localhost:8000/api/auth/user-registration",
         {
             email,
             username
         });
-        toast.success("Account created")
+        setLoading(false);
+        openSuccessModal();
+        console.log("success");
     } catch (err){
-        toast.error("Error occurred")
+        setLoading(false);
+        openErrorModal();
+        console.log("ini errornya", err.message);
     }
 }
 

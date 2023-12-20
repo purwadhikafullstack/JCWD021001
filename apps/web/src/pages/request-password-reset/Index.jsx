@@ -1,16 +1,16 @@
 import { AbsoluteCenter, Box, Button, Divider, Flex, FormControl, FormErrorMessage, Icon, Image, Input, InputGroup, InputLeftElement, Text, useDisclosure } from "@chakra-ui/react"
 import model from '../../assets/images/signup-model.jpeg'
-import { UserCircleIcon, EnvelopeIcon} from '@heroicons/react/24/outline'
-import { instagram } from "../../assets/Icons/Icons"
+import { EnvelopeIcon} from '@heroicons/react/24/outline'
 import { useFormik } from "formik"
-import { register } from "./services/CreateUser"
+import { createRequest } from "./services/CreateRequestResetPassword"
 import logo from "../../assets/images/logo.png"
-import { SuccessModal, ErrorModal } from "./services/PopUpModal"
-import { BeatLoader } from "react-spinners";
 import { useState } from "react"
-import { SignUpScheme } from "./services/Validation"
+import { SuccessModal } from "./services/PopUpModal"
+import { ErrorModal } from "./services/PopUpModal"
+import { BeatLoader } from "react-spinners"
+import { EmailScheme } from "./services/Validation"
+function RequestPasswordReset() {
 
-function Signup() {
     const { isOpen: isSuccessModalOpen, onOpen: openSuccessModal, onClose: closeSuccessModal } = useDisclosure();
     const { isOpen: isErrorModalOpen, onOpen: openErrorModal, onClose: closeErrorModal } = useDisclosure();
 
@@ -20,20 +20,20 @@ function Signup() {
         borderColor: "white",
     };
     const [loading, setLoading] = useState(false);
-    
+
     const formik = useFormik({
         initialValues:{
             email: "",
-            username:"",
         },
-        validationSchema: SignUpScheme,
+        validationSchema: EmailScheme,
         onSubmit: async (values, {resetForm}) => {
             try{
-                await register(values.email, values.username, setLoading, openSuccessModal, openErrorModal);
-            } catch (err){
+                await createRequest(values.email, setLoading, openSuccessModal, openErrorModal);
+            } catch {
                 console.log("gagal error");
             }
-            resetForm({values:{email: "", username:""}})
+            
+            resetForm({values:{email: "",}})
         }
     }) 
   return (
@@ -49,39 +49,8 @@ function Signup() {
                 <Box width={'450px'}>
                 <Text fontWeight={'800'} color={'brand.lightred'} textAlign={'center'} fontSize={'42px'} marginBottom={'40px'}>SIGN UP</Text>
                 <form onSubmit={formik.handleSubmit}>
-                <FormControl 
-                isInvalid={(formik.touched.username && formik.errors.username)}
-                marginBottom={'32px'}>
-                    <InputGroup marginBottom={'8px'}>
-                    <Input
-                        name="username"
-                        placeholder="Username"
-                        value={formik.values.username}
-                        onChange={formik.handleChange}
-                        _placeholder={{color:"#707070"}}
-                        height={'64px'}
-                        bg={'#EEEDED'}
-                        color={'#707070'}
-                        paddingLeft={'72px'}
-                        fontSize={'20px'}
-                        borderRadius={'16px'}
-                    />
-                    <InputLeftElement top={'12px'} width={'72px'}>
-                        <Flex justifyContent={'center'} alignItems={'center'} height={'64px'}>
-                        <Icon as={UserCircleIcon} boxSize={'24px'} margin={'auto'} position={'relative'} textColor={'brand.grey350'}/>
-                        </Flex>
-                    </InputLeftElement>
-                    </InputGroup>
-                    {formik.touched.username &&
-					formik.errors.username && (
-						<FormErrorMessage>
-							{formik.errors.username}
-						</FormErrorMessage>
-					)}
-                </FormControl>
                 
-                <FormControl 
-                isInvalid={(formik.touched.email && formik.errors.email)}
+                <FormControl isInvalid={(formik.touched.username && formik.errors.username)}
                 marginBottom={'32px'}>    
                     <InputGroup marginBottom={'8px'}>
                     <Input
@@ -104,13 +73,13 @@ function Signup() {
                         </Flex>
                     </InputLeftElement>
                     </InputGroup>
-                    {formik.touched.email && formik.errors.email && (
+                    {formik.touched.username &&
+					formik.errors.username && (
 						<FormErrorMessage>
-							{formik.errors.email}
+							{formik.errors.username}
 						</FormErrorMessage>
 					)}
                 </FormControl>
-
                 {loading ? (<Button width={'100%'} height={'68px'} borderRadius={'16px'} fontSize={'24px'} fontWeight={'700'} color={'white'} bg={'brand.lightred'} _hover={{bg: '#f50f5a'}} _active={{opacity:'70%'}}>
                     <div className="sweet-loading">
                         <BeatLoader color={"#ffffff"}
@@ -120,35 +89,17 @@ function Signup() {
 							aria-label="spiner"
 							data-testid="loader"/>
                     </div></Button>) : (
-                    <Button width={'100%'} height={'68px'} borderRadius={'16px'} fontSize={'24px'} fontWeight={'700'} color={'white'} bg={'brand.lightred'} _hover={{bg: '#f50f5a'}} _active={{opacity:'70%'}} type="submit">SIGN UP</Button>
+                    <Button width={'100%'} height={'68px'} borderRadius={'16px'} fontSize={'24px'} fontWeight={'700'} color={'white'} bg={'brand.lightred'} _hover={{bg: '#f50f5a'}} _active={{opacity:'70%'}} type="submit">RESET PASSWORD</Button>
                 )}
-                
                 </form>
                 <SuccessModal isOpen={isSuccessModalOpen} onClose={closeSuccessModal} />
                 <ErrorModal isOpen={isErrorModalOpen} onClose={closeErrorModal} />
-            
                 <Box position='relative' margin={'32px 0'}>
                     <Divider border={'1px solid #D9D9D9'} />
                     <AbsoluteCenter bg='white' px='4'>
                         or
                     </AbsoluteCenter>
                 </Box>
-                <Flex justifyContent={'center'}
-                alignItems={'center'} 
-                gap={'24px'}>
-                    <Box width={'48px'} height={'48px'} bg={'brand.lightred'} padding={'8px'} borderRadius={'12px'}>
-                        <Icon as={instagram} boxSize={'40px'} color={'white'}/>
-                    </Box>
-                    <Box width={'48px'} height={'48px'} bg={'brand.lightred'} padding={'8px'} borderRadius={'12px'}>
-                        <Icon as={instagram} boxSize={'40px'} color={'white'}/>
-                    </Box>
-                    <Box width={'48px'} height={'48px'} bg={'brand.lightred'} padding={'8px'} borderRadius={'12px'}>
-                        <Icon as={instagram} boxSize={'40px'} color={'white'}/>
-                    </Box>
-                    <Box width={'48px'} height={'48px'} bg={'brand.lightred'} padding={'8px'} borderRadius={'12px'}>
-                        <Icon as={instagram} boxSize={'40px'} color={'white'}/>
-                    </Box>
-                </Flex>
                 </Box>
             </Flex>
         </Flex>
@@ -156,4 +107,4 @@ function Signup() {
   )
 }
 
-export default Signup
+export default RequestPasswordReset
