@@ -10,6 +10,7 @@ export async function up(queryInterface, Sequelize) {
       createdAt: new Date(Date.now()),
       updatedAt: new Date(Date.now()),
       productGroupId: 3,
+      productCategoryId: 1,
       productTypeId: 1,
       colourId: 1,
     },
