@@ -1,8 +1,9 @@
 import { createOrderQuery } from "../queries/orders.queries";
 
-export const createOrderService = async (userId, warehouseId, totalAmount, shippingCost, orderStatusId) => {
+export const createOrderService = async (userId, userAddressId, warehouseId, totalPrice, totalQuantity, shippingCost, orderStatusId, productId, price, quantity) => {
     try {
-        const res = await createOrderQuery(userId, warehouseId, totalAmount, shippingCost, orderStatusId)
+        const calcTotalPrice = price * quantity;
+        const res = await createOrderQuery(userId, userAddressId, warehouseId, totalPrice, totalQuantity, shippingCost, orderStatusId, productId, price, quantity)
         return res
     } catch (err) {
         throw err

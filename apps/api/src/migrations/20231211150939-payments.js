@@ -11,8 +11,15 @@ export async function up(queryInterface, Sequelize) {
     orderId: {
       allowNull: false,
       type: Sequelize.INTEGER,
+      reference: {
+        model: {
+          tableName: 'orders',
+        },
+        key: 'id',
+      },
     },
-    totalAmount: {
+    pricePaid: {
+      allowNull: false,
       type: Sequelize.DECIMAL(10,0),
     },
     paymentDate: {
@@ -22,10 +29,22 @@ export async function up(queryInterface, Sequelize) {
     paymentMethodId: {
       allowNull: false,
       type: Sequelize.INTEGER,
+      reference: {
+        model: {
+          tableName: 'paymentMethods',
+        },
+        key: 'id',
+      },
     },
     paymentStatusId: {
       allowNull: false,
       type: Sequelize.INTEGER,
+      reference: {
+        model: {
+          tableName: 'paymentStatuses',
+        },
+        key: 'id',
+      },
     },
   });
 }

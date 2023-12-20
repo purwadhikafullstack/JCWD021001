@@ -4,12 +4,12 @@
 export async function up(queryInterface, Sequelize) {
   await queryInterface.bulkInsert('products', [
     {
-      name: 'Plain T-shirt',
-      price: 50000,
-      description: 'Plain T-shirt',
+      name: 'rompi',
+      price: 200000,
+      description: 'rompi',
       createdAt: new Date(Date.now()),
       updatedAt: new Date(Date.now()),
-      productGroupId: 3,
+      productGroupId: 1,
       productTypeId: 1,
       colourId: 1,
     },

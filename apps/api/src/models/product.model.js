@@ -20,6 +20,8 @@ export default class Product extends Model {
       as: 'Colour',
       foreignKey: 'colourId',
     });
+    Product.hasMany(models.CartProducts, { foreignKey: 'productId' });
+    Product.hasMany(models.OrderProducts, { foreignKey: 'productId' });
   }
 }
 
