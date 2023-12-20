@@ -1,7 +1,7 @@
 import { AbsoluteCenter, Box, Button, Divider, Flex, FormControl, FormErrorMessage, Icon, Image, Input, InputGroup, InputLeftElement, Text, useDisclosure } from "@chakra-ui/react"
 import model from '../../assets/images/signup-model.jpeg'
 import { UserCircleIcon, EnvelopeIcon} from '@heroicons/react/24/outline'
-import { instagram } from "../../assets/Icons/Icons"
+import { instagram, gmail } from "../../assets/Icons/Icons"
 import { useFormik } from "formik"
 import { register } from "./services/CreateUser"
 import logo from "../../assets/images/logo.png"
@@ -9,8 +9,8 @@ import { SuccessModal, ErrorModal } from "./services/PopUpModal"
 import { BeatLoader } from "react-spinners";
 import { useState } from "react"
 import { SignUpScheme } from "./services/Validation"
-
-function Signup() {
+import { signInWithGoogle } from '../../firebase';
+function Signup({setOpenTab}) {
     const { isOpen: isSuccessModalOpen, onOpen: openSuccessModal, onClose: closeSuccessModal } = useDisclosure();
     const { isOpen: isErrorModalOpen, onOpen: openErrorModal, onClose: closeErrorModal } = useDisclosure();
 
@@ -36,6 +36,18 @@ function Signup() {
             resetForm({values:{email: "", username:""}})
         }
     }) 
+
+    const onLoginWithGoogle = async () => {
+        try {
+          const result = await signInWithGoogle();
+          if (result === 'signin with google success') {
+            setOpenTab(3);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
   return (
     <>
         <Flex height={'100vh'} width={'100%'} boxShadow={'base'}>
@@ -145,9 +157,9 @@ function Signup() {
                     <Box width={'48px'} height={'48px'} bg={'brand.lightred'} padding={'8px'} borderRadius={'12px'}>
                         <Icon as={instagram} boxSize={'40px'} color={'white'}/>
                     </Box>
-                    <Box width={'48px'} height={'48px'} bg={'brand.lightred'} padding={'8px'} borderRadius={'12px'}>
-                        <Icon as={instagram} boxSize={'40px'} color={'white'}/>
-                    </Box>
+                    <Button width={'48px'} height={'48px'} bg={'brand.lightred'} padding={'8px'} borderRadius={'12px'} onClick={onLoginWithGoogle}>
+                        <Icon as={gmail} boxSize={'40px'} color={'white'}/>
+                    </Button>
                 </Flex>
                 </Box>
             </Flex>
