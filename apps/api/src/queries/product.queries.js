@@ -1,12 +1,20 @@
 import Product from '../models/product.model';
 import { Op } from 'sequelize';
+
 export const getProductQuery = async (
+  name = null,
   productGroup = null,
   productType = null,
   productCategory = null,
 ) => {
   try {
     const filter = {};
+    if (name)
+      filter.where = {
+        name: {
+          [Op.eq]: name,
+        },
+      };
     if (productGroup)
       filter.where = {
         [Op.and]: [
@@ -25,7 +33,6 @@ export const getProductQuery = async (
           },
         ],
       };
-    console.log('FILTER', filter);
     const res = await Product.findAll({
       include: [
         {
@@ -34,6 +41,31 @@ export const getProductQuery = async (
         },
       ],
       ...filter,
+    });
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const createProductQuery = async (
+  name,
+  price,
+  description,
+  productGroupId,
+  productTypeId,
+  productCategoryId,
+  colourId,
+) => {
+  try {
+    const res = await Product.create({
+      name,
+      price,
+      description,
+      productGroupId,
+      productTypeId,
+      productCategoryId,
+      colourId,
     });
     return res;
   } catch (err) {

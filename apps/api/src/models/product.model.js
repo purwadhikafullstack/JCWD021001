@@ -61,7 +61,7 @@ export const init = (sequelize) => {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
-      productTypeId: {
+      productCategoryId: {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
