@@ -1,5 +1,6 @@
 import {
   createProductService,
+  deleteProductService,
   getProductService,
   updateProductService,
 } from '../services/product.services';
@@ -87,6 +88,22 @@ export const updateProductController = async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       title: 'Update Product Failed',
+      message: err.message,
+    });
+  }
+};
+
+export const deleteProductController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await deleteProductService(id);
+    return res.status(200).json({
+      message: 'Delete Product Success',
+      data: result,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      title: 'Delete Product Failed',
       message: err.message,
     });
   }

@@ -1,5 +1,6 @@
 import {
   createProductQuery,
+  deleteProductQuery,
   getProductQuery,
   updateProductQuery,
 } from '../queries/product.queries';
@@ -66,6 +67,7 @@ export const updateProductService = async (
 ) => {
   try {
     const check = await getProductQuery(id);
+
     if (!check) throw new Error('Product didnt exist');
 
     if (check) console.log('check', check);
@@ -80,6 +82,17 @@ export const updateProductService = async (
       colourId,
       id,
     );
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const deleteProductService = async (id) => {
+  try {
+    const check = await getProductQuery(id);
+    if (!check) throw new Error('Product doesnt exist');
+    const res = await deleteProductQuery(id);
     return res;
   } catch (err) {
     throw err;

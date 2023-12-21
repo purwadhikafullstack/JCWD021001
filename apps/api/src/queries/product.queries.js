@@ -117,3 +117,18 @@ export const updateProductQuery = async (
     throw err;
   }
 };
+
+export const deleteProductQuery = async (id) => {
+  try {
+    const res = await Product.destroy({
+      where: {
+        id: {
+          [Op.eq]: id,
+        },
+      },
+    });
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
