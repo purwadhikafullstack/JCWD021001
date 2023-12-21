@@ -1,6 +1,7 @@
 import {
   createProductQuery,
   getProductQuery,
+  updateProductQuery,
 } from '../queries/product.queries';
 
 export const getProductService = async (
@@ -8,6 +9,7 @@ export const getProductService = async (
   productGroup,
   productType,
   productCategory,
+  id,
 ) => {
   try {
     const res = await getProductQuery(
@@ -15,6 +17,7 @@ export const getProductService = async (
       productGroup,
       productType,
       productCategory,
+      id,
     );
     return res;
   } catch (err) {
@@ -44,6 +47,38 @@ export const createProductService = async (
       productTypeId,
       productCategoryId,
       colourId,
+    );
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const updateProductService = async (
+  name,
+  price,
+  description,
+  productGroupId,
+  productTypeId,
+  productCategoryId,
+  colourId,
+  id,
+) => {
+  try {
+    const check = await getProductQuery(id);
+    if (!check) throw new Error('Product didnt exist');
+
+    if (check) console.log('check', check);
+
+    const res = await updateProductQuery(
+      name,
+      price,
+      description,
+      productGroupId,
+      productTypeId,
+      productCategoryId,
+      colourId,
+      id,
     );
     return res;
   } catch (err) {

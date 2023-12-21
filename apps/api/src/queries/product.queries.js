@@ -1,14 +1,21 @@
 import Product from '../models/product.model';
-import { Op } from 'sequelize';
+import { Op, where } from 'sequelize';
 
 export const getProductQuery = async (
   name = null,
   productGroup = null,
   productType = null,
   productCategory = null,
+  id = null,
 ) => {
   try {
     const filter = {};
+    if (id)
+      filter.where = {
+        id: {
+          [Op.eq]: id,
+        },
+      };
     if (name)
       filter.where = {
         name: {
@@ -49,13 +56,13 @@ export const getProductQuery = async (
 };
 
 export const createProductQuery = async (
-  name,
-  price,
-  description,
-  productGroupId,
-  productTypeId,
-  productCategoryId,
-  colourId,
+  name = null,
+  price = null,
+  description = null,
+  productGroupId = null,
+  productTypeId = null,
+  productCategoryId = null,
+  colourId = null,
 ) => {
   try {
     const res = await Product.create({
@@ -67,6 +74,44 @@ export const createProductQuery = async (
       productCategoryId,
       colourId,
     });
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const updateProductQuery = async (
+  name,
+  price,
+  description,
+  productGroupId,
+  productTypeId,
+  productCategoryId,
+  colourId,
+  id,
+) => {
+  try {
+    const toBeUpdated = {};
+    if (name) toBeUpdated.name = name;
+    if (price) toBeUpdated.price = price;
+    if (description) toBeUpdated.description = description;
+    if (productGroupId) toBeUpdated.productGroupId = productGroupId;
+    if (productTypeId) toBeUpdated.productTypeId = productTypeId;
+    if (productCategoryId) toBeUpdated.productCategoryId = productCategoryId;
+    if (colourId) toBeUpdated.colourId = colourId;
+
+    const res = await Product.update(
+      {
+        ...toBeUpdated,
+      },
+      {
+        where: {
+          id: {
+            [Op.eq]: id,
+          },
+        },
+      },
+    );
     return res;
   } catch (err) {
     throw err;
