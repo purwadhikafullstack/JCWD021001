@@ -21,7 +21,7 @@ export const createCartQuery = async (userId, productId, calcPrice, quantity) =>
             return { cart: updateCart, cartProduct };
         }
     } catch (err) {
-        throw err;
+        throw err
     }
 }
 
