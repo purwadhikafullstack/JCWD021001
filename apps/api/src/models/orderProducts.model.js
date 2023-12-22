@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 
-export default class OrderItems extends Model {
+export default class OrderProducts extends Model {
   /**
    * Helper method for defining associations.
    * This method is not a part of Sequelize lifecycle.
@@ -8,21 +8,23 @@ export default class OrderItems extends Model {
    */
   static associate(models) {
     // define association here
+    this.belongsTo(models.Orders, { foreignKey: 'orderId' });
+    this.belongsTo(models.Product, { foreignKey: 'productId' });
   }
 }
 
 export const init = (sequelize) => {
-  OrderItems.init(
+  OrderProducts.init(
     {
       orderId: DataTypes.INTEGER,
       productId: DataTypes.INTEGER,
-      quantity: DataTypes.INTEGER,
       price: DataTypes.DECIMAL,
+      quantity: DataTypes.INTEGER,
     },
     {
       sequelize,
       timestamps: false,
-      modelName: 'OrderItems',
+      modelName: 'OrderProducts',
     },
   );
 };

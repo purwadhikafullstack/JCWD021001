@@ -10,6 +10,7 @@ export default class UserAddress extends Model {
     // define association here
     this.belongsTo(models.User, { foreignKey: 'userId' });
     this.belongsTo(models.City, { foreignKey: 'cityId' });
+    this.hasMany(models.Orders, { foreignKey: 'userAddressId' });
   }
 }
 

@@ -11,13 +11,33 @@ export async function up(queryInterface, Sequelize) {
     productId: {
       allowNull: false,
       type: Sequelize.INTEGER,
+      reference: {
+        model: {
+          tableName: 'products',
+        },
+        key: 'id',
+      },
     },
     cartId: {
       allowNull: false,
       type: Sequelize.INTEGER,
+      reference: {
+        model: {
+          tableName: 'carts',
+        },
+        key: 'id',
+      },
+    },
+    price: {
+      allowNull: false,
+      type: Sequelize.DECIMAL(10,0),
     },
     quantity: {
+      allowNull: false,
       type: Sequelize.INTEGER,
+      validate: {
+        min: 0,
+      },
     },
   });
 }

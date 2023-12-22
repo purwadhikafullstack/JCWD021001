@@ -16,8 +16,8 @@ const sendResponse = (res, statusCode, result, errorMessage) => {
 
 export const createOrderController = async (req, res) => {
     try {
-        const { userId, warehouseId, totalAmount, shippingCost, orderStatusId } = req.body
-        const result = await createOrderService(userId, warehouseId, totalAmount, shippingCost, orderStatusId)
+        const { userId, userAddressId, warehouseId, totalPrice, totalQuantity, shippingCost, orderStatusId, productId, price, quantity } = req.body
+        const result = await createOrderService(userId, userAddressId, warehouseId, totalPrice, totalQuantity, shippingCost, orderStatusId, productId, price, quantity)
         return sendResponse(res, 200, result, null);
     } catch (err) {
         console.log(err);

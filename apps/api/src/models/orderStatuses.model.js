@@ -8,6 +8,7 @@ export default class OrderStatuses extends Model {
    */
   static associate(models) {
     // define association here
+    this.hasMany(models.Orders, { foreignKey: 'orderStatusId' });
   }
 }
 

@@ -10,6 +10,7 @@ export default class Warehouse extends Model {
     // define association here
     this.belongsTo(models.User, { foreignKey: 'userId' });
     this.hasMany(models.City, { foreignKey: 'cityId' });
+    this.hasMany(models.Orders, { foreignKey: 'warehouseId' });
   }
 }
 
