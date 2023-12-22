@@ -1,4 +1,4 @@
-import { registerQuery, findUserQuery, emailVerificationQuery, verifiedUserQuery, keepLoginQuery, forgotPasswordQuery } from "../queries/auth.queries";
+import { registerQuery, findUserQuery, emailVerificationQuery, verifiedUserQuery, keepLoginQuery, forgotPasswordQuery, resetPasswordQuery, checkTokenUsageQuery } from "../queries/auth.queries";
 import bcrypt from "bcrypt"
 import jwt, {Secret} from "jsonwebtoken";
 import handlebars from "handlebars";
@@ -161,3 +161,33 @@ export const forgotPasswordService = async (email) => {
     throw err;
   }
 };
+
+export const resetPasswordService = async (token, password) => {
+  try{
+    const secretKey = process.env.JWT_SECRET_KEY
+    const decoded = jwt.verify(token, secretKey);
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(password, salt);
+    await resetPasswordQuery (decoded.email, hashPassword, token);
+    
+  } catch (err){
+    throw err
+  }
+}
+// export const resetPasswordService = async (token, password) => {
+//   try{
+//     const secretKey = process.env.JWT_SECRET_KEY
+//     const decoded = jwt.verify(token, secretKey);
+//     const checkUsedToken = await checkTokenUsageQuery(decoded);
+//     if(checkUsedToken){
+//       throw new Error("Token has already been used");
+//     } else {
+//       const salt = await bcrypt.genSalt(10);
+//       const hashPassword = await bcrypt.hash(password, salt);
+//       await resetPasswordQuery (decoded.email, hashPassword, token);
+//     }
+    
+//   } catch (err){
+//     throw err
+//   }
+// }

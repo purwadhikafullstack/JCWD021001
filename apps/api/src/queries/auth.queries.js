@@ -55,6 +55,7 @@ export const findUserQuery = async ({ email = null, username = null }) => {
     }
   };
 
+  // CHECK WHETHER OR NOT USER HAS BEEN VERIFIED
   export const verifiedUserQuery = async (email) => {
     try {
       return await User.findOne({
@@ -82,7 +83,8 @@ export const findUserQuery = async ({ email = null, username = null }) => {
   }
 };
 
-export const forgotPasswordQuery = async (email, resetToken) => {
+// REQUEST PASSWORD RESET
+export const forgotPasswordQuery = async (email, token) => {
   try {
     const user = await User.findOne({
       where: { email: email }
@@ -90,8 +92,9 @@ export const forgotPasswordQuery = async (email, resetToken) => {
 
     if (user) {
       const userId = user.id;
-      await ResetToken.update({ 
-          resetToken,
+      await ResetToken.create({ 
+          token: token,
+          userId: userId,
           isUsed: false},
           {where: 
             {userId: userId}
@@ -106,21 +109,48 @@ export const forgotPasswordQuery = async (email, resetToken) => {
   }
 };
 
-// export const resetPasswordQuery = async (email, password) => {
-//   try{
-//     const userId = await User.findById(email).select('id');
-//     if(userId) {
-//       await ResetToken.update({ 
-//           isUsed: true,
-//       })}
-//     await User.update(
-//       {password},
-//       {where: 
-//         {email: email}
-//       }
-//     )
-    
-//   } catch (err){
+export const resetPasswordQuery = async (email, password, token) => {
+  try{
 
-//   }
-// }
+    await User.update(
+      {password},
+      {where: 
+        {email: email}
+      }
+    );
+
+    const user = await User.findOne({
+      where: 
+      { email: email }
+      }
+    );
+
+    if (user) {
+      const userId = user.id;  
+      await ResetToken.update(
+        { token,
+          isUsed: true},
+        {where: 
+          {userId: userId}}
+      );
+    } else {
+      console.log('User not found');
+    };
+
+  } catch (err){
+    throw err;
+  }
+};
+
+export const checkTokenUsageQuery = async (token) => {
+  try{
+    await ResetToken.findOne({
+      where: { 
+        token: token,
+        isUsed: true 
+      }
+    })
+  } catch (err){
+    throw err
+  }
+}

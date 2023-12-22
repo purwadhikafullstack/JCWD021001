@@ -9,6 +9,7 @@ export default class ProductType extends Model {
   static associate(models) {
     // define association here
     ProductType.belongsTo(models.ProductCategory, {
+      as: 'category',
       foreignKey: 'productCategoryId',
     });
   }
@@ -29,6 +30,7 @@ export const init = (sequelize) => {
     {
       sequelize,
       modelName: 'ProductType',
+      timestamps: false,
     },
   );
 };
