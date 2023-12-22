@@ -23,7 +23,7 @@ export const init = (sequelize) => {
       userAddressId: DataTypes.INTEGER,
       warehouseId: DataTypes.INTEGER,
       totalPrice: DataTypes.DECIMAL,
-      totalQuantity: DataTypes.DECIMAL,
+      totalQuantity: DataTypes.INTEGER,
       shippingCost: DataTypes.DECIMAL,
       orderDate: DataTypes.DATE,
       orderStatusId: DataTypes.INTEGER,
