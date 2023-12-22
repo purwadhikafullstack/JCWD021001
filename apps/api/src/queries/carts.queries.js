@@ -33,7 +33,7 @@ export const findCartQuery = async (cartProductId) => {
         })
         return res;
     } catch (err) {
-        throw err;
+        throw err
     }
 }
 
