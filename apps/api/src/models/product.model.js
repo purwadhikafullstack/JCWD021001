@@ -27,6 +27,7 @@ export default class Product extends Model {
     Product.hasMany(models.ProductImage, {
       as: 'images',
     });
+    Product.hasMany(models.Stock, { as: 'stocks' });
   }
 }
 

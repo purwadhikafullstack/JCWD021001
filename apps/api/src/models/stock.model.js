@@ -1,29 +1,53 @@
-'use strict';
-const { Model } = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class Stock extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
+import { DataTypes, Model } from 'sequelize';
+
+export default class Stock extends Model {
+  /**
+   * Helper method for defining associations.
+   * This method is not a part of Sequelize lifecycle.
+   * The `models/index` file will call this method automatically.
+   */
+  static associate(models) {
+    // define association here
+    Stock.belongsTo(models.Product, { as: 'product', foreignKey: 'productId' });
+    Stock.belongsTo(models.Warehouse, {
+      as: 'warehouse',
+      foreignKey: 'warehouseId',
+    });
+    Stock.belongsTo(models.Size, { as: 'size', foreignKey: 'sizeId' });
   }
+}
+export const init = (sequelize) => {
   Stock.init(
     {
       productId: {
         allowNull: false,
         type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: 'products',
+          },
+          key: 'id',
+        },
       },
       warehouseId: {
         allowNull: false,
         type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: 'warehouses',
+          },
+          key: 'id',
+        },
       },
       sizeId: {
         allowNull: false,
         type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: 'sizes',
+          },
+          key: 'id',
+        },
       },
       qty: {
         allowNull: false,
@@ -36,5 +60,4 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
     },
   );
-  return Stock;
 };
