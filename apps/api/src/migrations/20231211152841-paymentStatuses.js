@@ -1,7 +1,7 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
 export async function up(queryInterface, Sequelize) {
-  await queryInterface.createTable('payment_statuses', {
+  await queryInterface.createTable('paymentStatuses', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -14,5 +14,5 @@ export async function up(queryInterface, Sequelize) {
   });
 }
 export async function down(queryInterface, Sequelize) {
-  await queryInterface.dropTable('payment_statuses');
+  await queryInterface.dropTable('paymentStatuses');
 }

@@ -15,7 +15,7 @@ export const init = (sequelize) => {
   Payments.init(
     {
       orderId: DataTypes.INTEGER,
-      totalAmount: DataTypes.DECIMAL,
+      pricePaid: DataTypes.DECIMAL,
       paymentDate: DataTypes.DATE,
       paymentMethodId: DataTypes.INTEGER,
       paymentStatusId: DataTypes.INTEGER,
