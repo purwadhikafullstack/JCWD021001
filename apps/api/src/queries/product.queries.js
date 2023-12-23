@@ -2,8 +2,10 @@ import Product from '../models/product.model';
 import ProductGroup from '../models/productGroup.model';
 import ProductCategory from '../models/productCategory.model';
 import Colour from '../models/colours.model';
+import Warehouse from '../models/warehouse.model';
 import { Op } from 'sequelize';
 import Stock from '../models/stock.model';
+import Size from '../models/size.model';
 
 export const getProductQuery = async (
   name = null,
@@ -61,7 +63,8 @@ export const getProductQuery = async (
         {
           model: Stock,
           as: 'stocks',
-          include: { model: Product, as: 'product' },
+          include: { model: Warehouse, as: 'warehouse' },
+          include: { model: Size, as: 'size' },
         },
       ],
       ...filter,
