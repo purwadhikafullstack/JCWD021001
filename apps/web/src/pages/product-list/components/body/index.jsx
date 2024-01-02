@@ -12,7 +12,7 @@ export const Body = (props) => {
           <Flex alignItems={'center'}>
             <Text>
               <Text as={'span'} color={'redPure.500'}>
-                142
+                142 {''}
               </Text>
               Results
             </Text>
@@ -22,7 +22,9 @@ export const Body = (props) => {
               variant={'filled'}
               bgColor={'white'}
               _focus={{ border: 'none', bgColor: 'white', outline: 'none' }}
+              _hover={{ border: 'none', bgColor: 'white' }}
               outline={'none'}
+              border={'none'}
               placeholder={'Sort by'}
             ></Select>
           </Flex>
