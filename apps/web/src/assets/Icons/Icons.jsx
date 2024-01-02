@@ -16,7 +16,7 @@ export const instagram = createIcon({
 
 export const gmail = createIcon({
     displayName: 'gmail',
-    viewBox: '0 0 40 40',
+    viewBox: '0 0 32 32',
     path: (
         <>
             <path fill="currentColor"

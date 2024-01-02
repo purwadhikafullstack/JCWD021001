@@ -137,7 +137,7 @@ export const forgotPasswordService = async (email) => {
     );
     
     // SEND EMAIL FOR PASSWORD RESET
-    const resetPasswordLink = `${process.env.FE_BASE_URL}/auth/password-reset?token=${resetToken}`
+    const resetPasswordLink = `${process.env.FE_BASE_URL}/auth/reset-password?token=${resetToken}`
       const tempCompile = await handlebars.compile(temp);
       const tempResult = tempCompile({ email: email, link: resetPasswordLink });
       const gmailUser = process.env.GMAIL_USER;

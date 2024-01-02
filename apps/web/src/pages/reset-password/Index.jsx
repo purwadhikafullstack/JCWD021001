@@ -9,7 +9,7 @@ import { SuccessModal } from "./services/PopUpModal"
 import { ErrorModal } from "./services/PopUpModal"
 import { BeatLoader } from "react-spinners"
 import logo from "../../assets/images/logo.png"
-function Verification() {
+function ResetPassword() {
     const [showPassword, setShowPassword] = useState(false);
     const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
     const { isOpen: isSuccessModalOpen, onOpen: openSuccessModal, onClose: closeSuccessModal } = useDisclosure();
@@ -48,7 +48,7 @@ function Verification() {
             </Box>
             <Flex justifyContent={'center'} alignItems={'center'} alignContent={'center'} width={'50%'} margin={'50'}>
                 <Box width={'450px'}>
-                <Text fontWeight={'800'} color={'brand.lightred'} textAlign={'center'} fontSize={'42px'} marginBottom={'48px'} lineHeight={'1.0'}>SET PASSWORD</Text>
+                <Text fontWeight={'800'} color={'brand.lightred'} textAlign={'center'} fontSize={'42px'} marginBottom={'48px'} lineHeight={'1.0'}>RESET PASSWORD</Text>
                 <form onSubmit={formik.handleSubmit}>
                 <FormControl 
                 isInvalid={ formik.touched.password && formik.errors.password}
@@ -155,4 +155,4 @@ function Verification() {
   )
 }
 
-export default Verification
+export default ResetPassword

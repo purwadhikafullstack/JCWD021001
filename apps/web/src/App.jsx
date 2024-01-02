@@ -5,6 +5,7 @@ import Verification from './pages/email-verification/Index';
 import Signin from './pages/signin/Index';
 import RequestPasswordReset from './pages/request-password-reset/Index';
 import Auth from './components/Auth/Auth';
+import ResetPassword from './pages/reset-password/Index';
 function App() {
   return (
     <BrowserRouter>
@@ -15,6 +16,7 @@ function App() {
         <Route path="/auth/email-verification" element={<Verification />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/password-reset-request" element={<RequestPasswordReset />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
     </Auth>
     </BrowserRouter>

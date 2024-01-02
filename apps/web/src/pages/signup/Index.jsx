@@ -157,8 +157,8 @@ function Signup({setOpenTab}) {
                     <Box width={'48px'} height={'48px'} bg={'brand.lightred'} padding={'8px'} borderRadius={'12px'}>
                         <Icon as={instagram} boxSize={'40px'} color={'white'}/>
                     </Box>
-                    <Button width={'48px'} height={'48px'} bg={'brand.lightred'} padding={'8px'} borderRadius={'12px'} onClick={onLoginWithGoogle}>
-                        <Icon as={gmail} boxSize={'40px'} color={'white'}/>
+                    <Button width={'48px'} height={'48px'} bg={'brand.lightred'} padding={'8px'} borderRadius={'12px'} onClick={onLoginWithGoogle} _hover={'#brand.redhover'}>
+                        <Icon as={gmail} boxSize={'38px'} color={'white'}/>
                     </Button>
                 </Flex>
                 </Box>
