@@ -16,7 +16,8 @@ export const init = (sequelize) => {
   Carts.init(
     {
       userId: DataTypes.INTEGER,
-      priceTotal: DataTypes.DECIMAL,
+      totalPrice: DataTypes.DECIMAL,
+      totalQuantity: DataTypes.INTEGER,
     },
     {
       sequelize,

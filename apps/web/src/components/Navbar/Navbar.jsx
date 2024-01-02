@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Grid, Icon, Image, Input, InputGroup, InputRightElement, Link } from '@chakra-ui/react'
+import { Box, Button, Flex, Grid, Icon, Image, Input, InputGroup, InputRightElement} from '@chakra-ui/react'
 import logo from '../../assets/images/logo.png'
 import { MagnifyingGlassIcon, ShoppingCartIcon, HeartIcon } from '@heroicons/react/24/outline'
 // import { useNavigate } from "react-router-dom";

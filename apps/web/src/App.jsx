@@ -6,6 +6,8 @@ import Signin from './pages/signin/Index';
 import RequestPasswordReset from './pages/request-password-reset/Index';
 import Auth from './components/Auth/Auth';
 import ResetPassword from './pages/reset-password/Index';
+import Order from './pages/order';
+
 function App() {
   return (
     <BrowserRouter>
@@ -17,6 +19,7 @@ function App() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/password-reset-request" element={<RequestPasswordReset />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/order" element={<Order />} />
       </Routes>
     </Auth>
     </BrowserRouter>
