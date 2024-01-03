@@ -1,6 +1,22 @@
-import { Box, Flex, Select, Spacer, Text, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Grid,
+  Select,
+  Spacer,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import { BreadCrumbs } from '../breadcrumbs';
+import { ProductCard } from '../product_card';
+
 export const Body = (props) => {
+  // Product Card Mapping
+  const renderedProducts = props?.products?.map((product, index) => {
+    return <ProductCard {...product} key={index} />;
+  });
+
+  console.log('RenderedProducts', renderedProducts);
   return (
     <Box p={'1em'} bgColor={'grey.50'} minH={'100vh'}>
       <VStack align={'stretch'} spacing={'1.5em'}>
@@ -28,6 +44,20 @@ export const Body = (props) => {
               placeholder={'Sort by'}
             ></Select>
           </Flex>
+        </Box>
+        <Box>
+          <Grid
+            gridTemplateColumns={'repeat(2, 1fr)'}
+            gridAutoRows={'1fr'}
+            rowGap={'.5em'}
+            columnGap={'.5em'}
+          >
+            {/* <ProductCard />
+            <ProductCard />
+            <ProductCard />
+            <ProductCard /> */}
+            {renderedProducts}
+          </Grid>
         </Box>
       </VStack>
     </Box>
