@@ -1,5 +1,13 @@
-import { Box, Button, Flex, Icon, Spacer, Text } from '@chakra-ui/react';
-import { StarIcon, PlusIcon } from '@heroicons/react/24/outline';
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Icon,
+  Spacer,
+  Text,
+} from '@chakra-ui/react';
+import { StarIcon, PlusIcon, HeartIcon } from '@heroicons/react/24/outline';
 import toRupiah from '@develoka/angka-rupiah-js';
 export const ProductCard = (props) => {
   return (
@@ -10,8 +18,20 @@ export const ProductCard = (props) => {
       overflow={'hidden'}
     >
       <Flex flexDir={'column'} w={'100%'} h={'100%'}>
-        <Box h={'50%'}>
-          <Text>top</Text>
+        <Box h={'50%'} p={'1em'}>
+          <Flex flexDir={'row-reverse'}>
+            <Flex
+              justifyContent={'center'}
+              alignItems={'center'}
+              a
+              bgColor={'white'}
+              w={'1.5em'}
+              h={'1.5em'}
+              borderRadius={'50%'}
+            >
+              <Icon as={HeartIcon} />
+            </Flex>
+          </Flex>
         </Box>
         <Spacer />
         <Box h={'50%'} bgColor={'white'} p={'1em'}>
