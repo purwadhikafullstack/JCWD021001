@@ -6,7 +6,7 @@ import { MagnifyingGlassIcon, ShoppingCartIcon, HeartIcon } from '@heroicons/rea
 function Navbar() {
   // const navigate = useNavigate();
   return (
-    <Box>
+    <Box bg={'white'}>
         <Flex className='navbar-top'
         padding={'6px'}
         // backgroundColor={'brand.lightred'}
