@@ -52,10 +52,6 @@ export const Body = (props) => {
             rowGap={'.5em'}
             columnGap={'.5em'}
           >
-            {/* <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard /> */}
             {renderedProducts}
           </Grid>
         </Box>
