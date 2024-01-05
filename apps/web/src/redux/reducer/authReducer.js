@@ -5,10 +5,10 @@ import axios from "axios";
 const initialState = {
   user: {
     id: null,
-    email: "",
     username: "",
+    email: "",
     roleId: null,
-    point: null,
+    isVerified: null,
     avatar: ""
   },
   isLogin: false,
@@ -19,14 +19,14 @@ export const AuthReducer = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      const { id, email, username, roleId, points, avatar } = action.payload;
+      const { id, username, email, roleId, isVerified, avatar } = action.payload;
 
       state.user = {
         id,
-        email,
         username,
+        email,
         roleId,
-        points,
+        isVerified,
         avatar
       };
     },
@@ -52,6 +52,7 @@ export const login = (email, password) => {
       });
       localStorage.setItem("token", res?.data?.data?.token);
       console.log(res.data?.data?.token);
+      console.log(res.data?.data);
       dispatch(setUser(res?.data?.data?.user));
       dispatch(loginSuccess());
     } catch (err) {
@@ -66,7 +67,7 @@ export const keepLogin = () => {
       const token = localStorage.getItem("token");
 
       if (token) {
-        const res = await axios.get("http://localhost:8080/api/auth/keep-login", {
+        const res = await axios.get("http://localhost:8000/api/auth/keep-login", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

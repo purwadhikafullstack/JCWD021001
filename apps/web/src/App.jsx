@@ -7,8 +7,12 @@ import RequestPasswordReset from './pages/request-password-reset/Index';
 import Auth from './components/Auth/Auth';
 import ResetPassword from './pages/reset-password/Index';
 import Profile from './pages/profile/Index';
+import { useSelector } from 'react-redux';
+import { Box } from '@chakra-ui/react';
 function App() {
+  // const { user, isLogin } = useSelector((state) => state.AuthReducer);
   return (
+    <Box>
     <Auth>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -20,6 +24,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
       </Routes>
     </Auth>
+    </Box>
   );
 }
 
