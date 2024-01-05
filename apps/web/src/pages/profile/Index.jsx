@@ -8,6 +8,7 @@ import { useFormik } from "formik"
 import { useDispatch, useSelector} from 'react-redux'
 import logo from "../../assets/images/logo.png"
 import Navbar from "../../components/Navbar/Navbar"
+
 function Profile() {
     // const user = useSelector(state => state.authReducer.user);
     // const dispatch = useDispatch();
@@ -59,26 +60,33 @@ function Profile() {
 
         <Flex className="profile-container"
         margin={'40px 24px'}
-        gap={'24px'}>
+        gap={'24px'}
+        flexWrap={'wrap'}
+        >
             <Box className="upload-photo"
             padding={'24px'}
-            bg={'white'}>
-                <Text marginBottom={'24px'}>Photo Profile</Text>
+            bg={'white'}
+            >
+                <Text marginBottom={'24px'}
+                fontSize={'24px'}
+                fontWeight={'700'}>Photo Profile</Text>
                 <Flex gap={'32px'}>
-                    <Box width={'258px'}
-                    height={'258px'}
-                    borderRadius={'full'}
-                    bg={'brand.grey200'}
-                    position={'relative'}>
-                        <AbsoluteCenter>
-                            <Icon as={PhotoIcon} 
-                            color={'#696666'} 
-                            boxSize={'110px'}/>
-                        </AbsoluteCenter>
+                    <Box>
+                        <Box width={'258px'}
+                        height={'258px'}
+                        borderRadius={'full'}
+                        bg={'brand.grey200'}
+                        position={'relative'}>
+                            <AbsoluteCenter>
+                                <Icon as={PhotoIcon} 
+                                color={'#696666'} 
+                                boxSize={'110px'}/>
+                            </AbsoluteCenter>
+                        </Box>
                     </Box>
                     <Flex flexDir={'column'}
                     gap={'24px'}
-                    width={'202px'}
+                    maxWidth={'202px'}
                     justifyContent={'flex-end'}>
                         <Button bg={'brand.lightred'}
                         color={'white'}
@@ -94,11 +102,14 @@ function Profile() {
                     </Flex>
                 </Flex>
             </Box>
-            <Box className="upload-photo"
+            <Box className="profile-setting"
             padding={'24px'}
             bg={'white'}
-            width={'100%'}>
-                <Text marginBottom={'24px'}>Profile Setting</Text>
+            flexGrow={1}
+            >
+                <Text marginBottom={'24px'}
+                fontSize={'24px'}
+                fontWeight={'700'}>Profile Setting</Text>
                 <FormControl id="email" marginBottom={'20px'}>
                 <FormLabel fontSize={'14px'} color={'gray'} marginBottom={'8px'}>Username</FormLabel>
                 <InputGroup>
@@ -151,7 +162,11 @@ function Profile() {
                 </InputGroup>
                 </FormControl>
             </Box>
-            
+        </Flex>
+        <Flex className="verify-email" 
+        flexDir={'center'}
+        >
+
         </Flex>
     </Box>
   )
