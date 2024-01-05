@@ -1,4 +1,4 @@
-import { createOrderService } from "../services/orders.services";
+import { createPaymentService } from "../services/payments.services";
 
 const sendResponse = (res, statusCode, result, errorMessage) => {
     if (statusCode === 200) {
@@ -14,10 +14,10 @@ const sendResponse = (res, statusCode, result, errorMessage) => {
     } 
 };
 
-export const createOrderController = async (req, res) => {
+export const createPaymentController = async (req, res) => {
     try {
-        const { userId, userAddressId, warehouseId, totalPrice, totalQuantity, shippingCost, orderStatusId, products } = req.body
-        const result = await createOrderService(userId, userAddressId, warehouseId, totalPrice, totalQuantity, shippingCost, orderStatusId, products)
+        const { orderId, paymentCode, grossAmount, paymentDate, paymentMethod, paymentStatus, paymentMessage } = req.body
+        const result = await createPaymentService(orderId, paymentCode, grossAmount, paymentDate, paymentMethod, paymentStatus, paymentMessage)
         return sendResponse(res, 200, result, null);
     } catch (err) {
         console.log(err);

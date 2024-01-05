@@ -9,7 +9,7 @@ export async function up(queryInterface, Sequelize) {
       description: 'Plain T-shirt',
       createdAt: new Date(Date.now()),
       updatedAt: new Date(Date.now()),
-      productGroupId: 3,
+      productGroupId: 1,
       productCategoryId: 1,
       productTypeId: 1,
       colourId: 1,

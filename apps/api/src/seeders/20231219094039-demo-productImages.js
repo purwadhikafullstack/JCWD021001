@@ -6,12 +6,12 @@ module.exports = {
     await queryInterface.bulkInsert('productImages', [
       {
         imageUrl: 'tshirt_1.jpg',
-        productId: 2,
+        productId: 1,
       },
-      {
-        imageUrl: 'tshirt_2.jpg',
-        productId: 2,
-      },
+      // {
+      //   imageUrl: 'tshirt_2.jpg',
+      //   productId: 2,
+      // },
     ]);
   },
 
