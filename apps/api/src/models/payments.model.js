@@ -15,15 +15,16 @@ export const init = (sequelize) => {
   Payments.init(
     {
       orderId: DataTypes.INTEGER,
-      pricePaid: DataTypes.DECIMAL,
+      paymentCode: DataTypes.STRING,
+      grossAmount: DataTypes.DECIMAL,
       paymentDate: DataTypes.DATE,
-      paymentMethodId: DataTypes.INTEGER,
-      paymentStatusId: DataTypes.INTEGER,
+      paymentMethod: DataTypes.STRING,
+      paymentStatus: DataTypes.STRING,
+      paymentMessage: DataTypes.STRING
     },
     {
       sequelize,
-      createdAt: 'paymentDate',
-      updatedAt: false,
+      timestamps: false,
       modelName: 'Payments',
     },
   );

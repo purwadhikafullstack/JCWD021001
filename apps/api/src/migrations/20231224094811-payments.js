@@ -18,7 +18,11 @@ export async function up(queryInterface, Sequelize) {
         key: 'id',
       },
     },
-    pricePaid: {
+    paymentCode: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
+    grossAmount: {
       allowNull: false,
       type: Sequelize.DECIMAL(10,0),
     },
@@ -26,29 +30,22 @@ export async function up(queryInterface, Sequelize) {
       allowNull: false,
       type: Sequelize.DATE,
     },
-    paymentMethodId: {
+    paymentMethod: {
       allowNull: false,
-      type: Sequelize.INTEGER,
-      reference: {
-        model: {
-          tableName: 'paymentMethods',
-        },
-        key: 'id',
-      },
+      type: Sequelize.STRING,
     },
-    paymentStatusId: {
+    paymentStatus: {
       allowNull: false,
-      type: Sequelize.INTEGER,
-      reference: {
-        model: {
-          tableName: 'paymentStatuses',
-        },
-        key: 'id',
-      },
+      type: Sequelize.STRING,
+    },
+    paymentMessage: {
+      allowNull: false,
+      type: Sequelize.STRING,
     },
   });
 }
 export async function down(queryInterface, Sequelize) {
   await queryInterface.dropTable('payments');
 }
+
 
