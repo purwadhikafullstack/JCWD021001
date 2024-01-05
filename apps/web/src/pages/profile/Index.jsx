@@ -128,7 +128,11 @@ function Profile() {
                 </InputGroup>
                 </FormControl>
                 <FormControl id="email" marginBottom={'20px'}>
-                <FormLabel fontSize={'14px'} color={'gray'} marginBottom={'8px'}>Email</FormLabel>
+                <Flex>
+                    <FormLabel fontSize={'14px'} color={'gray'} marginBottom={'8px'}>Email
+                    </FormLabel>
+                    <Text fontSize={'14px'} color={'brand.lightred'} marginBottom={'8px'}>Verify Email</Text>
+                </Flex>
                 <InputGroup>
                 <Input
                         // type={showPasswordConfirmation ? "text" : "password"}
@@ -163,11 +167,7 @@ function Profile() {
                 </FormControl>
             </Box>
         </Flex>
-        <Flex className="verify-email" 
-        flexDir={'center'}
-        >
-
-        </Flex>
+        
     </Box>
   )
 }
