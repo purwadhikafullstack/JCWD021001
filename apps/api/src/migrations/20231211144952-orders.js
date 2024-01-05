@@ -11,13 +11,43 @@ export async function up(queryInterface, Sequelize) {
     userId: {
       allowNull: false,
       type: Sequelize.INTEGER,
+      reference: {
+        model: {
+          tableName: 'users',
+        },
+        key: 'id',
+      },
+    },
+    userAddressId: {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+      reference: {
+        model: {
+          tableName: 'userAddresses',
+        },
+        key: 'id',
+      },
     },
     warehouseId: {
       allowNull: false,
       type: Sequelize.INTEGER,
+      reference: {
+        model: {
+          tableName: 'warehouses',
+        },
+        key: 'id',
+      },
     },
-    totalAmount: {
+    totalPrice: {
+      allowNull: false,
       type: Sequelize.DECIMAL(10,0),
+    },
+    totalQuantity: {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+      validate: {
+        min: 0,
+      },
     },
     shippingCost: {
       type: Sequelize.DECIMAL(10,0),
@@ -29,6 +59,12 @@ export async function up(queryInterface, Sequelize) {
     orderStatusId: {
       allowNull: false,
       type: Sequelize.INTEGER,
+      reference: {
+        model: {
+          tableName: 'orderStatuses',
+        },
+        key: 'id',
+      },
     },
   });
 }

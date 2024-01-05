@@ -11,9 +11,23 @@ export async function up(queryInterface, Sequelize) {
     userId: {
       allowNull: false,
       type: Sequelize.INTEGER,
+      reference: {
+        model: {
+          tableName: 'users',
+        },
+        key: 'id',
+      },
     },
-    priceTotal: {
+    totalPrice: {
+      allowNull: false,
       type: Sequelize.DECIMAL(10,0),
+    },
+    totalQuantity: {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+      validate: {
+        min: 0,
+      },
     },
   });
 }
