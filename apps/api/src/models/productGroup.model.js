@@ -25,6 +25,7 @@ export const init = (sequelize) => {
     {
       sequelize,
       modelName: 'ProductGroup',
+      timestamps: false,
     },
   );
 };

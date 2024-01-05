@@ -1,6 +1,6 @@
+'use strict';
 import { Model, DataTypes } from 'sequelize';
-
-export default class OrderItems extends Model {
+export default class MutationStatus extends Model {
   /**
    * Helper method for defining associations.
    * This method is not a part of Sequelize lifecycle.
@@ -10,19 +10,21 @@ export default class OrderItems extends Model {
     // define association here
   }
 }
-
 export const init = (sequelize) => {
-  OrderItems.init(
+  MutationStatus.init(
     {
-      orderId: DataTypes.INTEGER,
-      productId: DataTypes.INTEGER,
-      quantity: DataTypes.INTEGER,
-      price: DataTypes.DECIMAL,
+      name: {
+        allowNull: false,
+        type: DataTypes.STRING,
+        unique: true,
+        validate: {
+          isAlpha: true,
+        },
+      },
     },
     {
       sequelize,
-      timestamps: false,
-      modelName: 'OrderItems',
+      modelName: 'MutationStatus',
     },
   );
 };

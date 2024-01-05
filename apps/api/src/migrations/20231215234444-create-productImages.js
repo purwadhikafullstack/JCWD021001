@@ -1,29 +1,37 @@
 'use strict';
+
 /** @type {import('sequelize-cli').Migration} */
 export async function up(queryInterface, Sequelize) {
-  await queryInterface.createTable('order_items', {
+  /**
+   * Add altering commands here.
+   *
+   * Example:
+   * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
+   */
+  await queryInterface.createTable('productImages', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-    orderId: {
+    imageUrl: {
       allowNull: false,
-      type: Sequelize.INTEGER,
+      type: Sequelize.STRING,
     },
     productId: {
       allowNull: false,
       type: Sequelize.INTEGER,
-    },
-    quantity: {
-      type: Sequelize.INTEGER,
-    },
-    price: {
-      type: Sequelize.DECIMAL(10,0),
+      references: {
+        model: {
+          tableName: 'products',
+        },
+        key: 'id',
+      },
     },
   });
 }
+
 export async function down(queryInterface, Sequelize) {
-  await queryInterface.dropTable('order_items');
+  await queryInterface.dropTable('productImages');
 }

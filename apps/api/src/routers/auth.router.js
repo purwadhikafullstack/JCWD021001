@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { registerController, emailVerificationController, loginController, keepLoginController, forgotPasswordController } from "../controllers/auth.controller";
+import { registerController, emailVerificationController, loginController, keepLoginController, forgotPasswordController, resetPasswordController } from "../controllers/auth.controller";
 import { validator } from '../middleware/validator.middleware';
 import { verifyToken } from '../middleware/auth.middleware';
 import { body } from "express-validator";
@@ -15,14 +15,14 @@ const validations = [
 //POST
 authRouter.post("/user-registration", validator(validations),registerController);
 authRouter.post("/login", loginController);
+authRouter.post("/request-password-reset", forgotPasswordController);
 
 // GET
 authRouter.get("/keep-login", verifyToken, keepLoginController);
 
 // PUT
 authRouter.put("/email-verification", emailVerificationController);
-authRouter.put("/request-password-reset", forgotPasswordController)
-
+authRouter.put("/reset-password", resetPasswordController);
 
 
 

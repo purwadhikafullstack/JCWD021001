@@ -17,6 +17,7 @@ export const init = (sequelize) => {
     {
       productId: DataTypes.INTEGER,
       cartId: DataTypes.INTEGER,
+      price: DataTypes.DECIMAL,
       quantity: DataTypes.INTEGER,
     },
     {
