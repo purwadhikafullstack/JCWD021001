@@ -9,6 +9,9 @@ import {  useSelector} from 'react-redux'
 import logo from "../../assets/images/logo.png"
 import Navbar from "../../components/Navbar/Navbar"
 import { useState } from "react"
+import UpdateUsername from "./services/UpdateUsername"
+import UpdateEmail from "./services/UpdateEmail"
+import UpdatePassword from "./services/UpdatePassword"
 
 function Profile() {
     const user = useSelector((state) => state.AuthReducer.user);
@@ -22,6 +25,9 @@ function Profile() {
     <Box bg={'#F1F1F1'}
     height={'100vh'}>
         <Navbar/>
+        <Box padding={'0px 100px'}>
+
+        
         <Flex className="top-container"
         justifyContent={'space-between'}
         alignItems={'center'}
@@ -48,21 +54,6 @@ function Profile() {
                     </BreadcrumbItem>
                 </Breadcrumb>
                 </Flex>
-            </Flex>
-            <Flex>
-                <Button bg={'brand.lightred'}
-                color={'white'}
-                alignItems={'center'}
-                borderRadius={'8px'}
-                padding={'12px 16px'}
-                width={'168px'}
-                h={'43px'}
-                _hover={{bg:'#f62252'}}
-                _active={{bg:'#f95278'}}
-                fontSize={'14px'}
-                fontWeight={'700'}
-                display={isEditable ? 'none' : 'block'}
-                onClick={toggleEdit}>Edit</Button>
             </Flex>
         </Flex>
 
@@ -119,119 +110,31 @@ function Profile() {
                 <Text marginBottom={'24px'}
                 fontSize={'24px'}
                 fontWeight={'700'}>Profile Setting</Text>
-                <FormControl id="email" marginBottom={'20px'}>
-                <FormLabel fontSize={'14px'} color={'gray'} marginBottom={'8px'}>Username</FormLabel>
-                <InputGroup>
-                <Input
-                        // type={showPasswordConfirmation ? "text" : "password"}
-                        name="confirmationPassword"
-                        placeholder={user.username}
-                        isReadOnly= {!isEditable}
-                        _placeholder={{color:"#707070"}}
-                        height={'48px'}
-                        width={'100%'}
-                        bg={'#EEEDED'}
-                        color={'#707070'}
-                        fontSize={'20px'}
-                    />
-                </InputGroup>
-                </FormControl>
-                <FormControl id="email" marginBottom={'20px'}>
-                <Flex>
-                    
-                    <FormLabel fontSize={'14px'} color={'gray'} marginBottom={'8px'}>Email
-                    </FormLabel>
-                    {user?.isVerified ? (
-                    <Flex alignItems={'center'}
-                    marginBottom={'8px'}
-                    gap={'4px'}>
-                        <Icon as={CheckBadgeIcon} color={'blue'} boxSize={'16px'}/>
-                        <Text fontSize={'14px'} color={'brand.lightred'}>Verified</Text>
+                <Flex alignItems={'center'}>
+                    <Flex w={'100px'} alignContent={'center'}>
+                        <Text>Username</Text>
                     </Flex>
-                    ): (
-                        <Text fontSize={'14px'} color={'brand.lightred'} marginBottom={'8px'}>Verify Email</Text>
-                    )}
+                    <UpdateUsername/>
                 </Flex>
-                <InputGroup>
-                <Input
-                        // type={showPasswordConfirmation ? "text" : "password"}
-                        name="confirmationPassword"
-                        placeholder={user?.email}
-                        isReadOnly= {!isEditable}
-                        _placeholder={{color:"#707070"}}
-                        height={'48px'}
-                        width={'100%'}
-                        bg={'#EEEDED'}
-                        color={'#707070'}
-                        fontSize={'20px'}
-                    />
-                </InputGroup>
-                </FormControl>
-                <FormControl id="email" marginBottom={'20px'} >
-                <FormLabel fontSize={'14px'} color={'gray'} marginBottom={'8px'}>Password</FormLabel>
-                <InputGroup>
-                <Input
-                        // type={showPasswordConfirmation ? "text" : "password"}
-                        name="confirmationPassword"
-                        // placeholder="******"
-                        isReadOnly= {!isEditable}
-                        _placeholder={{color:"#707070"}}
-                        height={'48px'}
-                        width={'100%'}
-                        bg={'#EEEDED'}
-                        color={'#707070'}
-                        fontSize={'20px'}
-                    />
-                </InputGroup>
-                </FormControl>
-                <FormControl id="email" marginBottom={'20px'} display={isEditable ? 'block' : 'none'}>
-                <FormLabel fontSize={'14px'} color={'gray'} marginBottom={'8px'}>Password Confirmation</FormLabel>
-                <InputGroup>
-                <Input
-                        // type={showPasswordConfirmation ? "text" : "password"}
-                        name="confirmationPassword"
-                        // display={isEditable ? 'block' : 'none'}
-                        _placeholder={{color:"#707070"}}
-                        height={'48px'}
-                        width={'100%'}
-                        bg={'#EEEDED'}
-                        color={'#707070'}
-                        fontSize={'20px'}
-                    />
-                </InputGroup>
-                </FormControl>
-                <Flex justifyContent={'flex-end'} gap={'16px'}>
-                <Button variant={'outline'}
-                borderColor={'brand.lightred'}
-                bg={'white'}
-                color={'brand.lightred'}
-                _hover={{borderColor:'#f62252', color:'#f62252'}}
-                _active={{borderColor:'#f95278', color:'#f95278'}}
-                borderRadius={'8px'}
-                padding={'12px 16px'}
-                width={'168px'}
-                h={'43px'}
-                fontSize={'14px'}
-                fontWeight={'700'}
-                display={isEditable ? 'block' : 'none'}
-                onClick={toggleEdit}>Cancel</Button>
-                <Button bg={'brand.lightred'}
-                color={'white'}
-                alignItems={'center'}
-                borderRadius={'8px'}
-                padding={'12px 16px'}
-                width={'168px'}
-                h={'43px'}
-                _hover={{bg:'#f62252'}}
-                _active={{bg:'#f95278'}}
-                fontSize={'14px'}
-                fontWeight={'700'}
-                display={isEditable ? 'block' : 'none'}
-                onClick={toggleEdit}>Save</Button>
+                <Flex alignItems={'center'}>
+                    <Flex w={'100px'}>
+                        <Text>Email</Text>
+                    </Flex>
+                    
+                    <UpdateEmail/>
+                    
                 </Flex>
+                <Flex alignItems={'center'}>
+                    <Flex w={'100%'}>
+                    <UpdatePassword/>
+
+                    </Flex>
+                </Flex>
+                
+                
             </Box>
         </Flex>
-        
+        </Box>
     </Box>
   )
 }
