@@ -12,10 +12,28 @@ import { useState } from "react"
 import UpdateUsername from "./services/UpdateUsername"
 import UpdateEmail from "./services/UpdateEmail"
 import UpdatePassword from "./services/UpdatePassword"
+import axios from "axios"
 
 function Profile() {
     const user = useSelector((state) => state.AuthReducer.user);
     const [isEditable, setIsEditable] = useState(false);
+    const [fieldImage, setFieldImage] = useState(null);
+    const uploadAvatar = async (avatar) => {
+        try{
+            let formData = new FormData();
+            formData.append("avatar", fieldImage);
+            
+            const { data } = await axios.patch(
+                `${
+                import.meta.env.VITE_API_URL
+                }user/upload-avatar/${user.id}`,
+                formData)
+                alert(data?.message);
+        } catch (err){
+            console.log(err);
+        }
+    }
+
 
   const toggleEdit = () => {
     setIsEditable(!isEditable);
@@ -77,9 +95,17 @@ function Profile() {
                         bg={'brand.grey200'}
                         position={'relative'}>
                             <AbsoluteCenter>
+                                <InputGroup>
                                 <Icon as={PhotoIcon} 
                                 color={'#696666'} 
                                 boxSize={'110px'}/>
+                                <Input type="file"
+                                onChange={(event) => {event.currentTarget.files
+                                    ? setFieldImage(
+                                            event?.currentTarget?.files[0]
+                                      )
+                                    : null}}/>
+                                </InputGroup>
                             </AbsoluteCenter>
                         </Box>
                     </Box>
@@ -90,14 +116,24 @@ function Profile() {
                         <Button bg={'brand.lightred'}
                         color={'white'}
                         _hover={{bg:'#f62252'}}
-                        _active={{bg:'#f95278'}}>Upload Image</Button>
+                        _active={{bg:'#f95278'}}
+                        onClick={() => {
+                            uploadAvatar(fieldImage),
+                                setFieldImage("");
+                        }}
+                        >
+                            Upload Image
+                        </Button>
+
                         <Button
                         variant={'outline'}
                         borderColor={'brand.lightred'}
                         bg={'white'}
                         color={'brand.lightred'}
                         _hover={{borderColor:'#f62252', color:'#f62252'}}
-                        _active={{borderColor:'#f95278', color:'#f95278'}}>Remove</Button>
+                        _active={{borderColor:'#f95278', color:'#f95278'}}>
+                            Remove
+                        </Button>
                     </Flex>
                 </Flex>
                 <Text marginTop={'35px'}>*file extension only .jpg, .jpeg, .png and .gif (max 1MB)</Text>
