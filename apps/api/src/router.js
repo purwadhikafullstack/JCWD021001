@@ -5,7 +5,7 @@ import { cartRouter } from './routers/carts.router';
 import { orderRouter } from './routers/orders.router';
 import { productRouter } from './routers/product.router';
 import { stockRouter } from './routers/stock.router';
-
+import { productCategoryRouter } from './routers/productCategory.router';
 const router = Router();
 
 router.get('/', (req, res) => {
@@ -20,4 +20,5 @@ router.use('/cart', cartRouter);
 router.use('/order', orderRouter);
 router.use('/product', productRouter);
 router.use('/stock', stockRouter);
+router.use('/product-category', productCategoryRouter);
 export default router;
