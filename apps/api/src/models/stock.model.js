@@ -14,6 +14,7 @@ export default class Stock extends Model {
       foreignKey: 'warehouseId',
     });
     Stock.belongsTo(models.Size, { as: 'size', foreignKey: 'sizeId' });
+    Stock.belongsTo(models.Colour, { as: 'colour', foreignKey: 'colourId' });
   }
 }
 export const init = (sequelize) => {
@@ -45,6 +46,16 @@ export const init = (sequelize) => {
         references: {
           model: {
             tableName: 'sizes',
+          },
+          key: 'id',
+        },
+      },
+      colourId: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: 'colours',
           },
           key: 'id',
         },
