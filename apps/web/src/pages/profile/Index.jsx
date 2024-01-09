@@ -9,10 +9,11 @@ import {  useSelector} from 'react-redux'
 import logo from "../../assets/images/logo.png"
 import Navbar from "../../components/Navbar/Navbar"
 import { useState } from "react"
-import UpdateUsername from "./services/UpdateUsername"
-import UpdateEmail from "./services/UpdateEmail"
-import UpdatePassword from "./services/UpdatePassword"
+import UpdateUsername from "./components/username"
+import UpdateEmail from "./components/email"
+import UpdatePassword from "./components/password"
 import axios from "axios"
+import UploadAvatar from "./components/avatar"
 
 function Profile() {
     const user = useSelector((state) => state.AuthReducer.user);
@@ -44,8 +45,6 @@ function Profile() {
     height={'100vh'}>
         <Navbar/>
         <Box padding={'0px 100px'}>
-
-        
         <Flex className="top-container"
         justifyContent={'space-between'}
         alignItems={'center'}
@@ -88,53 +87,9 @@ function Profile() {
                 fontSize={'24px'}
                 fontWeight={'700'}>Photo Profile</Text>
                 <Flex gap={'32px'}>
-                    <Box>
-                        <Box width={'258px'}
-                        height={'258px'}
-                        borderRadius={'full'}
-                        bg={'brand.grey200'}
-                        position={'relative'}>
-                            <AbsoluteCenter>
-                                <InputGroup>
-                                <Icon as={PhotoIcon} 
-                                color={'#696666'} 
-                                boxSize={'110px'}/>
-                                <Input type="file"
-                                onChange={(event) => {event.currentTarget.files
-                                    ? setFieldImage(
-                                            event?.currentTarget?.files[0]
-                                      )
-                                    : null}}/>
-                                </InputGroup>
-                            </AbsoluteCenter>
-                        </Box>
-                    </Box>
-                    <Flex flexDir={'column'}
-                    gap={'24px'}
-                    maxWidth={'202px'}
-                    justifyContent={'flex-end'}>
-                        <Button bg={'brand.lightred'}
-                        color={'white'}
-                        _hover={{bg:'#f62252'}}
-                        _active={{bg:'#f95278'}}
-                        onClick={() => {
-                            uploadAvatar(fieldImage),
-                                setFieldImage("");
-                        }}
-                        >
-                            Upload Image
-                        </Button>
-
-                        <Button
-                        variant={'outline'}
-                        borderColor={'brand.lightred'}
-                        bg={'white'}
-                        color={'brand.lightred'}
-                        _hover={{borderColor:'#f62252', color:'#f62252'}}
-                        _active={{borderColor:'#f95278', color:'#f95278'}}>
-                            Remove
-                        </Button>
-                    </Flex>
+                    
+                        <UploadAvatar/>
+                    
                 </Flex>
                 <Text marginTop={'35px'}>*file extension only .jpg, .jpeg, .png and .gif (max 1MB)</Text>
             </Box>
