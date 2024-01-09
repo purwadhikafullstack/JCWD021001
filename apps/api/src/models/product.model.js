@@ -16,10 +16,6 @@ export default class Product extends Model {
       as: 'group',
       foreignKey: 'productGroupId',
     });
-    Product.belongsTo(models.Colour, {
-      as: 'colour',
-      foreignKey: 'colourId',
-    });
     Product.belongsTo(models.ProductCategory, {
       as: 'category',
       foreignKey: 'productCategoryId',
@@ -63,10 +59,6 @@ export const init = (sequelize) => {
         type: DataTypes.INTEGER,
       },
       productCategoryId: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
-      },
-      colourId: {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
