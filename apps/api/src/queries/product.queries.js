@@ -1,7 +1,7 @@
 import Product from '../models/product.model';
 import ProductGroup from '../models/productGroup.model';
 import ProductCategory from '../models/productCategory.model';
-import Colour from '../models/colours.model';
+import ProductType from '../models/productType.model';
 import Warehouse from '../models/warehouse.model';
 import { Op } from 'sequelize';
 import Stock from '../models/stock.model';
@@ -13,6 +13,8 @@ export const getProductQuery = async (
   productType = null,
   productCategory = null,
   id = null,
+  sortBy = 'name',
+  orderBy = 'ASC',
 ) => {
   try {
     const filter = {};
@@ -57,8 +59,14 @@ export const getProductQuery = async (
           as: 'category',
         },
         {
-          model: Colour,
-          as: 'colour',
+          model: ProductType,
+          as: 'type',
+          include: [
+            {
+              model: ProductCategory,
+              as: 'category',
+            },
+          ],
         },
         {
           model: Stock,
@@ -67,6 +75,7 @@ export const getProductQuery = async (
           include: { model: Size, as: 'size' },
         },
       ],
+      order: [[`${sortBy}`, `${orderBy}`]],
       ...filter,
     });
     return res;

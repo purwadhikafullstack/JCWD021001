@@ -11,6 +11,8 @@ export const getProductService = async (
   productType,
   productCategory,
   id,
+  sortBy,
+  orderBy,
 ) => {
   try {
     const res = await getProductQuery(
@@ -19,6 +21,8 @@ export const getProductService = async (
       productType,
       productCategory,
       id,
+      sortBy,
+      orderBy,
     );
     return res;
   } catch (err) {
