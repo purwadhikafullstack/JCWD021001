@@ -1,11 +1,12 @@
-import { Box, Flex, Icon, Text } from '@chakra-ui/react';
-import { PutuNavbar } from '../../../components/putu_navbar';
+import { Box, Flex, HStack, Icon, Text } from '@chakra-ui/react';
 import { Body } from '../components/body';
 import { useLocation } from 'react-router-dom';
 import { getProduct } from '../services/readProduct';
+import { getProductCategory } from '../services/readProductCategory';
 import { useEffect, useState } from 'react';
-import { SideBar } from '../components/side-bar';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
+import { Navbar } from '../../../components/navbar';
+import { SideBar } from '../../../components/sidebar';
 
 export const Product = () => {
   // useLocation to know url route
@@ -24,8 +25,13 @@ export const Product = () => {
   const [productCategory, setProductCategory] = useState(1);
   const [productType, setProductType] = useState(0);
 
+  // This is for sidebar product categories, and type
+  const [productCategories, setProductCategories] = useState([]);
   // Sidebar
   const [collapseSideBar, setCollapseSideBar] = useState(false);
+
+  const [orderBy, setOrderBy] = useState('name');
+  const [sortBy, setSortBy] = useState('ASC');
 
   // Get product data
   useEffect(() => {
@@ -35,15 +41,30 @@ export const Product = () => {
       productCategory,
       productType,
       setProducts,
+      orderBy,
+      sortBy,
     );
-  }, [productName, productGroup, productCategory, productType]);
+  }, [
+    productName,
+    productGroup,
+    productCategory,
+    productType,
+    orderBy,
+    sortBy,
+    setOrderBy,
+  ]);
+
+  // Get Product Category Data
+  useEffect(() => {
+    getProductCategory(setProductCategories);
+  }, []);
 
   const toggleSideBar = () => {
     setCollapseSideBar(!collapseSideBar);
   };
   return (
     <Box minH={'100vh'}>
-      <PutuNavbar
+      <Navbar
         collapseSideBar={collapseSideBar}
         setCollapseSideBar={setCollapseSideBar}
         toggleSideBar={toggleSideBar}
@@ -52,17 +73,19 @@ export const Product = () => {
         collapseSideBar={collapseSideBar}
         setCollapseSideBar={setCollapseSideBar}
         toggleSideBar={toggleSideBar}
+        productCategories={productCategories}
       />
-      <Box display={collapseSideBar ? 'none' : 'block'}>
-        <Body
-          segments={segments}
-          products={products}
-          setProductName={setProductName}
-          setProductCategory={setProductCategory}
-          setProductGroup={setProductGroup}
-          setProductType={setProductType}
-        />
-      </Box>
+      <Body
+        segments={segments}
+        products={products}
+        orderBy={orderBy}
+        setProductName={setProductName}
+        setProductCategory={setProductCategory}
+        setProductGroup={setProductGroup}
+        setProductType={setProductType}
+        setOrderBy={setOrderBy}
+        setSortBy={setSortBy}
+      />
       <Flex
         zIndex={'3'}
         bgColor={'white'}
@@ -76,6 +99,7 @@ export const Product = () => {
         borderRadius={'50%'}
         left={'-.5em'}
         visibility={collapseSideBar ? 'hidden' : 'visible'}
+        cursor={'pointer'}
       >
         <Icon as={ChevronRightIcon} onClick={() => toggleSideBar()} />
       </Flex>

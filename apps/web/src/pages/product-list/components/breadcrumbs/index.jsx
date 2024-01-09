@@ -1,7 +1,7 @@
 import { Flex, HStack, Icon, Text } from '@chakra-ui/react';
 import { ChevronRightIcon, HomeIcon } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
-
+import capitalize from 'capitalize';
 export const BreadCrumbs = (props) => {
   const breadCrumbsLinks = props?.segments?.map((segment, index, array) => {
     return (
@@ -14,7 +14,7 @@ export const BreadCrumbs = (props) => {
               color={index !== array.length - 1 ? 'black' : 'redPure.500'}
               fontWeight={index !== array.length - 1 ? 'normal' : 'bold'}
             >
-              {segment}
+              {capitalize(segment)}
             </Text>
           )}
           {index !== array.length - 1 ? (

@@ -3,6 +3,7 @@ import {
   Button,
   Center,
   Flex,
+  HStack,
   Icon,
   Spacer,
   Text,
@@ -62,14 +63,10 @@ export const ProductCard = (props) => {
               h={'2.5em'}
               _focus={{ bgColor: 'white' }}
             >
-              <Flex
-                alignItems={'center'}
-                justifyContent={'space-between'}
-                w={'80%'}
-              >
+              <HStack alignItems={'center'} justifyContent={'space-between'}>
                 <Icon as={PlusIcon} fontSize={'1.3em'} />
                 <Text>Add to cart</Text>
-              </Flex>
+              </HStack>
             </Button>
           </Flex>
         </Box>
