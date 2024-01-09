@@ -8,6 +8,7 @@ module.exports = {
         productId: 2,
         warehouseId: 2,
         sizeId: 1,
+        colourId: 1,
         qty: 10,
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
