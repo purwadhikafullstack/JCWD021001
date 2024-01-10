@@ -5,6 +5,6 @@ const cartRouter = Router();
 cartRouter.post("/", createCartController)
 cartRouter.get("/:userId", getCartController)
 cartRouter.patch("/:cartProductId", updateCartController)
-cartRouter.delete("/:cartProductId", deleteCartController)
+cartRouter.delete("/", deleteCartController)
 
 export {cartRouter}

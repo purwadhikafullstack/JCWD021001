@@ -4,6 +4,10 @@ import { authRouter } from './routers/auth.router';
 import { cartRouter } from './routers/carts.router';
 import { orderRouter } from './routers/orders.router';
 import { productRouter } from './routers/product.router';
+import { userRouter } from './routers/user.router';
+import {userAddressRouter} from './routers/userAddress.router'
+
+
 import { paymentRouter } from './routers/payments.router';
 import { stockRouter } from './routers/stock.router';
 import { productCategoryRouter } from './routers/productCategory.router';
@@ -20,6 +24,8 @@ router.use('/auth', authRouter);
 router.use('/cart', cartRouter);
 router.use('/order', orderRouter);
 router.use('/product', productRouter);
+router.use('/user', userRouter);
+router.use('/user-address', userAddressRouter);
 router.use('/payment', paymentRouter);
 router.use('/stock', stockRouter);
 router.use('/product-category', productCategoryRouter);
