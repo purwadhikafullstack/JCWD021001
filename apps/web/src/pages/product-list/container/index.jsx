@@ -21,22 +21,18 @@ export const Product = () => {
 
   // State for filtering products
   const [productName, setProductName] = useState(null);
-  const [productGroup, setProductGroup] = useState(3);
-  const [productCategory, setProductCategory] = useState(1);
-  const [productType, setProductType] = useState(0);
+  const [productGroup, setProductGroup] = useState(4);
+  const [productCategory, setProductCategory] = useState(0);
+  const [productType, setProductType] = useState(2);
 
   // This is for sidebar product categories, and type
   const [productCategories, setProductCategories] = useState([]);
   // Sidebar
-  const [collapseSideBar, setCollapseSideBar] = useState(false);
+  const [collapseSideBar, setCollapseSideBar] = useState(true);
 
   const [orderBy, setOrderBy] = useState('name');
   const [sortBy, setSortBy] = useState('ASC');
 
-<<<<<<< Updated upstream
-=======
-  console.log('ORDER BY', orderBy);
->>>>>>> Stashed changes
   // Get product data
   useEffect(() => {
     getProduct(
@@ -73,28 +69,18 @@ export const Product = () => {
         setCollapseSideBar={setCollapseSideBar}
         toggleSideBar={toggleSideBar}
       />
-      <SideBar
-        collapseSideBar={collapseSideBar}
-        setCollapseSideBar={setCollapseSideBar}
-        toggleSideBar={toggleSideBar}
-        productCategories={productCategories}
-<<<<<<< Updated upstream
-      />
-      <Body
-        segments={segments}
-        products={products}
-        orderBy={orderBy}
-        setProductName={setProductName}
-        setProductCategory={setProductCategory}
-        setProductGroup={setProductGroup}
-        setProductType={setProductType}
-        setOrderBy={setOrderBy}
-        setSortBy={setSortBy}
-      />
-=======
-      />
+      <Box display={{ base: collapseSideBar ? 'block' : 'none', md: 'none' }}>
+        <SideBar
+          collapseSideBar={collapseSideBar}
+          setCollapseSideBar={setCollapseSideBar}
+          toggleSideBar={toggleSideBar}
+          productCategories={productCategories}
+        />
+      </Box>
+
       <Box display={collapseSideBar ? 'none' : 'block'}>
         <Body
+          productCategories={productCategories}
           segments={segments}
           products={products}
           setProductName={setProductName}
@@ -103,9 +89,10 @@ export const Product = () => {
           setProductType={setProductType}
           setOrderBy={setOrderBy}
           setSortBy={setSortBy}
+          orderBy={orderBy}
+          sortBy={sortBy}
         />
       </Box>
->>>>>>> Stashed changes
       <Flex
         zIndex={'3'}
         bgColor={'white'}
@@ -118,7 +105,10 @@ export const Product = () => {
         justifyContent={'center'}
         borderRadius={'50%'}
         left={'-.5em'}
-        visibility={collapseSideBar ? 'hidden' : 'visible'}
+        visibility={{
+          base: collapseSideBar ? 'hidden' : 'visible',
+          md: 'hidden',
+        }}
         cursor={'pointer'}
       >
         <Icon as={ChevronRightIcon} onClick={() => toggleSideBar()} />

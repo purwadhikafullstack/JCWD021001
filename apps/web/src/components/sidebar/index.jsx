@@ -38,12 +38,14 @@ export const SideBar = (props) => {
   return (
     <Box
       position={'relative'}
+      bgColor={'white'}
       p={'1em'}
-      w={'100%'}
+      m={{ base: '0', md: '0 0 -1em -1em' }}
+      w={{ base: '100%', md: '15em' }}
+      borderEndRadius={{ base: 'none', md: '1em' }}
       h={'100vh'}
       zIndex={'2'}
       top={'0'}
-      display={props?.collapseSideBar ? 'block' : 'none'}
     >
       <VStack align={'stretch'}>
         <Text color={'redPure.500'}>All Women</Text>
@@ -54,6 +56,7 @@ export const SideBar = (props) => {
           justifyContent={'space-between'}
           onClick={() => props?.toggleSideBar()}
           cursor={'pointer'}
+          display={{ base: 'flex', md: 'none' }}
         >
           <Flex
             bgColor={'white'}
