@@ -33,6 +33,10 @@ export const Product = () => {
   const [orderBy, setOrderBy] = useState('name');
   const [sortBy, setSortBy] = useState('ASC');
 
+<<<<<<< Updated upstream
+=======
+  console.log('ORDER BY', orderBy);
+>>>>>>> Stashed changes
   // Get product data
   useEffect(() => {
     getProduct(
@@ -74,6 +78,7 @@ export const Product = () => {
         setCollapseSideBar={setCollapseSideBar}
         toggleSideBar={toggleSideBar}
         productCategories={productCategories}
+<<<<<<< Updated upstream
       />
       <Body
         segments={segments}
@@ -86,6 +91,21 @@ export const Product = () => {
         setOrderBy={setOrderBy}
         setSortBy={setSortBy}
       />
+=======
+      />
+      <Box display={collapseSideBar ? 'none' : 'block'}>
+        <Body
+          segments={segments}
+          products={products}
+          setProductName={setProductName}
+          setProductCategory={setProductCategory}
+          setProductGroup={setProductGroup}
+          setProductType={setProductType}
+          setOrderBy={setOrderBy}
+          setSortBy={setSortBy}
+        />
+      </Box>
+>>>>>>> Stashed changes
       <Flex
         zIndex={'3'}
         bgColor={'white'}

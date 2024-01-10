@@ -6,6 +6,15 @@ export async function up(queryInterface, Sequelize) {
     {
       name: 'White',
     },
+    {
+      name: 'Black',
+    },
+    {
+      name: 'Red',
+    },
+    {
+      name: 'Blue',
+    },
   ]);
 }
 

@@ -8,7 +8,7 @@ module.exports = {
         username: 'dummy',
         email: 'dummy@gmail.com',
         password: 'Dummy17ummy',
-        roleId: 3,
+        roleId: 6,
       },
     ]);
     /**
