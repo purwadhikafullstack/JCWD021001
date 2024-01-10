@@ -4,6 +4,7 @@ import {PlusIcon} from '@heroicons/react/24/outline'
 import {StarIcon} from '@heroicons/react/24/solid'
 // import './Home.css';
 import Navbar from '../../components/Navbar/Navbar';
+import Footer from '../../components/Footer/Footer';
 import { Box, Flex, Text, Image, Stack, Button, Icon } from '@chakra-ui/react';
 import women from '../../assets/images/homepage-images/category-women.jpeg'
 import men from '../../assets/images/homepage-images/category-men.jpeg'
@@ -362,7 +363,7 @@ import product1 from '../../assets/images/homepage-images/product-1.png'
         </Flex>
       </Box>
       <Box>
-        Footer
+        <Footer/>
       </Box>
       </Box>
     </>
