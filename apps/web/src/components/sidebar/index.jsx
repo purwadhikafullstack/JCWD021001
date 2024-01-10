@@ -7,30 +7,50 @@ import {
 import { useState } from 'react';
 
 export const SideBar = (props) => {
-  const [toggleType, setToggleType] = useState(false);
+  const [toggleType, setToggleType] = useState({});
+  const changeToggleType = (id) => {
+    setToggleType((set) => ({
+      ...set,
+      [id]: !set[id],
+    }));
+  };
+  console.log('TOOGLE TYPE', toggleType);
   const renderedCategories = props?.productCategories?.map(
     (productCategory, index) => {
       return (
-        <VStack align={'stretch'} key={index}>
+        <VStack align={'stretch'} key={index} spacing={'1.5em'}>
           <Flex
             alignItems={'center'}
             justifyContent={'space-between'}
-            onClick={() => setToggleType(!toggleType)}
+            onClick={() => changeToggleType(productCategory?.id)}
           >
             <Text>{productCategory?.name}</Text>
-            <Icon as={toggleType ? ChevronUpIcon : ChevronDownIcon} />
+            <Icon
+              as={
+                toggleType[productCategory?.id]
+                  ? ChevronUpIcon
+                  : ChevronDownIcon
+              }
+            />
           </Flex>
-          <Box
+          <VStack
             borderLeft={'2px solid lightgray'}
             p={'0 1em'}
-            display={toggleType ? 'block' : 'none'}
+            display={toggleType[productCategory?.id] ? 'block' : 'none'}
           >
             {productCategory?.type
-              ? productCategory?.type?.map((type, index) => {
-                  return <Text key={index}>{type.name}</Text>;
+              ? productCategory?.type?.map((type, index, arr) => {
+                  return (
+                    <Text
+                      key={index}
+                      mb={index == arr.length - 1 ? '0' : '1.5em'}
+                    >
+                      {type.name}
+                    </Text>
+                  );
                 })
               : null}
-          </Box>
+          </VStack>
         </VStack>
       );
     },
@@ -43,9 +63,9 @@ export const SideBar = (props) => {
       m={{ base: '0', md: '0 0 -1em -1em' }}
       w={{ base: '100%', md: '15em' }}
       borderEndRadius={{ base: 'none', md: '1em' }}
-      h={'100vh'}
       zIndex={'2'}
       top={'0'}
+      minH={'100vh'}
     >
       <VStack align={'stretch'}>
         <Text color={'redPure.500'}>All Women</Text>

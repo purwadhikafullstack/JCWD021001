@@ -28,7 +28,7 @@ export const Product = () => {
   // This is for sidebar product categories, and type
   const [productCategories, setProductCategories] = useState([]);
   // Sidebar
-  const [collapseSideBar, setCollapseSideBar] = useState(true);
+  const [collapseSideBar, setCollapseSideBar] = useState(false);
 
   const [orderBy, setOrderBy] = useState('name');
   const [sortBy, setSortBy] = useState('ASC');

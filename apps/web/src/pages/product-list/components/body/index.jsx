@@ -32,6 +32,7 @@ export const Body = (props) => {
   const renderedSortBy = sortBy.map((el, index) => {
     return (
       <MenuItem
+        _hover={{ bgColor: 'transparent' }}
         id={el}
         name={el}
         value={el}
