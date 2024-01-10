@@ -7,9 +7,10 @@ import RequestPasswordReset from './pages/request-password-reset/Index';
 import Auth from './components/Auth/Auth';
 import ResetPassword from './pages/reset-password/Index';
 import Profile from './pages/profile/Index';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import { Box } from '@chakra-ui/react';
 import Order from './pages/order';
+import { Product } from './pages/product-list/container';
 
 function App() {
   // const { user, isLogin } = useSelector((state) => state.AuthReducer);
@@ -25,6 +26,7 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/order" element={<Order />} />
+        <Route path="/product" element={<Product />} />
       </Routes>
     </Auth>
     </Box>

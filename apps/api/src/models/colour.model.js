@@ -1,4 +1,3 @@
-import { FastField } from 'formik';
 import { Model, DataTypes } from 'sequelize';
 
 export default class Colour extends Model {
@@ -8,8 +7,7 @@ export default class Colour extends Model {
    * The `models/index` file will call this method automatically.
    */
   static associate(models) {
-    // define association here
-    // Colour.hasMany(models.Product);
+    Colour.hasOne(models.Stock);
   }
 }
 

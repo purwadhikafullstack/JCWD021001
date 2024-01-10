@@ -6,6 +6,18 @@ export async function up(queryInterface, Sequelize) {
     {
       name: 'Tops',
     },
+    {
+      name: 'Bottoms',
+    },
+    {
+      name: 'Dresses',
+    },
+    {
+      name: 'Outerwear',
+    },
+    {
+      name: 'Accesories',
+    },
   ]);
 }
 
