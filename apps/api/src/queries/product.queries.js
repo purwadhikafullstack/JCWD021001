@@ -1,5 +1,11 @@
 import Product from '../models/product.model';
-import { Op, where } from 'sequelize';
+import ProductGroup from '../models/productGroup.model';
+import ProductCategory from '../models/productCategory.model';
+import ProductType from '../models/productType.model';
+import Warehouse from '../models/warehouse.model';
+import { Op } from 'sequelize';
+import Stock from '../models/stock.model';
+import Size from '../models/size.model';
 
 export const getProductQuery = async (
   name = null,
@@ -7,6 +13,8 @@ export const getProductQuery = async (
   productType = null,
   productCategory = null,
   id = null,
+  sortBy = 'name',
+  orderBy = 'ASC',
 ) => {
   try {
     const filter = {};
@@ -43,10 +51,31 @@ export const getProductQuery = async (
     const res = await Product.findAll({
       include: [
         {
-          all: true,
-          nested: true,
+          model: ProductGroup,
+          as: 'group',
+        },
+        {
+          model: ProductCategory,
+          as: 'category',
+        },
+        {
+          model: ProductType,
+          as: 'type',
+          include: [
+            {
+              model: ProductCategory,
+              as: 'category',
+            },
+          ],
+        },
+        {
+          model: Stock,
+          as: 'stocks',
+          include: { model: Warehouse, as: 'warehouse' },
+          include: { model: Size, as: 'size' },
         },
       ],
+      order: [[`${sortBy}`, `${orderBy}`]],
       ...filter,
     });
     return res;

@@ -137,7 +137,7 @@ export const forgotPasswordService = async (email) => {
     );
     
     // SEND EMAIL FOR PASSWORD RESET
-    const resetPasswordLink = `${process.env.FE_BASE_URL}/auth/password-reset?token=${resetToken}`
+    const resetPasswordLink = `${process.env.FE_BASE_URL}/auth/reset-password?token=${resetToken}`
       const tempCompile = await handlebars.compile(temp);
       const tempResult = tempCompile({ email: email, link: resetPasswordLink });
       const gmailUser = process.env.GMAIL_USER;
@@ -174,20 +174,3 @@ export const resetPasswordService = async (token, password) => {
     throw err
   }
 }
-// export const resetPasswordService = async (token, password) => {
-//   try{
-//     const secretKey = process.env.JWT_SECRET_KEY
-//     const decoded = jwt.verify(token, secretKey);
-//     const checkUsedToken = await checkTokenUsageQuery(decoded);
-//     if(checkUsedToken){
-//       throw new Error("Token has already been used");
-//     } else {
-//       const salt = await bcrypt.genSalt(10);
-//       const hashPassword = await bcrypt.hash(password, salt);
-//       await resetPasswordQuery (decoded.email, hashPassword, token);
-//     }
-    
-//   } catch (err){
-//     throw err
-//   }
-// }

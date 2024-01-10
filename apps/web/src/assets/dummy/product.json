@@ -1,0 +1,44 @@
+{
+    "product": [
+     {
+        "id": "1",
+        "name": "Baju anak paling bagus",
+        "price": "Rp.1.000.000",
+        "normal_price": "Rp. 10.000.000",
+        "rating": 5,
+        "jumlah_rating": 200
+    },
+     {
+        "id": "2",
+        "name": "Baju anak paling bagus",
+        "price": "Rp.1.000.000",
+        "normal_price": "Rp. 10.000.000",
+        "rating": 5,
+        "jumlah_rating": 200
+    },
+     {
+        "id": "3",
+        "name": "Baju anak paling bagus",
+        "price": "Rp.1.000.000",
+        "normal_price": "Rp. 10.000.000",
+        "rating": 5,
+        "jumlah_rating": 200
+    },
+     {
+        "id": "4",
+        "name": "Baju anak paling bagus",
+        "price": "Rp.1.000.000",
+        "normal_price": "Rp. 10.000.000",
+        "rating": 5,
+        "jumlah_rating": 200
+    },
+     {
+        "id": "5",
+        "name": "Baju anak paling bagus",
+        "price": "Rp.1.000.000",
+        "normal_price": "Rp. 10.000.000",
+        "rating": 5,
+        "jumlah_rating": 200
+    }
+]
+}
