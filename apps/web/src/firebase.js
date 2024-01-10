@@ -29,6 +29,7 @@ const firebaseConfig = {
 const db = getFirestore(app);
 
 const googleProvider = new GoogleAuthProvider();
+
 const signInWithGoogle = async () => {
   try {
     const res = await signInWithPopup(auth, googleProvider);

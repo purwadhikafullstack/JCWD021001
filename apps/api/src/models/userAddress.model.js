@@ -18,9 +18,11 @@ export const init = (sequelize) => {
   UserAddress.init(
     {
       specificAddress: DataTypes.STRING,
-      addressStatus: DataTypes.STRING,
       cityId: DataTypes.INTEGER,
       userId: DataTypes.INTEGER,
+      fullName: DataTypes.STRING,
+      phoneNumber: DataTypes.STRING,
+      isMainAddress: DataTypes.BOOLEAN,
     },
     {
       sequelize,

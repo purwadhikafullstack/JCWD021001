@@ -10,6 +10,7 @@ import { BeatLoader } from "react-spinners";
 import { useState } from "react"
 import { SignUpScheme } from "./services/Validation"
 import { signInWithGoogle } from '../../firebase';
+import { signInWithFacebook } from "../../firebase"
 function Signup({setOpenTab}) {
     const { isOpen: isSuccessModalOpen, onOpen: openSuccessModal, onClose: closeSuccessModal } = useDisclosure();
     const { isOpen: isErrorModalOpen, onOpen: openErrorModal, onClose: closeErrorModal } = useDisclosure();
@@ -47,6 +48,7 @@ function Signup({setOpenTab}) {
           console.log(error);
         }
       };
+
 
   return (
     <>
