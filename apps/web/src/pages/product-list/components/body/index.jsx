@@ -1,15 +1,13 @@
 import {
   Box,
-  Button,
   Flex,
   Grid,
+  HStack,
   Icon,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
-  Select,
-  Spacer,
   Text,
   VStack,
 } from '@chakra-ui/react';
@@ -18,6 +16,7 @@ import { ProductCard } from '../product_card';
 import capitalize from 'capitalize';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
+import { SideBar } from '../../../../components/sidebar';
 export const Body = (props) => {
   // Sort by logic
   const [toggleSortBy, setToggleSortBy] = useState(false);
@@ -33,6 +32,7 @@ export const Body = (props) => {
   const renderedSortBy = sortBy.map((el, index) => {
     return (
       <MenuItem
+        _hover={{ bgColor: 'transparent' }}
         id={el}
         name={el}
         value={el}
@@ -55,57 +55,66 @@ export const Body = (props) => {
           <Text fontWeight={'bold'}>Women</Text>
         </Box>
         <BreadCrumbs segments={props?.segments} />
-        <Box>
-          <Flex alignItems={'center'} justifyContent={'space-between'}>
-            <Box>
-              <Text>
-                <Text as={'span'} color={'redPure.500'}>
-                  {props?.products.length} {''}
+        <Box display={{ base: 'block', md: 'flex' }} gap={'1em'} w={'100%'}>
+          <Box display={{ base: 'none', md: 'flex' }}>
+            <SideBar productCategories={props?.productCategories} />
+          </Box>
+          <Box w={'100%'} p={{ base: 'none', md: '.5em' }}>
+            <Flex alignItems={'center'} justifyContent={'space-between'}>
+              <Box>
+                <Text>
+                  <Text as={'span'} color={'redPure.500'}>
+                    {props?.products.length} {''}
+                  </Text>
+                  Results
                 </Text>
-                Results
-              </Text>
-            </Box>
-            <Box>
-              <Menu autoSelect={false}>
-                <MenuButton
-                  p={'.5em 1em'}
-                  borderRadius={'.5em'}
-                  bgColor={'white'}
-                  _active={{ bgColor: 'white' }}
-                  _hover={{ bgColor: 'white' }}
-                >
-                  <Flex
-                    minW={'6em'}
-                    alignItems={'center'}
-                    justifyContent={'space-between'}
+              </Box>
+              <Box>
+                <Menu autoSelect={false}>
+                  <MenuButton
+                    p={'.5em 1em'}
+                    borderRadius={'.5em'}
+                    bgColor={'white'}
+                    _active={{ bgColor: 'white' }}
+                    _hover={{ bgColor: 'white' }}
                   >
-                    <Text fontWeight={'bold'}>
-                      {toggleSortBy ? capitalize(props?.orderBy) : 'Sort by'}
-                    </Text>
-                    <Icon as={ChevronDownIcon} />
-                  </Flex>
-                </MenuButton>
-                <MenuList mt={'1em'} minW={'0'} w={'8em'} pr={'2em'}>
-                  {renderedSortBy}
-                </MenuList>
-              </Menu>
+                    <Flex
+                      minW={'6em'}
+                      alignItems={'center'}
+                      justifyContent={'space-between'}
+                    >
+                      <Text fontWeight={'bold'}>
+                        {console.log(props?.orderBy)}
+                        {toggleSortBy ? capitalize(props?.orderBy) : 'Sort by'}
+                      </Text>
+                      <Icon as={ChevronDownIcon} />
+                    </Flex>
+                  </MenuButton>
+                  <MenuList mt={'1em'} minW={'0'} w={'8em'} pr={'2em'}>
+                    {renderedSortBy}
+                  </MenuList>
+                </Menu>
+              </Box>
+            </Flex>
+            <Box>
+              <Box w={'100%'}>
+                <Grid
+                  gridTemplateColumns={{
+                    base: 'repeat(2, 1fr)',
+                    sm: 'repeat(3, 1fr)',
+                    md: 'repeat(3, 1fr)',
+                    lg: 'repeat(4, 1fr)',
+                    xl: 'repeat(5, 1fr)',
+                  }}
+                  gridAutoRows={'1fr'}
+                  rowGap={{ base: '.5em', md: '1.5em' }}
+                  columnGap={{ base: '.5em', md: '1.5em' }}
+                >
+                  {renderedProducts}
+                </Grid>
+              </Box>
             </Box>
-          </Flex>
-        </Box>
-        <Box>
-          <Grid
-            gridTemplateColumns={{
-              base: 'repeat(2, 1fr)',
-              sm: 'repeat(3, 1fr)',
-              md: 'repeat(5, 1fr)',
-              lg: 'repeat(6, 1fr)',
-            }}
-            gridAutoRows={'1fr'}
-            rowGap={'.5em'}
-            columnGap={'.5em'}
-          >
-            {renderedProducts}
-          </Grid>
+          </Box>
         </Box>
       </VStack>
     </Box>

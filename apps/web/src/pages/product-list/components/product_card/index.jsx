@@ -14,12 +14,12 @@ export const ProductCard = (props) => {
   return (
     <Box
       bgColor={'grey.200'}
-      h={'20em'}
+      h={'23em'}
       borderRadius={'.5em'}
       overflow={'hidden'}
     >
       <Flex flexDir={'column'} w={'100%'} h={'100%'}>
-        <Box h={'50%'} p={'1em'}>
+        <Box h={'55%'} p={'1em'}>
           <Flex flexDir={'row-reverse'}>
             <Flex
               justifyContent={'center'}
@@ -35,7 +35,7 @@ export const ProductCard = (props) => {
           </Flex>
         </Box>
         <Spacer />
-        <Box h={'50%'} bgColor={'white'} p={'1em'}>
+        <Box h={'45%'} bgColor={'white'} p={'1em'}>
           <Flex
             flexDir={'column'}
             w={'100%'}
