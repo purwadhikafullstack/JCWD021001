@@ -14,6 +14,7 @@ import UpdateEmail from "./components/email"
 import UpdatePassword from "./components/password"
 import axios from "axios"
 import UploadAvatar from "./components/avatar"
+import Footer from "../../components/Footer/Footer"
 
 function Profile() {
     const user = useSelector((state) => state.AuthReducer.user);
@@ -44,7 +45,8 @@ function Profile() {
     <Box bg={'#F1F1F1'}
     height={'100vh'}>
         <Navbar/>
-        <Box padding={'0px 100px'}>
+        <Box padding={'0px 100px'}
+        marginBottom={'150px'}>
         <Flex className="top-container"
         justifyContent={'space-between'}
         alignItems={'center'}
@@ -121,11 +123,10 @@ function Profile() {
 
                     </Flex>
                 </Flex>
-                
-                
             </Box>
         </Flex>
         </Box>
+        <Footer/>
     </Box>
   )
 }
