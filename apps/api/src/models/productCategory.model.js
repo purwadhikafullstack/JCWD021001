@@ -1,4 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
+import ProductType from './productType.model';
 
 export default class ProductCategory extends Model {
   /**
@@ -8,6 +9,9 @@ export default class ProductCategory extends Model {
    */
   static associate(models) {
     // define association here
+    ProductCategory.hasMany(ProductType, {
+      as: 'type',
+    });
   }
 }
 
