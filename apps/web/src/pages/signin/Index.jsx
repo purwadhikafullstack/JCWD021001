@@ -2,17 +2,19 @@ import { AbsoluteCenter, Box, Button, Flex, FormControl, Icon, Image, Input, Inp
 import model from '../../assets/images/signup-model.jpeg'
 import { EnvelopeIcon, LockClosedIcon} from '@heroicons/react/24/outline'
 import { useFormik } from "formik"
-import { login } from "./services/CreateLogin"
+import {useDispatch} from 'react-redux'
+import { login } from "../../redux/reducer/authReducer"
 import logo from "../../assets/images/logo.png"
 function Signin() {
 
+    const dispatch = useDispatch();
     const formik = useFormik({
         initialValues:{
             email: "",
-            username:"",
+            password:"",
         },
         onSubmit: (values, {resetForm}) => {
-            login(values.email, values.password);
+            dispatch(login(values.email, values.password))
             resetForm({values:{email: "", password:""}})
         }
     }) 
@@ -75,7 +77,7 @@ function Signin() {
                     </InputGroup>
                 </FormControl>
 
-                <Button width={'100%'} height={'68px'} borderRadius={'16px'} fontSize={'24px'} fontWeight={'700'} color={'white'} bg={'brand.lightred'} _hover={{bg: '#f50f5a'}} _active={{opacity:'70%'}} type="submit">SIGN UP</Button>
+                <Button width={'100%'} height={'68px'} borderRadius={'16px'} fontSize={'24px'} fontWeight={'700'} color={'white'} bg={'brand.lightred'} _hover={{bg: '#f50f5a'}} _active={{opacity:'70%'}} type="submit">SIGN IN</Button>
                 </form>
                 
                 </Box>

@@ -9,7 +9,6 @@ const calcTotalPrice = (products) => {
 export const createOrderService = async (userId, userAddressId, warehouseId, totalPrice, totalQuantity, shippingCost, orderStatusId, products) => {
     try {
         const newTotalPrice = calcTotalPrice(products);
-        const totalPriceWithShipping = newTotalPrice + shippingCost;
         if (newTotalPrice != totalPrice) throw new Error("Total Price is wrong");
         const res = await createOrderQuery(userId, userAddressId, warehouseId, newTotalPrice, totalQuantity, shippingCost, orderStatusId, products)
         return res

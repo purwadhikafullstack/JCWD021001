@@ -21,7 +21,6 @@ export const init = (sequelize) => {
       name: {
         allowNull: false,
         type: DataTypes.STRING,
-        unique: true,
         validate: {
           isAlphanumeric: true,
         },

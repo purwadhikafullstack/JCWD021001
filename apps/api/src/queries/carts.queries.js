@@ -66,11 +66,11 @@ export const deleteCartQuery = async (cartProductId, cartId) => {
         const updatedCart = await Carts.findByPk(cartId, {
             include: [{ model: CartProducts, attributes: ['price', 'quantity'] }],
         });
-        const totalPrice = updatedCart.CartProducts.reduce((sum, product) => sum + product.price, 0);
+        const totalPrice = updatedCart.CartProducts.reduce((sum, product) => sum + parseInt(product.price), 0);
         const totalQuantity = updatedCart.CartProducts.reduce((sum, product) => sum + product.quantity, 0);
-
+ 
         await Carts.update(
-            { totalPrice, totalQuantity },
+            { totalPrice: totalPrice, totalQuantity: totalQuantity },
             { where: { id: updatedCart.id } }
         );
 
