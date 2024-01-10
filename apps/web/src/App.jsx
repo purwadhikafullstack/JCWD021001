@@ -10,6 +10,7 @@ import Profile from './pages/profile/Index';
 // import { useSelector } from 'react-redux';
 import { Box } from '@chakra-ui/react';
 import Order from './pages/order';
+import Cart from './pages/cart';
 import { Product } from './pages/product-list/container';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/order" element={<Order />} />
+        <Route path="/cart" element={<Cart/>} />
         <Route path="/product" element={<Product />} />
       </Routes>
     </Auth>
