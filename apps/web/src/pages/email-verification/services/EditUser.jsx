@@ -1,5 +1,4 @@
 import axios from "axios";
-import toast from "react-hot-toast";
 
 
 function getQueryParam(param){
@@ -7,15 +6,18 @@ function getQueryParam(param){
     return urlParams.get(param);
 }
 const token = getQueryParam('token')
-export const verification = async (password) => {
+export const verification = async (password, setLoading, openSuccessModal, openErrorModal) => {
     try {
+        setLoading(true);
         await axios.put(`http://localhost:8000/api/auth/email-verification?token=${encodeURIComponent(token)}`,
         {
             password,
         });
-        toast.success("Email verified and password is set successfully")
+        openSuccessModal();
+        setLoading(false);
     } catch (err){
-        toast.error("Error occurred")
+        openErrorModal();
+        setLoading(false);
     }
 }
 
