@@ -1,10 +1,11 @@
-import { AbsoluteCenter, Box, Button, Flex, FormControl, Icon, Image, Input, InputGroup, InputLeftElement, Text } from "@chakra-ui/react"
+import { AbsoluteCenter, Box, Button, Flex, FormControl, Icon, Image, Input, InputGroup, InputLeftElement, InputRightElement, Text } from "@chakra-ui/react"
 import model from '../../assets/images/signup-model.jpeg'
-import { EnvelopeIcon, LockClosedIcon} from '@heroicons/react/24/outline'
+import { EnvelopeIcon, LockClosedIcon, EyeIcon, EyeSlashIcon} from '@heroicons/react/24/outline'
 import { useFormik } from "formik"
 import {useDispatch} from 'react-redux'
 import { login } from "../../redux/reducer/authReducer"
 import logo from "../../assets/images/logo.png"
+import { useState } from "react"
 function Signin() {
 
     const dispatch = useDispatch();
@@ -18,6 +19,8 @@ function Signin() {
             resetForm({values:{email: "", password:""}})
         }
     }) 
+
+    const [showPassword, setShowPassword] = useState(false);
   return (
     <>
         <Flex height={'100vh'} width={'100%'} boxShadow={'base'}>
@@ -57,10 +60,12 @@ function Signin() {
                 <FormControl>
                     <InputGroup marginBottom={'32px'}>
                     <Input
+                        type={showPassword ? "text" : "password"}
                         name="password"
-                        placeholder="Password"
                         value={formik.values.password}
                         onChange={formik.handleChange}
+                        required
+                        placeholder="enter password"
                         _placeholder={{color:"#707070"}}
                         height={'64px'}
                         bg={'#EEEDED'}
@@ -71,9 +76,21 @@ function Signin() {
                     />
                     <InputLeftElement top={'12px'} width={'72px'}>
                         <Flex justifyContent={'center'} alignItems={'center'} height={'64px'}>
-                        <Icon as={LockClosedIcon} boxSize={'24px'} margin={'auto'} position={'relative'} textColor={'brand.grey350'}/>
+                            <Icon as={LockClosedIcon} boxSize={'24px'} margin={'auto'} position={'relative'} textColor={'brand.grey350'}/>
                         </Flex>
                     </InputLeftElement>
+                    <InputRightElement top={'12px'} width={'54px'}>
+						<Button
+							variant={"ghost"}
+							onClick={() => setShowPassword((showPassword) => !showPassword)}
+							backgroundColor={"transparent"}
+                            height={'64px'}
+                            _hover={'none'}
+                            color={'#707070'}
+						>
+							{showPassword ? <Icon as={EyeIcon} boxSize={'24px'}/> : <Icon as={EyeSlashIcon} boxSize={'24px'}/>}
+						</Button>
+                    </InputRightElement>
                     </InputGroup>
                 </FormControl>
 

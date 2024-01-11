@@ -1,10 +1,10 @@
 import { Box, Button, Flex, Grid, Icon, Image, Input, InputGroup, InputRightElement} from '@chakra-ui/react'
 import logo from '../../assets/images/logo.png'
 import { MagnifyingGlassIcon, ShoppingCartIcon, HeartIcon } from '@heroicons/react/24/outline'
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   return (
     <Box bg={'white'}>
         <Flex className='navbar-top'
@@ -51,7 +51,7 @@ function Navbar() {
                 _active={{
                   opacity: '50%'
                 }}
-                // onClick={() => navigate("/signup")}
+                onClick={() => navigate("/signup")}
                 >Sign Up</Button>
                 <Button color='white' bg={'brand.lightred'} width={'88px'} padding={'9px 11px'}
                 _hover={{
@@ -60,7 +60,7 @@ function Navbar() {
                 _active={{
                   opacity: '50%'
                 }} 
-                // onClick={() => navigate("/signin")}
+                onClick={() => navigate("/signin")}
                 >Sign In</Button>
               </Grid>  
             </Flex>

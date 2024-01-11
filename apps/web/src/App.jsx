@@ -11,6 +11,7 @@ import Profile from './pages/profile/Index';
 import { Box } from '@chakra-ui/react';
 import Order from './pages/order';
 import { Product } from './pages/product-list/container';
+import { LoggedInRoute } from './components/Auth/ProtectedRoute';
 
 function App() {
   // const { user, isLogin } = useSelector((state) => state.AuthReducer);
@@ -24,7 +25,11 @@ function App() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/password-reset-request" element={<RequestPasswordReset />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route 
+          path="/profile" 
+          element={<LoggedInRoute>
+                    <Profile />
+                  </LoggedInRoute>} />
         <Route path="/order" element={<Order />} />
         <Route path="/product" element={<Product />} />
       </Routes>
