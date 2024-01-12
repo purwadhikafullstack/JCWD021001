@@ -13,3 +13,18 @@ export const findMainUserAddressQuery = async (id) => {
         throw err;
     }
 }
+
+// POST 
+export const createUserAddressQuery = async (id, specificAddress, cityId, fullName, phoneNumber) => {
+    try{
+        return await UserAddress.create(
+            {   specificAddress,
+                cityId,
+                userId: id,
+                fullName,
+                phoneNumber,
+            })
+    } catch (err){
+        throw err;
+    }
+}
