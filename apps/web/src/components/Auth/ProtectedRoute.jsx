@@ -8,6 +8,6 @@ export const LoggedInRoute = ({ children }) => {
 	if (check) {
 		return <>{children}</>;
 	} else if (!check) {
-		return <Navigate to="/" />;
+		return <Navigate to="/signin" />;
 	}
 };
