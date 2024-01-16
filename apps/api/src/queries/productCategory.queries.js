@@ -1,12 +1,12 @@
 import { Op } from 'sequelize'
 import ProductCategory from '../models/productCategory.model'
 
-export const getProductCategoryQuery = async () => {
+export const getProductCategoryQuery = async (gender) => {
   try {
     const res = await ProductCategory.findAll({
       where: {
         '$parent.parent.name$': {
-          [Op.eq]: `Men`,
+          [Op.eq]: `${gender}`,
         },
       },
       include: [

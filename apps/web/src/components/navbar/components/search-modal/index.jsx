@@ -28,9 +28,7 @@ export const SearchModal = (props) => {
   const finalRef = React.useRef(null)
   const [productType, setProductType] = useState([])
   const [filter, setFilter] = useState('')
-  useEffect(() => {
-    getProductType(filter, setProductType)
-  }, [filter])
+
   const renderedProductType = productType.map((el, index) => {
     return (
       <Link key={index}>

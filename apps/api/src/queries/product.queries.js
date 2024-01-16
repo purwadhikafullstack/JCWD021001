@@ -1,15 +1,14 @@
 import Product from '../models/product.model'
 import ProductCategory from '../models/productCategory.model'
-import Warehouse from '../models/warehouse.model'
 import { Op } from 'sequelize'
 import Stock from '../models/stock.model'
 import Size from '../models/size.model'
-import capitalize from 'capitalize'
+
 export const getProductQuery = async (
   name = null,
-  productGroup = null,
-  productType = null,
-  productCategory = null,
+  gender = null,
+  group = null,
+  category = null,
   id = null,
   sortBy = 'name',
   orderBy = 'ASC',
@@ -25,35 +24,71 @@ export const getProductQuery = async (
     if (name)
       filter.where = {
         name: {
-          [Op.eq]: name,
+          [Op.like]: `%${name}%`,
         },
       }
-
+    if (gender)
+      filter.where = {
+        '$category.parent.parent.name$': {
+          [Op.eq]: `${gender}`,
+        },
+      }
+    if (gender && group)
+      filter.where = {
+        [Op.and]: [
+          {
+            '$category.parent.parent.name$': {
+              [Op.eq]: `${gender}`,
+            },
+          },
+          {
+            '$category.parent.name$': {
+              [Op.eq]: `${group}`,
+            },
+          },
+        ],
+      }
+    if (gender && group && category)
+      filter.where = {
+        [Op.and]: [
+          {
+            '$category.parent.parent.name$': {
+              [Op.eq]: `${gender}`,
+            },
+          },
+          {
+            '$category.parent.name$': {
+              [Op.eq]: `${group}`,
+            },
+          },
+          {
+            '$category.name$': {
+              [Op.eq]: `${category}`,
+            },
+          },
+        ],
+      }
     const res = await Product.findAll({
       include: [
         {
-          model: ProductGroup,
-          as: 'group',
-        },
-        {
           model: ProductCategory,
           as: 'category',
-        },
-        {
-          model: ProductType,
-          as: 'type',
           include: [
             {
               model: ProductCategory,
-              as: 'category',
+              as: 'parent',
+              include: [
+                {
+                  model: ProductCategory,
+                  as: 'parent',
+                },
+              ],
+            },
+            {
+              model: Size,
+              as: 'size',
             },
           ],
-        },
-        {
-          model: Stock,
-          as: 'stocks',
-          include: { model: Warehouse, as: 'warehouse' },
-          include: { model: Size, as: 'size' },
         },
       ],
       order: [[`${sortBy}`, `${orderBy}`]],

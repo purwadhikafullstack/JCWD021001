@@ -13,7 +13,13 @@ export const SideBar = (props) => {
       [id]: !set[id],
     }))
   }
-  const renderedCategories = props?.productCategories?.map((el, index) => {
+  const groupCategories = Object.groupBy(props?.productCategories, (product) => {
+    return product.parent.name
+  })
+
+  console.log('groupCategories', groupCategories)
+  console.log('productCategories', props?.productCategories)
+  const renderedCategories = [groupCategories].map((el, index) => {
     slug.extend({
       '&': 'and',
     })
@@ -57,6 +63,7 @@ export const SideBar = (props) => {
       </VStack>
     )
   })
+
   return (
     <Box
       position={'relative'}
@@ -70,7 +77,7 @@ export const SideBar = (props) => {
       minH={'100vh'}
     >
       <VStack align={'stretch'}>
-        <Text color={'redPure.500'}>All {capitalize.words(props?.groupName)}</Text>
+        <Text color={'redPure.500'}>All {capitalize.words(props?.gender)}</Text>
         {renderedCategories}
         <Flex
           alignItems={'center'}

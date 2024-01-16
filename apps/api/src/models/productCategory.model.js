@@ -1,4 +1,6 @@
 import { Model, DataTypes } from 'sequelize'
+import Size from './size.model'
+import Product from './product.model'
 
 export default class ProductCategory extends Model {
   /**
@@ -7,11 +9,10 @@ export default class ProductCategory extends Model {
    * The `models/index` file will call this method automatically.
    */
   static associate(models) {
-    // define association here
-    // ProductCategory.hasMany(ProductType, {
-    //   as: 'type',
-    // })
     ProductCategory.belongsTo(ProductCategory, { as: 'parent' })
+
+    ProductCategory.hasMany(Product, { as: 'product' })
+    ProductCategory.hasMany(Size, { as: 'size' })
   }
 }
 

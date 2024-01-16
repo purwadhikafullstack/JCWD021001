@@ -29,8 +29,8 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/order" element={<Order />} />
           {/* <Route path="/cart" element={<Cart />} /> */}
-          <Route path="/:groupName/:categoryName/:typeName?" element={<Product />} />
-          <Route path="/products" element={<ProductDetails />} />
+          <Route path="/:gender/:group/:category?" element={<Product />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
         </Routes>
       </Auth>
     </Box>
