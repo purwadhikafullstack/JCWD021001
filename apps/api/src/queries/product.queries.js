@@ -1,12 +1,10 @@
-import Product from '../models/product.model';
-import ProductGroup from '../models/productGroup.model';
-import ProductCategory from '../models/productCategory.model';
-import ProductType from '../models/productType.model';
-import Warehouse from '../models/warehouse.model';
-import { Op } from 'sequelize';
-import Stock from '../models/stock.model';
-import Size from '../models/size.model';
-
+import Product from '../models/product.model'
+import ProductCategory from '../models/productCategory.model'
+import Warehouse from '../models/warehouse.model'
+import { Op } from 'sequelize'
+import Stock from '../models/stock.model'
+import Size from '../models/size.model'
+import capitalize from 'capitalize'
 export const getProductQuery = async (
   name = null,
   productGroup = null,
@@ -17,37 +15,20 @@ export const getProductQuery = async (
   orderBy = 'ASC',
 ) => {
   try {
-    const filter = {};
+    const filter = {}
     if (id)
       filter.where = {
         id: {
           [Op.eq]: id,
         },
-      };
+      }
     if (name)
       filter.where = {
         name: {
           [Op.eq]: name,
         },
-      };
-    if (productGroup)
-      filter.where = {
-        [Op.and]: [
-          {
-            productGroupId: productGroup,
-          },
-          {
-            [Op.or]: [
-              {
-                productCategoryId: productCategory,
-              },
-              {
-                productTypeId: productType,
-              },
-            ],
-          },
-        ],
-      };
+      }
+
     const res = await Product.findAll({
       include: [
         {
@@ -77,12 +58,12 @@ export const getProductQuery = async (
       ],
       order: [[`${sortBy}`, `${orderBy}`]],
       ...filter,
-    });
-    return res;
+    })
+    return res
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}
 
 export const createProductQuery = async (
   name = null,
@@ -102,12 +83,12 @@ export const createProductQuery = async (
       productTypeId,
       productCategoryId,
       colourId,
-    });
-    return res;
+    })
+    return res
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}
 
 export const updateProductQuery = async (
   name,
@@ -120,14 +101,14 @@ export const updateProductQuery = async (
   id,
 ) => {
   try {
-    const toBeUpdated = {};
-    if (name) toBeUpdated.name = name;
-    if (price) toBeUpdated.price = price;
-    if (description) toBeUpdated.description = description;
-    if (productGroupId) toBeUpdated.productGroupId = productGroupId;
-    if (productTypeId) toBeUpdated.productTypeId = productTypeId;
-    if (productCategoryId) toBeUpdated.productCategoryId = productCategoryId;
-    if (colourId) toBeUpdated.colourId = colourId;
+    const toBeUpdated = {}
+    if (name) toBeUpdated.name = name
+    if (price) toBeUpdated.price = price
+    if (description) toBeUpdated.description = description
+    if (productGroupId) toBeUpdated.productGroupId = productGroupId
+    if (productTypeId) toBeUpdated.productTypeId = productTypeId
+    if (productCategoryId) toBeUpdated.productCategoryId = productCategoryId
+    if (colourId) toBeUpdated.colourId = colourId
 
     const res = await Product.update(
       {
@@ -140,12 +121,12 @@ export const updateProductQuery = async (
           },
         },
       },
-    );
-    return res;
+    )
+    return res
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}
 
 export const deleteProductQuery = async (id) => {
   try {
@@ -155,9 +136,9 @@ export const deleteProductQuery = async (id) => {
           [Op.eq]: id,
         },
       },
-    });
-    return res;
+    })
+    return res
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}
