@@ -1,5 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
-import ProductType from './productType.model';
+import { Model, DataTypes } from 'sequelize'
 
 export default class ProductCategory extends Model {
   /**
@@ -9,9 +8,10 @@ export default class ProductCategory extends Model {
    */
   static associate(models) {
     // define association here
-    ProductCategory.hasMany(ProductType, {
-      as: 'type',
-    });
+    // ProductCategory.hasMany(ProductType, {
+    //   as: 'type',
+    // })
+    ProductCategory.belongsTo(ProductCategory, { as: 'parent' })
   }
 }
 
@@ -26,9 +26,15 @@ export const init = (sequelize) => {
           isAlpha: true,
         },
       },
-      imageUrl: {
+      parentId: {
         allowNull: true,
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: 'productCategories',
+          },
+          key: 'id',
+        },
       },
     },
     {
@@ -36,5 +42,5 @@ export const init = (sequelize) => {
       modelName: 'ProductCategory',
       timestamps: false,
     },
-  );
-};
+  )
+}
