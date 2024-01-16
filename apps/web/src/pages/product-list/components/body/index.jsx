@@ -51,18 +51,14 @@ export const Body = (props) => {
     <Box p={'1em'} bgColor={'grey.50'} minH={'100vh'} w={'100%'}>
       <VStack align={'stretch'} spacing={'1.5em'}>
         <Box>
-          <Text fontWeight={'bold'}>{capitalize.words(props?.groupName)}</Text>
+          <Text fontWeight={'bold'}>{capitalize.words(props?.gender)}</Text>
         </Box>
-        <BreadCrumbs
-          segments={props?.segments}
-          groupName={props?.groupName}
-          typeName={props?.typeName}
-        />
+        <BreadCrumbs segments={props?.segments} gender={props?.gender} typeName={props?.typeName} />
         <Box display={{ base: 'block', md: 'flex' }} gap={'1em'} w={'100%'}>
           <Box display={{ base: 'none', md: 'flex' }}>
             <SideBar
               productCategory={props?.productCategory}
-              groupName={props?.groupName}
+              gender={props?.gender}
               categoryName={props?.categoryName}
               productCategories={props?.productCategories}
               segments={props?.segments}

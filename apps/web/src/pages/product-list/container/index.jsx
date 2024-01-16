@@ -14,7 +14,7 @@ export const Product = () => {
   const location = useLocation()
   const { pathname } = location
 
-  const { groupName, categoryName, typeName } = useParams()
+  const { gender, group, category } = useParams()
   // Splitting pathname for breadcrumbs
   const segments = pathname.split('/')
 
@@ -23,12 +23,11 @@ export const Product = () => {
 
   // State for filtering products
   const [productName, setProductName] = useState('')
-  const [productGroup, setProductGroup] = useState(capitalize(groupName))
+  const [productGroup, setProductGroup] = useState(capitalize(gender))
   const [productCategory, setProductCategory] = useState(
-    capitalize(categoryName).replace(/and/gi, '&').replace(/-/g, ' '),
+    capitalize.words(group).replace(/and/gi, '&').replace(/-/g, ' '),
   )
   const [productType, setProductType] = useState(null)
-  console.log('ProductType', productType)
   // This is for sidebar product categories, and type
   const [productCategories, setProductCategories] = useState([])
   // Sidebar
@@ -38,7 +37,15 @@ export const Product = () => {
   const [orderBy, setOrderBy] = useState('ASC')
   // Get product data
   useEffect(() => {
-    getProduct(productName, groupName, typeName, categoryName, setProducts, sortBy, orderBy)
+    getProduct(
+      productName,
+      gender,
+      group,
+      capitalize.words(category).replace(/and/gi, '&').replace(/-/g, ' '),
+      setProducts,
+      sortBy,
+      orderBy,
+    )
   }, [
     productName,
     productGroup,
@@ -62,7 +69,6 @@ export const Product = () => {
     setCollapseSideBar(!collapseSideBar)
   }
 
-  console.log('Products', products)
   return (
     <Box minH={'100vh'}>
       <Navbar
@@ -72,8 +78,8 @@ export const Product = () => {
       />
       <Box display={{ base: collapseSideBar ? 'block' : 'none', md: 'none' }}>
         <SideBar
-          groupName={groupName}
-          categoryName={categoryName}
+          gender={gender}
+          category={category}
           pathname={pathname}
           collapseSideBar={collapseSideBar}
           setCollapseSideBar={setCollapseSideBar}
@@ -86,8 +92,8 @@ export const Product = () => {
       </Box>
       <Box display={collapseSideBar ? 'none' : 'block'}>
         <Body
-          groupName={groupName}
-          categoryName={categoryName}
+          gender={gender}
+          category={category}
           pathname={pathname}
           productCategories={productCategories}
           segments={segments}
