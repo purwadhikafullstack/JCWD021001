@@ -1,22 +1,17 @@
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  HStack,
-  Icon,
-  Spacer,
-  Text,
-} from '@chakra-ui/react';
-import { StarIcon, PlusIcon, HeartIcon } from '@heroicons/react/24/outline';
-import toRupiah from '@develoka/angka-rupiah-js';
+import { Box, Button, Center, Flex, HStack, Icon, Spacer, Text } from '@chakra-ui/react'
+import { StarIcon, PlusIcon, HeartIcon } from '@heroicons/react/24/outline'
+import toRupiah from '@develoka/angka-rupiah-js'
+import { useNavigate } from 'react-router-dom'
 export const ProductCard = (props) => {
+  const navigate = useNavigate()
   return (
     <Box
       bgColor={'grey.200'}
       h={'23em'}
       borderRadius={'.5em'}
       overflow={'hidden'}
+      cursor={'pointer'}
+      onClick={() => navigate('/products')}
     >
       <Flex flexDir={'column'} w={'100%'} h={'100%'}>
         <Box h={'55%'} p={'1em'}>
@@ -72,5 +67,5 @@ export const ProductCard = (props) => {
         </Box>
       </Flex>
     </Box>
-  );
-};
+  )
+}

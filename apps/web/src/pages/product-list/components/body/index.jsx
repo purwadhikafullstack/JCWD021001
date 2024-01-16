@@ -2,7 +2,6 @@ import {
   Box,
   Flex,
   Grid,
-  HStack,
   Icon,
   Menu,
   MenuButton,
@@ -10,25 +9,25 @@ import {
   MenuList,
   Text,
   VStack,
-} from '@chakra-ui/react';
-import { BreadCrumbs } from '../breadcrumbs';
-import { ProductCard } from '../product_card';
-import capitalize from 'capitalize';
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
-import { useState } from 'react';
-import { SideBar } from '../../../../components/sidebar';
+} from '@chakra-ui/react'
+import { BreadCrumbs } from '../breadcrumbs'
+import { ProductCard } from '../product_card'
+import capitalize from 'capitalize'
+import { ChevronDownIcon } from '@heroicons/react/24/outline'
+import { useState } from 'react'
+import { SideBar } from '../../../../components/sidebar'
 export const Body = (props) => {
   // Sort by logic
-  const [toggleSortBy, setToggleSortBy] = useState(false);
+  const [toggleSortBy, setToggleSortBy] = useState(false)
 
   const updateToggleSortBy = () => {
-    setToggleSortBy(true);
-  };
+    setToggleSortBy(true)
+  }
   // Product Card Mapping
   const renderedProducts = props?.products?.map((product, index) => {
-    return <ProductCard {...product} key={index} />;
-  });
-  const sortBy = ['name', 'price'];
+    return <ProductCard {...product} key={index} />
+  })
+  const sortBy = ['name', 'price']
   const renderedSortBy = sortBy.map((el, index) => {
     return (
       <MenuItem
@@ -38,26 +37,39 @@ export const Body = (props) => {
         value={el}
         key={index}
         onClick={() => {
-          props?.setOrderBy(el);
-          updateToggleSortBy();
+          props?.setSortBy(el)
+          updateToggleSortBy()
         }}
         display={'block'}
         fontWeight={'bold'}
       >
         {capitalize(el)}
       </MenuItem>
-    );
-  });
+    )
+  })
   return (
     <Box p={'1em'} bgColor={'grey.50'} minH={'100vh'} w={'100%'}>
       <VStack align={'stretch'} spacing={'1.5em'}>
         <Box>
-          <Text fontWeight={'bold'}>Women</Text>
+          <Text fontWeight={'bold'}>{capitalize.words(props?.groupName)}</Text>
         </Box>
-        <BreadCrumbs segments={props?.segments} />
+        <BreadCrumbs
+          segments={props?.segments}
+          groupName={props?.groupName}
+          typeName={props?.typeName}
+        />
         <Box display={{ base: 'block', md: 'flex' }} gap={'1em'} w={'100%'}>
           <Box display={{ base: 'none', md: 'flex' }}>
-            <SideBar productCategories={props?.productCategories} />
+            <SideBar
+              productCategory={props?.productCategory}
+              groupName={props?.groupName}
+              categoryName={props?.categoryName}
+              productCategories={props?.productCategories}
+              segments={props?.segments}
+              pathname={props?.pathname}
+              setProductCategory={props?.setProductCategory}
+              setProductType={props?.setProductType}
+            />
           </Box>
           <Box w={'100%'} p={{ base: 'none', md: '.5em' }}>
             <Flex alignItems={'center'} justifyContent={'space-between'}>
@@ -78,14 +90,9 @@ export const Body = (props) => {
                     _active={{ bgColor: 'white' }}
                     _hover={{ bgColor: 'white' }}
                   >
-                    <Flex
-                      minW={'6em'}
-                      alignItems={'center'}
-                      justifyContent={'space-between'}
-                    >
+                    <Flex minW={'6em'} alignItems={'center'} justifyContent={'space-between'}>
                       <Text fontWeight={'bold'}>
-                        {console.log(props?.orderBy)}
-                        {toggleSortBy ? capitalize(props?.orderBy) : 'Sort by'}
+                        {toggleSortBy ? capitalize(props?.sortBy) : 'Sort by'}
                       </Text>
                       <Icon as={ChevronDownIcon} />
                     </Flex>
@@ -118,5 +125,5 @@ export const Body = (props) => {
         </Box>
       </VStack>
     </Box>
-  );
-};
+  )
+}

@@ -1,55 +1,44 @@
-import { Box, Flex, HStack, Icon, Text } from '@chakra-ui/react';
-import { Body } from '../components/body';
-import { useLocation } from 'react-router-dom';
-import { getProduct } from '../services/readProduct';
-import { getProductCategory } from '../services/readProductCategory';
-import { useEffect, useState } from 'react';
-import { ChevronRightIcon } from '@heroicons/react/24/outline';
-import { Navbar } from '../../../components/navbar';
-import { SideBar } from '../../../components/sidebar';
+import { Box, Flex, Icon } from '@chakra-ui/react'
+import { Body } from '../components/body'
+import { useLocation, useParams } from 'react-router-dom'
+import { getProduct } from '../services/readProduct'
+import { useEffect, useState } from 'react'
+import { ChevronRightIcon } from '@heroicons/react/24/outline'
+import { Navbar } from '../../../components/navbar'
+import { SideBar } from '../../../components/sidebar'
+import { getProductCategory } from '../services/readProductCategory'
+import capitalize from 'capitalize'
 
 export const Product = () => {
   // useLocation to know url route
-  const location = useLocation();
-  const { pathname } = location;
+  const location = useLocation()
+  const { pathname } = location
 
+  const { groupName, categoryName, typeName } = useParams()
   // Splitting pathname for breadcrumbs
-  const segments = pathname.split('/');
+  const segments = pathname.split('/')
 
   // Empty array state for products
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState([])
 
   // State for filtering products
-  const [productName, setProductName] = useState(null);
-<<<<<<< HEAD
-  const [productGroup, setProductGroup] = useState(4);
-  const [productCategory, setProductCategory] = useState(0);
-  const [productType, setProductType] = useState(2);
-=======
-  const [productGroup, setProductGroup] = useState(3);
-  const [productCategory, setProductCategory] = useState(1);
-  const [productType, setProductType] = useState(0);
->>>>>>> 26b201f6d505d62723e25fcd870021bcaf072be0
-
+  const [productName, setProductName] = useState('')
+  const [productGroup, setProductGroup] = useState(capitalize(groupName))
+  const [productCategory, setProductCategory] = useState(
+    capitalize(categoryName).replace(/and/gi, '&').replace(/-/g, ' '),
+  )
+  const [productType, setProductType] = useState(null)
+  console.log('ProductType', productType)
   // This is for sidebar product categories, and type
-  const [productCategories, setProductCategories] = useState([]);
+  const [productCategories, setProductCategories] = useState([])
   // Sidebar
-  const [collapseSideBar, setCollapseSideBar] = useState(false);
+  const [collapseSideBar, setCollapseSideBar] = useState(false)
 
-  const [orderBy, setOrderBy] = useState('name');
-  const [sortBy, setSortBy] = useState('ASC');
-
+  const [sortBy, setSortBy] = useState('name')
+  const [orderBy, setOrderBy] = useState('ASC')
   // Get product data
   useEffect(() => {
-    getProduct(
-      productName,
-      productGroup,
-      productCategory,
-      productType,
-      setProducts,
-      orderBy,
-      sortBy,
-    );
+    getProduct(productName, groupName, typeName, categoryName, setProducts, sortBy, orderBy)
   }, [
     productName,
     productGroup,
@@ -57,17 +46,23 @@ export const Product = () => {
     productType,
     orderBy,
     sortBy,
+    setProductGroup,
+    setSortBy,
     setOrderBy,
-  ]);
+    setProductCategory,
+    setProductType,
+  ])
 
   // Get Product Category Data
   useEffect(() => {
-    getProductCategory(setProductCategories);
-  }, []);
+    getProductCategory(setProductCategories)
+  }, [])
 
   const toggleSideBar = () => {
-    setCollapseSideBar(!collapseSideBar);
-  };
+    setCollapseSideBar(!collapseSideBar)
+  }
+
+  console.log('Products', products)
   return (
     <Box minH={'100vh'}>
       <Navbar
@@ -75,24 +70,31 @@ export const Product = () => {
         setCollapseSideBar={setCollapseSideBar}
         toggleSideBar={toggleSideBar}
       />
-<<<<<<< HEAD
       <Box display={{ base: collapseSideBar ? 'block' : 'none', md: 'none' }}>
         <SideBar
+          groupName={groupName}
+          categoryName={categoryName}
+          pathname={pathname}
           collapseSideBar={collapseSideBar}
           setCollapseSideBar={setCollapseSideBar}
           toggleSideBar={toggleSideBar}
           productCategories={productCategories}
+          segments={segments}
+          setProductCategory={setProductCategory}
+          setProductType={setProductType}
         />
       </Box>
-
       <Box display={collapseSideBar ? 'none' : 'block'}>
         <Body
+          groupName={groupName}
+          categoryName={categoryName}
+          pathname={pathname}
           productCategories={productCategories}
           segments={segments}
           products={products}
           setProductName={setProductName}
-          setProductCategory={setProductCategory}
           setProductGroup={setProductGroup}
+          setProductCategory={setProductCategory}
           setProductType={setProductType}
           setOrderBy={setOrderBy}
           setSortBy={setSortBy}
@@ -100,25 +102,6 @@ export const Product = () => {
           sortBy={sortBy}
         />
       </Box>
-=======
-      <SideBar
-        collapseSideBar={collapseSideBar}
-        setCollapseSideBar={setCollapseSideBar}
-        toggleSideBar={toggleSideBar}
-        productCategories={productCategories}
-      />
-      <Body
-        segments={segments}
-        products={products}
-        orderBy={orderBy}
-        setProductName={setProductName}
-        setProductCategory={setProductCategory}
-        setProductGroup={setProductGroup}
-        setProductType={setProductType}
-        setOrderBy={setOrderBy}
-        setSortBy={setSortBy}
-      />
->>>>>>> 26b201f6d505d62723e25fcd870021bcaf072be0
       <Flex
         zIndex={'3'}
         bgColor={'white'}
@@ -131,18 +114,14 @@ export const Product = () => {
         justifyContent={'center'}
         borderRadius={'50%'}
         left={'-.5em'}
-<<<<<<< HEAD
         visibility={{
           base: collapseSideBar ? 'hidden' : 'visible',
           md: 'hidden',
         }}
-=======
-        visibility={collapseSideBar ? 'hidden' : 'visible'}
->>>>>>> 26b201f6d505d62723e25fcd870021bcaf072be0
         cursor={'pointer'}
       >
         <Icon as={ChevronRightIcon} onClick={() => toggleSideBar()} />
       </Flex>
     </Box>
-  );
-};
+  )
+}

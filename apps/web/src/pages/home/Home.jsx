@@ -19,6 +19,8 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/navigation'
 import product1 from '../../assets/images/homepage-images/product-1.png'
+import { Navbar } from '../../components/navbar'
+import { useNavigate } from 'react-router-dom'
 // import './Home.css';
 
 function Home() {
@@ -29,10 +31,11 @@ function Home() {
       console.log(err)
     }
   }
-
+  const navigate = useNavigate()
   return (
     <>
       <Box container-homepage width={'100vw'} bg={'brand.grey100'}>
+        <Navbar />
         <Box className="Header" height={'712px'}>
           <Swiper
             slidesPerView={1}
@@ -81,6 +84,9 @@ function Home() {
               height={'330px'}
               bg={'white'}
               position={'relative'}
+              onClick={() => {
+                navigate('/women/tops')
+              }}
             >
               <Box
                 position={'absolute'}
@@ -118,6 +124,9 @@ function Home() {
               height={'330px'}
               bg={'white'}
               position={'relative'}
+              onClick={() => {
+                navigate('/men')
+              }}
             >
               <Box
                 position={'absolute'}
@@ -155,6 +164,9 @@ function Home() {
               height={'330px'}
               bg={'white'}
               position={'relative'}
+              onClick={() => {
+                navigate('/kids')
+              }}
             >
               <Box
                 position={'absolute'}
@@ -192,6 +204,9 @@ function Home() {
               height={'330px'}
               bg={'white'}
               position={'relative'}
+              onClick={() => {
+                navigate('/kids')
+              }}
             >
               <Box
                 position={'absolute'}
