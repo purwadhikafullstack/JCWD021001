@@ -1,91 +1,77 @@
-import { Box, Flex, Icon, Text, VStack } from '@chakra-ui/react';
-import {
-  ChevronLeftIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-} from '@heroicons/react/24/outline';
-import { useState } from 'react';
-
+import { Box, Flex, Icon, Text, VStack } from '@chakra-ui/react'
+import { ChevronLeftIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
+import capitalize from 'capitalize'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import slug from 'slug'
 export const SideBar = (props) => {
-<<<<<<< HEAD
-  const [toggleType, setToggleType] = useState({});
+  const navigate = useNavigate()
+  const [toggleType, setToggleType] = useState({})
   const changeToggleType = (id) => {
     setToggleType((set) => ({
       ...set,
       [id]: !set[id],
-    }));
-  };
-  console.log('TOOGLE TYPE', toggleType);
-  const renderedCategories = props?.productCategories?.map(
-    (productCategory, index) => {
-      return (
-        <VStack align={'stretch'} key={index} spacing={'1.5em'}>
-          <Flex
-            alignItems={'center'}
-            justifyContent={'space-between'}
-            onClick={() => changeToggleType(productCategory?.id)}
-          >
-            <Text>{productCategory?.name}</Text>
-            <Icon
-              as={
-                toggleType[productCategory?.id]
-                  ? ChevronUpIcon
-                  : ChevronDownIcon
-              }
-            />
-          </Flex>
-          <VStack
-            borderLeft={'2px solid lightgray'}
-            p={'0 1em'}
-            display={toggleType[productCategory?.id] ? 'block' : 'none'}
-          >
-            {productCategory?.type
-              ? productCategory?.type?.map((type, index, arr) => {
-                  return (
-                    <Text
-                      key={index}
-                      mb={index == arr.length - 1 ? '0' : '1.5em'}
-                    >
-                      {type.name}
-                    </Text>
-                  );
-                })
-              : null}
-          </VStack>
-=======
-  const [toggleType, setToggleType] = useState(false);
-  const renderedCategories = props?.productCategories?.map(
-    (productCategory, index) => {
-      return (
-        <VStack align={'stretch'} key={index}>
-          <Flex
-            alignItems={'center'}
-            justifyContent={'space-between'}
-            onClick={() => setToggleType(!toggleType)}
-          >
-            <Text>{productCategory?.name}</Text>
-            <Icon as={toggleType ? ChevronUpIcon : ChevronDownIcon} />
-          </Flex>
-          <Box
-            borderLeft={'2px solid lightgray'}
-            p={'0 1em'}
-            display={toggleType ? 'block' : 'none'}
-          >
-            {productCategory?.type
-              ? productCategory?.type?.map((type, index) => {
-                  return <Text key={index}>{type.name}</Text>;
-                })
-              : null}
-          </Box>
->>>>>>> 26b201f6d505d62723e25fcd870021bcaf072be0
+    }))
+  }
+  const groupedArray = props?.productCategories.reduce((result, item) => {
+    const parentName = item.parent.name
+    const parentId = item.parent.id
+    if (!result[parentName]) {
+      result[parentName] = { name: parentName, id: parentId, category: [] }
+    }
+    result[parentName].category.push({ id: item.id, name: item.name })
+    return result
+  }, {})
+  const finalArray = Object.values(groupedArray)
+  console.log('finalArray', finalArray)
+  const renderedCategories = finalArray.map((el, index) => {
+    slug.extend({
+      '&': 'and',
+    })
+    return (
+      <VStack align={'stretch'} key={index} spacing={'1.5em'} cursor={'pointer'}>
+        <Flex
+          alignItems={'center'}
+          justifyContent={'space-between'}
+          onClick={() => changeToggleType(el?.id)}
+        >
+          <Text>{el?.name}</Text>
+          <Icon as={toggleType[el?.id] ? ChevronUpIcon : ChevronDownIcon} />
+        </Flex>
+        <VStack
+          borderLeft={'2px solid lightgray'}
+          p={'0 1em'}
+          display={toggleType[el?.id] ? 'block' : 'none'}
+          onClick={() => props?.setProductGroup(el?.name)}
+        >
+          {el?.category
+            ? el?.category?.map((elPT, index, arr) => {
+                return (
+                  <Text
+                    key={index}
+                    mb={index == arr.length - 1 ? '0' : '1.5em'}
+                    onClick={() => {
+                      props?.setProductCategory(`${elPT?.name}`)
+                      navigate(
+                        `/p/${props?.gender}/${el?.name?.toLowerCase()}/${slug(
+                          elPT?.name?.toLowerCase(),
+                        )}`,
+                      )
+                    }}
+                  >
+                    {elPT?.name}
+                  </Text>
+                )
+              })
+            : null}
         </VStack>
-      );
-    },
-  );
+      </VStack>
+    )
+  })
+
   return (
     <Box
       position={'relative'}
-<<<<<<< HEAD
       bgColor={'white'}
       p={'1em'}
       m={{ base: '0', md: '0 0 -1em -1em' }}
@@ -94,17 +80,9 @@ export const SideBar = (props) => {
       zIndex={'2'}
       top={'0'}
       minH={'100vh'}
-=======
-      p={'1em'}
-      w={'100%'}
-      h={'100vh'}
-      zIndex={'2'}
-      top={'0'}
-      display={props?.collapseSideBar ? 'block' : 'none'}
->>>>>>> 26b201f6d505d62723e25fcd870021bcaf072be0
     >
       <VStack align={'stretch'}>
-        <Text color={'redPure.500'}>All Women</Text>
+        <Text color={'redPure.500'}>All {capitalize.words(props?.gender)}</Text>
         {renderedCategories}
         <Flex
           alignItems={'center'}
@@ -112,10 +90,7 @@ export const SideBar = (props) => {
           justifyContent={'space-between'}
           onClick={() => props?.toggleSideBar()}
           cursor={'pointer'}
-<<<<<<< HEAD
           display={{ base: 'flex', md: 'none' }}
-=======
->>>>>>> 26b201f6d505d62723e25fcd870021bcaf072be0
         >
           <Flex
             bgColor={'white'}
@@ -132,5 +107,5 @@ export const SideBar = (props) => {
         </Flex>
       </VStack>
     </Box>
-  );
-};
+  )
+}

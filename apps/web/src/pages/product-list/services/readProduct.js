@@ -1,20 +1,20 @@
-import axios from 'axios';
+import axios from 'axios'
 
 export const getProduct = async (
   name = '',
-  productGroup = '',
-  productType = '',
-  productCategory = '',
-  setProduct,
-  sortBy,
-  orderBy,
+  gender = '',
+  group = '',
+  category = '',
+  setProducts,
+  sortBy = 'name',
+  orderBy = 'ASC',
 ) => {
   try {
     const res = await axios.get(
-      `http://localhost:8000/api/product?name=${name}&productGroup=${productGroup}&productType=${productType}&productCategory=${productCategory}&sortBy=${sortBy}&orderBy=${orderBy}`,
-    );
-    setProduct(res?.data?.data);
+      `http://localhost:8000/api/product?name=${name}&gender=${gender}&group=${group}&category=${category}&sortBy=${sortBy}&orderBy=${orderBy}`,
+    )
+    setProducts(res?.data?.data)
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}
