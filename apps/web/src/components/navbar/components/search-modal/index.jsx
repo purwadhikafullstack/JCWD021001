@@ -2,82 +2,54 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
-  ModalFooter,
   ModalBody,
-  ModalCloseButton,
   useDisclosure,
   Box,
-  Button,
   Icon,
   Input,
   InputGroup,
   InputLeftElement,
-  Text,
   VStack,
-  Flex,
-  HStack,
-  Grid,
 } from '@chakra-ui/react'
-import { ExclamationCircleIcon, MagnifyingGlassIcon, TagIcon } from '@heroicons/react/24/outline'
-import React, { useEffect, useState } from 'react'
-import { getProductType } from '../../services/readProductType'
-import { Link } from 'react-router-dom'
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 export const SearchModal = (props) => {
+  const navigate = useNavigate()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const finalRef = React.useRef(null)
-  const [productType, setProductType] = useState([])
   const [filter, setFilter] = useState('')
-
-  const renderedProductType = productType.map((el, index) => {
-    return (
-      <Link key={index}>
-        <Grid
-          p={'0 .5em'}
-          templateColumns={'.2fr 1fr 1fr'}
-          alignItems={'center'}
-          cursor={'pointer'}
-        >
-          <Icon as={TagIcon}></Icon>
-          <Text>{el?.type?.name}</Text>
-          <Text color={'lightgray'}>{el?.group?.name?.toUpperCase()}</Text>
-        </Grid>
-      </Link>
-    )
-  })
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      navigate(`/search?q=${filter}`)
+    }
+  }
   return (
     <Box>
       <Icon as={MagnifyingGlassIcon} display={{ base: 'block', md: 'none' }} onClick={onOpen} />
       <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent mt={'5em'}>
+        <ModalContent mt={'5em'} w={'80%'}>
           <ModalBody>
             <VStack align={'stretch'}>
               <InputGroup>
-                <InputLeftElement>
+                <InputLeftElement height={'2em'}>
                   <Icon as={MagnifyingGlassIcon} />
                 </InputLeftElement>
                 <Input
+                  border={'none'}
+                  // _focus={{ border: 'none' }}
+                  focusBorderColor={'transparent'}
+                  height={'2em'}
                   variant={'outline'}
-                  focusBorderColor={'lightgray'}
                   placeholder={'Search a product here'}
                   onChange={(e) => {
-                    setTimeout(() => {
-                      setFilter(e.target.value)
-                    }, 2000)
+                    setFilter(e.target.value)
                   }}
+                  value={filter}
+                  onKeyDown={handleKeyPress}
                 />
               </InputGroup>
-              <VStack align={'stretch'}>
-                {filter && productType.length == 0 ? (
-                  <HStack p={'0 .5em'} spacing={'1.2em'} color={'redPure.500'}>
-                    <Icon as={ExclamationCircleIcon} />
-                    <Text>Not Found</Text>
-                  </HStack>
-                ) : filter && productType.length !== 0 ? (
-                  renderedProductType
-                ) : null}
-              </VStack>
             </VStack>
           </ModalBody>
         </ModalContent>

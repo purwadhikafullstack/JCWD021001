@@ -13,13 +13,18 @@ export const SideBar = (props) => {
       [id]: !set[id],
     }))
   }
-  const groupCategories = Object.groupBy(props?.productCategories, (product) => {
-    return product.parent.name
-  })
-
-  console.log('groupCategories', groupCategories)
-  console.log('productCategories', props?.productCategories)
-  const renderedCategories = [groupCategories].map((el, index) => {
+  const groupedArray = props?.productCategories.reduce((result, item) => {
+    const parentName = item.parent.name
+    const parentId = item.parent.id
+    if (!result[parentName]) {
+      result[parentName] = { name: parentName, id: parentId, category: [] }
+    }
+    result[parentName].category.push({ id: item.id, name: item.name })
+    return result
+  }, {})
+  const finalArray = Object.values(groupedArray)
+  console.log('finalArray', finalArray)
+  const renderedCategories = finalArray.map((el, index) => {
     slug.extend({
       '&': 'and',
     })
@@ -37,18 +42,18 @@ export const SideBar = (props) => {
           borderLeft={'2px solid lightgray'}
           p={'0 1em'}
           display={toggleType[el?.id] ? 'block' : 'none'}
-          onClick={() => props?.setProductCategory(el?.name)}
+          onClick={() => props?.setProductGroup(el?.name)}
         >
-          {el?.type
-            ? el?.type?.map((elPT, index, arr) => {
+          {el?.category
+            ? el?.category?.map((elPT, index, arr) => {
                 return (
                   <Text
                     key={index}
                     mb={index == arr.length - 1 ? '0' : '1.5em'}
                     onClick={() => {
-                      props?.setProductType(`${elPT?.name}`)
+                      props?.setProductCategory(`${elPT?.name}`)
                       navigate(
-                        `/${props?.groupName}/${el?.name?.toLowerCase()}/${slug(
+                        `/p/${props?.gender}/${el?.name?.toLowerCase()}/${slug(
                           elPT?.name?.toLowerCase(),
                         )}`,
                       )

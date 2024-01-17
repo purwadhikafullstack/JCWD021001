@@ -4,32 +4,41 @@ import { useNavigate } from 'react-router-dom'
 import capitalize from 'capitalize'
 export const BreadCrumbs = (props) => {
   const navigate = useNavigate()
-  const breadCrumbsLinks = props?.segments?.map((segment, index, array) => {
+  console.log('breadCrumps Component', props?.breadCrumbs)
+  console.log('SEGMENT', props?.segments)
+  const breadCrumbsLinks = props?.breadCrumbs?.map((segment, index, array) => {
     return (
       <HStack>
-        {segment === '' ? (
+        {segment.label === 'Home' ? (
           <Icon
             as={HomeIcon}
             color={'grey.500'}
             onClick={() => {
               navigate('/')
             }}
+            cursor={'pointer'}
           />
         ) : (
           <Text
-            color={index !== array.length - 1 ? 'black' : 'redPure.500'}
-            fontWeight={index !== array.length - 1 ? 'normal' : 'bold'}
+            cursor={'pointer'}
+            color={typeof array[index + 1]?.label === 'undefined' ? 'redPure.500' : 'black'}
+            fontWeight={typeof array[index + 1]?.label === 'undefined' ? 'bold' : 'normal'}
             onClick={() => {
-              navigate(`/${segment}/`)
+              navigate(`${segment.url}`)
             }}
           >
-            {capitalize.words(segment).replace(/and/gi, '&').replace(/-/g, ' ')}
+            {segment.label
+              ? capitalize?.words(segment?.label)?.replace(/and/gi, '&')?.replace(/-/g, ' ')
+              : null}
           </Text>
         )}
-        {index !== array.length - 1 ? <Icon as={ChevronRightIcon} color={'grey.500'} /> : null}
+        {typeof array[index + 1]?.label === 'undefined' ? null : (
+          <Icon as={ChevronRightIcon} color={'grey.500'} />
+        )}
       </HStack>
     )
   })
+  console.log('BREADCRUMBS LINKS', breadCrumbsLinks)
   return (
     <HStack justifyContent={'flex-start'} alignItems={'center'}>
       {breadCrumbsLinks}

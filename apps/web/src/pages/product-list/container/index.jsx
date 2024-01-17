@@ -7,14 +7,31 @@ import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import { Navbar } from '../../../components/navbar'
 import { SideBar } from '../../../components/sidebar'
 import { getProductCategory } from '../services/readProductCategory'
-import capitalize from 'capitalize'
 
 export const Product = () => {
   // useLocation to know url route
   const location = useLocation()
-  const { pathname } = location
 
+  const { pathname } = location
   const { gender, group, category } = useParams()
+  const breadCrumbs = [
+    {
+      label: 'Home',
+      url: '/',
+    },
+    {
+      label: gender,
+      url: `/p/${gender}`,
+    },
+    {
+      label: group,
+      url: `/p/${gender}/${group}`,
+    },
+    {
+      label: category,
+      url: `/p/${gender}/${group}/${category}`,
+    },
+  ]
   // Splitting pathname for breadcrumbs
   const segments = pathname.split('/')
 
@@ -23,13 +40,10 @@ export const Product = () => {
 
   // State for filtering products
   const [productName, setProductName] = useState('')
-  const [productGroup, setProductGroup] = useState(capitalize(gender))
-  const [productCategory, setProductCategory] = useState(
-    capitalize.words(group).replace(/and/gi, '&').replace(/-/g, ' '),
-  )
-  const [productType, setProductType] = useState(null)
-  // This is for sidebar product categories, and type
-  const [productCategories, setProductCategories] = useState([])
+  const [productGender, setProductGender] = useState('')
+  const [productGroup, setProductGroup] = useState('')
+  const [productCategory, setProductCategory] = useState('')
+
   // Sidebar
   const [collapseSideBar, setCollapseSideBar] = useState(false)
 
@@ -37,29 +51,26 @@ export const Product = () => {
   const [orderBy, setOrderBy] = useState('ASC')
   // Get product data
   useEffect(() => {
-    getProduct(
-      productName,
-      gender,
-      group,
-      capitalize.words(category).replace(/and/gi, '&').replace(/-/g, ' '),
-      setProducts,
-      sortBy,
-      orderBy,
-    )
+    getProduct(productName, gender, group, category, setProducts, sortBy, orderBy)
   }, [
     productName,
+    productGender,
     productGroup,
     productCategory,
-    productType,
     orderBy,
     sortBy,
-    setProductGroup,
+    gender,
+    group,
+    category,
+    setProductGender,
     setSortBy,
     setOrderBy,
+    setProductGroup,
     setProductCategory,
-    setProductType,
   ])
 
+  // This is for sidebar product categories, and type
+  const [productCategories, setProductCategories] = useState([])
   // Get Product Category Data
   useEffect(() => {
     getProductCategory(setProductCategories)
@@ -79,29 +90,32 @@ export const Product = () => {
       <Box display={{ base: collapseSideBar ? 'block' : 'none', md: 'none' }}>
         <SideBar
           gender={gender}
+          group={group}
           category={category}
+          setProductGroup={setProductGroup}
+          setProductCategory={setProductCategory}
+          productCategories={productCategories}
           pathname={pathname}
           collapseSideBar={collapseSideBar}
           setCollapseSideBar={setCollapseSideBar}
           toggleSideBar={toggleSideBar}
-          productCategories={productCategories}
           segments={segments}
-          setProductCategory={setProductCategory}
-          setProductType={setProductType}
         />
       </Box>
       <Box display={collapseSideBar ? 'none' : 'block'}>
         <Body
+          breadCrumbs={breadCrumbs}
           gender={gender}
+          group={group}
           category={category}
           pathname={pathname}
-          productCategories={productCategories}
           segments={segments}
           products={products}
+          productCategories={productCategories}
           setProductName={setProductName}
+          setProductGender={setProductGender}
           setProductGroup={setProductGroup}
           setProductCategory={setProductCategory}
-          setProductType={setProductType}
           setOrderBy={setOrderBy}
           setSortBy={setSortBy}
           orderBy={orderBy}

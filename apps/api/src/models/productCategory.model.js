@@ -10,7 +10,6 @@ export default class ProductCategory extends Model {
    */
   static associate(models) {
     ProductCategory.belongsTo(ProductCategory, { as: 'parent' })
-
     ProductCategory.hasMany(Product, { as: 'product' })
     ProductCategory.hasMany(Size, { as: 'size' })
   }

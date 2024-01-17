@@ -85,7 +85,7 @@ function Home() {
               bg={'white'}
               position={'relative'}
               onClick={() => {
-                navigate('/women/tops')
+                navigate('/p/women')
               }}
             >
               <Box
@@ -125,7 +125,7 @@ function Home() {
               bg={'white'}
               position={'relative'}
               onClick={() => {
-                navigate('/men')
+                navigate('/p/men')
               }}
             >
               <Box
@@ -165,7 +165,7 @@ function Home() {
               bg={'white'}
               position={'relative'}
               onClick={() => {
-                navigate('/kids')
+                navigate('/p/kids')
               }}
             >
               <Box
@@ -205,7 +205,7 @@ function Home() {
               bg={'white'}
               position={'relative'}
               onClick={() => {
-                navigate('/kids')
+                navigate('/p/baby')
               }}
             >
               <Box

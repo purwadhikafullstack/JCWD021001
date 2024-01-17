@@ -53,18 +53,24 @@ export const Body = (props) => {
         <Box>
           <Text fontWeight={'bold'}>{capitalize.words(props?.gender)}</Text>
         </Box>
-        <BreadCrumbs segments={props?.segments} gender={props?.gender} typeName={props?.typeName} />
+        <BreadCrumbs
+          breadCrumbs={props?.breadCrumbs}
+          segments={props?.segments}
+          gender={props?.gender}
+          group={props?.group}
+          category={props?.category}
+        />
         <Box display={{ base: 'block', md: 'flex' }} gap={'1em'} w={'100%'}>
           <Box display={{ base: 'none', md: 'flex' }}>
             <SideBar
-              productCategory={props?.productCategory}
               gender={props?.gender}
-              categoryName={props?.categoryName}
+              group={props?.group}
               productCategories={props?.productCategories}
+              categoryName={props?.categoryName}
+              productGroup={props?.productGroup}
               segments={props?.segments}
               pathname={props?.pathname}
               setProductCategory={props?.setProductCategory}
-              setProductType={props?.setProductType}
             />
           </Box>
           <Box w={'100%'} p={{ base: 'none', md: '.5em' }}>
