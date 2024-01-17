@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, Text } from '@chakra-ui/react'
-import Navbar from '../../components/Navbar/Navbar'
-import LaptopCartTable from '../../components/cart-table';
+// import Navbar from '../../components/Navbar/Navbar'
+import LaptopCartTable from '../../components/cart-table'
 // import LaptopCartTable from '../../components/cart-table/laptopCartTable'
 // import MobileCartTable from '../../components/cart-table/mobileCartTable'
 import { useState, useEffect } from 'react'
@@ -12,30 +12,30 @@ const Cart = () => {
 
   const refreshCart = async () => {
     try {
-      const data = await getCart();
-      setCartData(data);
+      const data = await getCart()
+      setCartData(data)
     } catch (error) {
-      console.error('Error fetching cart data:', error);
+      console.error('Error fetching cart data:', error)
     }
-  };
+  }
 
   const handleCartUpdated = () => {
-    refreshCart();
-  };
+    refreshCart()
+  }
 
   useEffect(() => {
-    refreshCart();
-  }, []);
-  
+    refreshCart()
+  }, [])
+
   return (
     <>
       {/* <Navbar /> */}
       <Box bgColor={'brand.grey100'} maxW={'100vw'} minH={'100vh'}>
-        <LaptopCartTable cartData={cartData} onCartUpdated={handleCartUpdated}/>
+        <LaptopCartTable cartData={cartData} onCartUpdated={handleCartUpdated} />
         {/* <MobileCartTable cartData={cartData} onCartUpdated={handleCartUpdated}/> */}
       </Box>
     </>
   )
 }
 
-export default Cart;
+export default Cart

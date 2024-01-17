@@ -4,7 +4,6 @@ import toRupiah from '@develoka/angka-rupiah-js'
 import { useNavigate } from 'react-router-dom'
 export const ProductCard = (props) => {
   const navigate = useNavigate()
-  console.log('Product Card', props)
   return (
     <Box
       bgColor={'grey.200'}

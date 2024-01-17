@@ -23,7 +23,6 @@ export const SideBar = (props) => {
     return result
   }, {})
   const finalArray = Object.values(groupedArray)
-  console.log('finalArray', finalArray)
   const renderedCategories = finalArray.map((el, index) => {
     slug.extend({
       '&': 'and',

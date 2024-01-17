@@ -1,7 +1,11 @@
-import { getProductCategoryController } from '../controllers/productCategory.controller';
-import { Router } from 'express';
-const productCategoryRouter = Router();
+import {
+  getGenderController,
+  getProductCategoryController,
+} from '../controllers/productCategory.controller'
+import { Router } from 'express'
+const productCategoryRouter = Router()
 
-productCategoryRouter.get('/', getProductCategoryController);
+productCategoryRouter.get('/', getProductCategoryController)
+productCategoryRouter.get('/gender', getGenderController)
 
-export { productCategoryRouter };
+export { productCategoryRouter }

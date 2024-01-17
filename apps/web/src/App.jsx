@@ -8,13 +8,13 @@ import Auth from './components/Auth/Auth'
 import ResetPassword from './pages/reset-password/Index'
 import Profile from './pages/profile/Index'
 // import { useSelector } from 'react-redux';
-import { Box } from '@chakra-ui/react';
-import { Product } from './pages/product-list/container';
-import Cart from './pages/cart';
-import Order from './pages/order/Index';
+import { Box } from '@chakra-ui/react'
+import Cart from './pages/cart'
+import Order from './pages/order/Index'
 import { Product } from './pages/product-list/container'
 import { ProductDetails } from './pages/product-details/container'
 import { ProductSearch } from './pages/product-search/container'
+import { Dashboard } from './pages/dashboard/container'
 
 function App() {
   // const { user, isLogin } = useSelector((state) => state.AuthReducer);
@@ -34,6 +34,7 @@ function App() {
           <Route path="/p/:gender/:group?/:category?" element={<Product />} />
           <Route path="/search" element={<ProductSearch />} />
           <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/dashboard/:destination?/:createProduct?" element={<Dashboard />} />
         </Routes>
       </Auth>
     </Box>

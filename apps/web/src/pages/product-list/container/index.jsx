@@ -44,9 +44,6 @@ export const Product = () => {
   const [productGroup, setProductGroup] = useState('')
   const [productCategory, setProductCategory] = useState('')
 
-  // Sidebar
-  const [collapseSideBar, setCollapseSideBar] = useState(false)
-
   const [sortBy, setSortBy] = useState('name')
   const [orderBy, setOrderBy] = useState('ASC')
   // Get product data
@@ -75,7 +72,8 @@ export const Product = () => {
   useEffect(() => {
     getProductCategory(setProductCategories)
   }, [])
-
+  // Sidebar
+  const [collapseSideBar, setCollapseSideBar] = useState(false)
   const toggleSideBar = () => {
     setCollapseSideBar(!collapseSideBar)
   }

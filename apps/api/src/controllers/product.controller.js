@@ -24,16 +24,14 @@ export const getProductController = async (req, res) => {
 
 export const createProductController = async (req, res) => {
   try {
-    const { name, price, description, productGroupId, productTypeId, productCategoryId, colourId } =
-      req.body
+    const { name, price, description, productCategoryId } = req.body
+    console.log('NAME', name)
+
     const result = await createProductService(
       name,
-      price,
+      Number(price),
       description,
-      productGroupId,
-      productTypeId,
-      productCategoryId,
-      colourId,
+      Number(productCategoryId),
     )
     return res.status(200).json({
       message: 'Create Product Success',

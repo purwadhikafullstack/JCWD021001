@@ -47,17 +47,6 @@ export const Body = (props) => {
                   Description
                 </Text>
                 <Text fontSize={{ base: '.75em', md: '1em' }}>{props?.product?.description}</Text>
-                <Text fontSize={{ base: '.75em', md: '1em' }}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget est efficitur,
-                  luctus tellus vel, condimentum augue. Vestibulum tincidunt lacus sit amet massa
-                  cursus pharetra. Suspendisse bibendum facilisis sagittis. Duis lobortis
-                  ullamcorper est, ac lobortis nibh feugiat vitae. Quisque convallis sem id semper
-                  condimentum. Donec sit amet consequat erat. Quisque vel varius elit. Vestibulum
-                  euismod nisl sit amet laoreet malesuada. Mauris felis ante, auctor eget sem eget,
-                  volutpat tristique orci. Sed neque sapien, ullamcorper non neque vitae, porttitor
-                  tempus turpis. In auctor in dui quis iaculis. Cras at orci efficitur, consequat mi
-                  maximus, dignissim ante. Mauris pretium mi turpis, a.
-                </Text>
               </Box>
               <Box>
                 <Text fontWeight={'bold'} fontSize={'.9em'}>

@@ -1,6 +1,7 @@
 import {
   createProductQuery,
   deleteProductQuery,
+  getProductByName,
   getProductQuery,
   updateProductQuery,
 } from '../queries/product.queries'
@@ -14,29 +15,13 @@ export const getProductService = async (name, gender, group, category, id, sortB
   }
 }
 
-export const createProductService = async (
-  name,
-  price,
-  description,
-  productGroupId,
-  productTypeId,
-  productCategoryId,
-  colourId,
-) => {
+export const createProductService = async (name, price, description, productCategoryId) => {
   try {
-    const check = await getProductQuery(name)
+    const check = await getProductByName(name)
 
     if (check) throw new Error('Product with that name is already exist')
 
-    const res = await createProductQuery(
-      name,
-      price,
-      description,
-      productGroupId,
-      productTypeId,
-      productCategoryId,
-      colourId,
-    )
+    const res = await createProductQuery(name, price, description, productCategoryId)
     return res
   } catch (err) {
     throw err

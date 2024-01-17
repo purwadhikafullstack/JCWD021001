@@ -2,7 +2,7 @@ import React from 'react'
 import { Box, Text, Button, ButtonGroup, Icon } from '@chakra-ui/react'
 import { CreateOrder } from './services/CreateOrder'
 import { CreatePayment } from './services/CreatePayment'
-import Navbar from '../../components/Navbar/Navbar'
+// import Navbar from '../../components/Navbar/Navbar'
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
 import OrderBody from '../../components/order'
 import { getOrder } from './services/getOrder'
@@ -77,7 +77,7 @@ const Order = () => {
     <>
       {/* <Navbar /> */}
       <Box bgColor={'brand.grey100'} maxW={'100vw'} minH={'100vh'}>
-        <OrderBody orderData={orderData}/>
+        <OrderBody orderData={orderData} />
         {/* <Box padding={{ base: '24px 24px 280px 24px', xl: '24px' }}>
           <Box display={'flex'} flexDirection={'column'} gap={'6px'} mb={'16px'}>
             <Box display={'flex'} alignItems={'center'} gap={'12px'}>
