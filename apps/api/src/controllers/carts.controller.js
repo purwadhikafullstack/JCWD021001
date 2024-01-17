@@ -1,9 +1,23 @@
 import { createCartService, deleteCartService, getCartService, updateCartService } from "../services/carts.services";
 
+const sendResponse = (res, statusCode, result, errorMessage) => {
+    if (statusCode === 200) {
+        return res.status(statusCode).json({
+            message: 'success',
+            data: result,
+        });
+    } else if (statusCode === 500) {
+        return res.status(statusCode).json({
+            message: 'error',
+            error: errorMessage,
+        });
+    } 
+};
+
 export const createCartController = async (req, res) => {
     try {
-        const { userId, productId, quantity, priceTotal } = req.body;
-        const result = await createCartService(userId, productId, quantity, priceTotal);
+        const { userId, productId, price, quantity } = req.body;
+        const result = await createCartService(userId, productId, price, quantity);
         return res.status(200).json({
             message: "success",
             data: result,
@@ -28,8 +42,8 @@ export const updateCartController = async (req, res) => {
 
 export const deleteCartController = async (req, res) => {
     try {
-        const { cartProductId } = req.params;
-        const result = await deleteCartService(cartProductId);
+        const { cartProductIds } = req.body;
+        const result = await deleteCartService(cartProductIds);
         return sendResponse(res, 200, result, null);
     } catch (err) {
         console.log(err);

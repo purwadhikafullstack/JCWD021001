@@ -30,6 +30,8 @@
     }
   },
   "dependencies": {
-    "@chakra-ui/icons": "^2.1.1"
+    "@chakra-ui/icons": "^2.1.1",
+    "react-slick": "^0.29.0",
+    "slick-carousel": "^1.8.1"
   }
 }

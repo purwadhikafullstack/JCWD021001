@@ -3,32 +3,16 @@ import {
   deleteProductQuery,
   getProductQuery,
   updateProductQuery,
-} from '../queries/product.queries';
+} from '../queries/product.queries'
 
-export const getProductService = async (
-  name,
-  productGroup,
-  productType,
-  productCategory,
-  id,
-  sortBy,
-  orderBy,
-) => {
+export const getProductService = async (name, gender, group, category, id, sortBy, orderBy) => {
   try {
-    const res = await getProductQuery(
-      name,
-      productGroup,
-      productType,
-      productCategory,
-      id,
-      sortBy,
-      orderBy,
-    );
-    return res;
+    const res = await getProductQuery(name, gender, group, category, id, sortBy, orderBy)
+    return res
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}
 
 export const createProductService = async (
   name,
@@ -40,9 +24,9 @@ export const createProductService = async (
   colourId,
 ) => {
   try {
-    const check = await getProductQuery(name);
+    const check = await getProductQuery(name)
 
-    if (check) throw new Error('Product with that name is already exist');
+    if (check) throw new Error('Product with that name is already exist')
 
     const res = await createProductQuery(
       name,
@@ -52,12 +36,12 @@ export const createProductService = async (
       productTypeId,
       productCategoryId,
       colourId,
-    );
-    return res;
+    )
+    return res
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}
 
 export const updateProductService = async (
   name,
@@ -70,11 +54,11 @@ export const updateProductService = async (
   id,
 ) => {
   try {
-    const check = await getProductQuery(id);
+    const check = await getProductQuery(id)
 
-    if (!check) throw new Error('Product didnt exist');
+    if (!check) throw new Error('Product didnt exist')
 
-    if (check) console.log('check', check);
+    if (check) console.log('check', check)
 
     const res = await updateProductQuery(
       name,
@@ -85,20 +69,20 @@ export const updateProductService = async (
       productCategoryId,
       colourId,
       id,
-    );
-    return res;
+    )
+    return res
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}
 
 export const deleteProductService = async (id) => {
   try {
-    const check = await getProductQuery(id);
-    if (!check) throw new Error('Product doesnt exist');
-    const res = await deleteProductQuery(id);
-    return res;
+    const check = await getProductQuery(id)
+    if (!check) throw new Error('Product doesnt exist')
+    const res = await deleteProductQuery(id)
+    return res
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}
