@@ -1,4 +1,5 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes } from 'sequelize'
+import ProductCategory from './productCategory.model'
 
 export default class Product extends Model {
   /**
@@ -24,6 +25,7 @@ export default class Product extends Model {
       as: 'images',
     });
     Product.hasMany(models.Stock, { foreignKey: 'productId' });
+    Product.belongsTo(ProductCategory, { foreignKey: 'productCategoryId', as: 'category' })
   }
 }
 
@@ -45,22 +47,22 @@ export const init = (sequelize) => {
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
+        defaultValue: new Date(Date.now()),
       },
       updatedAt: {
         allowNull: false,
         type: DataTypes.DATE,
-      },
-      productGroupId: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
-      },
-      productTypeId: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
+        defaultValue: new Date(Date.now()),
       },
       productCategoryId: {
         allowNull: false,
         type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: 'productCategories',
+          },
+          key: 'id',
+        },
       },
     },
     {
@@ -68,5 +70,5 @@ export const init = (sequelize) => {
       modelName: 'Product',
       timestamps: true,
     },
-  );
-};
+  )
+}

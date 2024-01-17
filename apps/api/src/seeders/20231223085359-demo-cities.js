@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -8,10 +8,10 @@ module.exports = {
         name: 'Jambi',
         provinceId: 1,
       },
-    ]);
+    ])
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('cities', null, {});
+    await queryInterface.bulkDelete('cities', null, {})
   },
-};
+}

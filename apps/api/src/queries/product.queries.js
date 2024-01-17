@@ -1,88 +1,104 @@
-import Product from '../models/product.model';
-import ProductGroup from '../models/productGroup.model';
-import ProductCategory from '../models/productCategory.model';
-import ProductType from '../models/productType.model';
-import Warehouse from '../models/warehouse.model';
-import { Op } from 'sequelize';
-import Stock from '../models/stock.model';
-import Size from '../models/size.model';
+import Product from '../models/product.model'
+import ProductCategory from '../models/productCategory.model'
+import { Op } from 'sequelize'
+import Stock from '../models/stock.model'
+import Size from '../models/size.model'
 
 export const getProductQuery = async (
   name = null,
-  productGroup = null,
-  productType = null,
-  productCategory = null,
+  gender = null,
+  group = null,
+  category = null,
   id = null,
   sortBy = 'name',
   orderBy = 'ASC',
 ) => {
   try {
-    const filter = {};
+    const filter = {}
     if (id)
       filter.where = {
         id: {
           [Op.eq]: id,
         },
-      };
+      }
     if (name)
       filter.where = {
         name: {
-          [Op.eq]: name,
+          [Op.like]: `%${name}%`,
         },
-      };
-    if (productGroup)
+      }
+    if (gender)
+      filter.where = {
+        '$category.parent.parent.name$': {
+          [Op.eq]: `${gender}`,
+        },
+      }
+    if (gender && group)
       filter.where = {
         [Op.and]: [
           {
-            productGroupId: productGroup,
+            '$category.parent.parent.name$': {
+              [Op.eq]: `${gender}`,
+            },
           },
           {
-            [Op.or]: [
-              {
-                productCategoryId: productCategory,
-              },
-              {
-                productTypeId: productType,
-              },
-            ],
+            '$category.parent.name$': {
+              [Op.eq]: `${group}`,
+            },
           },
         ],
-      };
+      }
+    if (gender && group && category)
+      filter.where = {
+        [Op.and]: [
+          {
+            '$category.parent.parent.name$': {
+              [Op.eq]: `${gender}`,
+            },
+          },
+          {
+            '$category.parent.name$': {
+              [Op.eq]: `${group}`,
+            },
+          },
+          {
+            '$category.name$': {
+              [Op.eq]: `${category.replace(/-/g, ' ')}`,
+            },
+          },
+        ],
+      }
     const res = await Product.findAll({
       include: [
         {
-          model: ProductGroup,
-          as: 'group',
-        },
-        {
           model: ProductCategory,
           as: 'category',
-        },
-        {
-          model: ProductType,
-          as: 'type',
           include: [
             {
               model: ProductCategory,
-              as: 'category',
+              as: 'parent',
+              include: [
+                {
+                  model: ProductCategory,
+                  as: 'parent',
+                },
+              ],
+            },
+            {
+              model: Size,
+              as: 'size',
             },
           ],
-        },
-        {
-          model: Stock,
-          as: 'stocks',
-          include: { model: Warehouse, as: 'warehouse' },
-          include: { model: Size, as: 'size' },
         },
       ],
       order: [[`${sortBy}`, `${orderBy}`]],
       ...filter,
-    });
-    return res;
+    })
+    return res
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}
 
 export const createProductQuery = async (
   name = null,
@@ -102,12 +118,12 @@ export const createProductQuery = async (
       productTypeId,
       productCategoryId,
       colourId,
-    });
-    return res;
+    })
+    return res
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}
 
 export const updateProductQuery = async (
   name,
@@ -120,14 +136,14 @@ export const updateProductQuery = async (
   id,
 ) => {
   try {
-    const toBeUpdated = {};
-    if (name) toBeUpdated.name = name;
-    if (price) toBeUpdated.price = price;
-    if (description) toBeUpdated.description = description;
-    if (productGroupId) toBeUpdated.productGroupId = productGroupId;
-    if (productTypeId) toBeUpdated.productTypeId = productTypeId;
-    if (productCategoryId) toBeUpdated.productCategoryId = productCategoryId;
-    if (colourId) toBeUpdated.colourId = colourId;
+    const toBeUpdated = {}
+    if (name) toBeUpdated.name = name
+    if (price) toBeUpdated.price = price
+    if (description) toBeUpdated.description = description
+    if (productGroupId) toBeUpdated.productGroupId = productGroupId
+    if (productTypeId) toBeUpdated.productTypeId = productTypeId
+    if (productCategoryId) toBeUpdated.productCategoryId = productCategoryId
+    if (colourId) toBeUpdated.colourId = colourId
 
     const res = await Product.update(
       {
@@ -140,12 +156,12 @@ export const updateProductQuery = async (
           },
         },
       },
-    );
-    return res;
+    )
+    return res
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}
 
 export const deleteProductQuery = async (id) => {
   try {
@@ -155,9 +171,9 @@ export const deleteProductQuery = async (id) => {
           [Op.eq]: id,
         },
       },
-    });
-    return res;
+    })
+    return res
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}
