@@ -9,9 +9,11 @@ import ResetPassword from './pages/reset-password/Index';
 import Profile from './pages/profile/Index';
 // import { useSelector } from 'react-redux';
 import { Box } from '@chakra-ui/react';
-import Order from './pages/order';
-import Cart from './pages/cart';
 import { Product } from './pages/product-list/container';
+import Cart from './pages/cart';
+import Order from './pages/order/Index';
+
+
 
 function App() {
   // const { user, isLogin } = useSelector((state) => state.AuthReducer);

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-<<<<<<< HEAD
 import {PlusIcon} from '@heroicons/react/24/outline'
 import {StarIcon} from '@heroicons/react/24/solid'
 // import './Home.css';
@@ -22,12 +21,6 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import product1 from '../../assets/images/homepage-images/product-1.png'
-=======
-import reactLogo from '../../assets/react.svg';
-import viteLogo from '/vite.svg';
-import { Navbar } from '../../components/navbar';
-// import './Home.css';
->>>>>>> development
 
   function Home() {
     const bestDeals = async () => {
@@ -40,7 +33,6 @@ import { Navbar } from '../../components/navbar';
 
   return (
     <>
-<<<<<<< HEAD
     <Navbar/>
     <Box container-homepage
     width={'100vw'}
@@ -374,22 +366,6 @@ import { Navbar } from '../../components/navbar';
         <Footer/>
       </Box>
       </Box>
-=======
-      <Navbar />
-      <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Purwadhika Final Project Template using Vite + React</h1>
-      <h3>Test Data</h3>
-      {sampleData.map((data, idx) => (
-        <div key={idx.toString()}>{data.name}</div>
-      ))}
->>>>>>> development
     </>
   );
 }

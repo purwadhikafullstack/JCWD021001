@@ -18,12 +18,12 @@ export async function up(queryInterface, Sequelize) {
         key: 'id',
       },
     },
-    productId: {
+    stockId: {
       allowNull: false,
       type: Sequelize.INTEGER,
       reference: {
         model: {
-          tableName: 'products',
+          tableName: 'stocks',
         },
         key: 'id',
       },

@@ -6,11 +6,7 @@ module.exports = {
     await queryInterface.bulkInsert('cities', [
       {
         name: 'Jambi',
-<<<<<<< HEAD
-        provinceId: 3,
-=======
         provinceId: 1,
->>>>>>> 26b201f6d505d62723e25fcd870021bcaf072be0
       },
     ]);
   },
