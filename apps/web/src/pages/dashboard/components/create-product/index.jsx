@@ -19,6 +19,8 @@ import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { getGender } from '../../services/readGender'
 import { getProductCategory } from '../../../product-list/services/readProductCategory'
+import { createProduct } from '../../services/createProduct'
+
 export const CreateProduct = () => {
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
@@ -32,15 +34,17 @@ export const CreateProduct = () => {
     productCategoryId: 0,
     description: '',
   }
-  const handleSubmit = (values, { setSubmitting }) => {
+  const handleSubmit = async (values, { setSubmitting }, actions) => {
     // Handle form submission logic here
-    console.log(values)
+    createProduct(values.name, Number(values.price), values.description, Number(prodCatId))
     setSubmitting(false)
+    actions.resetForm()
   }
   const [gender, setGender] = useState([])
   useEffect(() => {
     getGender(setGender)
   }, [])
+
   const renderedGender = gender?.map((el, index) => {
     return (
       <Text key={index} itemID={el.id}>
@@ -64,6 +68,7 @@ export const CreateProduct = () => {
   const finalArray = Object.values(groupedArray)
   const [categoryId, setCategoryId] = useState(0)
   const [categoryValue, setCategoryValue] = useState('')
+  const [prodCatId, setProdCatId] = useState(0)
 
   const renderedCategory = finalArray.map((el, index) => {
     return el.category.map((elPT, index) => {
@@ -74,6 +79,7 @@ export const CreateProduct = () => {
           onClick={() => {
             setCategoryId(elPT.id)
             setCategoryValue(elPT.name)
+            setProdCatId(elPT.id)
           }}
         >
           {elPT.name}
@@ -99,7 +105,7 @@ export const CreateProduct = () => {
         onSubmit={handleSubmit}
       >
         <Form>
-          <Flex direction="column" align="center">
+          <VStack direction="column" align="center">
             {/* Input 1 */}
             <Field name="name">
               {({ field, form }) => (
@@ -119,9 +125,7 @@ export const CreateProduct = () => {
                 </FormControl>
               )}
             </Field>
-
             {/* Input 3 */}
-
             <Field name="productCategoryId">
               {({ field, form }) => (
                 <FormControl
@@ -156,15 +160,13 @@ export const CreateProduct = () => {
               <Box p={'.5em'}>
                 <VStack align={'stretch'}>{renderedGender}</VStack>
               </Box>
-              <Box p={'.5em'} borderRight={'1px solid grey'} borderLeft={'1px solid grey'}>
+              <Box p={'.5em'} borderLeft={'2px solid lightgray'}>
                 <VStack align={'stretch'}>{renderedGroup}</VStack>
               </Box>
-              <Box p={'.5em 0'}>
+              <Box p={'0 .5em'} borderLeft={'2px solid lightgray'}>
                 <VStack align={'stretch'}>{renderedCategory}</VStack>
               </Box>
             </Grid>
-
-            {/* description */}
             <Field name="description">
               {({ field, form }) => (
                 <FormControl isInvalid={form.errors.description && form.touched.description} mb={3}>
@@ -176,7 +178,6 @@ export const CreateProduct = () => {
                 </FormControl>
               )}
             </Field>
-
             {/* Input 2 */}
             <Field name="price">
               {({ field, form }) => (
@@ -233,7 +234,7 @@ export const CreateProduct = () => {
                 Submit
               </Button>
             </HStack>
-          </Flex>
+          </VStack>
         </Form>
       </Formik>
     </Box>

@@ -3,44 +3,17 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.addConstraint('products', {
-      type: 'foreign key',
-      fields: ['productGroupId'],
-      name: 'products_productGroupId_foreign_idx',
-      references: {
-        table: 'productGroups',
-        field: 'id',
-      },
-    })
-    await queryInterface.addConstraint('products', {
-      type: 'foreign key',
-      fields: ['productTypeId'],
-      name: 'products_productTypeId_foreign_idx',
-      references: {
-        table: 'productTypes',
-        field: 'id',
-      },
+    return queryInterface.sequelize.transaction((t) => {
+      return Promise.all([
+        queryInterface.removeConstraint('products', 'products_productGroupId_foreign_idx', {
+          transaction: t,
+        }),
+        queryInterface.removeConstraint('products', 'products_productTypeId_foreign_idx', {
+          transaction: t,
+        }),
+      ])
     })
   },
 
-  async down(queryInterface, Sequelize) {
-    await queryInterface.addConstraint('products', {
-      type: 'foreign key',
-      fields: ['productGroupId'],
-      name: 'products_productGroupId_foreign_idx',
-      references: {
-        table: 'productGroups',
-        field: 'id',
-      },
-    })
-    await queryInterface.addConstraint('products', {
-      type: 'foreign key',
-      fields: ['productTypeId'],
-      name: 'products_productTypeId_foreign_idx',
-      references: {
-        table: 'productTypes',
-        field: 'id',
-      },
-    })
-  },
+  async down(queryInterface, Sequelize) {},
 }

@@ -35,6 +35,7 @@ function App() {
           <Route path="/search" element={<ProductSearch />} />
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/dashboard/:destination?/:createProduct?" element={<Dashboard />} />
+          <Route path="/dashboard/:destination?/:createProduct?/:epid" element={<Dashboard />} />
         </Routes>
       </Auth>
     </Box>

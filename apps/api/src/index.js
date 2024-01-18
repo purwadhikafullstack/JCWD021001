@@ -5,6 +5,7 @@ import { NODE_ENV, PORT } from './config'
 import router from './router'
 import { DB } from './db'
 
+import bodyParser from 'body-parser'
 /**
  * Serve "web" project build result (for production only)
  * @param {Express} app
@@ -51,8 +52,10 @@ const globalAPIErrorHandler = (app) => {
  */
 const main = () => {
   DB.initialize()
-
   const app = express()
+  // app.use(bodyParser.json())
+  // app.use(bodyParser.urlencoded({ extended: true }))
+
   app.use(cors())
   app.use(json())
   app.use('/api', router)

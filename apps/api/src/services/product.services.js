@@ -17,8 +17,8 @@ export const getProductService = async (name, gender, group, category, id, sortB
 
 export const createProductService = async (name, price, description, productCategoryId) => {
   try {
-    const check = await getProductByName(name)
-
+    const check = await getProductByName({ name })
+    console.log('name', name)
     if (check) throw new Error('Product with that name is already exist')
 
     const res = await createProductQuery(name, price, description, productCategoryId)

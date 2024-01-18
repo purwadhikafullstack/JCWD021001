@@ -1,8 +1,8 @@
 import Product from '../models/product.model'
 import ProductCategory from '../models/productCategory.model'
 import { Op } from 'sequelize'
-import Stock from '../models/stock.model'
 import Size from '../models/size.model'
+import ProductImage from '../models/productImage.model'
 
 export const getProductQuery = async (
   name = null,
@@ -90,6 +90,10 @@ export const getProductQuery = async (
             },
           ],
         },
+        {
+          model: ProductImage,
+          as: 'picture',
+        },
       ],
       order: [[`${sortBy}`, `${orderBy}`]],
       ...filter,
@@ -100,11 +104,14 @@ export const getProductQuery = async (
   }
 }
 
-export const getProductByName = async (name) => {
+export const getProductByName = async ({ name = null }) => {
   try {
     const res = await Product.findOne({
-      where: { name: name },
+      where: {
+        name: name,
+      },
     })
+    console.log('res', res)
     return res
   } catch (err) {
     throw err

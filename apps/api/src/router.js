@@ -10,6 +10,7 @@ import { userAddressRouter } from './routers/userAddress.router'
 import { paymentRouter } from './routers/payments.router'
 import { stockRouter } from './routers/stock.router'
 import { productCategoryRouter } from './routers/productCategory.router'
+import { productImageRouter } from './routers/productImage.router'
 const router = Router()
 
 router.get('/', (req, res) => {
@@ -28,4 +29,5 @@ router.use('/user-address', userAddressRouter)
 router.use('/payment', paymentRouter)
 router.use('/stock', stockRouter)
 router.use('/product-category', productCategoryRouter)
+router.use('/product-image', productImageRouter)
 export default router
