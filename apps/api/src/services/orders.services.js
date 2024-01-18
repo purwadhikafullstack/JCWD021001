@@ -18,7 +18,6 @@ export const createOrderService = async (userId, userAddressId, warehouseId, tot
 }
 
 export const getOrderService = async (orderId) => {
-    
     try {
         console.log("orderId",orderId);
         const check = await findOrderIdQuery(orderId);

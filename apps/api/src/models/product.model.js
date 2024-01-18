@@ -9,21 +9,6 @@ export default class Product extends Model {
    */
   static associate(models) {
     // define association here
-    // Product.belongsTo(models.ProductType, {
-    //   as: 'type',
-    //   foreignKey: 'productTypeId',
-    // });
-    // Product.belongsTo(models.ProductGroup, {
-    //   as: 'group',
-    //   foreignKey: 'productGroupId',
-    // });
-    // Product.belongsTo(models.ProductCategory, {
-    //   as: 'category',
-    //   foreignKey: 'productCategoryId',
-    // });
-    // Product.hasMany(models.ProductImage, {
-    //   as: 'images',
-    // });
     Product.hasMany(models.Stock, { foreignKey: 'productId' });
     Product.belongsTo(ProductCategory, { foreignKey: 'productCategoryId', as: 'category' })
   }

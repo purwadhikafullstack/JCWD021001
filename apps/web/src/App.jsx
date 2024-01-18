@@ -28,7 +28,7 @@ function App() {
           <Route path="/password-reset-request" element={<RequestPasswordReset />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/order/" element={<Order />} />
+          <Route path="/order" element={<Order />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/p/:gender/:group?/:category?" element={<Product />} />
           <Route path="/search" element={<ProductSearch />} />
