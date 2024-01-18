@@ -1,11 +1,11 @@
 import React from 'react'
 import { Box, Text } from '@chakra-ui/react'
-// import Navbar from '../../components/Navbar/Navbar'
 import LaptopCartTable from '../../components/cart-table'
 // import LaptopCartTable from '../../components/cart-table/laptopCartTable'
 // import MobileCartTable from '../../components/cart-table/mobileCartTable'
 import { useState, useEffect } from 'react'
 import { getCart } from './services/getCart'
+import { Navbar } from '../../components/navbar'
 
 const Cart = () => {
   const [cartData, setCartData] = useState([])

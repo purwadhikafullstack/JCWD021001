@@ -66,6 +66,10 @@ export async function up(queryInterface, Sequelize) {
         key: 'id',
       },
     },
+    orderNumber: {
+      // allowNull: false,
+      type: Sequelize.STRING,
+    },
   });
 }
 export async function down(queryInterface, Sequelize) {
