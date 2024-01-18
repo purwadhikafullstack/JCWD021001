@@ -18,7 +18,9 @@ export const createOrderService = async (userId, userAddressId, warehouseId, tot
 }
 
 export const getOrderService = async (orderId) => {
+    
     try {
+        console.log("orderId",orderId);
         const check = await findOrderIdQuery(orderId);
         if (!check) throw new Error("Data doesnt exist");
         const res = await getOrderQuery(orderId)
