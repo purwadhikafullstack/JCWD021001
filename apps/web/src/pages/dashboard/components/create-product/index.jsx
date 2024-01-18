@@ -35,7 +35,6 @@ export const CreateProduct = () => {
     description: '',
   }
   const handleSubmit = async (values, { setSubmitting }, actions) => {
-    // Handle form submission logic here
     createProduct(values.name, Number(values.price), values.description, Number(prodCatId))
     setSubmitting(false)
     actions.resetForm()

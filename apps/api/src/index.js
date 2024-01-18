@@ -1,6 +1,6 @@
 import express, { json, Express } from 'express'
 import cors from 'cors'
-import { join } from 'path'
+import path, { join } from 'path'
 import { NODE_ENV, PORT } from './config'
 import router from './router'
 import { DB } from './db'
@@ -59,7 +59,7 @@ const main = () => {
   app.use(cors())
   app.use(json())
   app.use('/api', router)
-
+  app.use('/api/uploads', express.static(path.join(__dirname, './public/images')))
   globalAPIErrorHandler(app)
   serveWebProjectBuildResult(app)
 

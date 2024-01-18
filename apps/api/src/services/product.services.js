@@ -28,33 +28,13 @@ export const createProductService = async (name, price, description, productCate
   }
 }
 
-export const updateProductService = async (
-  name,
-  price,
-  description,
-  productGroupId,
-  productTypeId,
-  productCategoryId,
-  colourId,
-  id,
-) => {
+export const updateProductService = async (name, price, description, productCategoryId, id) => {
   try {
     const check = await getProductQuery(id)
 
     if (!check) throw new Error('Product didnt exist')
 
-    if (check) console.log('check', check)
-
-    const res = await updateProductQuery(
-      name,
-      price,
-      description,
-      productGroupId,
-      productTypeId,
-      productCategoryId,
-      colourId,
-      id,
-    )
+    const res = await updateProductQuery(name, price, description, productCategoryId, id)
     return res
   } catch (err) {
     throw err

@@ -1,4 +1,7 @@
-import { createProductImageService } from '../services/productImage.services'
+import {
+  createProductImageService,
+  deleteProductImageService,
+} from '../services/productImage.services'
 
 export const createProductImageController = async (req, res) => {
   try {
@@ -6,6 +9,21 @@ export const createProductImageController = async (req, res) => {
     const result = await createProductImageService(req.file.filename, productId)
     return res.status(200).json({
       title: 'Create Product Image Success',
+      data: result,
+    })
+  } catch (err) {
+    return res.status(500).json({
+      title: err.message,
+    })
+  }
+}
+
+export const deleteProductImageController = async (req, res) => {
+  try {
+    const { id } = req.params
+    const result = await deleteProductImageService(id)
+    return res.status(200).json({
+      title: 'Delete Product Image Success',
       data: result,
     })
   } catch (err) {

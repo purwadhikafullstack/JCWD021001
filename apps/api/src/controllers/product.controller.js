@@ -41,19 +41,9 @@ export const createProductController = async (req, res) => {
 
 export const updateProductController = async (req, res) => {
   try {
-    const { name, price, description, productGroupId, productTypeId, productCategoryId, colourId } =
-      req.body
+    const { name, price, description, productCategoryId } = req.body
     const { id } = req.params
-    const result = await updateProductService(
-      name,
-      price,
-      description,
-      productGroupId,
-      productTypeId,
-      productCategoryId,
-      colourId,
-      id,
-    )
+    const result = await updateProductService(name, price, description, productCategoryId, id)
     return res.status(201).json({
       message: 'Update Product Success',
       data: result,
