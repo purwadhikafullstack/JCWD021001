@@ -2,9 +2,12 @@ import Orders from "../models/orders.model";
 import OrderProducts from "../models/orderProducts.model";
 import Payments from "../models/payments.model";
 import Product from "../models/product.model";
-import User from '../models/user.model';
-
 import { generateMidtransToken } from "../midtrans";
+import User from "../models/user.model";
+import UserAddress from "../models/userAddress.model";
+import Warehouse from "../models/warehouse.model";
+import Stock from "../models/stock.model";
+
 
 export const createOrderQuery = async (userId, userAddressId, warehouseId, totalPrice, totalQuantity, shippingCost, orderStatusId, products) => {
     try {
@@ -14,25 +17,52 @@ export const createOrderQuery = async (userId, userAddressId, warehouseId, total
             products.map(async (product) => {
               return await OrderProducts.create({
                 orderId: order.id,
-                productId: product.productId,
+                stockId: product.stockId,
                 price: product.price,
                 quantity: product.quantity
               });
             })
           );
         // const product = await Product.findOne({ where: { id: productId } });
-        const user = await User.findOne({ where: { id: userId } });
-        const midtransToken = await generateMidtransToken(
-            order.id,
-            totalPrice,
-            products,
-            shippingCost,
-            user.id,
-            user.username,
-            user.email
-          );
-        return { order, orderProduct, midtransToken}
+        // const user = await User.findOne({ where: { id: userId } });
+        // const midtransToken = await generateMidtransToken(
+        //     order.id,
+        //     totalPrice,
+        //     products,
+        //     shippingCost,
+        //     user.id,
+        //     user.username,
+        //     user.email
+        //   );
+        return { order, orderProduct}
     } catch (err) {
         throw err
     }
+}
+
+export const findOrderIdQuery = async (orderId) => {
+  try {
+    const res = await Orders.findOne({
+      where: { id: orderId },
+    })
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
+export const getOrderQuery = async (orderId) => {
+  try {
+    const res = await Orders.findAll({
+      include: [
+        {model: User}, {model: UserAddress}, {model: Warehouse},
+        {model: OrderProducts, include: [{ model: Stock, include: [{ model: Product }] }]}
+
+      ],
+      where: { id: orderId },
+    })
+    return res
+  } catch (err) {
+    throw err
+  }
 }

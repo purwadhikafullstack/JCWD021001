@@ -39,14 +39,14 @@ export async function up(queryInterface, Sequelize) {
       name: 'Jackets & Blazers',
       productCategoryId: 5,
     },
-    {
-      name: 'Bags',
-      productCategoryId: 6,
-    },
-    {
-      name: 'Hats & Caps',
-      productCategoryId: 6,
-    },
+    // {
+    //   name: 'Bags',
+    //   productCategoryId: 6,
+    // },
+    // {
+    //   name: 'Hats & Caps',
+    //   productCategoryId: 6,
+    // },
   ]);
 }
 

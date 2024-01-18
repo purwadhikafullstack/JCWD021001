@@ -16,8 +16,8 @@ const sendResponse = (res, statusCode, result, errorMessage) => {
 
 export const createCartController = async (req, res) => {
     try {
-        const { userId, productId, price, quantity } = req.body;
-        const result = await createCartService(userId, productId, price, quantity);
+        const { userId, stockId, price, quantity } = req.body;
+        const result = await createCartService(userId, stockId, price, quantity);
         return res.status(200).json({
             message: "success",
             data: result,

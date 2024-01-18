@@ -40,10 +40,10 @@ module.exports = {
         name: 'Large',
         productCategoryId: 5,
       },
-      {
-        name: 'All Size',
-        productCategoryId: 6,
-      },
+      // {
+      //   name: 'All Size',
+      //   productCategoryId: 6,
+      // },
     ]);
   },
 
