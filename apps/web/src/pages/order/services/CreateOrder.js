@@ -23,9 +23,8 @@ export const CreateOrder = async ({
             orderStatusId: orderStatusId,
             products: products,
         });
-        // console.log(response.data.data.midtransToken);
         toast.success("Order created")
-        // return response.data.data.midtransToken
+        return response.data.data.order.id
     } catch (err){
         toast.error("Error occurred")
     }

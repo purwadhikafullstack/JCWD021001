@@ -27,6 +27,7 @@ export const init = (sequelize) => {
       shippingCost: DataTypes.DECIMAL,
       orderDate: DataTypes.DATE,
       orderStatusId: DataTypes.INTEGER,
+      orderNumber: DataTypes.STRING,
     },
     {
       sequelize,
