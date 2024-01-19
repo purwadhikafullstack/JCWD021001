@@ -55,9 +55,11 @@ export const EditProduct = () => {
   // UPDATE PRODUCT
 
   // DELETE PRODUCT IMAGES
-  const deleteProductImage = async (id) => {
+  const deleteProductImage = async (id, productId) => {
     try {
-      const res = await axios.delete(`http://localhost:8000/api/product-image/${id}`)
+      const res = await axios.delete(`http://localhost:8000/api/product-image`, {
+        data: { id, productId },
+      })
       toast({
         title: `${res?.data?.title}`,
         status: 'success',
@@ -265,7 +267,7 @@ export const EditProduct = () => {
                         bgColor={'transparent'}
                         color={'redPure.500'}
                         onClick={() => {
-                          deleteProductImage(el?.id)
+                          deleteProductImage(el?.id, '')
                         }}
                       >
                         Delete

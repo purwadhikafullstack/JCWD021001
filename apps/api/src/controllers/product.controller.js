@@ -16,7 +16,7 @@ export const getProductController = async (req, res) => {
     })
   } catch (err) {
     return res.status(500).json({
-      tittle: 'Get Product Failed',
+      title: 'Get Product Failed',
       message: err.message,
     })
   }
@@ -45,7 +45,7 @@ export const updateProductController = async (req, res) => {
     const { id } = req.params
     const result = await updateProductService(name, price, description, productCategoryId, id)
     return res.status(201).json({
-      message: 'Update Product Success',
+      title: 'Update Product Success',
       data: result,
     })
   } catch (err) {
@@ -61,7 +61,7 @@ export const deleteProductController = async (req, res) => {
     const { id } = req.params
     const result = await deleteProductService(id)
     return res.status(200).json({
-      message: 'Delete Product Success',
+      title: 'Delete Product Success',
       data: result,
     })
   } catch (err) {

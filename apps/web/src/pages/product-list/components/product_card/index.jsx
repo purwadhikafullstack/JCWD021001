@@ -1,4 +1,4 @@
-import { Box, Button, Center, Flex, HStack, Icon, Spacer, Text } from '@chakra-ui/react'
+import { Box, Button, Center, Flex, HStack, Icon, Image, Spacer, Text } from '@chakra-ui/react'
 import { StarIcon, PlusIcon, HeartIcon } from '@heroicons/react/24/outline'
 import toRupiah from '@develoka/angka-rupiah-js'
 import { useNavigate } from 'react-router-dom'
@@ -6,7 +6,6 @@ export const ProductCard = (props) => {
   const navigate = useNavigate()
   return (
     <Box
-      bgColor={'grey.200'}
       h={'23em'}
       borderRadius={'.5em'}
       overflow={'hidden'}
@@ -14,23 +13,21 @@ export const ProductCard = (props) => {
       onClick={() => navigate(`/product/${props?.id}`)}
     >
       <Flex flexDir={'column'} w={'100%'} h={'100%'}>
-        <Box h={'55%'} p={'1em'}>
-          <Flex flexDir={'row-reverse'}>
-            <Flex
-              justifyContent={'center'}
-              alignItems={'center'}
-              a
-              bgColor={'white'}
-              w={'1.5em'}
-              h={'1.5em'}
-              borderRadius={'50%'}
-            >
-              <Icon as={HeartIcon} />
-            </Flex>
-          </Flex>
+        <Box h={'50%'} w={'100%'} p={'0'} bgColor={'white'}>
+          <Box h={'100%'} w={'100%'}>
+            <Image
+              w={'100%'}
+              h={'100%'}
+              src={`${import.meta.env.VITE_APP_API_IMAGE_URL}/productImages/${
+                props?.picture[0]?.imageUrl
+              }`}
+              objectFit={'cover'}
+              alt={'Photo Products'}
+            />
+          </Box>
         </Box>
         <Spacer />
-        <Box h={'45%'} bgColor={'white'} p={'1em'}>
+        <Box h={'50%'} bgColor={'white'} p={'1em'}>
           <Flex
             flexDir={'column'}
             w={'100%'}

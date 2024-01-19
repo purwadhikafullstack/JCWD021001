@@ -14,17 +14,52 @@ import {
   Thead,
   Tr,
   VStack,
+  useToast,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getProduct } from '../../../product-list/services/readProduct'
+import axios from 'axios'
 export const ProductList = () => {
+  // NAVIGATE
   const navigate = useNavigate()
+  // NAVIGATE
+  // TOAST
+  const toast = useToast()
+  // TOAST
+
   const [products, setProducts] = useState([])
   useEffect(() => {
     getProduct('', '', '', '', setProducts, 'name', 'ASC')
   }, [])
-  console.log('Products', products)
+  // DELETE PRODUCT IMAGES
+  const deleteProductImage = async (id, productId) => {
+    try {
+      await axios.delete(`http://localhost:8000/api/product-image`, { data: { id, productId } })
+    } catch (err) {
+      throw err
+    }
+  }
+  // DELETE PRODUCT IMAGES
+  // DELETE PRODUCTS
+  const deleteProduct = async (id, productId) => {
+    try {
+      await deleteProductImage('', productId)
+      const res = await axios.delete(`http://localhost:8000/api/product/${id}`)
+      await setProducts((products) => products.filter((product) => product.id !== id))
+      toast({
+        title: `${res?.data?.title}`,
+        status: 'success',
+        placement: 'bottom',
+      })
+    } catch (err) {
+      toast({
+        title: `${err?.message}`,
+        status: 'error',
+      })
+    }
+  }
+  // DELETE PRODUCTS
   return (
     <Box p={'1em'} bgColor={'grey.50'} minH={'100vh'} w={'100%'}>
       <VStack align={'stretch'}>
@@ -89,11 +124,16 @@ export const ProductList = () => {
               <Tbody position={'relative'} color={'#6D6D6D'} fontWeight={'500'}>
                 {products?.map((el, index) => {
                   return (
-                    <Tr cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'}>
+                    <Tr cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'} key={index}>
                       <Td textAlign={'center'}>
                         <Flex justifyContent={'space-between'} alignItems={'center'}>
                           <AspectRatio h={'3em'} w={'3em'} ratio={1}>
-                            <Image src={'https://bit.ly/dan-abramov'} objectFit={'cover'} />
+                            <Image
+                              src={`${import.meta.env.VITE_APP_API_IMAGE_URL}/productImages/${
+                                el?.picture[0]?.imageUrl
+                              }`}
+                              objectFit={'cover'}
+                            />
                           </AspectRatio>
                           <Text>{el?.name}</Text>
                         </Flex>
@@ -125,6 +165,9 @@ export const ProductList = () => {
                             border={'1px solid #e3024b'}
                             bgColor={'transparent'}
                             color={'redPure.500'}
+                            onClick={() => {
+                              deleteProduct(el?.id, el?.id)
+                            }}
                           >
                             Delete
                           </Button>

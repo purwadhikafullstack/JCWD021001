@@ -10,9 +10,9 @@ export const createProductImageService = async (imageUrl, productId) => {
   }
 }
 
-export const deleteProductImageService = async (id) => {
+export const deleteProductImageService = async (id, productId) => {
   try {
-    const res = await deleteProductImageQuery(id)
+    const res = await deleteProductImageQuery(id, productId)
     return res
   } catch (err) {
     throw err

@@ -102,7 +102,7 @@ export const ImageUpload = (props) => {
             </>
           ) : (
             <Text textAlign="center" lineHeight="200px">
-              Click to upload image with Chakra UI
+              Click to upload image
             </Text>
           )}
         </Box>

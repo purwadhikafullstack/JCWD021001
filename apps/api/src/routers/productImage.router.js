@@ -7,6 +7,6 @@ const productImageRouter = Router()
 import { uploadProductImageFile } from '../middleware/multer.middleware'
 
 productImageRouter.post('/', uploadProductImageFile, createProductImageController)
-productImageRouter.delete('/:id', deleteProductImageController)
+productImageRouter.delete('/', deleteProductImageController)
 
 export { productImageRouter }

@@ -74,7 +74,7 @@ export const Body = (props) => {
             />
           </Box>
           <Box w={'100%'} p={{ base: 'none', md: '.5em' }}>
-            <Flex alignItems={'center'} justifyContent={'space-between'}>
+            <Flex alignItems={'center'} justifyContent={'space-between'} mb={'1em'}>
               <Box>
                 <Text>
                   <Text as={'span'} color={'redPure.500'}>

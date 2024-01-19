@@ -13,14 +13,23 @@ export const createProductImageQuery = async (imageUrl, productId) => {
   }
 }
 
-export const deleteProductImageQuery = async (id) => {
+export const deleteProductImageQuery = async (id = null, productId = null) => {
   try {
-    const res = await ProductImage.destroy({
-      where: {
+    const filter = {}
+    if (id)
+      filter.where = {
         id: {
           [Op.eq]: id,
         },
-      },
+      }
+    if (productId)
+      filter.where = {
+        productId: {
+          [Op.eq]: productId,
+        },
+      }
+    const res = await ProductImage.destroy({
+      ...filter,
     })
     return res
   } catch (err) {

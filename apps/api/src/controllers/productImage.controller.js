@@ -20,8 +20,8 @@ export const createProductImageController = async (req, res) => {
 
 export const deleteProductImageController = async (req, res) => {
   try {
-    const { id } = req.params
-    const result = await deleteProductImageService(id)
+    const { id, productId } = req.body
+    const result = await deleteProductImageService(id, productId)
     return res.status(200).json({
       title: 'Delete Product Image Success',
       data: result,
