@@ -23,6 +23,7 @@ export const init = (sequelize) => {
       fullName: DataTypes.STRING,
       phoneNumber: DataTypes.STRING,
       isMainAddress: DataTypes.BOOLEAN,
+      postalCode: DataTypes.INTEGER,
     },
     {
       sequelize,

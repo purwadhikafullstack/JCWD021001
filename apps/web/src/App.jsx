@@ -14,6 +14,7 @@ import Cart from './pages/cart';
 import { Product } from './pages/product-list/container';
 import { LoggedInRoute } from './components/Auth/ProtectedRoute';
 import CreateAddress from './pages/create-address';
+import ManageAddress from './pages/manage-address';
 
 function App() {
   // const { user, isLogin } = useSelector((state) => state.AuthReducer);
@@ -40,6 +41,7 @@ function App() {
         <Route path="/order" element={<Order />} />
         <Route path="/cart" element={<Cart/>} />
         <Route path="/product" element={<Product />} />
+        <Route path="/manage-address" element={<ManageAddress />} />
       </Routes>
     </Auth>
     </Box>

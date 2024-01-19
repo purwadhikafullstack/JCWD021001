@@ -47,9 +47,9 @@ export const findCityOpenCageBasedService = async (city) => {
 }
 
 
-export const createUserAddressService = async (id, specificAddress, cityId, fullName, phoneNumber) => {
+export const createUserAddressService = async (id, specificAddress, cityId, fullName, phoneNumber, postalCode) => {
     try {
-        const res = await createUserAddressQuery(id, specificAddress, cityId, fullName, phoneNumber)
+        const res = await createUserAddressQuery(id, specificAddress, cityId, fullName, phoneNumber, postalCode)
         return res
     } catch (err){
         throw err

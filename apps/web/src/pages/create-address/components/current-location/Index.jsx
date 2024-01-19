@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Input, Select, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, Input, Select, Text, Textarea } from "@chakra-ui/react";
 import { getCity, getProvince } from "../../services/readUserAddress";
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
@@ -7,10 +7,8 @@ import { createUserAddress } from "../../services/createUserAddress";
 import { findOpenCageAndCity } from "../../services/readUserAddress";
 
 
-function FormCurrentLocation () {
+function FormCurrentLocation ({ lat, lng }) {
  
-    const [latitude, setLatitude] = useState('')
-    const [longitude, setLongitude] = useState('')
     const [address, setAddress] = useState('')
     const [selectedCity, setSelectedCity] = useState('')
     const [citylist, setCityList] = useState([])
@@ -19,28 +17,20 @@ function FormCurrentLocation () {
 
     const user = useSelector((state) => state.AuthReducer.user);
 
-    useEffect (() => {
-        navigator.geolocation.getCurrentPosition((position) => {
-            setLatitude(position.coords.latitude);
-            setLongitude(position.coords.longitude)
-        })
-    }, [])
-
-
     useEffect(() => {
-        if (latitude && longitude ) {
+        if (lat && lng ) {
             const fetchData = async () => {
                 try {
-                    const address = await findOpenCageAndCity(latitude, longitude);
+                    const address = await findOpenCageAndCity(lat, lng);
                     setAddress(address);
                     setSelectedProvince(address.city.provinceId)
                 } catch (error) {
                     console.error("Error fetching address:", error);
                 }
             };
-            fetchData(latitude, longitude);
+            fetchData(lat, lng);
         }
-    }, [latitude, longitude]);
+    }, [lat, lng]);
 
     useEffect(() => {
         const fetchCityData = async () => {
@@ -101,7 +91,8 @@ function FormCurrentLocation () {
 
     useEffect(() => {
         if (address) {
-            formik.setFieldValue('specificAddress', `${address.address.road}, ${address.address.village}, ${address.address.municipality}, ${address.address.postcode}`);
+            formik.setFieldValue('specificAddress', `${address.address.road}, ${address.address.village}, ${address.address.municipality}`);
+            formik.setFieldValue('postalCode', `${address.address.postcode}`);
         }
     }, [address, formik.setFieldValue]);
 
@@ -111,33 +102,94 @@ function FormCurrentLocation () {
     return (
         <>
             <form onSubmit={formik.handleSubmit}>
-                <Flex>
-                    <Box>  
-                        <Text>Full Name</Text>
+            <Grid width={'100%'}
+                gap={'68px'}
+                gridTemplateColumns={'1fr 1fr'}>
+                    <Box>
+                        <Text fontSize={'16px'}
+                        fontWeight={'700'}
+                        color={'brand.grey350'}
+                        mb={'8px'}>
+                            Full Name
+                        </Text>
                             <Input
                             name="fullName"
+                            placeholder="Type your full name here"
+                            _placeholder={{color: 'brand.grey350'}}
+                            bg={'brand.grey100'}
+                            variant={'filled'}
+                            mb={'32px'}
                             value={formik.values.fullName}
                             onChange={formik.handleChange}/>
-                            <Text>ADDRESS</Text>
-                            <Text>Province</Text>
-                            <Select value={selectedProvince}
-                                    onChange={(e) => setSelectedProvince(e.target.value)}>
-                                <option value="">Select a Province</option>
+                    </Box>
+                    <Box>  
+                            <Text fontSize={'16px'}
+                            fontWeight={'700'}
+                            color={'brand.grey350'}
+                            mb={'8px'}>
+                                Mobile Phone
+                            </Text>
+                            <Input
+                            placeholder="Type your mobile phone number here"
+                            _placeholder={{color: 'brand.grey350'}}
+                            bg={'brand.grey100'}
+                            variant={'filled'} 
+                            mb={'24px'}
+                            name="phoneNumber"
+                            value={formik.values.phoneNumber}
+                            onChange={formik.handleChange}/>       
+                    </Box>
+                </Grid>
+                <Text 
+                fontSize={'16px'}
+                fontWeight={'700'}
+                color={'brand.grey350'}
+                mb={'24px'}>
+                    ADDRESS
+                </Text>
+                <Grid width={'100%'}
+                gap={'68px'}
+                gridTemplateColumns={'1fr 1fr'}>
+                    <Box>
+                        
+                            <Text fontSize={'16px'}
+                            fontWeight={'700'}
+                            color={'brand.grey350'}
+                            mb={'8px'}>
+                                Province
+                            </Text>
+                            <Select
+                            placeholder="Select a Province"
+                            bg={'brand.grey100'}
+                            variant={'filled'} 
+                            color={'brand.grey350'}
+                            mb={'24px'}
+                            value={selectedProvince}
+                            onChange={(e) => setSelectedProvince(e.target.value)}>
                                 {provinceList?.map((province) => (
                                     <option key={province.id} value={province.id}>
                                         {province.name}
                                     </option>
                                 ))}
                             </Select>
-                            <Text>City</Text>
+                            <Text fontSize={'16px'}
+                            fontWeight={'700'}
+                            color={'brand.grey350'}
+                            mb={'8px'}>
+                                City
+                            </Text>
                             <Select 
                             value={selectedCity}
+                            placeholder="Select a City"
+                            bg={'brand.grey100'}
+                            color={'brand.grey350'}
+                            variant={'filled'} 
+                            mb={'24px'}
                             name="cityId"
                             onChange={(e) => {
                                 setSelectedCity(e.target.value);
                                 formik.handleChange(e);
                             }}>
-                                <option value="">Select a city</option>
                                 {citylist?.map((city) => (
                                     <option key={city.id} 
                                     value={city.id}
@@ -146,19 +198,64 @@ function FormCurrentLocation () {
                                     </option>
                                 ))}
                             </Select>
+                            <Text fontSize={'16px'}
+                            fontWeight={'700'}
+                            color={'brand.grey350'}
+                            mb={'8px'}>
+                                Postal Code
+                            </Text>
+                            <Input
+                            placeholder="Type a postal code"
+                            _placeholder={{color: 'brand.grey350'}}
+                            bg={'brand.grey100'}
+                            variant={'filled'} 
+                            mb={'24px'}
+                            name="postalCode"
+                            value={formik.values.postalCode}
+                            onChange={formik.handleChange}/>
                     </Box>
-                    <Box>
-                        <Text>Phone Number</Text>
-                        <Input
-                        name="phoneNumber"
-                        value={formik.values.phoneNumber}
-                        onChange={formik.handleChange}/>
-                        <Text>Address (Ex : Street, Residence, number of house)</Text>
-                        <Input name="specificAddress"
-                        value={formik.values.specificAddress}
-                        onChange={formik.handleChange}/>
+                    <Box>   
+                            <Text fontSize={'16px'}
+                            fontWeight={'700'}
+                            color={'brand.grey350'}
+                            mb={'8px'}>
+                                Address (Ex : Street, Residence, number of house)
+                            </Text>
+                            <Textarea placeholder="Type your address"
+                            name="specificAddress"
+                            _placeholder={{color: 'brand.grey350'}}
+                            bg={'brand.grey100'}
+                            variant={'filled'} 
+                            h={'210px'}
+                            value={formik.values.specificAddress}
+                            onChange={formik.handleChange}/>
                     </Box>
-                    <Button type="submit">Simpan</Button>
+                </Grid>
+                <Flex justifyContent={'flex-end'}
+                mt={'40px'}
+                gap={'16px'}>
+                    <Button 
+                    width={'168px'}
+                    padding={'12px 16px'}
+                    bgColor={'white'}
+                    color={'brand.lightred'}
+                    variant={'outline'}
+                    borderColor={'brand.lightred'}
+                    _hover={{borderColor: '#f50f5a', color: '#f50f5a'}} 
+                    _active={{opacity:'70%'}}
+                    >
+                        Cancel
+                    </Button>
+                    <Button type="sumbit"
+                    width={'168px'}
+                    padding={'12px 16px'}
+                    bgColor={'brand.lightred'}
+                    color={'white'}
+                    _hover={{bg: '#f50f5a'}} 
+                    _active={{opacity:'70%'}}
+                    >
+                        Create
+                    </Button>
                 </Flex>
             </form>
         </>

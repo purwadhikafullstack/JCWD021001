@@ -99,8 +99,8 @@ export const createUserAddressController = async (req, res) => {
     try{
         const {id} = req.params
         console.log("ini id",id)
-        const { specificAddress, cityId, fullName, phoneNumber} = req.body
-        const result = await createUserAddressService (id, specificAddress, cityId, fullName, phoneNumber)
+        const { specificAddress, cityId, fullName, phoneNumber, postalCode} = req.body
+        const result = await createUserAddressService (id, specificAddress, cityId, fullName, phoneNumber, postalCode)
         return res.status(200).json({
             message: "success",
             data: result

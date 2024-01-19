@@ -4,15 +4,22 @@ import { BreadCrumbs } from "./components/breadcrumbs";
 import Footer from "../../components/Footer/Footer";
 import FormCreateAddress from "./components/form/Index";
 import { useEffect, useState } from "react";
-// import { getAddressOpenCage } from "./services/readUserAddress";
 import FormCurrentLocation from "./components/current-location/Index";
-
+import Map from "./components/map";
 
 
 function CreateAddress(){
 
     const [formCurrentLocation, setFormCurrentLocation] = useState(false)
+    const [latitude, setLatitude] = useState(null)
+    const [longitude, setLongitude] = useState(null)
     
+    useEffect (() => {
+        navigator.geolocation.getCurrentPosition((position) => {
+            setLatitude(position.coords.latitude);
+            setLongitude(position.coords.longitude)
+        })
+    }, [])
 
     const handleClick = async () => {
         try {
@@ -65,16 +72,21 @@ function CreateAddress(){
                         Use your current location
                         </Text>
                     </Button>
-                    <Box width={'100%'}
+                    <Box 
+                    className="map"
+                    width={'100%'}
                     height={'474px'}
-                    bg={'green.100'}>
-                        MAP
+                    bg={'green.100'}
+                    marginBottom={'33px'}>
+                        <Map lat={latitude} lng={longitude}/>
                     </Box>
-                    <Text>
-                        Contact
+                    <Text fontSize={'16px'}
+                    fontWeight={'700'}
+                    color={'brand.grey350'}
+                    mb={'24px'}>
+                        CONTACT
                     </Text>
-                    {formCurrentLocation ? <FormCurrentLocation/> : <FormCreateAddress/>}
-                    {/* <FormCreateAddress/> */}
+                    {formCurrentLocation ? <FormCurrentLocation lat={latitude} lng={longitude}/> : <FormCreateAddress/>}
                 </Box>
             </Box>
             <Footer/>
