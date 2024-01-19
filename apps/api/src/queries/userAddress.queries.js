@@ -2,6 +2,7 @@ import UserAddress from '../models/userAddress.model'
 import Province from '../models/province.model'
 import City from '../models/city.model'
 import opencage from 'opencage-api-client'
+import { Op } from 'sequelize';
 
 //FIND
 export const findMainUserAddressQuery = async (id) => {
@@ -45,6 +46,20 @@ export const opencageQuery = async (latitude, longitude, API_KEY) => {
         key: API_KEY,
         language: 'en' })
         return response.results[0]
+    } catch (err){
+        throw err
+    }
+}
+
+// FIND CITY BASED ON OPENCAGE DATA
+
+export const findCityOpenCageBasedQuery = async (city) => {
+    try{
+        return await City.findOne(
+            {where : {
+                name: {[Op.substring]: city}
+            }})
+        
     } catch (err){
         throw err
     }

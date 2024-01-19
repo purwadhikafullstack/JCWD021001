@@ -4,39 +4,23 @@ import { BreadCrumbs } from "./components/breadcrumbs";
 import Footer from "../../components/Footer/Footer";
 import FormCreateAddress from "./components/form/Index";
 import { useEffect, useState } from "react";
-import { getAddressOpenCage } from "./services/readUserAddress";
+// import { getAddressOpenCage } from "./services/readUserAddress";
+import FormCurrentLocation from "./components/current-location/Index";
 
 
 
 function CreateAddress(){
 
-    const [latitude, setLatitude] = useState('')
-    const [longitude, setLongitude] = useState('')
-    const [address, setAddress] = useState('')
+    const [formCurrentLocation, setFormCurrentLocation] = useState(false)
     
-    useEffect (() => {
-        navigator.geolocation.getCurrentPosition((position) => {
-            setLatitude(position.coords.latitude);
-            setLongitude(position.coords.longitude)
-        })
-    }, [])
 
-    console.log(latitude);
-    console.log(longitude);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const address = await getAddressOpenCage(latitude, longitude);
-                setAddress(address);
-            } catch (error) {
-                console.error("Error fetching address:", error);
-            }
-        };
-        fetchData();
-    }, [latitude, longitude]);
-
-    console.log("ini address", address);
+    const handleClick = async () => {
+        try {
+            setFormCurrentLocation(true)
+        } catch (error) {
+            console.error("Error fetching address:", error);
+        }
+    };
 
     return (
         <Box bg={'#F1F1F1'}
@@ -74,7 +58,9 @@ function CreateAddress(){
                     }}
                     _active={{
                         opacity: '50%'
-                    }}>
+                    }}
+                    onClick={handleClick}
+                    >
                         <Text>
                         Use your current location
                         </Text>
@@ -87,9 +73,8 @@ function CreateAddress(){
                     <Text>
                         Contact
                     </Text>
-
-                    <FormCreateAddress/>
-
+                    {formCurrentLocation ? <FormCurrentLocation/> : <FormCreateAddress/>}
+                    {/* <FormCreateAddress/> */}
                 </Box>
             </Box>
             <Footer/>

@@ -1,4 +1,4 @@
-import { findMainUserAddressService, createUserAddressService, findProvinceService, findCityService, opencageService } from "../services/userAddress.services";
+import { findMainUserAddressService, createUserAddressService, findProvinceService, findCityService, opencageService, findCityOpenCageBasedService } from "../services/userAddress.services";
 
 export const findMainUserAddressController = async (req, res) => {
     try{
@@ -57,6 +57,43 @@ export const opencageController = async (req, res) => {
         })
     }
 }
+
+export const findCityOpenCageBasedController = async (req, res) => {
+    try {
+        const {city} = req.query
+        const result = await findCityOpenCageBasedService(city)
+        return res.status(200).json({
+            message: "success",
+            data: result
+        })
+    } catch (err){
+        return res.status(500).json({
+            message: err.message
+        })
+    }
+}
+
+//FIND OPENCAGE ADDRESS AND CITY FROM DATABASE COMBINED
+export const findOpencageAndCityController = async (req, res) => {
+    try {
+        const { latitude, longitude } = req.query;
+        const addressResult = await opencageService(latitude, longitude);
+
+        const cityName = addressResult.components.city || addressResult.components.county;
+        
+        const cityResult = await findCityOpenCageBasedService(cityName);
+
+        return res.status(200).json({
+            message: "success",
+            address: addressResult.components,
+            city: cityResult
+        });
+    } catch (err) {
+        return res.status(500).json({
+            message: err.message
+        });
+    }
+};
 
 export const createUserAddressController = async (req, res) => {
     try{
