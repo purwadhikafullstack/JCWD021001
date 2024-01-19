@@ -4,8 +4,6 @@ import { CreateProduct } from '../create-product'
 import { EditProduct } from '../edit-product'
 
 export const Body = (props) => {
-  console.log('destination', props?.destination)
-  console.log('destination', props?.createProduct)
   const renderComponent = () => {
     switch (props?.destination) {
       case 'product-list':

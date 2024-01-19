@@ -59,6 +59,7 @@ const main = () => {
   app.use(cors())
   app.use(json())
   app.use('/api', router)
+
   app.use('/api/uploads', express.static(path.join(__dirname, './public/images')))
   globalAPIErrorHandler(app)
   serveWebProjectBuildResult(app)
@@ -67,6 +68,7 @@ const main = () => {
     if (err) {
       console.log(`ERROR: ${err}`)
     } else {
+      console.log(path.join(__dirname, './public/images'))
       console.log(`  ➜  [API] Local:   http://localhost:${PORT}/`)
     }
   })

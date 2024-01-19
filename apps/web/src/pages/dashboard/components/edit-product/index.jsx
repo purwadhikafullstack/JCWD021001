@@ -29,22 +29,6 @@ export const EditProduct = () => {
   // SET TOAST
   const toast = useToast()
   // SET TOAST
-  // Start set product
-  const { epid } = useParams()
-  const [product, setProduct] = useState(null)
-  useEffect(() => {
-    getProductDetails(epid, setProduct)
-  }, [])
-  // End set product
-
-  // Start validation schema
-  const validationSchema = Yup.object().shape({
-    // name: Yup.string().required('Name is required'),
-    // price: Yup.string().required('Price is required'),
-    // productCategoryId: Yup.string().required('Category is required'),
-    // description: Yup.string().required('Description is required'),
-  })
-  // End validation schema
 
   // UPDATE PRODUCT
   const updateProduct = async (name, price, description, productCategoryId, id) => {
@@ -69,6 +53,40 @@ export const EditProduct = () => {
     }
   }
   // UPDATE PRODUCT
+
+  // DELETE PRODUCT IMAGES
+  const deleteProductImage = async (id) => {
+    try {
+      const res = await axios.delete(`http://localhost:8000/api/product-image/${id}`)
+      toast({
+        title: `${res?.data?.title}`,
+        status: 'success',
+        placement: 'bottom',
+      })
+    } catch (err) {
+      toast({
+        title: `${err?.message}`,
+        status: 'error',
+      })
+    }
+  }
+  // DELETE PRODUCT IMAGES
+  // Start set product
+  const { epid } = useParams()
+  const [product, setProduct] = useState(null)
+  useEffect(() => {
+    getProductDetails(epid, setProduct)
+  }, [updateProduct, deleteProductImage])
+  // End set product
+
+  // Start validation schema
+  const validationSchema = Yup.object().shape({
+    // name: Yup.string().required('Name is required'),
+    // price: Yup.string().required('Price is required'),
+    // productCategoryId: Yup.string().required('Category is required'),
+    // description: Yup.string().required('Description is required'),
+  })
+  // End validation schema
 
   // HANDLE SUBMIT
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -154,6 +172,7 @@ export const EditProduct = () => {
     description: null,
   }
   // FORMIK INITIAL VALUES
+
   return (
     <Box p={'1em'} bgColor={'white'}>
       <Text fontWeight={'bold'}>Edit Product</Text>
@@ -224,6 +243,39 @@ export const EditProduct = () => {
                 <VStack align={'stretch'}>{renderedCategory}</VStack>
               </Box>
             </Grid>
+            <Grid w={'100%'} templateColumns={'repeat(3, 1fr)'} gap={'.5em'}>
+              {product?.picture?.map((el, index) => {
+                return (
+                  <Box key={index} w={'5em'} h={'5em'} border={'1px solid lightgray'}>
+                    <VStack align={'stretch'}>
+                      <Image
+                        src={`${import.meta.env.VITE_APP_API_IMAGE_URL}/productImages/${
+                          el?.imageUrl
+                        }`}
+                      />
+                      <Button
+                        _hover={{
+                          bgColor: 'transparent',
+                        }}
+                        fontSize={'.75em'}
+                        alignSelf={'flex-start'}
+                        w={'3em'}
+                        h={'2em'}
+                        border={'1px solid #e3024b'}
+                        bgColor={'transparent'}
+                        color={'redPure.500'}
+                        onClick={() => {
+                          deleteProductImage(el?.id)
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    </VStack>
+                  </Box>
+                )
+              })}
+            </Grid>
+            <ImageUpload productId={product?.id} />
             <Field name="description">
               {({ field, form }) => (
                 <FormControl isInvalid={form.errors.description && form.touched.description} mb={3}>
@@ -269,20 +321,7 @@ export const EditProduct = () => {
                 </FormControl>
               )}
             </Field>
-            <Grid templateColumns={'repeat(3, 1fr)'} gap={'.5em'}>
-              {product?.picture?.map((el, index) => {
-                return (
-                  <Box key={index}>
-                    <Image
-                      src={`${import.meta.env.VITE_APP_API_IMAGE_URL}/productImages/${
-                        el?.imageUrl
-                      }`}
-                    ></Image>
-                  </Box>
-                )
-              })}
-            </Grid>
-            <ImageUpload productId={product?.id} />
+
             <HStack alignSelf={'flex-end'}>
               <Button
                 type="submit"
