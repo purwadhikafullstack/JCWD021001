@@ -80,3 +80,18 @@ export const updateProductCategoryQuery = async (name, parentId = null, id) => {
     throw err
   }
 }
+
+export const deleteProductCategoryQuery = async (id) => {
+  try {
+    const res = await ProductCategory.destroy({
+      where: {
+        id: {
+          [Op.eq]: id,
+        },
+      },
+    })
+    return res
+  } catch (err) {
+    throw err
+  }
+}

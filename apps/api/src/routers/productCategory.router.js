@@ -1,5 +1,6 @@
 import {
   createProductCategoryController,
+  deleteProductCategoryController,
   getGenderController,
   getProductCategoryController,
   updateProductCategoryController,
@@ -11,5 +12,6 @@ productCategoryRouter.get('/', getProductCategoryController)
 productCategoryRouter.get('/gender', getGenderController)
 productCategoryRouter.post('/', createProductCategoryController)
 productCategoryRouter.patch('/:id', updateProductCategoryController)
+productCategoryRouter.delete('/:id', deleteProductCategoryController)
 
 export { productCategoryRouter }

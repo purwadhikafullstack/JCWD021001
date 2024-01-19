@@ -1,5 +1,6 @@
 import {
   createProductCategoryQuery,
+  deleteProductCategoryQuery,
   getGenderQuery,
   getProductCategoryQuery,
   updateProductCategoryQuery,
@@ -35,6 +36,15 @@ export const createProductCategoryService = async (name, parentId) => {
 export const updateProductCategoryService = async (name, parentId, id) => {
   try {
     const res = await updateProductCategoryQuery(name, parentId, id)
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
+export const deleteProductCategoryService = async (id) => {
+  try {
+    const res = await deleteProductCategoryQuery(id)
     return res
   } catch (err) {
     throw err

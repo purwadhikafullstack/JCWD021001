@@ -1,5 +1,7 @@
+import { deleteProductCategoryQuery } from '../queries/productCategory.queries'
 import {
   createProductCategoryService,
+  deleteProductCategoryService,
   getGenderServices,
   getProductCategoryService,
   updateProductCategoryService,
@@ -56,6 +58,21 @@ export const updateProductCategoryController = async (req, res) => {
     const result = await updateProductCategoryService(name, parentId, id)
     return res.status(200).json({
       title: 'Update Product Category Success',
+      data: result,
+    })
+  } catch (err) {
+    return res.status(500).json({
+      message: err.message,
+    })
+  }
+}
+
+export const deleteProductCategoryController = async (req, res) => {
+  try {
+    const { id } = req.params
+    const result = await deleteProductCategoryService(id)
+    return res.status(200).json({
+      title: 'Delete Product Category Success',
       data: result,
     })
   } catch (err) {
