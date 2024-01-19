@@ -45,3 +45,38 @@ export const getGenderQuery = async () => {
     throw err
   }
 }
+
+export const createProductCategoryQuery = async (name, parentId = null) => {
+  try {
+    const res = await ProductCategory.create({
+      name,
+      parentId,
+    })
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
+export const updateProductCategoryQuery = async (name, parentId = null, id) => {
+  try {
+    const toBeUpdated = {}
+    if (name) toBeUpdated.name = name
+    if (parentId) toBeUpdated.parentId = parentId
+    const res = await ProductCategory.update(
+      {
+        ...toBeUpdated,
+      },
+      {
+        where: {
+          id: {
+            [Op.eq]: id,
+          },
+        },
+      },
+    )
+    return res
+  } catch (err) {
+    throw err
+  }
+}
