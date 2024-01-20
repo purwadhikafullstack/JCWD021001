@@ -1,4 +1,4 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model } from 'sequelize'
 
 export default class Stock extends Model {
   /**
@@ -8,15 +8,15 @@ export default class Stock extends Model {
    */
   static associate(models) {
     // define association here
-    Stock.belongsTo(models.Product, { foreignKey: 'productId' });
+    Stock.belongsTo(models.Product, { foreignKey: 'productId' })
     Stock.belongsTo(models.Warehouse, {
       as: 'warehouse',
       foreignKey: 'warehouseId',
-    });
-    Stock.belongsTo(models.Size, { as: 'size', foreignKey: 'sizeId' });
-    Stock.belongsTo(models.Colour, { as: 'colour', foreignKey: 'colourId' });
-    Stock.hasMany(models.CartProducts, { foreignKey: 'stockId' });
-    Stock.hasMany(models.OrderProducts, { foreignKey: 'stockId' });
+    })
+    Stock.belongsTo(models.Size, { as: 'size', foreignKey: 'sizeId' })
+    Stock.belongsTo(models.Colour, { as: 'colour', foreignKey: 'colourId' })
+    // Stock.hasMany(models.CartProducts)
+    // Stock.hasMany(models.OrderProducts)
   }
 }
 export const init = (sequelize) => {
@@ -72,5 +72,5 @@ export const init = (sequelize) => {
       modelName: 'Stock',
       timestamps: true,
     },
-  );
-};
+  )
+}
