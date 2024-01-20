@@ -82,6 +82,10 @@ export const getProductQuery = async (
                   model: ProductCategory,
                   as: 'parent',
                 },
+                {
+                  model: Size,
+                  as: 'size',
+                },
               ],
             },
             {

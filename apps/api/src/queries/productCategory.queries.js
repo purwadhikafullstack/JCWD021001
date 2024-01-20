@@ -1,5 +1,6 @@
 import { Op } from 'sequelize'
 import ProductCategory from '../models/productCategory.model'
+import Size from '../models/size.model'
 
 export const getProductCategoryQuery = async (gender) => {
   const filter = {}
@@ -15,10 +16,16 @@ export const getProductCategoryQuery = async (gender) => {
         {
           model: ProductCategory,
           as: 'parent',
-          include: {
-            model: ProductCategory,
-            as: 'parent',
-          },
+          include: [
+            {
+              model: ProductCategory,
+              as: 'parent',
+            },
+            {
+              model: Size,
+              as: 'Size',
+            },
+          ],
         },
       ],
       ...filter,
