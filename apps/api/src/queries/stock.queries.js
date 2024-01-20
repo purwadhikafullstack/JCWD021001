@@ -30,12 +30,12 @@ export const createStockQuery = async (productId, warehouseId, qty, sizeId, colo
   }
 }
 
-export const getStockByIdQuery = async (id = null, productId = null) => {
+export const getStockByIdQuery = async (id = null) => {
   try {
     const res = await Stock.findOne({
       where: {
         id: {
-          [Op.eq]: ``,
+          [Op.eq]: id,
         },
       },
     })
