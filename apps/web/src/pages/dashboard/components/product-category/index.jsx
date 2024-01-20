@@ -36,7 +36,6 @@ export const ProductCategory = (props) => {
   useEffect(() => {
     getGender()
   }, [])
-  console.log('GENDER', gender)
   //   GENDER
   return (
     <Box p={'1em'}>
@@ -80,7 +79,7 @@ export const ProductCategory = (props) => {
             <Tbody position={'relative'} color={'#6D6D6D'} fontWeight={'500'}>
               {gender?.map((el, index) => {
                 return (
-                  <Tr cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'}>
+                  <Tr cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'} key={index}>
                     <Td textAlign={'center'}>
                       <Flex justifyContent={'space-between'} alignItems={'center'}>
                         <Text>{el?.name}</Text>
@@ -96,7 +95,9 @@ export const ProductCategory = (props) => {
                           bgColor={'redPure.500'}
                           color={'white'}
                           onClick={() => {
-                            navigate(`/dashboard/product-category/edit-product-category/${el?.id}`)
+                            navigate(
+                              `/dashboard/product-category/edit-product-category/${el?.name?.toLowerCase()}`,
+                            )
                           }}
                         >
                           Edit

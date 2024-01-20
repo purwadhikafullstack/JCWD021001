@@ -15,9 +15,9 @@ export const getProductCategoryService = async (gender) => {
   }
 }
 
-export const getGenderServices = async () => {
+export const getGenderServices = async (name) => {
   try {
-    const res = await getGenderQuery()
+    const res = await getGenderQuery(name)
     return res
   } catch (err) {
     throw err

@@ -30,15 +30,23 @@ export const getProductCategoryQuery = async (gender) => {
   }
 }
 
-export const getGenderQuery = async () => {
+export const getGenderQuery = async (name = null) => {
   try {
-    // const res = await ProductCategory.sequelize.query(
-    //   `SELECT id, name FROM productCategories WHERE parentId IS NULL;`,
-    // )
+    const filter = {}
+    if (!name)
+      filter.where = {
+        parentId: {
+          [Op.eq]: null,
+        },
+      }
+    if (name)
+      filter.where = {
+        name: {
+          [Op.eq]: name,
+        },
+      }
     const res = await ProductCategory.findAll({
-      where: {
-        parentId: { [Op.eq]: null },
-      },
+      ...filter,
     })
     return res
   } catch (err) {

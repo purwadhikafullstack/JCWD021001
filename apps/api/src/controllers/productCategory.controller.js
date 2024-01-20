@@ -24,7 +24,8 @@ export const getProductCategoryController = async (req, res) => {
 
 export const getGenderController = async (req, res) => {
   try {
-    const result = await getGenderServices()
+    const { name } = req.query
+    const result = await getGenderServices(name)
     return res.status(200).json({
       message: 'Get Gender Success',
       data: result,
@@ -72,7 +73,7 @@ export const deleteProductCategoryController = async (req, res) => {
     const { id } = req.params
     const result = await deleteProductCategoryService(id)
     return res.status(200).json({
-      title: 'Delete Product Category Success',
+      title: 'Delete Product CategorySuccess',
       data: result,
     })
   } catch (err) {

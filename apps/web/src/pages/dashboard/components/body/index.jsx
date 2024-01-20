@@ -4,6 +4,7 @@ import { CreateProduct } from '../create-product'
 import { EditProduct } from '../edit-product'
 import { ProductCategory } from '../product-category'
 import { CreateProductCategoryGender } from '../create-product-category-gender'
+import { EditProductCategory } from '../edit-product-category'
 
 export const Body = (props) => {
   const renderComponent = () => {
@@ -22,6 +23,8 @@ export const Body = (props) => {
         return <EditProduct />
       case 'create-product-category':
         return <CreateProductCategoryGender />
+      case 'edit-product-category':
+        return <EditProductCategory />
     }
   }
   const create = renderComponentAgain()

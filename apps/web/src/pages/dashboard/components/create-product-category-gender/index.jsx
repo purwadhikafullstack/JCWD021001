@@ -22,10 +22,6 @@ export const CreateProductCategoryGender = (props) => {
   const toast = useToast()
   // SET TOAST
 
-  // USE PARAMS
-  const { epid } = useParams()
-  // USE PARAMS
-
   //   SCHEMA
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
