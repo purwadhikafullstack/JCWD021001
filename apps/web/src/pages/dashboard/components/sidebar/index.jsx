@@ -2,7 +2,12 @@ import { ChevronLeftIcon } from '@chakra-ui/icons'
 import { Box, Flex, HStack, Icon, Text, VStack } from '@chakra-ui/react'
 import { Squares2X2Icon } from '@heroicons/react/24/outline'
 import { SidebarButton } from '../sidebar-button'
+import { useNavigate } from 'react-router-dom'
 export const Sidebar = (props) => {
+  // NAVIGATE
+  const navigate = useNavigate()
+  // NAVIGATE
+
   return (
     <Box
       position={'relative'}
@@ -24,8 +29,20 @@ export const Sidebar = (props) => {
           <SidebarButton label={'Product'} icon={Squares2X2Icon} />
           <Box p={'0 1.3em'} borderLeft={'2px solid lightgray'}>
             <VStack align={'stretch'} spacing={'1.5em'}>
-              <Text>Product List</Text>
-              <Text>Product Category</Text>
+              <Text
+                onClick={() => {
+                  navigate('/dashboard/product-list')
+                }}
+              >
+                Product List
+              </Text>
+              <Text
+                onClick={() => {
+                  navigate('/dashboard/product-category')
+                }}
+              >
+                Product Category
+              </Text>
             </VStack>
           </Box>
         </VStack>

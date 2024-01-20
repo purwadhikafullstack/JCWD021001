@@ -3,7 +3,6 @@ import {
   Box,
   Text,
   Input,
-  Flex,
   Button,
   FormControl,
   FormLabel,
@@ -15,7 +14,7 @@ import {
   Grid,
   VStack,
 } from '@chakra-ui/react'
-import { Formik, Field, Form, ErrorMessage } from 'formik'
+import { Formik, Field, Form } from 'formik'
 import * as Yup from 'yup'
 import { getGender } from '../../services/readGender'
 import { getProductCategory } from '../../../product-list/services/readProductCategory'
