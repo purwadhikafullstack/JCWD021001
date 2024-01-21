@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { findMainUserAddressController, createUserAddressController, findProvinceController, findCityController, opencageController, findCityOpenCageBasedController, findOpencageAndCityController } from '../controllers/userAddress.controller';
+import { findUserAddressController, createUserAddressController, findProvinceController, findCityController, opencageController, findCityOpenCageBasedController, findOpencageAndCityController } from '../controllers/userAddress.controller';
 const userAddressRouter = Router();
 
 // GET
-userAddressRouter.get("/main-address/:id", findMainUserAddressController);
+userAddressRouter.get("/address/:id", findUserAddressController);
 userAddressRouter.get("/province", findProvinceController);
 userAddressRouter.get("/city/:id", findCityController);
 userAddressRouter.get("/address", opencageController);

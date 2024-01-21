@@ -1,12 +1,12 @@
 import { Box, Button, Flex, Grid, Input, Select, Text, Textarea } from "@chakra-ui/react";
-import { getCity, getProvince } from "../../services/readUserAddress";
+import { getCity, getProvince } from "../../../create-address/services/readUserAddress";
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { useSelector } from "react-redux";
 import { createUserAddress } from "../../services/createUserAddress";
 
 
-function FormCreateAddress () {
+function FormEditAddress () {
     const [provinceList, setProvinceList] = useState([]);
     const [selectedProvince, setSelectedProvince] = useState("")
     const [citylist, setCityList] = useState([])
@@ -217,4 +217,4 @@ function FormCreateAddress () {
     )
 }
 
-export default FormCreateAddress
+export default FormEditAddress

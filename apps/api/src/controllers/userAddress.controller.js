@@ -1,9 +1,9 @@
-import { findMainUserAddressService, createUserAddressService, findProvinceService, findCityService, opencageService, findCityOpenCageBasedService } from "../services/userAddress.services";
+import { findUserAddressService, createUserAddressService, findProvinceService, findCityService, opencageService, findCityOpenCageBasedService } from "../services/userAddress.services";
 
-export const findMainUserAddressController = async (req, res) => {
+export const findUserAddressController = async (req, res) => {
     try{
         const {id} = req.params
-        const result = await findMainUserAddressService(id)
+        const result = await findUserAddressService(id)
         return res.status(200).json({
             message: "success",
             data: result

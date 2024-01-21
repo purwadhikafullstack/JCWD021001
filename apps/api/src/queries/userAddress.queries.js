@@ -5,18 +5,27 @@ import opencage from 'opencage-api-client'
 import { Op } from 'sequelize';
 
 //FIND
-export const findMainUserAddressQuery = async (id) => {
-    try{
-        return await UserAddress.findOne(
-            {where:
-                {userId: id,
-                isMainAddress: true},
-            }
-        )
-    } catch (err){
+export const findUserAddressQuery = async (userId) => {
+    try {
+        return await UserAddress.findAll({
+            where: { userId: userId },
+            include: [
+                {
+                    model: City,
+                    attributes: ['name'], 
+                    include: [
+                        {
+                            model: Province,
+                            attributes: ['name'] 
+                        }
+                    ]
+                }
+            ]
+        });
+    } catch (err) {
         throw err;
     }
-}
+};
 
 export const findProvinceQuery = async () => {
     try{

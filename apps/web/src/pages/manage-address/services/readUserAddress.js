@@ -1,9 +1,9 @@
 import axios from "axios"
 
-export const findUserAddress = async (latitude, longitude) => {
+export const findUserAddress = async (id) => {
     try{
-        const response = await axios.get(`http://localhost:8000/api/user-address/address-city?latitude=${latitude}&longitude=${longitude}`)
-        const address = response.data
+        const response = await axios.get(`http://localhost:8000/api/user-address/address/${id}`)
+        const address = response.data?.data
         console.log(address)
         return address
     } catch (err){

@@ -1,8 +1,8 @@
-import { findMainUserAddressQuery, createUserAddressQuery, findProvinceQuery, findCityQuery, opencageQuery, findCityOpenCageBasedQuery } from "../queries/userAddress.queries";
+import { findUserAddressQuery, createUserAddressQuery, findProvinceQuery, findCityQuery, opencageQuery, findCityOpenCageBasedQuery } from "../queries/userAddress.queries";
 
-export const findMainUserAddressService = async (id) => {
+export const findUserAddressService = async (id) => {
     try{
-        const res = await findMainUserAddressQuery(id)
+        const res = await findUserAddressQuery(id)
         return res
     } catch (err){
         throw err
