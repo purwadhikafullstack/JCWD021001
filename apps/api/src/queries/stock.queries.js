@@ -44,3 +44,42 @@ export const getStockByIdQuery = async (id = null) => {
     throw err
   }
 }
+
+export const getSpesificStockQuery = async (
+  productId = null,
+  warehouseId = null,
+  sizeId = null,
+  colourId = null,
+) => {
+  try {
+    const res = await Stock.findOne({
+      where: {
+        [Op.and]: [
+          {
+            productId: {
+              [Op.eq]: productId,
+            },
+          },
+          {
+            warehouseId: {
+              [Op.eq]: warehouseId,
+            },
+          },
+          {
+            sizeId: {
+              [Op.eq]: sizeId,
+            },
+          },
+          {
+            colourId: {
+              [Op.eq]: colourId,
+            },
+          },
+        ],
+      },
+    })
+    return res
+  } catch (err) {
+    throw err
+  }
+}

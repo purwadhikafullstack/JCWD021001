@@ -46,6 +46,9 @@ export const init = (sequelize) => {
       },
       isAdding: { type: DataTypes.BOOLEAN, allowNull: false },
       qty: { type: DataTypes.INTEGER, allowNull: false },
+      qtyBefore: { type: DataTypes.INTEGER, allowNull: false },
+      qtyAfter: { type: DataTypes.INTEGER, allowNull: false },
+      stockId: { type: DataTypes.INTEGER, allowNull: true },
     },
     {
       sequelize,
