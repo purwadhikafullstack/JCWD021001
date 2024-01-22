@@ -23,7 +23,7 @@ export const getProductCategoryQuery = async (gender) => {
             },
             {
               model: Size,
-              as: 'Size',
+              as: 'size',
             },
           ],
         },

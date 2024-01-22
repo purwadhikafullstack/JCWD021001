@@ -128,7 +128,8 @@ export const EditProductCategory = () => {
     getGender(epid)
     getProductCategory(setProductCategory, epid)
   }, [epid])
-
+  console.log('GENDER', epid)
+  console.log('PRODUCT-CATEGORY', productCategory)
   return (
     <Box bgColor={'white'} p={'1em'}>
       <VStack align={'stretch'}>

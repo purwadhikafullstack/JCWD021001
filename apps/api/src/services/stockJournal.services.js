@@ -2,11 +2,20 @@ import { size } from 'lodash'
 import { createStockQuery, getSpesificStockQuery } from '../queries/stock.queries'
 import { createStockJournalQuery } from '../queries/stockJournal.queries'
 
-export const createStockJournalService = async (productId, warehouseId, sizeId, colourId, qty) => {
+export const createStockJournalService = async (
+  productId,
+  warehouseId,
+  sizeId,
+  colourId,
+  isAdding,
+  qty,
+  qtyBefore,
+  qtyAfter,
+  stockId,
+) => {
   try {
     const check = await getSpesificStockQuery(productId, warehouseId, sizeId, colourId)
     if (check) {
-      console.log('--ADDING QUANTITY TO BELONGING STOCKS--')
       await check.increment('qty', { by: qty })
       const res = await createStockJournalQuery(
         productId,
@@ -20,8 +29,8 @@ export const createStockJournalService = async (productId, warehouseId, sizeId, 
         check.dataValues.id,
       )
       return res
-    } else {
-      console.log('--CREATING NEW STOCKS')
+    } else if (!check) {
+      if (qty < 0) throw new Error('WAREHOUSE STOCK IS EMPTY')
       const createStocks = await createStockQuery(productId, warehouseId, 0, sizeId, colourId)
       await createStocks.increment('qty', { by: qty })
       const res = await createStockJournalQuery(

@@ -10,7 +10,7 @@ export default class Product extends Model {
    */
   static associate(models) {
     // define association here
-    Product.hasMany(models.Stock, { foreignKey: 'productId' })
+    Product.hasMany(models.Stock, { as: 'stocks', foreignKey: 'productId' })
     Product.belongsTo(ProductCategory, { foreignKey: 'productCategoryId', as: 'category' })
     Product.hasMany(ProductImage, { as: 'picture' })
   }

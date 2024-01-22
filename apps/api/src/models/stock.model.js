@@ -8,10 +8,10 @@ export default class Stock extends Model {
    */
   static associate(models) {
     // define association here
-    Stock.belongsTo(models.Product, { foreignKey: 'productId' })
+    Stock.belongsTo(models.Product, { as: 'stocks', foreignKey: 'productId' })
     Stock.belongsTo(models.Warehouse, {
       as: 'warehouse',
-      foreignKey: 'warehouseId',
+      // foreignKey: 'warehouseId',
     })
     Stock.belongsTo(models.Size, { as: 'size', foreignKey: 'sizeId' })
     Stock.belongsTo(models.Colour, { as: 'colour', foreignKey: 'colourId' })

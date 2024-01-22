@@ -3,6 +3,7 @@ import ProductCategory from '../models/productCategory.model'
 import { Op } from 'sequelize'
 import Size from '../models/size.model'
 import ProductImage from '../models/productImage.model'
+import Stock from '../models/stock.model'
 
 export const getProductQuery = async (
   name = null,
@@ -97,6 +98,10 @@ export const getProductQuery = async (
         {
           model: ProductImage,
           as: 'picture',
+        },
+        {
+          model: Stock,
+          as: 'stocks',
         },
       ],
       order: [[`${sortBy}`, `${orderBy}`]],
