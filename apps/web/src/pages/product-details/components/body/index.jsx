@@ -1,18 +1,49 @@
 import { AspectRatio, Box, Button, Flex, HStack, Icon, Image, Text, VStack } from '@chakra-ui/react'
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Carousel } from '../carousel'
+import axios from 'axios'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 export const Body = (props) => {
-  const images = [
-    'https://image.uniqlo.com/UQ/ST3/AsianCommon/imagesgoods/462028/su`b`/goods_462028_sub13.jpg?width=750',
-    'https://image.uniqlo.com/UQ/ST3/id/imagesgoods/462028/item/idgoods_66_462028.jpg?width=750',
-    'https://image.uniqlo.com/UQ/ST3/id/imagesgoods/462028/sub/idgoods_462028_sub9.jpg?width=750',
-  ]
+  const images = [props?.product?.picture]
+  const sizes = props?.product?.category?.parent?.size
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const navigate = useNavigate()
+  const colourValue = queryParams.get('col')
+  const sizeValue = queryParams.get('sz')
+  const pathName = location.pathname
+  // FILTER STOCK
+  const uniqueColorIds = new Set()
+  const filteredStocks = props?.product?.stocks?.filter((stock) => {
+    if (!uniqueColorIds.has(stock.colourId)) {
+      uniqueColorIds.add(stock.colourId)
+      return true
+    }
+    return false
+  })
+  // FILTER STOCK
+
   const [selectedImage, setSelectedImage] = useState('')
   const handleSelectImage = (image) => {
     setSelectedImage(image)
   }
+  const [stock, setStock] = useState(null)
+  const getStock = async (productId, sizeId, colourId, setStock) => {
+    try {
+      const res = await axios.get(
+        `http://localhost:8000/api/stock/stock/qty?productId=${productId}&sizeId=${sizeId}&colourId=${colourId}`,
+      )
+      setStock(res?.data?.data)
+    } catch (err) {
+      throw err
+    }
+  }
+  useEffect(() => {
+    getStock(props?.product?.id, sizeValue, colourValue, setStock)
+  }, [colourValue, sizeValue])
+  console.log('STOCK FINAL', stock)
   return (
     <Box p={'1em'} bgColor={'grey.50'} minH={'100vh'}>
       <VStack align={'sretch'}>
@@ -30,7 +61,13 @@ export const Body = (props) => {
           <Box w={{ sm: '40%' }} overflow={'hidden'} borderRadius={'1em'} h={'100%'}>
             <AspectRatio ratio={1} overflow={'hidden'} borderRadius={'1em'}>
               <Image
-                src={selectedImage ? selectedImage : images[0]}
+                src={
+                  selectedImage
+                    ? `${import.meta.env.VITE_APP_API_IMAGE_URL}/productImages/${selectedImage}`
+                    : `${import.meta.env.VITE_APP_API_IMAGE_URL}/productImages/${
+                        props?.product?.picture[0]?.imageUrl
+                      }`
+                }
                 alt="naruto"
                 objectFit="cover"
               />
@@ -53,14 +90,24 @@ export const Body = (props) => {
                   Color
                 </Text>
                 <HStack>
-                  <Box p={'.5em'} border={'2px solid #f2f2f2'} borderRadius={'.5em'}>
-                    <VStack spacing={'1em'}>
-                      <Box bgColor={'blue'} w={'2.5em'} h={'2.5em'} borderRadius={'.5em'}></Box>
-                      <Text fontWeight={'bold'} fontSize={'.75em'}>
-                        Blue
-                      </Text>
-                    </VStack>
-                  </Box>
+                  {filteredStocks?.map((el, index) => {
+                    return (
+                      <Box p={'.5em'} border={'2px solid #f2f2f2'} borderRadius={'.5em'}>
+                        <VStack spacing={'1em'}>
+                          <Box
+                            bgColor={el?.colour?.name}
+                            w={'2.5em'}
+                            h={'2.5em'}
+                            borderRadius={'.5em'}
+                            onClick={() => navigate(`${pathName}?col=${el?.id}&sz=0`)}
+                          ></Box>
+                          <Text fontWeight={'bold'} fontSize={'.75em'}>
+                            {el?.colour?.name}
+                          </Text>
+                        </VStack>
+                      </Box>
+                    )
+                  })}
                 </HStack>
               </Box>
               <VStack align={'stretch'}>
@@ -69,15 +116,21 @@ export const Body = (props) => {
                   <Text color={'redPure.500'}>View Size Chart</Text>
                 </Flex>
                 <HStack>
-                  <Box
-                    borderRadius={'.5em'}
-                    p={'.5em 1em'}
-                    fontSize={{ base: '.75em', md: '1em' }}
-                    border={'2px solid #f2f2f2'}
-                    fontWeight={'bold'}
-                  >
-                    <Text>XS</Text>
-                  </Box>
+                  {sizes?.map((el, index) => {
+                    return (
+                      <Box
+                        key={index}
+                        borderRadius={'.5em'}
+                        p={'.5em 1em'}
+                        fontSize={{ base: '.75em', md: '1em' }}
+                        border={'2px solid #f2f2f2'}
+                        fontWeight={'bold'}
+                        onClick={() => navigate(`${pathName}?col=${colourValue}&sz=${el?.id}`)}
+                      >
+                        <Text>{el?.name}</Text>
+                      </Box>
+                    )
+                  })}
                 </HStack>
               </VStack>
               <VStack align={'stretch'}>
@@ -98,7 +151,7 @@ export const Body = (props) => {
                     <Icon as={PlusIcon} color={'redPure.500'} />
                   </Flex>
                   <HStack alignSelf={'flex-end'} fontSize={'.75em'}>
-                    <Text color={'redPure.500'}>10</Text>
+                    <Text color={'redPure.500'}>{stock}</Text>
                     <Text>Stock</Text>
                   </HStack>
                 </HStack>

@@ -10,7 +10,7 @@ export const ProductCard = (props) => {
       borderRadius={'.5em'}
       overflow={'hidden'}
       cursor={'pointer'}
-      onClick={() => navigate(`/product/${props?.id}`)}
+      onClick={() => navigate(`/product/${props?.id}/?col=0&sz=0`)}
     >
       <Flex flexDir={'column'} w={'100%'} h={'100%'}>
         <Box h={'50%'} w={'100%'} p={'0'} bgColor={'white'}>

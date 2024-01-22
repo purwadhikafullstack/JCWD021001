@@ -1,6 +1,9 @@
 import Product from '../models/product.model'
 import Stock from '../models/stock.model'
+import Warehouse from '../models/warehouse.model'
+import Colour from '../models/colour.model'
 import { Op } from 'sequelize'
+import Size from '../models/size.model'
 
 export const getStockQuery = async (warehouseId) => {
   try {
@@ -12,7 +15,12 @@ export const getStockQuery = async (warehouseId) => {
         },
       }
     const res = await Stock.findAll({
-      include: [{ all: true }],
+      include: [
+        { model: Product, as: 'stocks' },
+        { model: Warehouse, as: 'warehouse' },
+        { model: Colour, as: 'colour' },
+        { model: Size, as: 'size' },
+      ],
       ...filter,
     })
     return res
