@@ -83,3 +83,32 @@ export const getSpesificStockQuery = async (
     throw err
   }
 }
+
+export const getStockByProductIdQuery = async (productId, sizeId, colourId) => {
+  try {
+    const res = await Stock.sum('qty', {
+      where: {
+        [Op.and]: [
+          {
+            productId: {
+              [Op.eq]: productId,
+            },
+          },
+          {
+            sizeId: {
+              [Op.eq]: sizeId,
+            },
+          },
+          {
+            colourId: {
+              [Op.eq]: colourId,
+            },
+          },
+        ],
+      },
+    })
+    return res
+  } catch (err) {
+    throw err
+  }
+}
