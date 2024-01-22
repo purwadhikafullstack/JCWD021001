@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Flex,
   Grid,
   Icon,
@@ -48,11 +49,11 @@ export const Body = (props) => {
 
   const returnString = (number) => {
     switch (number) {
-      case '0':
-      case '2':
-        return 'DESC'
       case '1':
       case '3':
+        return 'DESC'
+      case '0':
+      case '2':
         return 'ASC'
     }
   }
@@ -161,6 +162,22 @@ export const Body = (props) => {
                   {renderedProducts}
                 </Grid>
               </Box>
+              <VStack>
+                <Button
+                  _hover={{
+                    bgColor: 'transparent',
+                  }}
+                  w={'10em'}
+                  border={'1px solid #e3024b'}
+                  bgColor={'transparent'}
+                  color={'redPure.500'}
+                  isLoadButtoning={false}
+                  mt={'1em'}
+                  onClick={() => props?.setPageSize(props?.pageSize + 10)}
+                >
+                  Load More
+                </Button>
+              </VStack>
             </Box>
           </Box>
         </Box>

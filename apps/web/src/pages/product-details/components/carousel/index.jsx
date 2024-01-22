@@ -9,7 +9,6 @@ export const Carousel = (props) => {
               <Box
                 w={'30%'}
                 overflow={'hidden'}
-                borderRadius={'1em'}
                 bgColor={'white'}
                 key={index}
                 onClick={() => props?.handleSelectImage(el?.imageUrl)}

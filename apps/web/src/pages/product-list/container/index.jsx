@@ -49,9 +49,10 @@ export const Product = () => {
 
   const [sortBy, setSortBy] = useState('name')
   const [orderBy, setOrderBy] = useState('ASC')
+  const [pageSize, setPageSize] = useState(10)
   // Get product data
   useEffect(() => {
-    getProduct(productName, gender, group, category, setProducts, sortBy, orderBy)
+    getProduct(productName, gender, group, category, setProducts, sortBy, orderBy, 1, pageSize)
   }, [
     productName,
     productGender,
@@ -67,6 +68,8 @@ export const Product = () => {
     setOrderBy,
     setProductGroup,
     setProductCategory,
+    pageSize,
+    setPageSize,
   ])
 
   // This is for sidebar product categories, and type
@@ -101,6 +104,7 @@ export const Product = () => {
           setCollapseSideBar={setCollapseSideBar}
           toggleSideBar={toggleSideBar}
           segments={segments}
+          setPageSize={setPageSize}
         />
       </Box>
       <Box display={collapseSideBar ? 'none' : 'block'}>
@@ -121,6 +125,8 @@ export const Product = () => {
           setSortBy={setSortBy}
           orderBy={orderBy}
           sortBy={sortBy}
+          pageSize={pageSize}
+          setPageSize={setPageSize}
         />
       </Box>
       <Flex

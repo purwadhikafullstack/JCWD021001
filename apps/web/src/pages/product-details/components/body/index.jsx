@@ -43,7 +43,8 @@ export const Body = (props) => {
   useEffect(() => {
     getStock(props?.product?.id, sizeValue, colourValue, setStock)
   }, [colourValue, sizeValue])
-  console.log('STOCK FINAL', stock)
+
+  const shouldDisable = !stock ? true : false
   return (
     <Box p={'1em'} bgColor={'grey.50'} minH={'100vh'}>
       <VStack align={'sretch'}>
@@ -56,10 +57,9 @@ export const Body = (props) => {
           flexDir={{ base: 'column', sm: 'row' }}
           justifyContent={{ md: 'space-between' }}
           gap={'1em'}
-          minH={'80vh'}
         >
-          <Box w={{ sm: '40%' }} overflow={'hidden'} borderRadius={'1em'} h={'100%'}>
-            <AspectRatio ratio={1} overflow={'hidden'} borderRadius={'1em'}>
+          <Box w={{ sm: '30%' }} overflow={'hidden'}>
+            <AspectRatio ratio={1} overflow={'hidden'}>
               <Image
                 src={
                   selectedImage
@@ -74,7 +74,7 @@ export const Body = (props) => {
             </AspectRatio>
             <Carousel images={images} handleSelectImage={handleSelectImage} />
           </Box>
-          <Box bgColor={'white'} p={'1em'} borderRadius={'1em'} w={{ sm: '60%' }}>
+          <Box bgColor={'white'} p={'1em'} borderRadius={'1em'} w={{ sm: '70%' }} h={'83vh'}>
             <Flex flexDir={'column'} gap={'.5em'} justifyContent={'space-between'} h={'100%'}>
               <Text fontWeight={'bold'} fontSize={{ md: '1.5em' }}>
                 {props?.product?.name}
@@ -150,31 +150,33 @@ export const Body = (props) => {
                     <Text>1</Text>
                     <Icon as={PlusIcon} color={'redPure.500'} />
                   </Flex>
-                  <HStack alignSelf={'flex-end'} fontSize={'.75em'}>
+                  <HStack alignSelf={'flex-end'} fontSize={'.75em'} fontWeight={'bold'}>
                     <Text color={'redPure.500'}>{stock}</Text>
-                    <Text>Stock</Text>
+                    <Text>{stock ? 'Stock' : 'Sorry, out of stock'}</Text>
                   </HStack>
                 </HStack>
               </VStack>
               <HStack>
                 <Button
                   _hover={{
-                    bgColor: 'redPure.500',
+                    bgColor: stock ? 'redPure.500' : 'grey.50',
                   }}
                   w={'50%'}
-                  bgColor={'redPure.500'}
-                  color={'white'}
+                  bgColor={stock ? 'redPure.500' : 'grey.50'}
+                  color={stock ? 'white' : 'grey'}
+                  isDisabled={shouldDisable}
                 >
                   Add to cart
                 </Button>
                 <Button
                   _hover={{
-                    bgColor: 'transparent',
+                    bgColor: stock ? 'transparent' : 'grey.50',
                   }}
                   w={'50%'}
-                  border={'1px solid #e3024b'}
-                  bgColor={'transparent'}
-                  color={'redPure.500'}
+                  border={stock ? '1px solid #e3024b' : '1px solid #f2f2f2'}
+                  bgColor={stock ? 'transparent' : 'grey.50'}
+                  color={stock ? 'white' : 'grey'}
+                  isDisabled={shouldDisable}
                 >
                   Buy Now
                 </Button>

@@ -14,7 +14,11 @@ export const getProductQuery = async (
   id = null,
   sortBy = 'name',
   orderBy = 'ASC',
+  page = null,
+  pageSize = null,
 ) => {
+  page = 1
+  const offset = (page - 1) * pageSize
   try {
     const filter = {}
     if (id)
@@ -25,56 +29,55 @@ export const getProductQuery = async (
       }
     if (name)
       filter.where = {
+        ...filter.where,
         name: {
           [Op.like]: `%${name}%`,
         },
       }
-    if (gender)
-      filter.where = {
-        '$category.parent.parent.name$': {
-          [Op.eq]: `${gender}`,
-        },
+    if (gender) {
+      if (group) {
+        if (category) {
+          filter.where = {
+            ...filter.where,
+            [Op.and]: [
+              {
+                '$category.parent.parent.name$': gender,
+              },
+              {
+                '$category.parent.name$': group,
+              },
+              {
+                '$category.name$': category.replace(/-/g, ' '),
+              },
+            ],
+          }
+        } else {
+          filter.where = {
+            ...filter.where,
+            [Op.and]: [
+              {
+                '$category.parent.parent.name$': gender,
+              },
+              {
+                '$category.parent.name$': group,
+              },
+            ],
+          }
+        }
+      } else {
+        filter.where = {
+          ...filter.where,
+          '$category.parent.parent.name$': gender,
+        }
       }
-    if (gender && group)
-      filter.where = {
-        [Op.and]: [
-          {
-            '$category.parent.parent.name$': {
-              [Op.eq]: `${gender}`,
-            },
-          },
-          {
-            '$category.parent.name$': {
-              [Op.eq]: `${group}`,
-            },
-          },
-        ],
-      }
-    if (gender && group && category)
-      filter.where = {
-        [Op.and]: [
-          {
-            '$category.parent.parent.name$': {
-              [Op.eq]: `${gender}`,
-            },
-          },
-          {
-            '$category.parent.name$': {
-              [Op.eq]: `${group}`,
-            },
-          },
-          {
-            '$category.name$': {
-              [Op.eq]: `${category.replace(/-/g, ' ')}`,
-            },
-          },
-        ],
-      }
+    }
     const res = await Product.findAll({
+      attributes: ['id', 'name', 'price', 'description'],
       include: [
         {
           model: ProductCategory,
           as: 'category',
+          attributes: ['id', 'name'],
           include: [
             {
               model: ProductCategory,
@@ -108,6 +111,9 @@ export const getProductQuery = async (
       ],
       order: [[`${sortBy}`, `${orderBy}`]],
       ...filter,
+      subQuery: false,
+      limit: id ? 1 : Number(pageSize),
+      offset: offset,
     })
     return res
   } catch (err) {
@@ -122,7 +128,6 @@ export const getProductByName = async ({ name = null }) => {
         name: name,
       },
     })
-    console.log('res', res)
     return res
   } catch (err) {
     throw err

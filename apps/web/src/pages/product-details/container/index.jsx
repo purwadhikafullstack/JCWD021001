@@ -7,7 +7,6 @@ import { getProductDetails } from '../services/readProductDetails'
 export const ProductDetails = () => {
   const { id } = useParams()
   const [product, setProduct] = useState(null)
-  console.log('PRODUCT', product)
   useEffect(() => {
     getProductDetails(id, setProduct)
   }, [])

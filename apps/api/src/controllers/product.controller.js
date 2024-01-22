@@ -7,9 +7,19 @@ import {
 
 export const getProductController = async (req, res) => {
   try {
-    const { name, gender, group, category, sortBy, orderBy } = req.query
+    const { name, gender, group, category, sortBy, orderBy, page, pageSize } = req.query
     const { id } = req.params
-    const result = await getProductService(name, gender, group, category, id, sortBy, orderBy)
+    const result = await getProductService(
+      name,
+      gender,
+      group,
+      category,
+      id,
+      sortBy,
+      orderBy,
+      page,
+      pageSize,
+    )
     return res.status(200).json({
       message: 'Get Product Success',
       data: result,

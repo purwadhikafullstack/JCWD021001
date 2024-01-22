@@ -6,9 +6,30 @@ import {
   updateProductQuery,
 } from '../queries/product.queries'
 
-export const getProductService = async (name, gender, group, category, id, sortBy, orderBy) => {
+export const getProductService = async (
+  name,
+  gender,
+  group,
+  category,
+  id,
+  sortBy,
+  orderBy,
+  page,
+  pageSize,
+) => {
   try {
-    const res = await getProductQuery(name, gender, group, category, id, sortBy, orderBy)
+    const res = await getProductQuery(
+      name,
+      gender,
+      group,
+      category,
+      id,
+      sortBy,
+      orderBy,
+      page,
+      pageSize,
+    )
+
     return res
   } catch (err) {
     throw err

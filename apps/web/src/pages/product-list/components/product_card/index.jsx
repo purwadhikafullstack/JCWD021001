@@ -45,20 +45,6 @@ export const ProductCard = (props) => {
               <Text alignItems={'justify'}>{truncateString(props?.name, 20)}</Text>
               <Text>{toRupiah(props?.price)}</Text>
             </Flex>
-            <Button
-              border={'1px solid #e3024b'}
-              color={'redPure.500'}
-              variant={'outline'}
-              fontSize={'.85em'}
-              fontWeight={'bold'}
-              h={'2.5em'}
-              _focus={{ bgColor: 'white' }}
-            >
-              <HStack alignItems={'center'} justifyContent={'space-between'}>
-                <Icon as={PlusIcon} fontSize={'1.3em'} />
-                <Text>Add to cart</Text>
-              </HStack>
-            </Button>
           </Flex>
         </Box>
       </VStack>
