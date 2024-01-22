@@ -32,7 +32,10 @@ export const SideBar = (props) => {
         <Flex
           alignItems={'center'}
           justifyContent={'space-between'}
-          onClick={() => changeToggleType(el?.id)}
+          onClick={() => {
+            navigate(`/p/${props?.gender}/${el?.name?.toLowerCase()}`)
+            changeToggleType(el?.id)
+          }}
         >
           <Text>{el?.name}</Text>
           <Icon as={toggleType[el?.id] ? ChevronUpIcon : ChevronDownIcon} />
@@ -41,7 +44,9 @@ export const SideBar = (props) => {
           borderLeft={'2px solid lightgray'}
           p={'0 1em'}
           display={toggleType[el?.id] ? 'block' : 'none'}
-          onClick={() => props?.setProductGroup(el?.name)}
+          onClick={() => {
+            props?.setProductGroup(el?.name)
+          }}
         >
           {el?.category
             ? el?.category?.map((elPT, index, arr) => {

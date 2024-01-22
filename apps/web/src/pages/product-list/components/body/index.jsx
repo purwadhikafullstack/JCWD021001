@@ -16,18 +16,56 @@ import capitalize from 'capitalize'
 import { ChevronDownIcon } from '@heroicons/react/24/outline'
 import { useState } from 'react'
 import { SideBar } from '../../../../components/sidebar'
+import { useLocation, useNavigate } from 'react-router-dom'
 export const Body = (props) => {
   // Sort by logic
   const [toggleSortBy, setToggleSortBy] = useState(false)
-
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const sortValue = queryParams.get('so')
+  const pathName = location.pathname
   const updateToggleSortBy = () => {
     setToggleSortBy(true)
   }
+  // Sort by logic
+
+  // NAVIGATE
+  const navigate = useNavigate()
+  // NAVIGATE
+
+  const returnNumber = (str) => {
+    switch (str) {
+      case 'name A - Z':
+        return 0
+      case 'name Z - A':
+        return 1
+      case 'price Lo - Hi':
+        return 2
+      case 'price Hi - Lo':
+        return 3
+    }
+  }
+
+  const returnString = (number) => {
+    switch (number) {
+      case '0':
+      case '2':
+        return 'DESC'
+      case '1':
+      case '3':
+        return 'ASC'
+    }
+  }
+
+  const takeFirstWord = (str) => {
+    return str.split(' ')[0]
+  }
+
   // Product Card Mapping
   const renderedProducts = props?.products?.map((product, index) => {
     return <ProductCard {...product} key={index} />
   })
-  const sortBy = ['name', 'price']
+  const sortBy = ['name A - Z', 'name Z - A', 'price Lo - Hi', 'price Hi - Lo']
   const renderedSortBy = sortBy.map((el, index) => {
     return (
       <MenuItem
@@ -37,13 +75,15 @@ export const Body = (props) => {
         value={el}
         key={index}
         onClick={() => {
-          props?.setSortBy(el)
+          props?.setSortBy(takeFirstWord(el))
+          props?.setOrderBy(returnString(sortValue))
+          navigate(`${pathName}?so=${returnNumber(el)}`)
           updateToggleSortBy()
         }}
         display={'block'}
         fontWeight={'bold'}
       >
-        {capitalize(el)}
+        {capitalize.words(el)}
       </MenuItem>
     )
   })
@@ -75,7 +115,7 @@ export const Body = (props) => {
           </Box>
           <Box w={'100%'} p={{ base: 'none', md: '.5em' }}>
             <Flex alignItems={'center'} justifyContent={'space-between'} mb={'1em'}>
-              <Box>
+              <Box fontWeight={'bold'}>
                 <Text>
                   <Text as={'span'} color={'redPure.500'}>
                     {props?.products.length} {''}
@@ -92,14 +132,14 @@ export const Body = (props) => {
                     _active={{ bgColor: 'white' }}
                     _hover={{ bgColor: 'white' }}
                   >
-                    <Flex minW={'6em'} alignItems={'center'} justifyContent={'space-between'}>
+                    <Flex minW={'8em'} alignItems={'center'} justifyContent={'space-between'}>
                       <Text fontWeight={'bold'}>
-                        {toggleSortBy ? capitalize(props?.sortBy) : 'Sort by'}
+                        {toggleSortBy ? capitalize.words(props?.sortBy) : 'Sort by'}
                       </Text>
                       <Icon as={ChevronDownIcon} />
                     </Flex>
                   </MenuButton>
-                  <MenuList mt={'1em'} minW={'0'} w={'8em'} pr={'2em'}>
+                  <MenuList mt={'.5em'} minW={'0'} w={'10em'} pr={'2em'}>
                     {renderedSortBy}
                   </MenuList>
                 </Menu>
@@ -115,7 +155,6 @@ export const Body = (props) => {
                     lg: 'repeat(4, 1fr)',
                     xl: 'repeat(5, 1fr)',
                   }}
-                  gridAutoRows={'1fr'}
                   rowGap={{ base: '.5em', md: '1.5em' }}
                   columnGap={{ base: '.5em', md: '1.5em' }}
                 >
