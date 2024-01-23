@@ -1,35 +1,36 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
-export const CreateOrder = async () => {
+export const createOrder = async ({
+    userId,
+    userAddressId,
+    warehouseId,
+    totalPrice,
+    totalQuantity,
+    shippingCost,
+    orderStatusId,
+    products,
+  }) => {
     try {
         const response = await axios.post(" http://localhost:8000/api/order",
         {
-            userId: 1,
-            userAddressId: 1,
-            warehouseId: 1,
-            totalPrice: 300000,
-            totalQuantity: 4,
-            shippingCost: 20000,
-            orderStatusId: 1,
-            products: [
-                {
-                    productId: 1,
-                    price: 50000,
-                    quantity: 2
-                },
-                {
-                    productId: 2,
-                    price: 100000,
-                    quantity: 2
-                },
-                
-              ]
+            userId: userId,
+            userAddressId: userAddressId,
+            warehouseId: warehouseId,
+            totalPrice: totalPrice,
+            totalQuantity: totalQuantity,
+            shippingCost: shippingCost,
+            orderStatusId: orderStatusId,
+            products: products,
         });
-        // console.log(response.data.data.midtransToken);
+<<<<<<< HEAD
+        alert("Order created")
+        return response.data.data
+=======
         toast.success("Order created")
-        return response.data.data.midtransToken
+        return response.data.data.order.id
+>>>>>>> development
     } catch (err){
-        toast.error("Error occurred")
+        alert("Error occurred")
     }
 }

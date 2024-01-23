@@ -7,7 +7,7 @@ export default class CartProducts extends Model {
    * The `models/index` file will call this method automatically.
    */
   static associate(models) {
-    this.belongsTo(models.Product, { foreignKey: 'productId' });
+    this.belongsTo(models.Stock, { foreignKey: 'stockId' });
     this.belongsTo(models.Carts, { foreignKey: 'cartId' });
   }
 }
@@ -15,7 +15,7 @@ export default class CartProducts extends Model {
 export const init = (sequelize) => {
   CartProducts.init(
     {
-      productId: DataTypes.INTEGER,
+      stockId: DataTypes.INTEGER,
       cartId: DataTypes.INTEGER,
       price: DataTypes.DECIMAL,
       quantity: DataTypes.INTEGER,

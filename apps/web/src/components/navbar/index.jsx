@@ -29,10 +29,14 @@ import {
 import pure from '/logo/pure.png';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { SearchModal } from './components/search-modal'
+import { SearchMenu } from './components/search-menu'
 
 export const Navbar = (props) => {
   const user= useSelector((state) => state.AuthReducer.user);
   const isLogin= useSelector((state) => state.AuthReducer.isLogin);
+
+export const Navbar = (props) => {
   const navigate = useNavigate()
   return (
     <Box p={'1em 2em'}
@@ -41,11 +45,12 @@ export const Navbar = (props) => {
       <Box>
         <Flex alignItems={'center'} justifyContent={'space-between'}>
           <HStack spacing={'2em'}>
-            <Box h={'auto'} w={'3em'}>
+            <Box h={'auto'} cursor={'pointer'} w={'3em'} onClick={() => navigate('/')}>
               <Image src={pure} alt="Logo" />
             </Box>
             <Box display={{ base: 'none', md: 'block' }}>
-              <InputGroup>
+              <SearchMenu />
+              {/* <InputGroup>
                 <Input
                   variant={'outline'}
                   focusBorderColor={'lightgray'}
@@ -54,16 +59,13 @@ export const Navbar = (props) => {
                 <InputRightElement>
                   <Icon as={MagnifyingGlassIcon} />
                 </InputRightElement>
-              </InputGroup>
+              </InputGroup> */}
             </Box>
           </HStack>
           <Spacer />
           <HStack visibility={props?.collapseSideBar ? 'hidden' : 'visible'}>
             <HStack fontSize={'1.5em'} spacing={'.5em'}>
-              <Icon
-                as={MagnifyingGlassIcon}
-                display={{ base: 'block', md: 'none' }}
-              />
+              <SearchModal />
               <Icon as={ShoppingCartIcon} />
               <Icon as={BellIcon} />
             </HStack>
@@ -79,10 +81,7 @@ export const Navbar = (props) => {
                     _hover={{ bgColor: 'transparent' }}
                     w={'5em'}
                   >
-                    <Flex
-                      alignItems={'center'}
-                      justifyContent={'space-between'}
-                    >
+                    <Flex alignItems={'center'} justifyContent={'space-between'}>
                       <Text fontWeight={'bold'}>Sign In</Text>
                       <Icon as={ChevronDownIcon} />
                     </Flex>
@@ -156,15 +155,11 @@ export const Navbar = (props) => {
           </HStack>
           <Box display={props?.collapseSideBar ? 'block' : 'none'}>
             <Flex justifyContent={'center'} alignItems={'center'}>
-              <Icon
-                as={XMarkIcon}
-                fontSize={'1.3em'}
-                onClick={() => props?.toggleSideBar()}
-              />
+              <Icon as={XMarkIcon} fontSize={'1.3em'} onClick={() => props?.toggleSideBar()} />
             </Flex>
           </Box>
         </Flex>
       </Box>
     </Box>
-  );
-};
+  )
+}

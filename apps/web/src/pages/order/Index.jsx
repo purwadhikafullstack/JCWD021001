@@ -1,55 +1,44 @@
-import { Box, Button, ButtonGroup } from '@chakra-ui/react'
-import { CreateOrder } from './services/CreateOrder'
-import { CreatePayment } from './services/CreatePayment';
+import React from 'react'
+import { Box, Text, Button, ButtonGroup, Icon } from '@chakra-ui/react'
+import OrderBody from '../../components/order'
+import { useState, useEffect } from 'react'
+import { Navbar } from '../../components/navbar'
+import { getCart } from '../cart/services/getCart'
 
 const Order = () => {
-    const handleCheckout = async () => {
-        try {
-          const midtransToken = await CreateOrder();
+  const [orderData, setOrderData] = useState([])
+  const [loading, setLoading] = useState(true)
 
-          if (midtransToken) {
-            const snapScript = 'https://app.sandbox.midtrans.com/snap/snap.js';
-            const clientKey = import.meta.env.MIDTRANS_CLIENT_KEY;
-            const script = document.createElement('script');
-            script.src = snapScript;
-            script.setAttribute('data-client-key', clientKey);
-            // script.async = true;
-    
-            script.onload = () => {
-              window.snap.pay(midtransToken, {
-                onSuccess: function(result){
-                  /* You may add your own implementation here */
-                  alert("payment success!"); console.log(result);
-                  CreatePayment(result)
-                },
-                onPending: function(result){
-                  /* You may add your own implementation here */
-                  alert("wating your payment!"); console.log(result);
-                },
-                onError: function(result){
-                  /* You may add your own implementation here */
-                  alert("payment failed!"); console.log(result);
-                },
-                onClose: function(){
-                  /* You may add your own implementation here */
-                  alert('you closed the popup without finishing the payment');
-                }
-              });
-            };
-            document.body.appendChild(script);
-          } else {
-            console.error('Failed to get Midtrans token');
-          }
-        } catch (error) {
-          console.error('Error creating order:', error);
-        }
-      };
+  useEffect(() => {
+    const fetchOrderData = async () => {
+      try {
+        const data = await getCart() // Assuming getCart fetches order data
+        setOrderData(data)
+      } catch (error) {
+        console.error('Error fetching order data:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
 
-    return (
-        <Box>
-            <Button colorScheme='blue' onClick={handleCheckout}>Checkout</Button>
-        </Box>
-    )
+    if (orderData.length === 0) {
+      fetchOrderData()
+    }
+  }, [orderData])
+
+  // Render nothing if data is still being fetched
+  if (loading) {
+    return null
+  }
+
+  return (
+    <>
+      <Navbar />
+      <Box bgColor={'brand.grey100'} maxW={'100vw'} minH={'100vh'}>
+        <OrderBody orderData={orderData} />
+      </Box>
+    </>
+  )
 }
 
 export default Order

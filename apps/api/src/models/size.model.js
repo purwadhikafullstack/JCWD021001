@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes } from 'sequelize'
 
 export default class Size extends Model {
   /**
@@ -9,9 +9,9 @@ export default class Size extends Model {
   static associate(models) {
     // define association here
     Size.belongsTo(models.ProductCategory, {
-      as: 'Category',
+      as: 'category',
       foreignKey: 'productCategoryId',
-    });
+    })
   }
 }
 
@@ -35,5 +35,5 @@ export const init = (sequelize) => {
       modelName: 'Size',
       timestamps: false,
     },
-  );
-};
+  )
+}

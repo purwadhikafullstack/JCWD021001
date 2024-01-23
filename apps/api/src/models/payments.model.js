@@ -8,6 +8,7 @@ export default class Payments extends Model {
    */
   static associate(models) {
     // define association here
+    this.belongsTo(models.Orders, { foreignKey: 'orderId' });
   }
 }
 

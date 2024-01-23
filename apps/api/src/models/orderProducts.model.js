@@ -9,7 +9,7 @@ export default class OrderProducts extends Model {
   static associate(models) {
     // define association here
     this.belongsTo(models.Orders, { foreignKey: 'orderId' });
-    this.belongsTo(models.Product, { foreignKey: 'productId' });
+    this.belongsTo(models.Stock, { foreignKey: 'stockId' });
   }
 }
 
@@ -17,7 +17,7 @@ export const init = (sequelize) => {
   OrderProducts.init(
     {
       orderId: DataTypes.INTEGER,
-      productId: DataTypes.INTEGER,
+      stockId: DataTypes.INTEGER,
       price: DataTypes.DECIMAL,
       quantity: DataTypes.INTEGER,
     },

@@ -1,9 +1,9 @@
 import { createCartQuery, deleteCartQuery, findCartQuery, findCartUserQuery, getCartQuery, updateCartQuery } from "../queries/carts.queries";
 
-export const createCartService = async (userId, productId, price, quantity) => {
+export const createCartService = async (userId, stockId, price, quantity) => {
     try {
         const calcPrice = price * quantity;
-        const res = await createCartQuery(userId, productId, calcPrice, quantity);
+        const res = await createCartQuery(userId, stockId, calcPrice, quantity);
         return res;
     } catch (err) {
         throw err;
@@ -15,7 +15,7 @@ export const updateCartService = async (cartProductId, quantity) => {
         const existingCartProduct = await findCartQuery(cartProductId);
         if (!existingCartProduct) throw new Error("Cart product not found");
     
-        const productPrice = existingCartProduct.Product.price || 0;
+        const productPrice = existingCartProduct.Stock.Product.price || 0;
         const quantityDifference = quantity - existingCartProduct.quantity;
         const calcPrice = productPrice * quantityDifference;
 

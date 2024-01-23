@@ -9,9 +9,7 @@ export async function up(queryInterface, Sequelize) {
       description: 'Plain T-shirt',
       createdAt: new Date(Date.now()),
       updatedAt: new Date(Date.now()),
-      productGroupId: 4,
-      productCategoryId: 2,
-      productTypeId: 2,
+      productCategoryId: 1,
     },
     {
       name: 'Oversized T-shirt',
@@ -19,9 +17,7 @@ export async function up(queryInterface, Sequelize) {
       description: 'Oversized T-shirt',
       createdAt: new Date(Date.now()),
       updatedAt: new Date(Date.now()),
-      productGroupId: 4,
       productCategoryId: 2,
-      productTypeId: 2,
     },
     {
       name: 'Plain T-shirt',
@@ -29,9 +25,7 @@ export async function up(queryInterface, Sequelize) {
       description: 'Plain T-shirt',
       createdAt: new Date(Date.now()),
       updatedAt: new Date(Date.now()),
-      productGroupId: 5,
-      productCategoryId: 2,
-      productTypeId: 2,
+      productCategoryId: 1,
     },
     {
       name: 'Oversized T-shirt',
@@ -39,9 +33,8 @@ export async function up(queryInterface, Sequelize) {
       description: 'Oversized T-shirt',
       createdAt: new Date(Date.now()),
       updatedAt: new Date(Date.now()),
-      productGroupId: 5,
       productCategoryId: 2,
-      productTypeId: 2,
+ 
     },
     {
       name: 'Regular Jeans',
@@ -49,9 +42,7 @@ export async function up(queryInterface, Sequelize) {
       description: 'Regular Jeans',
       createdAt: new Date(Date.now()),
       updatedAt: new Date(Date.now()),
-      productGroupId: 4,
-      productCategoryId: 3,
-      productTypeId: 7,
+      productCategoryId: 1,
     },
     {
       name: 'Regular Jeans',
@@ -59,9 +50,7 @@ export async function up(queryInterface, Sequelize) {
       description: 'Regular Jeans',
       createdAt: new Date(Date.now()),
       updatedAt: new Date(Date.now()),
-      productGroupId: 5,
-      productCategoryId: 3,
-      productTypeId: 7,
+      productCategoryId: 2,
     },
     {
       name: 'Reversible Parka',
@@ -69,9 +58,7 @@ export async function up(queryInterface, Sequelize) {
       description: 'Reversible Parka',
       createdAt: new Date(Date.now()),
       updatedAt: new Date(Date.now()),
-      productGroupId: 4,
-      productCategoryId: 5,
-      productTypeId: 9,
+      productCategoryId: 1,
     },
     {
       name: 'Reversible Parka',
@@ -79,9 +66,7 @@ export async function up(queryInterface, Sequelize) {
       description: 'Reversible Parka',
       createdAt: new Date(Date.now()),
       updatedAt: new Date(Date.now()),
-      productGroupId: 5,
-      productCategoryId: 5,
-      productTypeId: 9,
+      productCategoryId: 2,
     },
     {
       name: 'Sling Bag',
@@ -89,9 +74,7 @@ export async function up(queryInterface, Sequelize) {
       description: 'Sling Bag',
       createdAt: new Date(Date.now()),
       updatedAt: new Date(Date.now()),
-      productGroupId: 4,
-      productCategoryId: 6,
-      productTypeId: 11,
+      productCategoryId: 1,
     },
     {
       name: 'Sling Bag',
@@ -99,9 +82,7 @@ export async function up(queryInterface, Sequelize) {
       description: 'Sling Bag',
       createdAt: new Date(Date.now()),
       updatedAt: new Date(Date.now()),
-      productGroupId: 5,
-      productCategoryId: 6,
-      productTypeId: 11,
+      productCategoryId: 1,
     },
   ]);
 }

@@ -21,6 +21,8 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import product1 from '../../assets/images/homepage-images/product-1.png'
+import { useNavigate } from 'react-router-dom'
+// import './Home.css';
 
 
   function Home() {
@@ -31,7 +33,7 @@ import product1 from '../../assets/images/homepage-images/product-1.png'
         console.log(err);
       }
     }
-
+const navigate = useNavigate()
   return (
     <>
     <Navbar/>
@@ -68,35 +70,179 @@ import product1 from '../../assets/images/homepage-images/product-1.png'
             </SwiperSlide>
           </Swiper>
           {/* <Text position={'absolute'}>SALE 2023</Text> */}
-      </Box>
-      <Box className='category' margin={'24px auto'} position={'relative'} width={'95%'}>
-        <Text fontWeight={'700'} fontSize={'24px'}>Category</Text>
-      <Flex className='category-list' gap={'24px'} flexWrap={'wrap'} marginTop={'14px'} justifyContent={'center'}>  
-        <Box className={'category-women'} 
-        width={'330px'} 
-        height={'330px'} 
-        bg={'white'} 
-        position={'relative'}>
-          <Box 
-          position={'absolute'} 
-          zIndex={'99'}
-          left={'0'} 
-          right={'0'} 
-          margin={'0 auto'}
-          width={'300px'}
-          bottom={'25px'}
-          pointerEvents={'none'}>
-            <Text 
-            fontFamily={'Darker Grotesque'} 
-            fontWeight={'700'} 
-            fontSize={'48px'} 
-            color={'white'} 
-            textAlign={'center'}
+        </Box>
+        <Box className="category" margin={'24px auto'} position={'relative'} width={'95%'}>
+          <Text fontWeight={'700'} fontSize={'24px'}>
+            Category
+          </Text>
+          <Flex
+            className="category-list"
+            gap={'24px'}
+            flexWrap={'wrap'}
+            marginTop={'14px'}
+            justifyContent={'center'}
+          >
+            <Box
+              className={'category-women'}
+              width={'330px'}
+              height={'330px'}
+              bg={'white'}
+              position={'relative'}
+              onClick={() => {
+                navigate('/p/women')
+              }}
             >
-              W O M E N
-            </Text>
-          </Box>
-          <Image src={women} objectFit={'cover'} borderRadius={'12px'} height={'100%'} width={'100%'} opacity={'0.75'} _hover={{opacity: '1'}}/>
+              <Box
+                position={'absolute'}
+                zIndex={'99'}
+                left={'0'}
+                right={'0'}
+                margin={'0 auto'}
+                width={'300px'}
+                bottom={'25px'}
+                pointerEvents={'none'}
+              >
+                <Text
+                  fontFamily={'Darker Grotesque'}
+                  fontWeight={'700'}
+                  fontSize={'48px'}
+                  color={'white'}
+                  textAlign={'center'}
+                >
+                  W O M E N
+                </Text>
+              </Box>
+              <Image
+                src={women}
+                objectFit={'cover'}
+                borderRadius={'12px'}
+                height={'100%'}
+                width={'100%'}
+                opacity={'0.75'}
+                _hover={{ opacity: '1' }}
+              />
+            </Box>
+            <Box
+              className={'category-men'}
+              width={'330px'}
+              height={'330px'}
+              bg={'white'}
+              position={'relative'}
+              onClick={() => {
+                navigate('/p/men')
+              }}
+            >
+              <Box
+                position={'absolute'}
+                zIndex={'99'}
+                left={'0'}
+                right={'0'}
+                margin={'0 auto'}
+                width={'300px'}
+                bottom={'25px'}
+                pointerEvents={'none'}
+              >
+                <Text
+                  fontFamily={'Darker Grotesque'}
+                  fontWeight={'700'}
+                  fontSize={'48px'}
+                  color={'white'}
+                  textAlign={'center'}
+                >
+                  M E N
+                </Text>
+              </Box>
+              <Image
+                src={men}
+                objectFit={'cover'}
+                borderRadius={'12px'}
+                height={'100%'}
+                width={'100%'}
+                opacity={'0.75'}
+                _hover={{ opacity: '1' }}
+              />
+            </Box>
+            <Box
+              className={'category-kids'}
+              width={'330px'}
+              height={'330px'}
+              bg={'white'}
+              position={'relative'}
+              onClick={() => {
+                navigate('/p/kids')
+              }}
+            >
+              <Box
+                position={'absolute'}
+                zIndex={'99'}
+                left={'0'}
+                right={'0'}
+                margin={'0 auto'}
+                width={'300px'}
+                bottom={'25px'}
+                pointerEvents={'none'}
+              >
+                <Text
+                  fontFamily={'Darker Grotesque'}
+                  fontWeight={'700'}
+                  fontSize={'48px'}
+                  color={'white'}
+                  textAlign={'center'}
+                >
+                  K I D S
+                </Text>
+              </Box>
+              <Image
+                src={kids}
+                objectFit={'cover'}
+                borderRadius={'12px'}
+                height={'100%'}
+                width={'100%'}
+                opacity={'0.75'}
+                _hover={{ opacity: '1' }}
+              />
+            </Box>
+            <Box
+              className={'category-baby'}
+              width={'330px'}
+              height={'330px'}
+              bg={'white'}
+              position={'relative'}
+              onClick={() => {
+                navigate('/p/baby')
+              }}
+            >
+              <Box
+                position={'absolute'}
+                zIndex={'99'}
+                left={'0'}
+                right={'0'}
+                margin={'0 auto'}
+                width={'300px'}
+                bottom={'25px'}
+                pointerEvents={'none'}
+              >
+                <Text
+                  fontFamily={'Darker Grotesque'}
+                  fontWeight={'700'}
+                  fontSize={'48px'}
+                  color={'white'}
+                  textAlign={'center'}
+                >
+                  K I D S
+                </Text>
+              </Box>
+              <Image
+                src={baby}
+                objectFit={'cover'}
+                borderRadius={'12px'}
+                height={'100%'}
+                width={'100%'}
+                opacity={'0.75'}
+                _hover={{ opacity: '1' }}
+              />
+            </Box>
+          </Flex>
         </Box>
         <Box className={'category-men'} 
         width={'330px'} 
@@ -176,8 +322,8 @@ import product1 from '../../assets/images/homepage-images/product-1.png'
           </Box>
           <Image src={baby} objectFit={'cover'} borderRadius={'12px'} height={'100%'} width={'100%'} opacity={'0.75'} _hover={{opacity: '1'}}/>
         </Box>
-      </Flex>
-      </Box>
+      
+      
       <Box className='Best-Deal' margin={'24px auto 24px'} position={'relative'} width={'95%'}>
         <Text fontWeight={'700'} fontSize={'24px'}>Best Deals</Text>
         <Flex className='best-list' gap={'24px'} flexWrap={'wrap'} marginTop={'14px'} justifyContent={'center'}> 

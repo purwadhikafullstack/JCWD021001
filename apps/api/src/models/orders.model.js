@@ -13,6 +13,7 @@ export default class Orders extends Model {
     this.belongsTo(models.Warehouse, { foreignKey: 'warehouseId' });
     this.belongsTo(models.OrderStatuses, { foreignKey: 'orderStatusId' });
     this.hasMany(models.OrderProducts, { foreignKey: 'orderId' });
+    this.hasOne(models.Payments, { foreignKey: 'orderId' });
   }
 }
 
@@ -27,6 +28,7 @@ export const init = (sequelize) => {
       shippingCost: DataTypes.DECIMAL,
       orderDate: DataTypes.DATE,
       orderStatusId: DataTypes.INTEGER,
+      orderNumber: DataTypes.STRING,
     },
     {
       sequelize,
