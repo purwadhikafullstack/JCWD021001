@@ -1,4 +1,4 @@
-import { findUserAddressService, createUserAddressService, findProvinceService, findCityService, opencageService, findCityOpenCageBasedService } from "../services/userAddress.services";
+import { findUserAddressService, createUserAddressService, findProvinceService, findCityService, opencageService, findCityOpenCageBasedService, updateUserAddressService, updateMainAddressService, deleteUserAddressService } from "../services/userAddress.services";
 
 export const findUserAddressController = async (req, res) => {
     try{
@@ -98,12 +98,55 @@ export const findOpencageAndCityController = async (req, res) => {
 export const createUserAddressController = async (req, res) => {
     try{
         const {id} = req.params
-        console.log("ini id",id)
         const { specificAddress, cityId, fullName, phoneNumber, postalCode} = req.body
         const result = await createUserAddressService (id, specificAddress, cityId, fullName, phoneNumber, postalCode)
         return res.status(200).json({
             message: "success",
             data: result
+        })
+    } catch (err){
+        return res.status(500).json({
+            message: err.message
+        });
+    }
+}
+
+//UPDATE USER ADDRESS
+export const updateUserAddressController = async (req, res) => {
+    try{
+        const {id} = req.params
+        const {specificAddress, cityId, fullName, phoneNumber, postalCode} = req.body
+        await updateUserAddressService(id, specificAddress, cityId, fullName, phoneNumber, postalCode)
+        return res.status(200).json({
+            message: "success",
+        })
+    } catch (err){
+        return res.status(500).json({
+            message: err.message
+        });
+    }
+}
+
+export const updateMainAddressController = async (req, res) => {
+try {
+    const {id, userId} = req.query
+    await updateMainAddressService(id, userId)
+    return res.status(200).json({
+        message: "success",
+    })
+} catch (err){
+    return res.status(500).json({
+        message: err.message
+    });
+}
+}
+
+export const deleteUserAddressController = async (req, res) => {
+    try{
+        const {id} = req.params
+        await deleteUserAddressService(id)
+        return res.status(200).json({
+            message: "success",
         })
     } catch (err){
         return res.status(500).json({

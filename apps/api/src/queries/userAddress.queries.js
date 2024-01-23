@@ -16,7 +16,7 @@ export const findUserAddressQuery = async (userId) => {
                     include: [
                         {
                             model: Province,
-                            attributes: ['name'] 
+                            attributes: ['name', 'id'] 
                         }
                     ]
                 }
@@ -85,6 +85,59 @@ export const createUserAddressQuery = async (id, specificAddress, cityId, fullNa
                 phoneNumber,
                 postalCode
             })
+    } catch (err){
+        throw err;
+    }
+}
+
+//UPDATE
+
+export const updateUserAddressQuery  = async (id, specificAddress, cityId, fullName, phoneNumber, postalCode) => {
+    try {
+        await UserAddress.update(
+            {specificAddress, cityId, fullName, phoneNumber, postalCode},
+            {where:
+                {id: id}
+            }
+        )
+    } catch (err){
+        throw err;
+    }
+}
+
+export const updateMainAddressQuery = async (id) => {
+    try{
+        await UserAddress.update(
+            {isMainAddress: true},
+            {where: 
+            {id: id}}
+        )
+    } catch (err){
+        throw err;
+    }
+}
+
+export const removeMainAddressQuery = async (userId) => {
+    try{
+        await UserAddress.update(
+            {isMainAddress: false},
+            {where: 
+            {userId: userId,
+            isMainAddress: true}}
+        )
+    } catch (err){
+        throw err;
+    }
+}
+
+//DELETE
+export const deleteUserAddressQuery = async (id) => {
+    try{
+        await UserAddress.destroy(
+            {where: {
+                id: id
+            }}
+        )
     } catch (err){
         throw err;
     }

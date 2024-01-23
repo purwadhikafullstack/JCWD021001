@@ -1,14 +1,16 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Icon, Menu, MenuButton, MenuItem, MenuList, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { findUserAddress } from "../../services/readUserAddress";
 import { useSelector } from "react-redux";
+import FormEditAddress from "../edit-address";
+import UpdateMainAddress from "../update-main-address";
+import DeleteUserAddress from "../delete-address/Index";
 
 function AddressList (){
     
     const [address, setAddress] = useState([])
     const user = useSelector((state) => state.AuthReducer.user);
     
-    useEffect(() => {
         const fetchData = async () => {
             try {
                 const fetchAddresses = await findUserAddress(user.id)
@@ -17,6 +19,8 @@ function AddressList (){
                 console.log(err);
             }
         }
+    
+    useEffect(() => {
         fetchData()
     }, [user.id])
 
@@ -29,7 +33,8 @@ function AddressList (){
             bg={'white'}
             padding={'24px'}
             mt={'24px'}
-            mb={'24px'}>
+            mb={'24px'}
+            >
                 <Flex 
                 width={'100%'}
                 flexWrap={'wrap'}
@@ -64,10 +69,50 @@ function AddressList (){
                         {address.specificAddress ?? ''}, {address.City.name}, {address.City.Province.name} {address.postalCode ?? ''} 
                     </Text>
                 </Flex>
-                <Flex justifyContent={'flex-end'}>
-                    <Button>
-                        Change Address
-                    </Button>
+                <Flex justifyContent={'flex-end'}
+                gap={'12px'}>
+                    <Flex justifyContent={'flex-end'}
+                    flexDir={'column'}>
+                        <FormEditAddress 
+                        id={address.id}
+                        specificAddress={address.specificAddress}
+                        cityId={address.cityId}
+                        fullName={address.fullName}
+                        phoneNumber={address.phoneNumber}
+                        postalCode={address.postalCode}
+                        provinceId={address.City.Province.id}
+                        onAddressUpdated={fetchData}
+                        />
+                    </Flex>
+                    <Flex justifyContent={'flex-end'}
+                    flexDir={'column'}>
+                        <Menu>
+                            <MenuButton as={Button}
+                            variant={'outline'}
+                            border={'1px solid #8D8B8B'}
+                            color={'#8D8B8B'}
+                            fontSize={'14px'}
+                            fontWeight={'700'}
+                            padding={'12px 16px'}
+                            _hover={'none'}
+                            _active={'none'}>
+                                <Text>•••</Text>
+                            </MenuButton>
+                            <MenuList>
+                                <MenuItem>
+                                    <UpdateMainAddress 
+                                    id={address.id} 
+                                    userId={user.id}
+                                    onUpdatedMainAddress={fetchData}/>
+                                </MenuItem>
+                                <MenuItem>
+                                    <DeleteUserAddress id={address.id}
+                                    onDeletedAddress={fetchData}/>
+                                </MenuItem>
+                            </MenuList>
+                        </Menu>
+                    </Flex>
+                    
                 </Flex>
             </Flex>
             ))}

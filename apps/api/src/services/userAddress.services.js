@@ -1,4 +1,4 @@
-import { findUserAddressQuery, createUserAddressQuery, findProvinceQuery, findCityQuery, opencageQuery, findCityOpenCageBasedQuery } from "../queries/userAddress.queries";
+import { findUserAddressQuery, createUserAddressQuery, findProvinceQuery, findCityQuery, opencageQuery, findCityOpenCageBasedQuery, updateUserAddressQuery, updateMainAddressQuery, removeMainAddressQuery, deleteUserAddressQuery } from "../queries/userAddress.queries";
 
 export const findUserAddressService = async (id) => {
     try{
@@ -55,3 +55,29 @@ export const createUserAddressService = async (id, specificAddress, cityId, full
         throw err
     }
 }
+
+export const updateUserAddressService = async (id, specificAddress, cityId, fullName, phoneNumber, postalCode) => {
+    try { 
+        await updateUserAddressQuery(id, specificAddress, cityId, fullName, phoneNumber, postalCode)
+    } catch (err){
+        throw err
+    }
+}
+
+export const updateMainAddressService = async (id, userId) => {
+    try{
+        await removeMainAddressQuery(userId)
+        await updateMainAddressQuery(id)
+    } catch (err){
+        throw err
+    }
+}
+
+export const deleteUserAddressService = async (id) => {
+    try{
+        await deleteUserAddressQuery(id)
+    } catch (err){
+        throw err
+    }
+}
+

@@ -3,6 +3,7 @@ import { getCity, getProvince } from "../../services/readUserAddress";
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { createUserAddress } from "../../services/createUserAddress";
 import { findOpenCageAndCity } from "../../services/readUserAddress";
 
@@ -14,7 +15,7 @@ function FormCurrentLocation ({ lat, lng }) {
     const [citylist, setCityList] = useState([])
     const [provinceList, setProvinceList] = useState([]);
     const [selectedProvince, setSelectedProvince] = useState("")
-
+    const navigate = useNavigate()
     const user = useSelector((state) => state.AuthReducer.user);
 
     useEffect(() => {
@@ -69,22 +70,25 @@ function FormCurrentLocation ({ lat, lng }) {
         
         initialValues:{
             specificAddress:"", 
-            cityId: "", 
+            cityId: null, 
             fullName:"", 
-            phoneNumber:""
+            phoneNumber:"",
+            postalCode: "",
         },
         onSubmit: async (values, {resetForm}) => {
             try{
                 console.log("Formik Submission Values:", values);
-                await createUserAddress(user.id, values.specificAddress, values.cityId, values.fullName, values.phoneNumber);    
+                await createUserAddress(user.id, values.specificAddress, values.cityId, values.fullName, values.phoneNumber, values.postalCode);    
+                navigate('/manage-address')
             } catch (err){
                 console.log(err.message);
             }
             resetForm({values:
                 {specificAddress:"", 
-                cityId: "", 
+                cityId: null, 
                 fullName:"", 
                 phoneNumber:"",
+                postalCode: "",
                 }})
         }
     })
@@ -93,6 +97,7 @@ function FormCurrentLocation ({ lat, lng }) {
         if (address) {
             formik.setFieldValue('specificAddress', `${address.address.road}, ${address.address.village}, ${address.address.municipality}`);
             formik.setFieldValue('postalCode', `${address.address.postcode}`);
+            formik.setFieldValue('cityId', `${address.city.id}`)
         }
     }, [address, formik.setFieldValue]);
 

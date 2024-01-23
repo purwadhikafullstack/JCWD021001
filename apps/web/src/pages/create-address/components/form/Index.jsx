@@ -3,6 +3,7 @@ import { getCity, getProvince } from "../../services/readUserAddress";
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { createUserAddress } from "../../services/createUserAddress";
 
 
@@ -11,7 +12,7 @@ function FormCreateAddress () {
     const [selectedProvince, setSelectedProvince] = useState("")
     const [citylist, setCityList] = useState([])
     const [selectedCity, setSelectedCity] = useState("")
-
+    const navigate = useNavigate()
     const user = useSelector((state) => state.AuthReducer.user);
 
     useEffect(() => {
@@ -32,24 +33,18 @@ function FormCreateAddress () {
     const formik = useFormik({
 
         initialValues:{
-            specificAddress:"", 
-            cityId: "", 
-            fullName:"", 
-            phoneNumber:""
+            specificAddress:"", cityId: "", fullName:"", phoneNumber:"", postalCode: ""
         },
         onSubmit: async (values, {resetForm}) => {
             try{
                 console.log("Formik Submission Values:", values);
                 await createUserAddress(user.id, values.specificAddress, values.cityId, values.fullName, values.phoneNumber, values.postalCode);    
+                navigate('/manage-address')
             } catch (err){
                 console.log(err.message);
             }
             resetForm({values:
-                {specificAddress:"", 
-                cityId: "", 
-                fullName:"", 
-                phoneNumber:"",
-                postalCode: "",
+                {specificAddress:"", cityId: "", fullName:"", phoneNumber:"", postalCode: "",
                 }})
         }
     }) 
