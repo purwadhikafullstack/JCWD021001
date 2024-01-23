@@ -4,8 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import capitalize from 'capitalize'
 export const BreadCrumbs = (props) => {
   const navigate = useNavigate()
-  console.log('breadCrumps Component', props?.breadCrumbs)
-  console.log('SEGMENT', props?.segments)
   const breadCrumbsLinks = props?.breadCrumbs?.map((segment, index, array) => {
     return (
       <HStack>

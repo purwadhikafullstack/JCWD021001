@@ -1,8 +1,10 @@
 import Product from '../models/product.model'
 import ProductCategory from '../models/productCategory.model'
 import { Op } from 'sequelize'
-import Stock from '../models/stock.model'
 import Size from '../models/size.model'
+import ProductImage from '../models/productImage.model'
+import Stock from '../models/stock.model'
+import Colour from '../models/colour.model'
 
 export const getProductQuery = async (
   name = null,
@@ -12,7 +14,11 @@ export const getProductQuery = async (
   id = null,
   sortBy = 'name',
   orderBy = 'ASC',
+  page = null,
+  pageSize = null,
 ) => {
+  page = 1
+  const offset = (page - 1) * pageSize
   try {
     const filter = {}
     if (id)
@@ -23,56 +29,55 @@ export const getProductQuery = async (
       }
     if (name)
       filter.where = {
+        ...filter.where,
         name: {
           [Op.like]: `%${name}%`,
         },
       }
-    if (gender)
-      filter.where = {
-        '$category.parent.parent.name$': {
-          [Op.eq]: `${gender}`,
-        },
+    if (gender) {
+      if (group) {
+        if (category) {
+          filter.where = {
+            ...filter.where,
+            [Op.and]: [
+              {
+                '$category.parent.parent.name$': gender,
+              },
+              {
+                '$category.parent.name$': group,
+              },
+              {
+                '$category.name$': category.replace(/-/g, ' '),
+              },
+            ],
+          }
+        } else {
+          filter.where = {
+            ...filter.where,
+            [Op.and]: [
+              {
+                '$category.parent.parent.name$': gender,
+              },
+              {
+                '$category.parent.name$': group,
+              },
+            ],
+          }
+        }
+      } else {
+        filter.where = {
+          ...filter.where,
+          '$category.parent.parent.name$': gender,
+        }
       }
-    if (gender && group)
-      filter.where = {
-        [Op.and]: [
-          {
-            '$category.parent.parent.name$': {
-              [Op.eq]: `${gender}`,
-            },
-          },
-          {
-            '$category.parent.name$': {
-              [Op.eq]: `${group}`,
-            },
-          },
-        ],
-      }
-    if (gender && group && category)
-      filter.where = {
-        [Op.and]: [
-          {
-            '$category.parent.parent.name$': {
-              [Op.eq]: `${gender}`,
-            },
-          },
-          {
-            '$category.parent.name$': {
-              [Op.eq]: `${group}`,
-            },
-          },
-          {
-            '$category.name$': {
-              [Op.eq]: `${category.replace(/-/g, ' ')}`,
-            },
-          },
-        ],
-      }
+    }
     const res = await Product.findAll({
+      attributes: ['id', 'name', 'price', 'description'],
       include: [
         {
           model: ProductCategory,
           as: 'category',
+          attributes: ['id', 'name'],
           include: [
             {
               model: ProductCategory,
@@ -82,6 +87,10 @@ export const getProductQuery = async (
                   model: ProductCategory,
                   as: 'parent',
                 },
+                {
+                  model: Size,
+                  as: 'size',
+                },
               ],
             },
             {
@@ -90,9 +99,34 @@ export const getProductQuery = async (
             },
           ],
         },
+        {
+          model: ProductImage,
+          as: 'picture',
+        },
+        {
+          model: Stock,
+          as: 'stocks',
+          include: [{ model: Colour, as: 'colour' }],
+        },
       ],
       order: [[`${sortBy}`, `${orderBy}`]],
       ...filter,
+      subQuery: false,
+      limit: id ? 1 : +pageSize,
+      offset: offset,
+    })
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
+export const getProductByName = async ({ name = null }) => {
+  try {
+    const res = await Product.findOne({
+      where: {
+        name: name,
+      },
     })
     return res
   } catch (err) {
@@ -104,20 +138,14 @@ export const createProductQuery = async (
   name = null,
   price = null,
   description = null,
-  productGroupId = null,
-  productTypeId = null,
   productCategoryId = null,
-  colourId = null,
 ) => {
   try {
     const res = await Product.create({
       name,
       price,
       description,
-      productGroupId,
-      productTypeId,
       productCategoryId,
-      colourId,
     })
     return res
   } catch (err) {
@@ -125,25 +153,13 @@ export const createProductQuery = async (
   }
 }
 
-export const updateProductQuery = async (
-  name,
-  price,
-  description,
-  productGroupId,
-  productTypeId,
-  productCategoryId,
-  colourId,
-  id,
-) => {
+export const updateProductQuery = async (name, price, description, productCategoryId, id) => {
   try {
     const toBeUpdated = {}
     if (name) toBeUpdated.name = name
     if (price) toBeUpdated.price = price
     if (description) toBeUpdated.description = description
-    if (productGroupId) toBeUpdated.productGroupId = productGroupId
-    if (productTypeId) toBeUpdated.productTypeId = productTypeId
     if (productCategoryId) toBeUpdated.productCategoryId = productCategoryId
-    if (colourId) toBeUpdated.colourId = colourId
 
     const res = await Product.update(
       {

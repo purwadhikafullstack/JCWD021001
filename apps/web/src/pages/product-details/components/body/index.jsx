@@ -1,19 +1,52 @@
 import { AspectRatio, Box, Button, Flex, HStack, Icon, Image, Text, VStack } from '@chakra-ui/react'
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Carousel } from '../carousel'
+import axios from 'axios'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 export const Body = (props) => {
-  // console.log('dataProduct', props);
-  const images = [
-    'https://image.uniqlo.com/UQ/ST3/AsianCommon/imagesgoods/462028/sub/goods_462028_sub13.jpg?width=750',
-    'https://image.uniqlo.com/UQ/ST3/id/imagesgoods/462028/item/idgoods_66_462028.jpg?width=750',
-    'https://image.uniqlo.com/UQ/ST3/id/imagesgoods/462028/sub/idgoods_462028_sub9.jpg?width=750',
-  ]
+  const images = [props?.product?.picture]
+  const sizes = props?.product?.category?.parent?.size
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const navigate = useNavigate()
+  const colourValue = queryParams.get('col')
+  const sizeValue = queryParams.get('sz')
+  const pathName = location.pathname
+  // FILTER STOCK
+  const uniqueColorIds = new Set()
+  const filteredStocks = props?.product?.stocks?.filter((stock) => {
+    if (!uniqueColorIds.has(stock.colourId)) {
+      uniqueColorIds.add(stock.colourId)
+      return true
+    }
+    return false
+  })
+  // FILTER STOCK
+
   const [selectedImage, setSelectedImage] = useState('')
   const handleSelectImage = (image) => {
     setSelectedImage(image)
   }
+
+  const [stock, setStock] = useState(null)
+
+  const getStock = async (productId, sizeId, colourId, setStock) => {
+    try {
+      const res = await axios.get(
+        `http://localhost:8000/api/stock/stock/qty?productId=${productId}&sizeId=${sizeId}&colourId=${colourId}`,
+      )
+      setStock(res?.data?.data)
+    } catch (err) {
+      throw err
+    }
+  }
+  useEffect(() => {
+    getStock(props?.product?.id, sizeValue, colourValue, setStock)
+  }, [colourValue, sizeValue])
+
+  const shouldDisable = !stock ? true : false
   return (
     <Box p={'1em'} bgColor={'grey.50'} minH={'100vh'}>
       <VStack align={'sretch'}>
@@ -26,19 +59,24 @@ export const Body = (props) => {
           flexDir={{ base: 'column', sm: 'row' }}
           justifyContent={{ md: 'space-between' }}
           gap={'1em'}
-          minH={'80vh'}
         >
-          <Box w={{ sm: '40%' }} overflow={'hidden'} borderRadius={'1em'} h={'100%'}>
-            <AspectRatio ratio={1} overflow={'hidden'} borderRadius={'1em'}>
+          <Box w={{ sm: '30%' }} overflow={'hidden'}>
+            <AspectRatio ratio={1} overflow={'hidden'}>
               <Image
-                src={selectedImage ? selectedImage : images[0]}
+                src={
+                  selectedImage
+                    ? `${import.meta.env.VITE_APP_API_IMAGE_URL}/productImages/${selectedImage}`
+                    : `${import.meta.env.VITE_APP_API_IMAGE_URL}/productImages/${
+                        props?.product?.picture[0]?.imageUrl
+                      }`
+                }
                 alt="naruto"
                 objectFit="cover"
               />
             </AspectRatio>
             <Carousel images={images} handleSelectImage={handleSelectImage} />
           </Box>
-          <Box bgColor={'white'} p={'1em'} borderRadius={'1em'} w={{ sm: '60%' }}>
+          <Box bgColor={'white'} p={'1em'} borderRadius={'1em'} w={{ sm: '70%' }} h={'83vh'}>
             <Flex flexDir={'column'} gap={'.5em'} justifyContent={'space-between'} h={'100%'}>
               <Text fontWeight={'bold'} fontSize={{ md: '1.5em' }}>
                 {props?.product?.name}
@@ -48,31 +86,30 @@ export const Body = (props) => {
                   Description
                 </Text>
                 <Text fontSize={{ base: '.75em', md: '1em' }}>{props?.product?.description}</Text>
-                <Text fontSize={{ base: '.75em', md: '1em' }}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget est efficitur,
-                  luctus tellus vel, condimentum augue. Vestibulum tincidunt lacus sit amet massa
-                  cursus pharetra. Suspendisse bibendum facilisis sagittis. Duis lobortis
-                  ullamcorper est, ac lobortis nibh feugiat vitae. Quisque convallis sem id semper
-                  condimentum. Donec sit amet consequat erat. Quisque vel varius elit. Vestibulum
-                  euismod nisl sit amet laoreet malesuada. Mauris felis ante, auctor eget sem eget,
-                  volutpat tristique orci. Sed neque sapien, ullamcorper non neque vitae, porttitor
-                  tempus turpis. In auctor in dui quis iaculis. Cras at orci efficitur, consequat mi
-                  maximus, dignissim ante. Mauris pretium mi turpis, a.
-                </Text>
               </Box>
               <Box>
                 <Text fontWeight={'bold'} fontSize={'.9em'}>
                   Color
                 </Text>
                 <HStack>
-                  <Box p={'.5em'} border={'2px solid #f2f2f2'} borderRadius={'.5em'}>
-                    <VStack spacing={'1em'}>
-                      <Box bgColor={'blue'} w={'2.5em'} h={'2.5em'} borderRadius={'.5em'}></Box>
-                      <Text fontWeight={'bold'} fontSize={'.75em'}>
-                        Blue
-                      </Text>
-                    </VStack>
-                  </Box>
+                  {filteredStocks?.map((el, index) => {
+                    return (
+                      <Box p={'.5em'} border={'2px solid #f2f2f2'} borderRadius={'.5em'}>
+                        <VStack spacing={'1em'}>
+                          <Box
+                            bgColor={el?.colour?.name}
+                            w={'2.5em'}
+                            h={'2.5em'}
+                            borderRadius={'.5em'}
+                            onClick={() => navigate(`${pathName}?col=${el?.id}&sz=0`)}
+                          ></Box>
+                          <Text fontWeight={'bold'} fontSize={'.75em'}>
+                            {el?.colour?.name}
+                          </Text>
+                        </VStack>
+                      </Box>
+                    )
+                  })}
                 </HStack>
               </Box>
               <VStack align={'stretch'}>
@@ -81,15 +118,21 @@ export const Body = (props) => {
                   <Text color={'redPure.500'}>View Size Chart</Text>
                 </Flex>
                 <HStack>
-                  <Box
-                    borderRadius={'.5em'}
-                    p={'.5em 1em'}
-                    fontSize={{ base: '.75em', md: '1em' }}
-                    border={'2px solid #f2f2f2'}
-                    fontWeight={'bold'}
-                  >
-                    <Text>XS</Text>
-                  </Box>
+                  {sizes?.map((el, index) => {
+                    return (
+                      <Box
+                        key={index}
+                        borderRadius={'.5em'}
+                        p={'.5em 1em'}
+                        fontSize={{ base: '.75em', md: '1em' }}
+                        border={'2px solid #f2f2f2'}
+                        fontWeight={'bold'}
+                        onClick={() => navigate(`${pathName}?col=${colourValue}&sz=${el?.id}`)}
+                      >
+                        <Text>{el?.name}</Text>
+                      </Box>
+                    )
+                  })}
                 </HStack>
               </VStack>
               <VStack align={'stretch'}>
@@ -109,31 +152,33 @@ export const Body = (props) => {
                     <Text>1</Text>
                     <Icon as={PlusIcon} color={'redPure.500'} />
                   </Flex>
-                  <HStack alignSelf={'flex-end'} fontSize={'.75em'}>
-                    <Text color={'redPure.500'}>10</Text>
-                    <Text>Stock</Text>
+                  <HStack alignSelf={'flex-end'} fontSize={'.75em'} fontWeight={'bold'}>
+                    <Text color={'redPure.500'}>{stock}</Text>
+                    <Text>{stock ? 'Stock' : 'Sorry, out of stock'}</Text>
                   </HStack>
                 </HStack>
               </VStack>
               <HStack>
                 <Button
                   _hover={{
-                    bgColor: 'redPure.500',
+                    bgColor: stock ? 'redPure.500' : 'grey.50',
                   }}
                   w={'50%'}
-                  bgColor={'redPure.500'}
-                  color={'white'}
+                  bgColor={stock ? 'redPure.500' : 'grey.50'}
+                  color={stock ? 'white' : 'grey'}
+                  isDisabled={shouldDisable}
                 >
                   Add to cart
                 </Button>
                 <Button
                   _hover={{
-                    bgColor: 'transparent',
+                    bgColor: stock ? 'transparent' : 'grey.50',
                   }}
                   w={'50%'}
-                  border={'1px solid #e3024b'}
-                  bgColor={'transparent'}
-                  color={'redPure.500'}
+                  border={stock ? '1px solid #e3024b' : '1px solid #f2f2f2'}
+                  bgColor={stock ? 'transparent' : 'grey.50'}
+                  color={stock ? 'white' : 'grey'}
+                  isDisabled={shouldDisable}
                 >
                   Buy Now
                 </Button>

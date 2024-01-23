@@ -14,10 +14,6 @@ export const ProductSearch = () => {
   useEffect(() => {
     getProduct(queryValue, '', '', '', setProducts, sortBy, orderBy)
   }, [queryValue])
-
-  console.log('product-search', products)
-  console.log('queryParams', queryParams)
-  console.log('queryValue', queryValue)
   return (
     <Box minH={'100vh'}>
       <Navbar />

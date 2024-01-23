@@ -9,7 +9,7 @@ export default class OrderProducts extends Model {
   static associate(models) {
     // define association here
     this.belongsTo(models.Orders, { foreignKey: 'orderId' });
-    this.belongsTo(models.Stock, { foreignKey: 'stockId' });
+    this.belongsTo(models.Stock, { foreignKey: 'stockId', as: 'stocks'});
   }
 }
 
