@@ -17,23 +17,29 @@ import {
   MenuList,
   Text,
   Select,
-} from '@chakra-ui/react'
+  Avatar,
+} from '@chakra-ui/react';
 import {
   MagnifyingGlassIcon,
   ShoppingCartIcon,
   BellIcon,
   XMarkIcon,
   ChevronDownIcon,
-} from '@heroicons/react/24/outline'
-import pure from '/logo/pure.png'
+} from '@heroicons/react/24/outline';
+import pure from '/logo/pure.png';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { SearchModal } from './components/search-modal'
-import { useNavigate } from 'react-router-dom'
 import { SearchMenu } from './components/search-menu'
 
 export const Navbar = (props) => {
+  const user= useSelector((state) => state.AuthReducer.user);
+  const isLogin= useSelector((state) => state.AuthReducer.isLogin);
   const navigate = useNavigate()
   return (
-    <Box p={'.5em 1em'}>
+    <Box p={'1em 2em'}
+    bg={'white'}
+    h={'82px'}>
       <Box>
         <Flex alignItems={'center'} justifyContent={'space-between'}>
           <HStack spacing={'2em'}>
@@ -90,29 +96,58 @@ export const Navbar = (props) => {
               </Box>
 
               <Box display={{ base: 'none', md: 'block' }}>
+              {isLogin ? (
+              <Flex w={'48px'}
+                h={'48px'}
+                borderRadius={'full'}
+                ml={'24px'}>
+                  {user?.avatar ? (
+                  <Avatar
+                    name={user?.fullName}
+                    src={`${import.meta.env.VITE_APP_IMAGE_URL}/api/avatar/${
+                      user?.avatar
+                    }`}
+                    w={"48px"}
+                    h={"48px"}
+                  />
+                ) : (
+                  <Avatar
+                    name={user?.fullName}
+                    bg="rgba(40, 96, 67, 1)"
+                    src={"https://bit.ly/broken-link"}
+                    w={"48px"}
+                    h={"48px"}
+                    color={"white"}
+                  />
+                )}
+                </Flex>
+              ) : (
                 <HStack>
                   <Button
-                    color="redPure.500"
-                    borderColor={'redPure.500'}
+                    color="brand.lightred"
+                    borderColor={'brand.lightred'}
                     variant={'outline'}
                     width={'5.5em'}
                     _hover={{
                       fontWeight: 'bold',
                     }}
+                    onClick={() => navigate("/signup")}
                   >
                     Sign Up
                   </Button>
                   <Button
                     color="white"
-                    bg={'redPure.500'}
+                    bg={'brand.lightred'}
                     width={'5.5em'}
                     _hover={{
                       fontWeight: 'bold',
                     }}
+                    onClick={() => navigate("/signin")}
                   >
                     Sign In
                   </Button>
                 </HStack>
+              )}
               </Box>
             </Box>
           </HStack>

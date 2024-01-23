@@ -10,7 +10,7 @@ export default class City extends Model {
     // define association here
     this.belongsTo(models.Province, { foreignKey: 'provinceId' });
     this.hasMany(models.UserAddress, { foreignKey: 'cityId' });
-    this.hasMany(models.Warehouse, { foreignKey: 'cityId' });
+    this.hasOne(models.Warehouse, { foreignKey: 'cityId' });
   }
 }
 

@@ -4,12 +4,12 @@ const { DataTypes } = require('sequelize');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.addColumn('userAddresses', 'isMainAddress',{
-      type: DataTypes.BOOLEAN
+    await queryInterface.addColumn('userAddresses', 'postalCode',{
+      type: DataTypes.INTEGER
     });
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.removeColumn('userAddresses', 'isMainAddress');
+    await queryInterface.removeColumn('userAddresses', 'postalCode');
   }
 };
