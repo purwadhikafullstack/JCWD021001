@@ -32,11 +32,14 @@ export const Product = () => {
       url: `/p/${gender}/${group}/${category}`,
     },
   ]
+
   // Splitting pathname for breadcrumbs
   const segments = pathname.split('/')
+  // Splitting pathname for breadcrumbs
 
   // Empty array state for products
   const [products, setProducts] = useState([])
+  // Empty array state for products
 
   // State for filtering products
   const [productName, setProductName] = useState('')
@@ -44,14 +47,12 @@ export const Product = () => {
   const [productGroup, setProductGroup] = useState('')
   const [productCategory, setProductCategory] = useState('')
 
-  // Sidebar
-  const [collapseSideBar, setCollapseSideBar] = useState(false)
-
   const [sortBy, setSortBy] = useState('name')
   const [orderBy, setOrderBy] = useState('ASC')
+  const [pageSize, setPageSize] = useState(10)
   // Get product data
   useEffect(() => {
-    getProduct(productName, gender, group, category, setProducts, sortBy, orderBy)
+    getProduct(productName, gender, group, category, setProducts, sortBy, orderBy, 1, pageSize)
   }, [
     productName,
     productGender,
@@ -67,6 +68,8 @@ export const Product = () => {
     setOrderBy,
     setProductGroup,
     setProductCategory,
+    pageSize,
+    setPageSize,
   ])
 
   // This is for sidebar product categories, and type
@@ -75,7 +78,8 @@ export const Product = () => {
   useEffect(() => {
     getProductCategory(setProductCategories)
   }, [])
-
+  // Sidebar
+  const [collapseSideBar, setCollapseSideBar] = useState(false)
   const toggleSideBar = () => {
     setCollapseSideBar(!collapseSideBar)
   }
@@ -100,6 +104,7 @@ export const Product = () => {
           setCollapseSideBar={setCollapseSideBar}
           toggleSideBar={toggleSideBar}
           segments={segments}
+          setPageSize={setPageSize}
         />
       </Box>
       <Box display={collapseSideBar ? 'none' : 'block'}>
@@ -120,6 +125,8 @@ export const Product = () => {
           setSortBy={setSortBy}
           orderBy={orderBy}
           sortBy={sortBy}
+          pageSize={pageSize}
+          setPageSize={setPageSize}
         />
       </Box>
       <Flex

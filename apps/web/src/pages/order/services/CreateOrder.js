@@ -23,8 +23,8 @@ export const createOrder = async ({
             orderStatusId: orderStatusId,
             products: products,
         });
-        toast.success("Order created")
-        return response.data.data.order.id
+        alert("Order created")
+        return response.data.data
     } catch (err){
         alert("Error occurred")
     }

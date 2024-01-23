@@ -9,7 +9,7 @@ const productRouter = Router()
 
 productRouter.get('/', getProductController)
 productRouter.get('/details/:id', getProductController)
-productRouter.post('/', createProductController)
+productRouter.post('/create', createProductController)
 productRouter.patch('/:id', updateProductController)
 productRouter.delete('/:id', deleteProductController)
 
