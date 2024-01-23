@@ -14,9 +14,10 @@ import {
   VStack,
   useToast,
   Image,
+  Icon,
 } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
-import { Formik, Field, Form, ErrorMessage, useFormik } from 'formik'
+import { Formik, Field, Form } from 'formik'
 import * as Yup from 'yup'
 import { useParams } from 'react-router-dom'
 import { getProductDetails } from '../../../product-details/services/readProductDetails'
@@ -24,6 +25,7 @@ import { getProductCategory } from '../../../product-list/services/readProductCa
 import { getGender } from '../../services/readGender'
 import axios from 'axios'
 import { ImageUpload } from '../image-upload'
+import { ChevronRightIcon } from '@chakra-ui/icons'
 
 export const EditProduct = () => {
   // SET TOAST
@@ -73,13 +75,6 @@ export const EditProduct = () => {
     }
   }
   // DELETE PRODUCT IMAGES
-  // Start set product
-  const { epid } = useParams()
-  const [product, setProduct] = useState(null)
-  useEffect(() => {
-    getProductDetails(epid, setProduct)
-  }, [])
-  // End set product
 
   // Start validation schema
   const validationSchema = Yup.object().shape({
@@ -89,20 +84,6 @@ export const EditProduct = () => {
     // description: Yup.string().required('Description is required'),
   })
   // End validation schema
-
-  // HANDLE SUBMIT
-  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
-    await updateProduct(
-      values.name,
-      Number(values.price),
-      values.description,
-      Number(categoryId),
-      product?.id,
-    )
-    resetForm()
-    setSubmitting(false)
-  }
-  // HANDLE SUBMIT
 
   // GET GENDER
   const [gender, setGender] = useState([])
@@ -160,17 +141,29 @@ export const EditProduct = () => {
   const [categoryId, setCategoryId] = useState(0)
   // CATEGORY ID WANT TO SEND
 
+  // HANDLE SUBMIT
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    await updateProduct(
+      values.name,
+      Number(values.price),
+      values.description,
+      Number(categoryId),
+      product?.id,
+    )
+    resetForm()
+    setSubmitting(false)
+  }
+  // HANDLE SUBMIT
+
   // CATEGORY VALUE TO BE SHOWED IN INPUT
   const [categoryValue, setCategoryValue] = useState('')
   // CATEGORY VALUE TO BE SHOWED IN INPUT
-
   // FORMIK INITIAL VALUES
-  const initialValues = {
-    name: product?.name || '',
-    price: product?.price || '',
-    productCategoryId: product?.category?.name || '',
-    description: product?.description || '',
-  }
+
+  useEffect(() => {
+    getProductCategory(setProductCategories)
+  }, [])
+
   // FORMIK INITIAL VALUES
   const [editable, setEditable] = useState({})
   const handleEditClick = (id) => {
@@ -179,18 +172,20 @@ export const EditProduct = () => {
       [id]: !set[id],
     }))
   }
-
-  const formik = useFormik({
-    initialValues: {
-      name: product?.name || '',
-      price: product?.price || '',
-      productCategoryId: product?.category?.name || '',
-      description: product?.description || '',
-    },
-  })
+  // Start set product
+  const { epid } = useParams()
+  const [product, setProduct] = useState(null)
   useEffect(() => {
-    getProductCategory(setProductCategories)
-  }, [])
+    getProductDetails(epid, setProduct)
+  }, [editable])
+  // End set product
+
+  const initialValues = {
+    name: product?.name || '',
+    price: product?.price || '',
+    productCategoryId: product?.productCategoryId || '',
+    description: product?.description || '',
+  }
   return (
     <Box p={'1em'} bgColor={'white'}>
       <Text fontWeight={'bold'} mb={'2em'}>
@@ -216,7 +211,7 @@ export const EditProduct = () => {
                     <Input
                       {...field}
                       id="name"
-                      placeholder={'Input youre product name'}
+                      placeholder={'Input youre new product name'}
                       borderColor={'transparent'}
                       focusBorderColor={'transparent'}
                       bgColor={'grey.50'}
@@ -233,8 +228,9 @@ export const EditProduct = () => {
                     color={'white'}
                     isLoading={false}
                     onClick={() => handleEditClick(field.name)}
+                    type={'reset'}
                   >
-                    Edit
+                    {editable[field.name] ? 'Cancel' : 'Edit'}
                   </Button>
                 </FormControl>
               )}
@@ -248,6 +244,13 @@ export const EditProduct = () => {
                   <FormLabel htmlFor="productCategoryId" fontWeight={'bold'}>
                     Category
                   </FormLabel>
+                  <HStack mb={'1em'}>
+                    <Text>{product?.category?.parent?.parent?.name}</Text>
+                    <Icon as={ChevronRightIcon} />
+                    <Text>{product?.category?.parent?.name}</Text>
+                    <Icon as={ChevronRightIcon} />
+                    <Text>{product?.category?.name}</Text>
+                  </HStack>
                   {editable[field.name] && (
                     <Input
                       {...field}
@@ -258,8 +261,31 @@ export const EditProduct = () => {
                       focusBorderColor={'transparent'}
                       bgColor={'grey.50'}
                       color={'black'}
+                      value={categoryValue}
                       isReadOnly
                     />
+                  )}
+                  {editable['productCategoryId'] && (
+                    <Grid
+                      mb={'1em'}
+                      templateColumns="repeat(3, 1fr)"
+                      w={'100%'}
+                      gap={'1em'}
+                      border={'2px solid #f2f2f2'}
+                      borderRadius={'.5em'}
+                      p={'1em'}
+                      fontWeight={'bold'}
+                    >
+                      <Box p={'.5em'}>
+                        <VStack align={'stretch'}>{renderedGender}</VStack>
+                      </Box>
+                      <Box p={'.5em'} borderLeft={'2px solid lightgray'}>
+                        <VStack align={'stretch'}>{renderedGroup}</VStack>
+                      </Box>
+                      <Box p={'0 .5em'} borderLeft={'2px solid lightgray'}>
+                        <VStack align={'stretch'}>{renderedCategory}</VStack>
+                      </Box>
+                    </Grid>
                   )}
                   <Button
                     _hover={{
@@ -269,36 +295,19 @@ export const EditProduct = () => {
                     bgColor={'redPure.500'}
                     color={'white'}
                     isLoading={false}
-                    onClick={() => handleEditClick(field.name)}
+                    onClick={() => {
+                      handleEditClick(field.name)
+                      setCategoryValue('')
+                    }}
                   >
-                    Edit
+                    {editable[field.name] ? 'Cancel' : 'Edit'}
                   </Button>
                   <FormErrorMessage>{form.errors.productCategoryId}</FormErrorMessage>
                 </FormControl>
               )}
             </Field>
+
             <Text fontWeight={'bold'}>Photo Product</Text>
-            {editable['productCategoryId'] && (
-              <Grid
-                templateColumns="repeat(3, 1fr)"
-                w={'100%'}
-                gap={'1em'}
-                border={'2px solid #f2f2f2'}
-                borderRadius={'.5em'}
-                p={'1em'}
-                fontWeight={'bold'}
-              >
-                <Box p={'.5em'}>
-                  <VStack align={'stretch'}>{renderedGender}</VStack>
-                </Box>
-                <Box p={'.5em'} borderLeft={'2px solid lightgray'}>
-                  <VStack align={'stretch'}>{renderedGroup}</VStack>
-                </Box>
-                <Box p={'0 .5em'} borderLeft={'2px solid lightgray'}>
-                  <VStack align={'stretch'}>{renderedCategory}</VStack>
-                </Box>
-              </Grid>
-            )}
             <Grid w={'100%'} templateColumns={'repeat(3, 1fr)'} gap={'.5em'}>
               {product?.picture?.map((el, index) => {
                 return (
@@ -356,8 +365,9 @@ export const EditProduct = () => {
                     color={'white'}
                     isLoading={false}
                     onClick={() => handleEditClick(field.name)}
+                    type={'reset'}
                   >
-                    Edit
+                    {editable[field.name] ? 'Cancel' : 'Edit'}
                   </Button>
                   <FormErrorMessage>{form.errors.description}</FormErrorMessage>
                 </FormControl>
@@ -401,7 +411,7 @@ export const EditProduct = () => {
                     isLoading={false}
                     onClick={() => handleEditClick(field.name)}
                   >
-                    Edit
+                    {editable[field.name] ? 'Cancel' : 'Edit'}
                   </Button>
                   <FormErrorMessage>{form.errors.price}</FormErrorMessage>
                 </FormControl>
