@@ -35,8 +35,6 @@ import { SearchMenu } from './components/search-menu'
 export const Navbar = (props) => {
   const user= useSelector((state) => state.AuthReducer.user);
   const isLogin= useSelector((state) => state.AuthReducer.isLogin);
-
-export const Navbar = (props) => {
   const navigate = useNavigate()
   return (
     <Box p={'1em 2em'}
