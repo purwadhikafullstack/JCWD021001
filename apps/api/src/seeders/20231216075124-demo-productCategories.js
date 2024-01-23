@@ -4,19 +4,11 @@
 export async function up(queryInterface, Sequelize) {
   await queryInterface.bulkInsert('productCategories', [
     {
+      name: 'Men',
+    },
+    {
       name: 'Tops',
-    },
-    {
-      name: 'Bottoms',
-    },
-    {
-      name: 'Dresses',
-    },
-    {
-      name: 'Outerwear',
-    },
-    {
-      name: 'Accesories',
+      parentId: 1
     },
   ]);
 }

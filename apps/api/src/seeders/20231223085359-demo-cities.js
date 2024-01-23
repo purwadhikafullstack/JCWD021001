@@ -8,6 +8,10 @@ module.exports = {
         name: 'Jambi',
         provinceId: 1,
       },
+      {
+        name: 'Surabaya',
+        provinceId: 2,
+      },
     ])
   },
 

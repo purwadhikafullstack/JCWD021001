@@ -14,9 +14,13 @@ import Cart from './pages/cart';
 import Order from './pages/order/Index';
 import { ProductDetails } from './pages/product-details/container'
 import { ProductSearch } from './pages/product-search/container'
+import OrderList from './pages/order-list';
+import Payment from './pages/payments';
+
 
 function App() {
   // const { user, isLogin } = useSelector((state) => state.AuthReducer);
+  console.log('halo');
   return (
     <Box>
       <Auth>
@@ -29,7 +33,9 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/order" element={<Order />} />
+          <Route path="/order-list" element={<OrderList />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/payment" element={<Payment />} />
           <Route path="/p/:gender/:group?/:category?" element={<Product />} />
           <Route path="/search" element={<ProductSearch />} />
           <Route path="/product/:id" element={<ProductDetails />} />

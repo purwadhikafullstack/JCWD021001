@@ -7,6 +7,9 @@ module.exports = {
       {
         name: 'Jambi',
       },
+      {
+        name: 'Jawa Timur',
+      },
     ]);
   },
 

@@ -1,4 +1,4 @@
-import { createPaymentService, paymentGatewayService } from "../services/payments.services";
+import { createPaymentService, getPaymentService, paymentGatewayService } from "../services/payments.services";
 
 const sendResponse = (res, statusCode, result, errorMessage) => {
     if (statusCode === 200) {
@@ -29,6 +29,17 @@ export const paymentGatewayController = async (req, res) => {
     try {
         const { userId, orderId, totalPrice, shippingCost, products } = req.body
         const result = await paymentGatewayService(userId, orderId, totalPrice, shippingCost, products);
+        return sendResponse(res, 200, result, null);
+    } catch (err) {
+        console.log(err);
+        return sendResponse(res, 500, null, err.message);
+    }
+}
+
+export const getPaymentController = async (req, res) => {
+    try {
+        const { userId } = req.params
+        const result = await getPaymentService(userId)
         return sendResponse(res, 200, result, null);
     } catch (err) {
         console.log(err);

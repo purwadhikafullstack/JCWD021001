@@ -3,10 +3,11 @@ import { updateCart } from '../../../pages/cart/services/updateCart';
 import { deleteCart } from '../../../pages/cart/services/deleteCart';
 import _debounce from 'lodash/debounce';
 import { useNavigate } from 'react-router-dom'
-import { CreateOrder } from '../../../pages/order/services/CreateOrder';
+// import { CreateOrder } from '../../../pages/order/services/createOrder';
 
 const useCartState = (cartData, onCartUpdated) => {
   const [selectedCartProducts, setSelectedCartProducts] = useState([])
+  console.log('select', selectedCartProducts);
   const [selectAllChecked, setSelectAllChecked] = useState(false)
   const [productData, setProductData] = useState(() => {
     const storedProductData = localStorage.getItem('productData')
@@ -165,37 +166,41 @@ const useCartState = (cartData, onCartUpdated) => {
 
   const handleCheckout = async () => {
     try {
-      const { totalPrice, totalQuantity } = calculateTotalPriceAndQuantity();
+      // const { totalPrice, totalQuantity } = calculateTotalPriceAndQuantity();
 
-      // Extract stock data from selected products
-      const stockData = selectedCartProducts.map((productId) => {
-        const cartItem = cartData.find((item) =>
-          item.CartProducts.some((product) => product.id === productId)
-        );
-        const selectedProduct = cartItem?.CartProducts.find((item) => item.id === productId);
+      // // Extract stock data from selected products
+      // const stockData = selectedCartProducts.map((productId) => {
+      //   const cartItem = cartData.find((item) =>
+      //     item.CartProducts.some((product) => product.id === productId)
+      //   );
+      //   const selectedProduct = cartItem?.CartProducts.find((item) => item.id === productId);
+      //   // console.log('sdad', selectedProduct);
 
-        return {
-          stockId: selectedProduct?.stockId,
-          price: selectedProduct?.price,
-          quantity: selectedProduct?.quantity,
-        };
-      });
+      //   return {
+      //     stockId: selectedProduct?.stockId,
+      //     price: selectedProduct?.price,
+      //     quantity: selectedProduct?.quantity,
+      //     priceProduct: selectedProduct?.Stock?.Product?.price
+      //   };
+      // });
+      // console.log('sdad', stockData);
 
-      // Call the CreateOrder function to send the request
-      const orderId = await CreateOrder({
-        userId: 1, // Update with the actual user ID
-        userAddressId: 1, // Update with the actual address ID
-        warehouseId: 1, // Update with the actual warehouse ID
-        totalPrice,
-        totalQuantity,
-        shippingCost: 20000, // Update with the actual shipping cost
-        orderStatusId: 1, // Update with the actual order status ID
-        products: stockData,
-      });
-      // console.log("orderId", orderId);
-      // setOrderId(orderId);
-      // Navigate to the '/order' page or any other page you want to redirect to after checkout
-      navigate('/order', { state: { orderId } });
+      // // Call the CreateOrder function to send the request
+      // const orderId = await CreateOrder({
+      //   userId: 4, // Update with the actual user ID
+      //   userAddressId: 1, // Update with the actual address ID
+      //   warehouseId: 1, // Update with the actual warehouse ID
+      //   totalPrice,
+      //   totalQuantity,
+      //   shippingCost: 20000, // Update with the actual shipping cost
+      //   orderStatusId: 1, // Update with the actual order status ID
+      //   products: stockData,
+      // });
+      // // console.log("orderId", orderId);
+      // // setOrderId(orderId);
+      // // Navigate to the '/order' page or any other page you want to redirect to after checkout
+      // navigate('/order', { state: { orderId } });
+      navigate('/order');
     } catch (error) {
       // Handle errors if needed
       console.error('Error during checkout:', error);
