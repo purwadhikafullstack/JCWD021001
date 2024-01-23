@@ -19,7 +19,7 @@ import { ProductDetails } from './pages/product-details/container'
 import { ProductSearch } from './pages/product-search/container'
 import OrderList from './pages/order-list'
 import Payment from './pages/payments'
-
+import { Dashboard } from './pages/dashboard/container'
 function App() {
   // const { user, isLogin } = useSelector((state) => state.AuthReducer);
   console.log('halo')
