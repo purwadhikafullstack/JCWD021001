@@ -24,10 +24,21 @@ export const createOrderController = async (req, res) => {
         return sendResponse(res, 500, null, err.message);
     }
 }
+// export const getOrderController = async (req, res) => {
+//     try {
+//         const { orderId } = req.params
+//         const result = await getOrderService(orderId)
+//         return sendResponse(res, 200, result, null);
+//     } catch (err) {
+//         console.log(err);
+//         return sendResponse(res, 500, null, err.message);
+//     }
+// }
+
 export const getOrderController = async (req, res) => {
     try {
-        const { orderId } = req.params
-        const result = await getOrderService(orderId)
+        const { userId } = req.params
+        const result = await getOrderService(userId)
         return sendResponse(res, 200, result, null);
     } catch (err) {
         console.log(err);

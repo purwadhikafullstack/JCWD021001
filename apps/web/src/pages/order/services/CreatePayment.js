@@ -1,11 +1,11 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
-export const CreatePayment = async (result) => {
+export const CreatePayment = async (result, orderId) => {
     try {
-        const response = await axios.post("http://localhost:8000/api/payment",
+        const response = await axios.post("http://localhost:8000/api/payment/result",
         {
-            orderId: result.order_id,
+            orderId: orderId,
             paymentCode: result.transaction_id,
             grossAmount: result.gross_amount,
             paymentDate: result.transaction_time,
@@ -13,8 +13,8 @@ export const CreatePayment = async (result) => {
             paymentStatus: result.transaction_status,
             paymentMessage: result.status_message,
         });
-        alert("payment created")
+        // alert("payment created")
     } catch (err){
-        alert("Error occurred")
+        alert("Create payment Error")
     }
 }

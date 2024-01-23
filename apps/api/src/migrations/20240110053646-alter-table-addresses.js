@@ -1,12 +1,15 @@
 'use strict';
+const { DataTypes } = require('sequelize');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.renameColumn('UserAddresses', 'spesificAddress', 'specificAddress');
+    await queryInterface.addColumn('userAddresses', 'isMainAddress',{
+      type: DataTypes.BOOLEAN
+    });
   },
 
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.renameColumn('UserAddresses', 'specificAddress', 'spesificAddress');
+  async down (queryInterface, Sequelize) {
+    await queryInterface.removeColumn('userAddresses', 'isMainAddress');
   }
 };

@@ -29,7 +29,7 @@ const Cart = () => {
 
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       <Box bgColor={'brand.grey100'} maxW={'100vw'} minH={'100vh'}>
         <LaptopCartTable cartData={cartData} onCartUpdated={handleCartUpdated} />
         {/* <MobileCartTable cartData={cartData} onCartUpdated={handleCartUpdated}/> */}

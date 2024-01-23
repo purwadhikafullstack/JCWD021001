@@ -14,52 +14,38 @@ import {
 import { MapPinIcon } from '@heroicons/react/24/outline'
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
 import { paymentGateway } from '../../pages/order/services/paymentGateway'
+import { CreatePayment } from '../../pages/order/services/CreatePayment'
+import { createOrder } from '../../pages/order/services/createOrder'
+import { useNavigate } from 'react-router-dom'
+
 
 const OrderBody = ({ orderData }) => {
-  // const [midtransToken, setMidtransToken] = useState(null)
-
-  // const handlePayment = async (order) => {
-  //   const dataPayment = {
-  //     userId: order.userId,
-  //     orderId: order.id,
-  //     totalPrice: parseFloat(order.totalPrice),
-  //     shippingCost: parseFloat(order.shippingCost),
-  //     products: order.OrderProducts.map((product) => ({
-  //       productId: product.Stock.Product.id,
-  //       quantity: product.quantity,
-  //       price: parseFloat(product.Stock.Product.price),
-  //     })),
-  //   }
-
-  //   try {
-  //     // Assuming paymentGateway function returns a promise
-  //     const token = await paymentGateway(dataPayment)
-  //     setMidtransToken(token)
-
-  //     // Handle the response from the payment gateway API here
-  //     console.log('Payment response:', midtransToken)
-  //   } catch (error) {
-  //     // Handle errors during payment processing
-  //     console.error('Payment error:', error)
-  //   }
-  // }
-
+  // console.log('orderdata', orderData);
+  const navigate = useNavigate()
   const handlePayment = async (order) => {
     try {
-      const dataPayment = {
-        userId: order.userId,
-        orderId: order.id,
-        totalPrice: parseFloat(order.totalPrice),
-        shippingCost: parseFloat(order.shippingCost),
-        products: order.OrderProducts.map((product) => ({
-          productId: product.Stock.Product.id,
-          quantity: product.quantity,
-          price: parseFloat(product.Stock.Product.price),
+      const dataOrder = {
+        userId: order?.User?.id,
+        userAddressId: 1,
+        warehouseId: 1,
+        totalPrice: parseFloat(order?.totalPrice),
+        totalQuantity: order?.totalQuantity,
+        shippingCost: 20000,
+        orderStatusId: 1,
+        products: order.CartProducts.map((product) => ({
+          stockId: product?.Stock?.id,
+          productId: product?.Stock?.Product?.id,
+          quantity: product?.quantity,
+          price: parseFloat(product?.price),
+          priceProduct: product?.Stock?.Product?.price,
+          
         })),
       }
-
-      const midtransToken = await paymentGateway(dataPayment)
-      // setMidtransToken(token)
+    
+      const result = await createOrder(dataOrder);
+      // console.log('asdasda', result);
+      const midtransToken = result?.midtransToken;
+      const orderId = result?.order?.id;
 
       if (midtransToken) {
         const snapScript = 'https://app.sandbox.midtrans.com/snap/snap.js'
@@ -74,13 +60,14 @@ const OrderBody = ({ orderData }) => {
             onSuccess: function (result) {
               /* You may add your own implementation here */
               alert('payment success!')
-              console.log(result)
-              CreatePayment(result)
+              CreatePayment(result, orderId)
+              navigate('/order-list', { state: { refresh: true, activeTab: 1 } });
             },
             onPending: function (result) {
               /* You may add your own implementation here */
               alert('wating your payment!')
-              console.log(result)
+              CreatePayment(result, orderId)
+              navigate('/order-list', { state: { refresh: true, activeTab: 0 } });
             },
             onError: function (result) {
               /* You may add your own implementation here */
@@ -105,6 +92,7 @@ const OrderBody = ({ orderData }) => {
     <Box>
       {orderData.map((orderItem) => (
         <Box key={orderItem.id}>
+          {/* {console.log('cartData', cartItem)} */}
           <Box padding={{ base: '24px 24px 280px 24px', xl: '24px' }}>
             <Box display={'flex'} flexDirection={'column'} gap={'6px'} mb={'16px'}>
               <Box display={'flex'} alignItems={'center'} gap={'12px'}>
@@ -202,7 +190,7 @@ const OrderBody = ({ orderData }) => {
                       Products Ordered
                     </Text>
                     <Box display={'flex'} flexDirection={'column'} gap={'24px'}>
-                      {orderItem?.OrderProducts?.map((item) => (
+                      {orderItem?.CartProducts?.map((item) => (
                         <Box key={item.id} w={'full'} display={'flex'} gap={'16px'}>
                           <Box w={'64px'} h={'64px'} bgColor={'brand.grey100'} />
                           <Box display={'flex'} flexDirection={'column'} w={'full'}>
@@ -251,7 +239,7 @@ const OrderBody = ({ orderData }) => {
                         </Tr>
                       </Thead>
                       <Tbody>
-                        {orderItem?.OrderProducts?.map((item) => (
+                        {orderItem?.CartProducts?.map((item) => (
                           <Tr key={item.id}>
                             <Td>
                               <Box w={'400px'} display={'flex'} gap={'16px'}>
@@ -327,7 +315,7 @@ const OrderBody = ({ orderData }) => {
                 </Text>
                 <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
                   <Text fontFamily={'body'} fontWeight={'400'} fontSize={'16px'}>
-                    Total Price (8 Items)
+                    Total Price ({orderItem?.totalQuantity} Items)
                   </Text>
                   <Text fontFamily={'body'} fontWeight={'400'} fontSize={'16px'} color={'#838383'}>
                     Rp {orderItem?.totalPrice}

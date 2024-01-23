@@ -2,7 +2,7 @@ import React from 'react'
 import { Box, Text, Button } from '@chakra-ui/react'
 import toRupiah from '@develoka/angka-rupiah-js'
 import { useNavigate } from 'react-router-dom'
-import { CreateOrder } from '../../pages/order/services/CreateOrder'
+// import { CreateOrder } from '../../pages/order/services/createOrder'
 
 
 const CartSummary = ({ totalQuantity, totalPrice, handleCheckout }) => {
