@@ -1,4 +1,5 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes } from 'sequelize'
+import Product from './product.model'
 
 export default class ProductImage extends Model {
   /**
@@ -8,10 +9,10 @@ export default class ProductImage extends Model {
    */
   static associate(models) {
     // define association here
-    ProductImage.belongsTo(models.Product, {
+    ProductImage.belongsTo(Product, {
       as: 'product',
       foreignKey: 'productId',
-    });
+    })
   }
 }
 
@@ -25,6 +26,12 @@ export const init = (sequelize) => {
       productId: {
         allowNull: false,
         type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: 'products',
+          },
+          key: 'id',
+        },
       },
     },
     {
@@ -32,5 +39,5 @@ export const init = (sequelize) => {
       modelName: 'ProductImage',
       timestamps: false,
     },
-  );
-};
+  )
+}

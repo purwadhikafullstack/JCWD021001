@@ -59,6 +59,8 @@ function App() {
           <Route path="/p/:gender/:group?/:category?" element={<Product />} />
           <Route path="/search" element={<ProductSearch />} />
           <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/dashboard/:destination?/:createProduct?" element={<Dashboard />} />
+          <Route path="/dashboard/:destination?/:createProduct?/:epid" element={<Dashboard />} />
           <Route path="/manage-address" element={<ManageAddress />} />
         </Routes>
       </Auth>
