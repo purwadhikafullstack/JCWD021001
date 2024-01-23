@@ -72,6 +72,14 @@ export const SideBar = (props) => {
   return (
     <Box
       position={'relative'}
+<<<<<<< HEAD
+      p={'1em'}
+      w={'100%'}
+      h={'100vh'}
+      zIndex={'2'}
+      top={'0'}
+      display={props?.collapseSideBar ? 'block' : 'none'}
+=======
       bgColor={'white'}
       p={'1em'}
       m={{ base: '0', md: '0 0 -1em -1em' }}
@@ -80,6 +88,7 @@ export const SideBar = (props) => {
       zIndex={'2'}
       top={'0'}
       minH={'100vh'}
+>>>>>>> development
     >
       <VStack align={'stretch'}>
         <Text color={'redPure.500'}>All {capitalize.words(props?.gender)}</Text>
@@ -90,7 +99,10 @@ export const SideBar = (props) => {
           justifyContent={'space-between'}
           onClick={() => props?.toggleSideBar()}
           cursor={'pointer'}
+<<<<<<< HEAD
+=======
           display={{ base: 'flex', md: 'none' }}
+>>>>>>> development
         >
           <Flex
             bgColor={'white'}
