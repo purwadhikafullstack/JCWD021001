@@ -10,6 +10,7 @@ export const createOrderService = async (userId, userAddressId, warehouseId, tot
     try {
         const orderNumber = `ORD-${Date.now()}`;
         const newTotalPrice = calcTotalPrice(products);
+        console.log("ssad", newTotalPrice);
         if (newTotalPrice != totalPrice) throw new Error("Total Price is wrong");
         const res = await createOrderQuery(userId, userAddressId, warehouseId, newTotalPrice, totalQuantity, shippingCost, orderStatusId, orderNumber, products)
         return res

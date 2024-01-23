@@ -10,7 +10,7 @@ export default class Orders extends Model {
     // define association here
     this.belongsTo(models.User, { foreignKey: 'userId' });
     this.belongsTo(models.UserAddress, { foreignKey: 'userAddressId' });
-    this.belongsTo(models.Warehouse, { foreignKey: 'warehouseId' });
+    this.belongsTo(models.Warehouse, { foreignKey: 'warehouseId', as: 'warehouse' });
     this.belongsTo(models.OrderStatuses, { foreignKey: 'orderStatusId' });
     this.hasMany(models.OrderProducts, { foreignKey: 'orderId' });
     this.hasOne(models.Payments, { foreignKey: 'orderId' });
