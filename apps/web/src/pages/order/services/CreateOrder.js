@@ -1,7 +1,7 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
-export const CreateOrder = async ({
+export const createOrder = async ({
     userId,
     userAddressId,
     warehouseId,
@@ -26,6 +26,6 @@ export const CreateOrder = async ({
         toast.success("Order created")
         return response.data.data.order.id
     } catch (err){
-        toast.error("Error occurred")
+        alert("Error occurred")
     }
 }

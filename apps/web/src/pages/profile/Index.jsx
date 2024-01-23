@@ -1,60 +1,15 @@
-import {
-  AbsoluteCenter,
-  Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  Button,
-  Flex,
-  FormControl,
-  FormLabel,
-  Icon,
-  Image,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Text,
-} from '@chakra-ui/react'
-import model from '../../assets/images/signup-model.jpeg'
-import { Navbar } from '../../components/navbar'
-
-import { HomeIcon } from '@heroicons/react/24/outline'
-import { PhotoIcon, CheckBadgeIcon } from '@heroicons/react/24/solid'
+import { AbsoluteCenter, Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Button, Flex, FormControl, FormLabel, Icon, Image, Input, InputGroup, InputLeftElement, Text } from "@chakra-ui/react"
+import { HomeIcon} from '@heroicons/react/24/outline'
 import { ChevronRightIcon } from '@chakra-ui/icons'
-import { useFormik } from 'formik'
-import { useSelector } from 'react-redux'
-import logo from '../../assets/images/logo.png'
-import { useState } from 'react'
-import UpdateUsername from './components/username'
-import UpdateEmail from './components/email'
-import UpdatePassword from './components/password'
-import axios from 'axios'
-import UploadAvatar from './components/avatar'
-import Footer from '../../components/Footer/Footer'
+import Navbar from "../../components/Navbar/Navbar"
+import UpdateUsername from "./components/username"
+import UpdateEmail from "./components/email"
+import UpdatePassword from "./components/password"
+import UploadAvatar from "./components/avatar"
+import Footer from "../../components/Footer/Footer"
 
 function Profile() {
-  const user = useSelector((state) => state.AuthReducer.user)
-  const [isEditable, setIsEditable] = useState(false)
-  const [fieldImage, setFieldImage] = useState(null)
-  const uploadAvatar = async (avatar) => {
-    try {
-      let formData = new FormData()
-      formData.append('avatar', fieldImage)
-
-      const { data } = await axios.patch(
-        `${import.meta.env.VITE_API_URL}user/upload-avatar/${user.id}`,
-        formData,
-      )
-      alert(data?.message)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const toggleEdit = () => {
-    setIsEditable(!isEditable)
-  }
-
+   
   return (
     <Box bg={'#F1F1F1'} height={'100vh'}>
       <Navbar />
