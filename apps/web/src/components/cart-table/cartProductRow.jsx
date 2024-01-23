@@ -14,6 +14,7 @@ const CartProductRow = ({
   handleSelectAllChange,
   productData,
 }) => {
+  console.log('cartItem', cartItem);
   return (
     <Box w={{ xl: '1100px', '2xl': '1420px' }}>
       <TableContainer>
@@ -81,10 +82,10 @@ const CartProductRow = ({
                       gap={'10px'}
                     >
                       <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                        {item?.Stock?.Product?.name}
+                        {item?.stocks?.products?.name}
                       </Text>
                       <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                        {toRupiah(item?.Stock?.Product?.price, { floatingPoint: 0 })}
+                        {toRupiah(+item?.stocks?.products?.price, { floatingPoint: 0 })}
                       </Text>
                     </Box>
                   </Box>
@@ -146,7 +147,7 @@ const CartProductRow = ({
                       variant="ghost"
                       // onClick={() => debouncedUpdateCart(item.id, Math.max(1, item.quantity - 1), onCartUpdated)}
                       onClick={() => handleButtonClick(item.id, -1)}
-                      isDisabled={item.quantity === 1}
+                      isDisabled={item?.quantity === 1}
                     >
                       <Icon as={MinusIcon} color={'brand.lightred'} />
                     </Button>
@@ -157,14 +158,14 @@ const CartProductRow = ({
                       variant="ghost"
                       // onClick={() => debouncedUpdateCart(item.id, Math.min(10, item.quantity + 1), onCartUpdated)}
                       onClick={() => handleButtonClick(item.id, 1)}
-                      isDisabled={item.quantity === 10}
+                      isDisabled={item?.quantity === 10}
                     >
                       <Icon as={PlusIcon} color={'brand.lightred'} />
                     </Button>
                   </Box>
                 </Td>
                 <Td fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                  {toRupiah(item?.price, { floatingPoint: 0 })}
+                  {toRupiah(+item?.price, { floatingPoint: 0 })}
                 </Td>
               </Tr>
             ))}

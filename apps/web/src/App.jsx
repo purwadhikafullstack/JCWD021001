@@ -21,8 +21,6 @@ import OrderList from './pages/order-list'
 import Payment from './pages/payments'
 import { Dashboard } from './pages/dashboard/container'
 function App() {
-  // const { user, isLogin } = useSelector((state) => state.AuthReducer);
-  console.log('halo')
   return (
     <Box>
       <Auth>

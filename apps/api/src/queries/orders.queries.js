@@ -91,9 +91,9 @@ export const getOrderQuery = async (userId) => {
       include: [
         { model: User },
         { model: UserAddress },
-        { model: Warehouse },
+        { model: Warehouse, as: 'warehouse' },
         { model: Payments },
-        { model: OrderProducts, include: [{ model: Stock, include: [{ model: Product }] }] },
+        { model: OrderProducts, include: [{ model: Stock, as: 'stocks', include: [{ model: Product, as: 'products' }] }] },
       ],
       where: { userId: userId },
     })

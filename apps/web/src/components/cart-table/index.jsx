@@ -26,7 +26,7 @@ const LaptopCartTable = ({ cartData, onCartUpdated }) => {
         <Text mb={'8px'} fontFamily={'heading'} fontWeight={'700'} fontSize={'22px'}>
           Shopping Cart
         </Text>
-        {cartData.map((cartItem) => (
+        {cartData?.map((cartItem) => (
           <Box key={cartItem.id} display={'flex'} gap={'16px'} justifyContent={'center'}>
             <CartProductRow
               cartItem={cartItem}
@@ -43,7 +43,7 @@ const LaptopCartTable = ({ cartData, onCartUpdated }) => {
         ))}
       </Box>
       <Box display={{ base: 'block', xl: 'none' }}>
-        {cartData.map((cartItem) => (
+        {cartData?.map((cartItem) => (
           <Box key={cartItem.id}>
             <CartProductRowMobile
               cartItem={cartItem}
