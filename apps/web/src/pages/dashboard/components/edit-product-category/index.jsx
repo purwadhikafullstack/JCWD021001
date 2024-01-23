@@ -2,6 +2,7 @@ import { Box, Button, Input, Text, VStack, useToast, HStack } from '@chakra-ui/r
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import { useFormik } from 'formik'
 
 export const EditProductCategory = () => {
   // USE PARAMS
@@ -136,6 +137,7 @@ export const EditProductCategory = () => {
       [id]: !set[id],
     }))
   }
+
   return (
     <Box bgColor={'white'} p={'1em'}>
       <VStack align={'stretch'}>
@@ -153,6 +155,7 @@ export const EditProductCategory = () => {
                       borderColor={'transparent'}
                       focusBorderColor={'transparent'}
                       bgColor={'grey.50'}
+                      value={el?.name}
                     />
                     <HStack>
                       <Button
