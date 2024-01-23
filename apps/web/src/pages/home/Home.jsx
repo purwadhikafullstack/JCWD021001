@@ -3,7 +3,7 @@ import axios from 'axios';
 import {PlusIcon} from '@heroicons/react/24/outline'
 import {StarIcon} from '@heroicons/react/24/solid'
 // import './Home.css';
-import Navbar from '../../components/Navbar/Navbar';
+import { Navbar } from '../../components/navbar';
 import Footer from '../../components/Footer/Footer';
 import { Box, Flex, Text, Image, Stack, Button, Icon } from '@chakra-ui/react';
 import women from '../../assets/images/homepage-images/category-women.jpeg'
@@ -21,6 +21,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import product1 from '../../assets/images/homepage-images/product-1.png'
+
 
   function Home() {
     const bestDeals = async () => {

@@ -1,12 +1,11 @@
 import { Box, Button, Flex, Input, Select, Text } from "@chakra-ui/react";
-import Navbar from "../../components/Navbar/Navbar";
 import { BreadCrumbs } from "./components/breadcrumbs";
 import Footer from "../../components/Footer/Footer";
 import FormCreateAddress from "./components/form/Index";
 import { useEffect, useState } from "react";
 import FormCurrentLocation from "./components/current-location/Index";
 import Map from "./components/map";
-
+import { Navbar } from "../../components/navbar";
 
 function CreateAddress(){
 
