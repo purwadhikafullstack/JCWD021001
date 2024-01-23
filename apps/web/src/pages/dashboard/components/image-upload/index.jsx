@@ -69,7 +69,6 @@ export const ImageUpload = (props) => {
   return (
     <Box mt={'2em'}>
       <VStack align={'stretch'}>
-        <Text fontWeight={'bold'}>Photo Product</Text>
         <Box
           onClick={() => document.getElementById('file-input').click()}
           width="200px"

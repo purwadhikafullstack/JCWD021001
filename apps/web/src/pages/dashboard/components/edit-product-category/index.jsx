@@ -1,4 +1,4 @@
-import { Box, Button, Input, Text, VStack, useToast } from '@chakra-ui/react'
+import { Box, Button, Input, Text, VStack, useToast, HStack } from '@chakra-ui/react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
@@ -128,8 +128,14 @@ export const EditProductCategory = () => {
     getGender(epid)
     getProductCategory(setProductCategory, epid)
   }, [epid])
-  console.log('GENDER', epid)
-  console.log('PRODUCT-CATEGORY', productCategory)
+
+  const [editable, setEditable] = useState({})
+  const handleEditClick = (id) => {
+    setEditable((set) => ({
+      ...set,
+      [id]: !set[id],
+    }))
+  }
   return (
     <Box bgColor={'white'} p={'1em'}>
       <VStack align={'stretch'}>
@@ -148,20 +154,35 @@ export const EditProductCategory = () => {
                       focusBorderColor={'transparent'}
                       bgColor={'grey.50'}
                     />
-                    <Button
-                      _hover={{
-                        bgColor: 'redPure.500',
-                      }}
-                      w={'5em'}
-                      bgColor={'redPure.500'}
-                      color={'white'}
-                      isLoading={false}
-                      onClick={() => {
-                        editProductCategory(el?.id)
-                      }}
-                    >
-                      Submit
-                    </Button>
+                    <HStack>
+                      <Button
+                        _hover={{
+                          bgColor: 'redPure.500',
+                        }}
+                        w={'5em'}
+                        bgColor={'redPure.500'}
+                        color={'white'}
+                        isLoading={false}
+                        onClick={() => handleEditClick(field.name)}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        id="name"
+                        _hover={{
+                          bgColor: 'redPure.500',
+                        }}
+                        w={'5em'}
+                        bgColor={'redPure.500'}
+                        color={'white'}
+                        isLoading={false}
+                        onClick={() => {
+                          editProductCategory(el?.id)
+                        }}
+                      >
+                        Submit
+                      </Button>
+                    </HStack>
                   </VStack>
                 </Box>
                 {el?.category?.map((elPC, index) => {

@@ -16,7 +16,7 @@ import {
   Image,
 } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
-import { Formik, Field, Form, ErrorMessage } from 'formik'
+import { Formik, Field, Form, ErrorMessage, useFormik } from 'formik'
 import * as Yup from 'yup'
 import { useParams } from 'react-router-dom'
 import { getProductDetails } from '../../../product-details/services/readProductDetails'
@@ -120,9 +120,7 @@ export const EditProduct = () => {
 
   // GET PRODUCT CATEGORIES
   const [productCategories, setProductCategories] = useState([])
-  useEffect(() => {
-    getProductCategory(setProductCategories)
-  }, [])
+
   const groupedArray = productCategories.reduce((result, item) => {
     const parentName = item.parent.name
     const parentId = item.parent.id
@@ -181,7 +179,18 @@ export const EditProduct = () => {
       [id]: !set[id],
     }))
   }
-  console.log(editable)
+
+  const formik = useFormik({
+    initialValues: {
+      name: product?.name || '',
+      price: product?.price || '',
+      productCategoryId: product?.category?.name || '',
+      description: product?.description || '',
+    },
+  })
+  useEffect(() => {
+    getProductCategory(setProductCategories)
+  }, [])
   return (
     <Box p={'1em'} bgColor={'white'}>
       <Text fontWeight={'bold'} mb={'2em'}>
@@ -203,7 +212,6 @@ export const EditProduct = () => {
                   <Text fontWeight={'bold'} mb={'1em'}>
                     {product?.name}
                   </Text>
-                  {console.log(field)}
                   {editable[field.name] && (
                     <Input
                       {...field}
@@ -212,7 +220,6 @@ export const EditProduct = () => {
                       borderColor={'transparent'}
                       focusBorderColor={'transparent'}
                       bgColor={'grey.50'}
-                      value={initialValues.name}
                       mb={'1em'}
                     />
                   )}
@@ -270,6 +277,7 @@ export const EditProduct = () => {
                 </FormControl>
               )}
             </Field>
+            <Text fontWeight={'bold'}>Photo Product</Text>
             {editable['productCategoryId'] && (
               <Grid
                 templateColumns="repeat(3, 1fr)"
@@ -336,7 +344,6 @@ export const EditProduct = () => {
                       {...field}
                       id="description"
                       placeholder={'Input your product description'}
-                      value={initialValues.description}
                       mb={'1em'}
                     />
                   )}
@@ -381,7 +388,6 @@ export const EditProduct = () => {
                         placeholder={'Input youre new price'}
                         borderColor={'grey.50'}
                         focusBorderColor={'transparent'}
-                        value={initialValues.price}
                       />
                     )}
                   </InputGroup>

@@ -1,4 +1,3 @@
-import { size } from 'lodash'
 import { createStockQuery, getSpesificStockQuery } from '../queries/stock.queries'
 import { createStockJournalQuery } from '../queries/stockJournal.queries'
 

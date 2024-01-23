@@ -29,7 +29,9 @@ export const Body = (props) => {
   const handleSelectImage = (image) => {
     setSelectedImage(image)
   }
+
   const [stock, setStock] = useState(null)
+
   const getStock = async (productId, sizeId, colourId, setStock) => {
     try {
       const res = await axios.get(
