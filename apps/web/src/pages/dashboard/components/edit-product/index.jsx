@@ -78,7 +78,7 @@ export const EditProduct = () => {
   const [product, setProduct] = useState(null)
   useEffect(() => {
     getProductDetails(epid, setProduct)
-  }, [updateProduct, deleteProductImage])
+  }, [])
   // End set product
 
   // Start validation schema
@@ -168,38 +168,67 @@ export const EditProduct = () => {
 
   // FORMIK INITIAL VALUES
   const initialValues = {
-    name: null,
-    price: null,
-    productCategoryId: categoryValue,
-    description: null,
+    name: product?.name || '',
+    price: product?.price || '',
+    productCategoryId: product?.category?.name || '',
+    description: product?.description || '',
   }
   // FORMIK INITIAL VALUES
-
+  const [editable, setEditable] = useState({})
+  const handleEditClick = (id) => {
+    setEditable((set) => ({
+      ...set,
+      [id]: !set[id],
+    }))
+  }
+  console.log(editable)
   return (
     <Box p={'1em'} bgColor={'white'}>
-      <Text fontWeight={'bold'}>Edit Product</Text>
+      <Text fontWeight={'bold'} mb={'2em'}>
+        Edit Product
+      </Text>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
         <Form>
-          <VStack direction="column" align="center">
+          <VStack direction="column" align="flex-start">
             <Field name="name">
               {({ field, form }) => (
                 <FormControl isInvalid={form.errors.name && form.touched.name} mb={3}>
                   <FormLabel htmlFor="name" fontWeight={'bold'}>
                     Product Name
                   </FormLabel>
-                  <Input
-                    {...field}
-                    id="name"
-                    placeholder={product?.name}
-                    borderColor={'transparent'}
-                    focusBorderColor={'transparent'}
-                    bgColor={'grey.50'}
-                  />
+                  <Text fontWeight={'bold'} mb={'1em'}>
+                    {product?.name}
+                  </Text>
+                  {console.log(field)}
+                  {editable[field.name] && (
+                    <Input
+                      {...field}
+                      id="name"
+                      placeholder={'Input youre product name'}
+                      borderColor={'transparent'}
+                      focusBorderColor={'transparent'}
+                      bgColor={'grey.50'}
+                      value={initialValues.name}
+                      mb={'1em'}
+                    />
+                  )}
                   <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                  <Button
+                    _hover={{
+                      bgColor: 'redPure.500',
+                    }}
+                    w={'5em'}
+                    bgColor={'redPure.500'}
+                    color={'white'}
+                    isLoading={false}
+                    onClick={() => handleEditClick(field.name)}
+                  >
+                    Edit
+                  </Button>
                 </FormControl>
               )}
             </Field>
@@ -212,39 +241,56 @@ export const EditProduct = () => {
                   <FormLabel htmlFor="productCategoryId" fontWeight={'bold'}>
                     Category
                   </FormLabel>
-                  <Input
-                    {...field}
-                    id="productCategoryId"
-                    placeholder={product?.category?.name}
-                    borderColor={'transparent'}
-                    focusBorderColor={'transparent'}
-                    bgColor={'grey.50'}
-                    color={'black'}
-                    isReadOnly
-                  />
+                  {editable[field.name] && (
+                    <Input
+                      {...field}
+                      mb={'1em'}
+                      id="productCategoryId"
+                      placeholder={'Select your product category'}
+                      borderColor={'transparent'}
+                      focusBorderColor={'transparent'}
+                      bgColor={'grey.50'}
+                      color={'black'}
+                      isReadOnly
+                    />
+                  )}
+                  <Button
+                    _hover={{
+                      bgColor: 'redPure.500',
+                    }}
+                    w={'5em'}
+                    bgColor={'redPure.500'}
+                    color={'white'}
+                    isLoading={false}
+                    onClick={() => handleEditClick(field.name)}
+                  >
+                    Edit
+                  </Button>
                   <FormErrorMessage>{form.errors.productCategoryId}</FormErrorMessage>
                 </FormControl>
               )}
             </Field>
-            <Grid
-              templateColumns="repeat(3, 1fr)"
-              w={'100%'}
-              gap={'1em'}
-              border={'2px solid #f2f2f2'}
-              borderRadius={'.5em'}
-              p={'1em'}
-              fontWeight={'bold'}
-            >
-              <Box p={'.5em'}>
-                <VStack align={'stretch'}>{renderedGender}</VStack>
-              </Box>
-              <Box p={'.5em'} borderLeft={'2px solid lightgray'}>
-                <VStack align={'stretch'}>{renderedGroup}</VStack>
-              </Box>
-              <Box p={'0 .5em'} borderLeft={'2px solid lightgray'}>
-                <VStack align={'stretch'}>{renderedCategory}</VStack>
-              </Box>
-            </Grid>
+            {editable['productCategoryId'] && (
+              <Grid
+                templateColumns="repeat(3, 1fr)"
+                w={'100%'}
+                gap={'1em'}
+                border={'2px solid #f2f2f2'}
+                borderRadius={'.5em'}
+                p={'1em'}
+                fontWeight={'bold'}
+              >
+                <Box p={'.5em'}>
+                  <VStack align={'stretch'}>{renderedGender}</VStack>
+                </Box>
+                <Box p={'.5em'} borderLeft={'2px solid lightgray'}>
+                  <VStack align={'stretch'}>{renderedGroup}</VStack>
+                </Box>
+                <Box p={'0 .5em'} borderLeft={'2px solid lightgray'}>
+                  <VStack align={'stretch'}>{renderedCategory}</VStack>
+                </Box>
+              </Grid>
+            )}
             <Grid w={'100%'} templateColumns={'repeat(3, 1fr)'} gap={'.5em'}>
               {product?.picture?.map((el, index) => {
                 return (
@@ -284,12 +330,28 @@ export const EditProduct = () => {
                   <FormLabel htmlFor="description" fontWeight={'bold'}>
                     Description
                   </FormLabel>
-                  <Textarea
-                    {...field}
-                    id="description"
-                    placeholder={product?.description}
-                    value={initialValues.description}
-                  />
+                  <Text mb={'1em'}>{product?.description}</Text>
+                  {editable[field.name] && (
+                    <Textarea
+                      {...field}
+                      id="description"
+                      placeholder={'Input your product description'}
+                      value={initialValues.description}
+                      mb={'1em'}
+                    />
+                  )}
+                  <Button
+                    _hover={{
+                      bgColor: 'redPure.500',
+                    }}
+                    w={'5em'}
+                    bgColor={'redPure.500'}
+                    color={'white'}
+                    isLoading={false}
+                    onClick={() => handleEditClick(field.name)}
+                  >
+                    Edit
+                  </Button>
                   <FormErrorMessage>{form.errors.description}</FormErrorMessage>
                 </FormControl>
               )}
@@ -300,6 +362,7 @@ export const EditProduct = () => {
                   <FormLabel htmlFor="price" fontWeight={'bold'}>
                     Price
                   </FormLabel>
+                  <Text mb={'1em'}>{product?.price}</Text>
                   <InputGroup>
                     <InputLeftElement
                       pointerEvents="none"
@@ -309,16 +372,31 @@ export const EditProduct = () => {
                       bgColor={'grey.50'}
                       borderRadius={'.5em 0 0 .5em'}
                     />
-                    <Input
-                      ml={'1em'}
-                      {...field}
-                      id="price"
-                      placeholder={product?.price}
-                      borderColor={'grey.50'}
-                      focusBorderColor={'transparent'}
-                      value={initialValues.price}
-                    />
+                    {editable[field.name] && (
+                      <Input
+                        mb={'1em'}
+                        ml={'1em'}
+                        {...field}
+                        id="price"
+                        placeholder={'Input youre new price'}
+                        borderColor={'grey.50'}
+                        focusBorderColor={'transparent'}
+                        value={initialValues.price}
+                      />
+                    )}
                   </InputGroup>
+                  <Button
+                    _hover={{
+                      bgColor: 'redPure.500',
+                    }}
+                    w={'5em'}
+                    bgColor={'redPure.500'}
+                    color={'white'}
+                    isLoading={false}
+                    onClick={() => handleEditClick(field.name)}
+                  >
+                    Edit
+                  </Button>
                   <FormErrorMessage>{form.errors.price}</FormErrorMessage>
                 </FormControl>
               )}

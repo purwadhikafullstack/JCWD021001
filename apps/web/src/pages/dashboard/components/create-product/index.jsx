@@ -13,6 +13,7 @@ import {
   HStack,
   Grid,
   VStack,
+  useToast,
 } from '@chakra-ui/react'
 import { Formik, Field, Form } from 'formik'
 import * as Yup from 'yup'
@@ -21,35 +22,60 @@ import { getProductCategory } from '../../../product-list/services/readProductCa
 import { createProduct } from '../../services/createProduct'
 
 export const CreateProduct = () => {
+  // TOAST
+  const toast = useToast()
+  // TOAST
+
+  // VALIDATION SCHEMA
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    price: Yup.string().required('Price is required'),
+    price: Yup.number().required('Price is required'),
     productCategoryId: Yup.string().required('Category is required'),
     description: Yup.string().required('Description is required'),
   })
-  const initialValues = {
-    name: '',
-    price: 0,
-    productCategoryId: 0,
-    description: '',
+  // VALIDATION SCHEMA
+
+  // HANDLE SUBMIT
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    try {
+      const res = await createProduct(
+        values.name,
+        Number(values.price),
+        values.description,
+        Number(prodCatId),
+      )
+      toast({
+        title: `${res?.data?.message}`,
+        status: 'success',
+        placement: 'bottom',
+      })
+      setSubmitting(false)
+      setCategoryValue('')
+      resetForm()
+    } catch (err) {
+      toast({
+        title: `${err?.message}`,
+        status: 'error',
+      })
+    }
   }
-  const handleSubmit = async (values, { setSubmitting }, actions) => {
-    createProduct(values.name, Number(values.price), values.description, Number(prodCatId))
-    setSubmitting(false)
-    actions.resetForm()
-  }
+  // HANDLE SUBMIT
+
+  // GET CATEGORY BY GENDER
   const [gender, setGender] = useState([])
   useEffect(() => {
     getGender(setGender)
   }, [])
+  // GET CATEGORY BY GENDER
 
   const renderedGender = gender?.map((el, index) => {
     return (
-      <Text key={index} itemID={el.id}>
+      <Text key={index} itemID={el.id} cursor={'pointer'}>
         {el.name}
       </Text>
     )
   })
+
   const [productCategories, setProductCategories] = useState([])
   useEffect(() => {
     getProductCategory(setProductCategories)
@@ -64,21 +90,20 @@ export const CreateProduct = () => {
     return result
   }, {})
   const finalArray = Object.values(groupedArray)
-  const [categoryId, setCategoryId] = useState(0)
   const [categoryValue, setCategoryValue] = useState('')
   const [prodCatId, setProdCatId] = useState(0)
 
-  const renderedCategory = finalArray.map((el, index) => {
+  const renderedCategory = finalArray.map((el) => {
     return el.category.map((elPT, index) => {
       return (
         <Text
           key={index}
           itemID={elPT.id}
           onClick={() => {
-            setCategoryId(elPT.id)
             setCategoryValue(elPT.name)
             setProdCatId(elPT.id)
           }}
+          cursor={'pointer'}
         >
           {elPT.name}
         </Text>
@@ -87,11 +112,20 @@ export const CreateProduct = () => {
   })
   const renderedGroup = finalArray.map((el, index) => {
     return (
-      <Text key={index} itemID={el.id}>
+      <Text key={index} itemID={el.id} cursor={'pointer'}>
         {el.name}
       </Text>
     )
   })
+
+  // FORMIK INITIAL VALUES
+  const initialValues = {
+    name: '',
+    price: '',
+    productCategoryId: '',
+    description: '',
+  }
+  // FORMIK INITIAL VALUES
   return (
     <Box p={'1em'} bgColor={'white'}>
       <Text fontWeight={'bold'} mb={'2em'}>
@@ -108,6 +142,7 @@ export const CreateProduct = () => {
             <Field name="name">
               {({ field, form }) => (
                 <FormControl isInvalid={form.errors.name && form.touched.name} mb={3}>
+                  {console.log(field)}
                   <FormLabel htmlFor="name" fontWeight={'bold'}>
                     Product Name
                   </FormLabel>
@@ -123,48 +158,51 @@ export const CreateProduct = () => {
                 </FormControl>
               )}
             </Field>
-            {/* Input 3 */}
             <Field name="productCategoryId">
               {({ field, form }) => (
                 <FormControl
                   isInvalid={form.errors.productCategoryId && form.touched.productCategoryId}
                   mb={3}
                 >
+                  <Text display={'none'}>{(form.values.productCategoryId = categoryValue)}</Text>
                   <FormLabel htmlFor="productCategoryId" fontWeight={'bold'}>
                     Category
                   </FormLabel>
                   <Input
-                    {...field}
+                    // {...field}
+                    value={categoryValue}
+                    name="productCategoryId"
                     id="productCategoryId"
                     placeholder="Select Category"
                     borderColor={'transparent'}
                     focusBorderColor={'transparent'}
                     bgColor={'grey.50'}
-                    value={categoryValue}
+                    readOnly
                   />
                   <FormErrorMessage>{form.errors.productCategoryId}</FormErrorMessage>
+                  <Grid
+                    mt={'1em'}
+                    templateColumns="repeat(3, 1fr)"
+                    w={'100%'}
+                    gap={'1em'}
+                    border={'2px solid #f2f2f2'}
+                    borderRadius={'.5em'}
+                    p={'1em'}
+                    fontWeight={'bold'}
+                  >
+                    <Box p={'.5em'}>
+                      <VStack align={'stretch'}>{renderedGender}</VStack>
+                    </Box>
+                    <Box p={'.5em'} borderLeft={'2px solid lightgray'}>
+                      <VStack align={'stretch'}>{renderedGroup}</VStack>
+                    </Box>
+                    <Box p={'0 .5em'} borderLeft={'2px solid lightgray'}>
+                      <VStack align={'stretch'}>{renderedCategory}</VStack>
+                    </Box>
+                  </Grid>
                 </FormControl>
               )}
             </Field>
-            <Grid
-              templateColumns="repeat(3, 1fr)"
-              w={'100%'}
-              gap={'1em'}
-              border={'2px solid #f2f2f2'}
-              borderRadius={'.5em'}
-              p={'1em'}
-              fontWeight={'bold'}
-            >
-              <Box p={'.5em'}>
-                <VStack align={'stretch'}>{renderedGender}</VStack>
-              </Box>
-              <Box p={'.5em'} borderLeft={'2px solid lightgray'}>
-                <VStack align={'stretch'}>{renderedGroup}</VStack>
-              </Box>
-              <Box p={'0 .5em'} borderLeft={'2px solid lightgray'}>
-                <VStack align={'stretch'}>{renderedCategory}</VStack>
-              </Box>
-            </Grid>
             <Field name="description">
               {({ field, form }) => (
                 <FormControl isInvalid={form.errors.description && form.touched.description} mb={3}>
@@ -198,6 +236,7 @@ export const CreateProduct = () => {
                       id="price"
                       placeholder="Input Price Here"
                       borderColor={'grey.50'}
+                      _focus={{ borderColor: 'grey.50' }}
                       focusBorderColor={'transparent'}
                     />
                   </InputGroup>
@@ -215,7 +254,7 @@ export const CreateProduct = () => {
                 border={'1px solid #e3024b'}
                 bgColor={'transparent'}
                 color={'redPure.500'}
-                isLoading={false}
+                isLoadButtoning={false}
               >
                 Reset
               </Button>

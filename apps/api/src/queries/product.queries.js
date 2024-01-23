@@ -112,7 +112,7 @@ export const getProductQuery = async (
       order: [[`${sortBy}`, `${orderBy}`]],
       ...filter,
       subQuery: false,
-      limit: id ? 1 : Number(pageSize),
+      limit: id ? 1 : +pageSize,
       offset: offset,
     })
     return res

@@ -41,6 +41,7 @@ export const ProductList = () => {
     }
   }
   // DELETE PRODUCT IMAGES
+
   // DELETE PRODUCTS
   const deleteProduct = async (id, productId) => {
     try {
@@ -104,17 +105,9 @@ export const ProductList = () => {
                   <Th color={'#FEFEFE'} textAlign={'center'}>
                     Products
                   </Th>
-                  <Th color={'#FEFEFE'} textAlign={'center'}>
-                    Size
-                  </Th>
-                  <Th color={'#FEFEFE'} textAlign={'center'}>
-                    Color
-                  </Th>
+                  <Th color={'#FEFEFE'} textAlign={'center'}></Th>
                   <Th color={'#FEFEFE'} textAlign={'center'}>
                     Price
-                  </Th>
-                  <Th color={'#FEFEFE'} textAlign={'center'}>
-                    Status
                   </Th>
                   <Th color={'#FEFEFE'} textAlign={'center'} w={'10em'}>
                     Action
@@ -126,22 +119,17 @@ export const ProductList = () => {
                   return (
                     <Tr cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'} key={index}>
                       <Td textAlign={'center'}>
-                        <Flex justifyContent={'space-between'} alignItems={'center'}>
-                          <AspectRatio h={'3em'} w={'3em'} ratio={1}>
-                            <Image
-                              src={`${import.meta.env.VITE_APP_API_IMAGE_URL}/productImages/${
-                                el?.picture[0]?.imageUrl
-                              }`}
-                              objectFit={'cover'}
-                            />
-                          </AspectRatio>
-                          <Text>{el?.name}</Text>
-                        </Flex>
+                        <AspectRatio h={'3em'} w={'3em'} ratio={1}>
+                          <Image
+                            src={`${import.meta.env.VITE_APP_API_IMAGE_URL}/productImages/${
+                              el?.picture[0]?.imageUrl
+                            }`}
+                            objectFit={'cover'}
+                          />
+                        </AspectRatio>
                       </Td>
-                      <Td textAlign={'center'}>Size</Td>
-                      <Td textAlign={'center'}>Color</Td>
+                      <Td>{el?.name}</Td>
                       <Td textAlign={'center'}>{el.price}</Td>
-                      <Td textAlign={'center'}>Status</Td>
                       <Td textAlign={'center'} alignItems={'center'}>
                         <HStack>
                           <Button

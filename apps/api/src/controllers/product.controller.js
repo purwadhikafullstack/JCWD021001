@@ -26,7 +26,6 @@ export const getProductController = async (req, res) => {
     })
   } catch (err) {
     return res.status(500).json({
-      title: 'Get Product Failed',
       message: err.message,
     })
   }
