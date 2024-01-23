@@ -6,7 +6,7 @@ module.exports = {
     await queryInterface.bulkInsert('warehouses', [
       {
         address: 'Jambi',
-        cityId: 4,
+        cityId: 1,
         userId: 2,
       },
     ]);

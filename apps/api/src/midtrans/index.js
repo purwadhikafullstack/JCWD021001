@@ -7,21 +7,23 @@ const snap = new Snap({
   clientKey: process.env.MIDTRANS_CLIENT_KEY,
 });
 
-export const generateMidtransToken = async (orderId, totalPrice, product, shippingCost, userId, userUsername, userEmail) => {
+export const generateMidtransToken = async (orderNumber, totalPrice, product, shippingCost, userId, userUsername, userEmail) => {
     try {
       
       const transaction_details = {
-        order_id: orderId,
+        order_id: orderNumber,
         gross_amount: totalPrice + shippingCost,
       };
 
       // Fetch product names from the Product table
     const productDetailsPromises = product.map(async (product) => {
-      const productInfo = await Product.findOne({ where: { id: product.productId } });
+      const productInfo = await Product.findOne({ where: { id: product.productId } })
+      const price = parseFloat(product.priceProduct);
+    
       return {
         id: product.productId,
         name: productInfo ? productInfo.name : 'Unknown Product',
-        price: product.price,
+        price: isNaN(price) ? 0 : price,
         quantity: product.quantity,
         shipping_cost: shippingCost
       };
@@ -42,11 +44,14 @@ export const generateMidtransToken = async (orderId, totalPrice, product, shippi
         email: userEmail,
       }
   
+  
       const transactionOptions = {
         transaction_details,
         item_details: [...productDetails, shippingItem],
         customer_details
       };
+  ;
+
   
       const token = await snap.createTransactionToken(transactionOptions);
       return token;

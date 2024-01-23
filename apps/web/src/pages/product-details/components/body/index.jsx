@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Carousel } from '../carousel'
 
 export const Body = (props) => {
+  // console.log('dataProduct', props);
   const images = [
     'https://image.uniqlo.com/UQ/ST3/AsianCommon/imagesgoods/462028/sub/goods_462028_sub13.jpg?width=750',
     'https://image.uniqlo.com/UQ/ST3/id/imagesgoods/462028/item/idgoods_66_462028.jpg?width=750',
