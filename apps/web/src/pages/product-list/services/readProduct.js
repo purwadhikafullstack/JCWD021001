@@ -8,10 +8,12 @@ export const getProduct = async (
   setProducts,
   sortBy = 'name',
   orderBy = 'ASC',
+  page = 1,
+  pageSize = 10,
 ) => {
   try {
     const res = await axios.get(
-      `http://localhost:8000/api/product?name=${name}&gender=${gender}&group=${group}&category=${category}&sortBy=${sortBy}&orderBy=${orderBy}`,
+      `http://localhost:8000/api/product?name=${name}&gender=${gender}&group=${group}&category=${category}&sortBy=${sortBy}&orderBy=${orderBy}&page=${page}&pageSize=${pageSize}`,
     )
     setProducts(res?.data?.data)
   } catch (err) {

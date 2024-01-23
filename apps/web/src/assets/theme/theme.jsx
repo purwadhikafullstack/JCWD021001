@@ -74,5 +74,9 @@ export const theme = extendTheme({
       800: '#262626',
       900: '#0d0d0d',
     },
+    customTableColor: {
+      100: '#ffe2ef',
+      900: '#200008',
+    },
   },
 })
