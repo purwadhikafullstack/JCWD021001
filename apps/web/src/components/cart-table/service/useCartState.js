@@ -5,11 +5,8 @@ import _debounce from 'lodash/debounce';
 import { useNavigate } from 'react-router-dom'
 import { CreateOrder } from '../../../pages/order/services/CreateOrder';
 
-
 const useCartState = (cartData, onCartUpdated) => {
-  console.log('asdfasd', cartData);
   const [selectedCartProducts, setSelectedCartProducts] = useState([])
-  // console.log('dsfd', selectedCartProducts);
   const [selectAllChecked, setSelectAllChecked] = useState(false)
   const [productData, setProductData] = useState(() => {
     const storedProductData = localStorage.getItem('productData')
@@ -183,10 +180,9 @@ const useCartState = (cartData, onCartUpdated) => {
           quantity: selectedProduct?.quantity,
         };
       });
-      console.log("data", [totalPrice, totalQuantity, stockData]);
 
       // Call the CreateOrder function to send the request
-      await CreateOrder({
+      const orderId = await CreateOrder({
         userId: 1, // Update with the actual user ID
         userAddressId: 1, // Update with the actual address ID
         warehouseId: 1, // Update with the actual warehouse ID
@@ -196,9 +192,10 @@ const useCartState = (cartData, onCartUpdated) => {
         orderStatusId: 1, // Update with the actual order status ID
         products: stockData,
       });
-
+      // console.log("orderId", orderId);
+      // setOrderId(orderId);
       // Navigate to the '/order' page or any other page you want to redirect to after checkout
-      // navigate('/order');
+      navigate('/order', { state: { orderId } });
     } catch (error) {
       // Handle errors if needed
       console.error('Error during checkout:', error);

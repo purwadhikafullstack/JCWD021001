@@ -1,7 +1,8 @@
 import { Router } from 'express';
-import { createPaymentController } from '../controllers/payments.controller';
+import { createPaymentController, paymentGatewayController } from '../controllers/payments.controller';
 const paymentRouter = Router();
 
-paymentRouter.post("/", createPaymentController)
+// paymentRouter.post("/", createPaymentController)
+paymentRouter.post("/", paymentGatewayController)
 
 export { paymentRouter }

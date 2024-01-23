@@ -13,8 +13,94 @@ import {
 } from '@chakra-ui/react'
 import { MapPinIcon } from '@heroicons/react/24/outline'
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
+import { paymentGateway } from '../../pages/order/services/paymentGateway'
 
 const OrderBody = ({ orderData }) => {
+  // const [midtransToken, setMidtransToken] = useState(null)
+
+  // const handlePayment = async (order) => {
+  //   const dataPayment = {
+  //     userId: order.userId,
+  //     orderId: order.id,
+  //     totalPrice: parseFloat(order.totalPrice),
+  //     shippingCost: parseFloat(order.shippingCost),
+  //     products: order.OrderProducts.map((product) => ({
+  //       productId: product.Stock.Product.id,
+  //       quantity: product.quantity,
+  //       price: parseFloat(product.Stock.Product.price),
+  //     })),
+  //   }
+
+  //   try {
+  //     // Assuming paymentGateway function returns a promise
+  //     const token = await paymentGateway(dataPayment)
+  //     setMidtransToken(token)
+
+  //     // Handle the response from the payment gateway API here
+  //     console.log('Payment response:', midtransToken)
+  //   } catch (error) {
+  //     // Handle errors during payment processing
+  //     console.error('Payment error:', error)
+  //   }
+  // }
+
+  const handlePayment = async (order) => {
+    try {
+      const dataPayment = {
+        userId: order.userId,
+        orderId: order.id,
+        totalPrice: parseFloat(order.totalPrice),
+        shippingCost: parseFloat(order.shippingCost),
+        products: order.OrderProducts.map((product) => ({
+          productId: product.Stock.Product.id,
+          quantity: product.quantity,
+          price: parseFloat(product.Stock.Product.price),
+        })),
+      }
+
+      const midtransToken = await paymentGateway(dataPayment)
+      // setMidtransToken(token)
+
+      if (midtransToken) {
+        const snapScript = 'https://app.sandbox.midtrans.com/snap/snap.js'
+        const clientKey = import.meta.env.MIDTRANS_CLIENT_KEY
+        const script = document.createElement('script')
+        script.src = snapScript
+        script.setAttribute('data-client-key', clientKey)
+        // script.async = true;
+
+        script.onload = () => {
+          window.snap.pay(midtransToken, {
+            onSuccess: function (result) {
+              /* You may add your own implementation here */
+              alert('payment success!')
+              console.log(result)
+              CreatePayment(result)
+            },
+            onPending: function (result) {
+              /* You may add your own implementation here */
+              alert('wating your payment!')
+              console.log(result)
+            },
+            onError: function (result) {
+              /* You may add your own implementation here */
+              alert('payment failed!')
+              console.log(result)
+            },
+            onClose: function () {
+              /* You may add your own implementation here */
+              alert('you closed the popup without finishing the payment')
+            },
+          })
+        }
+        document.body.appendChild(script)
+      } else {
+        console.error('Failed to get Midtrans token')
+      }
+    } catch (error) {
+      console.error('Error creating order:', error)
+    }
+  }
   return (
     <Box>
       {orderData.map((orderItem) => (
@@ -117,11 +203,11 @@ const OrderBody = ({ orderData }) => {
                     </Text>
                     <Box display={'flex'} flexDirection={'column'} gap={'24px'}>
                       {orderItem?.OrderProducts?.map((item) => (
-                        <Box w={'full'} display={'flex'} gap={'16px'}>
+                        <Box key={item.id} w={'full'} display={'flex'} gap={'16px'}>
                           <Box w={'64px'} h={'64px'} bgColor={'brand.grey100'} />
                           <Box display={'flex'} flexDirection={'column'} w={'full'}>
                             <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
-                            {item?.Stock?.Product?.name}
+                              {item?.Stock?.Product?.name}
                             </Text>
                             <Text
                               fontFamily={'body'}
@@ -137,7 +223,7 @@ const OrderBody = ({ orderData }) => {
                               justifyContent={'space-between'}
                             >
                               <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
-                              {item?.quantity} x Rp {item?.Stock?.Product?.price}
+                                {item?.quantity} x Rp {item?.Stock?.Product?.price}
                               </Text>
                               <Text
                                 fontFamily={'body'}
@@ -166,7 +252,7 @@ const OrderBody = ({ orderData }) => {
                       </Thead>
                       <Tbody>
                         {orderItem?.OrderProducts?.map((item) => (
-                          <Tr>
+                          <Tr key={item.id}>
                             <Td>
                               <Box w={'400px'} display={'flex'} gap={'16px'}>
                                 <Box minW={'64px'} h={'64px'} bgColor={'brand.grey100'} />
@@ -269,7 +355,11 @@ const OrderBody = ({ orderData }) => {
                     Rp {orderItem?.totalPrice}
                   </Text>
                 </Box>
-                <Button bgColor={'#CD0244'} color={'#ffffff'}>
+                <Button
+                  bgColor={'#CD0244'}
+                  color={'#ffffff'}
+                  onClick={() => handlePayment(orderItem)}
+                >
                   Process to Payment
                 </Button>
               </Box>
