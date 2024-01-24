@@ -47,7 +47,7 @@ export const ProductList = () => {
     try {
       await deleteProductImage('', productId)
       const res = await axios.delete(`http://localhost:8000/api/product/${id}`)
-      await setProducts((products) => products.filter((product) => product.id !== id))
+      setProducts((products) => products.filter((product) => product.id !== id))
       toast({
         title: `${res?.data?.title}`,
         status: 'success',
@@ -115,7 +115,7 @@ export const ProductList = () => {
                 </Tr>
               </Thead>
               <Tbody position={'relative'} color={'#6D6D6D'} fontWeight={'500'}>
-                {products?.map((el, index) => {
+                {products?.rows?.map((el, index) => {
                   return (
                     <Tr cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'} key={index}>
                       <Td textAlign={'center'}>

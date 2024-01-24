@@ -18,7 +18,6 @@ import {
 } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { Formik, Field, Form } from 'formik'
-import * as Yup from 'yup'
 import { useParams } from 'react-router-dom'
 import { getProductDetails } from '../../../product-details/services/readProductDetails'
 import { getProductCategory } from '../../../product-list/services/readProductCategory'
@@ -31,6 +30,16 @@ export const EditProduct = () => {
   // SET TOAST
   const toast = useToast()
   // SET TOAST
+
+  // EDITABLE
+  const [editable, setEditable] = useState({})
+  const handleEditClick = (id) => {
+    setEditable((set) => ({
+      ...set,
+      [id]: !set[id],
+    }))
+  }
+  // EDITABLE
 
   // UPDATE PRODUCT
   const updateProduct = async (name, price, description, productCategoryId, id) => {
@@ -76,35 +85,18 @@ export const EditProduct = () => {
   }
   // DELETE PRODUCT IMAGES
 
-  // Start validation schema
-  const validationSchema = Yup.object().shape({
-    // name: Yup.string().required('Name is required'),
-    // price: Yup.string().required('Price is required'),
-    // productCategoryId: Yup.string().required('Category is required'),
-    // description: Yup.string().required('Description is required'),
-  })
-  // End validation schema
-
-  // GET GENDER
-  const [gender, setGender] = useState([])
-  useEffect(() => {
-    getGender(setGender)
-  }, [])
-  const renderedGender = gender?.map((el, index) => {
-    return (
-      <Text key={index} itemID={el.id}>
-        {el.name}
-      </Text>
-    )
-  })
-  // GET GENDER
+  // CATEGORY VALUE TO BE SHOWED IN INPUT
+  const [gender, setGender] = useState('Men')
+  const [group, setGroup] = useState('')
+  const [categoryValue, setCategoryValue] = useState('')
+  // CATEGORY VALUE TO BE SHOWED IN INPUT
 
   // GET PRODUCT CATEGORIES
   const [productCategories, setProductCategories] = useState([])
 
-  const groupedArray = productCategories.reduce((result, item) => {
-    const parentName = item.parent.name
-    const parentId = item.parent.id
+  const groupedArray = productCategories?.reduce((result, item) => {
+    const parentName = item?.parent?.name
+    const parentId = item?.parent?.id
     if (!result[parentName]) {
       result[parentName] = { name: parentName, id: parentId, category: [] }
     }
@@ -112,29 +104,73 @@ export const EditProduct = () => {
     return result
   }, {})
   const finalArray = Object.values(groupedArray)
-  const renderedCategory = finalArray.map((el, index) => {
-    return el.category.map((elPT, index) => {
-      return (
-        <Text
-          key={index}
-          itemID={elPT.id}
-          onClick={() => {
-            setCategoryId(elPT.id)
-            setCategoryValue(elPT.name)
-          }}
-        >
-          {elPT.name}
-        </Text>
-      )
-    })
+
+  //  GENDER
+  const [genders, setGenders] = useState([])
+  useEffect(() => {
+    getGender(setGenders)
+  }, [])
+  const renderedGender = genders?.map((el, index) => {
+    return (
+      <Text
+        key={index}
+        itemID={el.id}
+        onClick={() => {
+          setGender(el?.name)
+          setGroup('')
+          setCategoryValue('')
+        }}
+      >
+        {el?.name}
+      </Text>
+    )
   })
+  // GENDER
+
+  // GROUP
   const renderedGroup = finalArray.map((el, index) => {
     return (
-      <Text key={index} itemID={el.id}>
+      <Text
+        key={index}
+        itemID={el.id}
+        onClick={() => {
+          setGroup(el?.name)
+          setCategoryValue('')
+          handleEditClick(el?.name)
+        }}
+      >
         {el.name}
       </Text>
     )
   })
+  // GROUP
+
+  // CATEGORY
+  const renderedCategory = finalArray.map((el, index) => {
+    return el.category.map((elPT, index) => {
+      return (
+        <>
+          {editable[el?.name] && (
+            <Text
+              key={index}
+              itemID={elPT.id}
+              onClick={() => {
+                setCategoryId(elPT.id)
+                setCategoryValue(elPT.name)
+                setGroup(el?.name)
+              }}
+            >
+              {elPT.name}
+            </Text>
+          )}
+        </>
+      )
+    })
+  })
+  // CATEGORY
+  useEffect(() => {
+    getProductCategory(setProductCategories, gender)
+  }, [gender])
   // GET PRODUCT CATEGORIES
 
   // CATEGORY ID WANT TO SEND
@@ -155,47 +191,28 @@ export const EditProduct = () => {
   }
   // HANDLE SUBMIT
 
-  // CATEGORY VALUE TO BE SHOWED IN INPUT
-  const [categoryValue, setCategoryValue] = useState('')
-  // CATEGORY VALUE TO BE SHOWED IN INPUT
-  // FORMIK INITIAL VALUES
-
-  useEffect(() => {
-    getProductCategory(setProductCategories)
-  }, [])
-
-  // FORMIK INITIAL VALUES
-  const [editable, setEditable] = useState({})
-  const handleEditClick = (id) => {
-    setEditable((set) => ({
-      ...set,
-      [id]: !set[id],
-    }))
-  }
-  // Start set product
+  // SET {PRODUCT}
   const { epid } = useParams()
   const [product, setProduct] = useState(null)
   useEffect(() => {
     getProductDetails(epid, setProduct)
   }, [editable])
-  // End set product
+  // SET PRODUCT
 
+  // FORMIK INITIAL VALUES
   const initialValues = {
     name: product?.name || '',
     price: product?.price || '',
     productCategoryId: product?.productCategoryId || '',
     description: product?.description || '',
   }
+  // FORMIK INITIAL VALUES
   return (
     <Box p={'1em'} bgColor={'white'}>
       <Text fontWeight={'bold'} mb={'2em'}>
         Edit Product
       </Text>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
+      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         <Form>
           <VStack direction="column" align="flex-start">
             <Field name="name">
@@ -261,7 +278,7 @@ export const EditProduct = () => {
                       focusBorderColor={'transparent'}
                       bgColor={'grey.50'}
                       color={'black'}
-                      value={categoryValue}
+                      value={`${gender} > ${group} > ${categoryValue}`}
                       isReadOnly
                     />
                   )}

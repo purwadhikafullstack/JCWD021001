@@ -71,7 +71,7 @@ export const getProductQuery = async (
         }
       }
     }
-    const res = await Product.findAll({
+    const res = await Product.findAndCountAll({
       attributes: ['id', 'name', 'price', 'description'],
       include: [
         {
