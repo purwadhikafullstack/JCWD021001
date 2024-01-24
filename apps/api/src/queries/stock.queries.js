@@ -6,8 +6,9 @@ import { Op } from 'sequelize'
 import Size from '../models/size.model'
 import ProductImage from '../models/productImage.model'
 
-export const getStockQuery = async (warehouseId) => {
+export const getStockQuery = async (warehouseId, page = null, pageSize = null) => {
   try {
+    const offset = (page - 1) * pageSize
     const filter = {}
     if (warehouseId)
       filter.where = {
@@ -32,6 +33,9 @@ export const getStockQuery = async (warehouseId) => {
         { model: Size, as: 'size' },
       ],
       ...filter,
+      subQuery: false,
+      limit: +pageSize,
+      offset: offset,
     })
     return res
   } catch (err) {

@@ -20,6 +20,7 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { getStock } from './services/readStock'
 import { TableBody } from './component/table-body'
+import { PaginationList } from '../product-list/components/pagination-list'
 
 export const StockManagement = () => {
   // LOCATION
@@ -31,6 +32,8 @@ export const StockManagement = () => {
 
   // QUERY PARAMS
   const pageValue = queryParams.get('pa')
+
+  console.log('PAGEVALUE', pageValue)
 
   // PATHNAME
   const pathName = location.pathname
@@ -44,10 +47,9 @@ export const StockManagement = () => {
   // STOCKS
   const [stocks, setStocks] = useState([])
   useEffect(() => {
-    getStock(warehouseId).then((data) => setStocks(data))
-  }, [warehouseId])
+    getStock(warehouseId, pageValue).then((data) => setStocks(data))
+  }, [warehouseId, pageValue])
 
-  console.log('STOCKS', stocks)
   return (
     <Box p={'1em'} h={'100%'} w={'100%'}>
       <Flex flexDir={'column'} justifyContent={'space-between'} h={'100%'}>
@@ -109,6 +111,7 @@ export const StockManagement = () => {
             </TableContainer>
           </Box>
         </VStack>
+        <PaginationList location={location} pathName={pathName} pageValue={pageValue} />
       </Flex>
     </Box>
   )
