@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { createStockJournalController } from '../controllers/stokJournal.controller'
+import { createStockJournalController } from '../controllers/stockJournal.controller'
 const stockJournalRouter = Router()
 
 stockJournalRouter.post('/', createStockJournalController)

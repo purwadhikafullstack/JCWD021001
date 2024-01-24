@@ -12,6 +12,7 @@ export const createStockJournalController = async (req, res) => {
       qtyBefore,
       qtyAfter,
       stockId,
+      isUpdate,
     } = req.body
     const result = await createStockJournalService(
       productId,
@@ -23,7 +24,9 @@ export const createStockJournalController = async (req, res) => {
       qtyBefore,
       qtyAfter,
       stockId,
+      isUpdate,
     )
+
     return res.status(200).json({
       message: 'Create Stock Journal Service Success',
       data: result,

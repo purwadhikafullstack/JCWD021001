@@ -103,7 +103,7 @@ export const StockManagement = () => {
                   </Tr>
                 </Thead>
                 <Tbody position={'relative'} color={'#6D6D6D'} fontWeight={'500'}>
-                  <TableBody stocks={stocks} />
+                  <TableBody stocks={stocks} warehouseId={warehouseId} />
                 </Tbody>
               </Table>
             </TableContainer>

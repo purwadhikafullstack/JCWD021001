@@ -1,9 +1,62 @@
-import { AspectRatio, Button, HStack, Image, Td, Text, Tr } from '@chakra-ui/react'
+import { AspectRatio, Button, HStack, Image, Input, Td, Text, Tr, useToast } from '@chakra-ui/react'
 import toRupiah from '@develoka/angka-rupiah-js'
+import { useState, useRef } from 'react'
+import { createStockJournal } from '../../services/createStocks'
 export const TableBody = (props) => {
+  // TOAST
+  const toast = useToast()
+
+  // EDITABLE STOCK
+  const [editableStock, setEditableStock] = useState(null)
+
+  //   INPUT VALUE
+  const [value, setValue] = useState(0)
+
+  //   HANDLE EDIT CLICK
+  const handleEditClick = (stockId) => {
+    setEditableStock(stockId)
+    setValue(props.stocks.rows.find((stock) => stock.id === stockId)?.qty || 0)
+  }
+
+  //   UPDATE STOCK
+  const handleCreateStockJournal = async (
+    productId,
+    warehouseId,
+    sizeId,
+    colourId,
+    qty,
+    isUpdate,
+  ) => {
+    try {
+      const res = await createStockJournal(productId, warehouseId, sizeId, colourId, qty, isUpdate)
+      toast({
+        title: `${res?.data?.message}`,
+        status: 'success',
+        placement: 'bottom',
+      })
+    } catch (err) {
+      toast({
+        title: `${err?.message}`,
+        status: 'error',
+      })
+    }
+  }
+
+  //   HANDLE CANCEL CLICK
+  const handleCancelClick = () => {
+    setEditableStock(null)
+  }
+
+  //   HANDLE SAVE CLICK
+  const handleSaveClick = (productId, warehouseId, sizeId, colourId, qty, isUpdate) => {
+    handleCreateStockJournal(productId, warehouseId, sizeId, colourId, qty, isUpdate)
+    setEditableStock(null)
+  }
+
   return (
     <>
       {props?.stocks?.rows?.map((stock, index) => {
+        const isEditable = editableStock === stock?.id
         return (
           <Tr cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'} key={index}>
             <Td>
@@ -22,7 +75,22 @@ export const TableBody = (props) => {
             <Td>{stock?.size?.name}</Td>
             <Td>{stock?.colour?.name}</Td>
             <Td>{toRupiah(stock?.product?.price)}</Td>
-            <Td>{stock?.qty}</Td>
+            <Td>
+              {isEditable ? (
+                <Input
+                  id={stock?.id}
+                  w={'3.5em'}
+                  type="number"
+                  value={value}
+                  onChange={(e) => {
+                    setValue(e.target.value)
+                  }}
+                  isReadOnly={!isEditable}
+                />
+              ) : (
+                <Input w={'3.5em'} type="number" value={stock?.qty} isReadOnly />
+              )}
+            </Td>
             <Td>
               <HStack>
                 <Button
@@ -33,10 +101,13 @@ export const TableBody = (props) => {
                   bgColor={'redPure.500'}
                   color={'white'}
                   onClick={() => {
-                    navigate(`/dashboard/product-list/edit-product/${el.id}`)
+                    {
+                      isEditable ? handleCancelClick() : handleEditClick(stock.id)
+                    }
                   }}
+                  type={'reset'}
                 >
-                  Edit
+                  {isEditable ? 'Cancel' : 'Edit'}
                 </Button>
                 <Button
                   _hover={{
@@ -47,23 +118,34 @@ export const TableBody = (props) => {
                   bgColor={'transparent'}
                   color={'redPure.500'}
                   onClick={() => {
-                    deleteProduct(el?.id, el?.id)
+                    isEditable
+                      ? handleSaveClick(
+                          stock?.productId,
+                          props?.warehouseId,
+                          stock?.sizeId,
+                          stock?.colourId,
+                          value,
+                          true,
+                        )
+                      : console.log('DELETE')
                   }}
                 >
-                  Delete
+                  {isEditable ? 'Save' : 'Delete'}
                 </Button>
-                <Button
-                  _hover={{
-                    bgColor: 'transparent',
-                  }}
-                  w={'5em'}
-                  border={'1px solid #e3024b'}
-                  bgColor={'transparent'}
-                  color={'redPure.500'}
-                  onClick={() => {}}
-                >
-                  History
-                </Button>
+                {!isEditable && (
+                  <Button
+                    _hover={{
+                      bgColor: 'transparent',
+                    }}
+                    w={'5em'}
+                    border={'1px solid #e3024b'}
+                    bgColor={'transparent'}
+                    color={'redPure.500'}
+                    onClick={() => {}}
+                  >
+                    History
+                  </Button>
+                )}
               </HStack>
             </Td>
           </Tr>

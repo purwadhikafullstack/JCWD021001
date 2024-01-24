@@ -9,6 +9,7 @@ export const createStockJournalQuery = async (
   qtyBefore,
   qtyAfter,
   stockId,
+  isUpdate = false,
 ) => {
   try {
     const res = await StockJournal.create({
@@ -21,6 +22,7 @@ export const createStockJournalQuery = async (
       qtyBefore,
       qtyAfter,
       stockId,
+      isUpdate,
     })
     return res
   } catch (err) {
