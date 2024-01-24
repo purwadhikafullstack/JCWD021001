@@ -31,7 +31,7 @@ export const Sidebar = (props) => {
             <VStack align={'stretch'} spacing={'1.5em'}>
               <Text
                 onClick={() => {
-                  navigate('/dashboard/product-list')
+                  navigate('/dashboard/product-list?pa=1')
                 }}
               >
                 Product List

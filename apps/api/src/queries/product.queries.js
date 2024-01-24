@@ -17,7 +17,6 @@ export const getProductQuery = async (
   page = null,
   pageSize = null,
 ) => {
-  page = 1
   const offset = (page - 1) * pageSize
   try {
     const filter = {}

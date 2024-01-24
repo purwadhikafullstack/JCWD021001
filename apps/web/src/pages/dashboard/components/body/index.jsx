@@ -30,7 +30,7 @@ export const Body = (props) => {
   const create = renderComponentAgain()
   const rendered = renderComponent()
   return (
-    <Box bgColor={'grey.50'} minH={'100vh'} w={'100%'} p={'1em'}>
+    <Box bgColor={'grey.50'} maxH={'80%'} w={'100%'} p={'1em'}>
       {props?.createProduct ? create : rendered}
     </Box>
   )
