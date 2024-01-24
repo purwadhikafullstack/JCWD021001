@@ -4,6 +4,7 @@ import Warehouse from '../models/warehouse.model'
 import Colour from '../models/colour.model'
 import { Op } from 'sequelize'
 import Size from '../models/size.model'
+import ProductImage from '../models/productImage.model'
 
 export const getStockQuery = async (warehouseId) => {
   try {
@@ -14,9 +15,18 @@ export const getStockQuery = async (warehouseId) => {
           [Op.eq]: warehouseId,
         },
       }
-    const res = await Stock.findAll({
+    const res = await Stock.findAndCountAll({
       include: [
-        { model: Product, as: 'stocks' },
+        {
+          model: Product,
+          as: 'product',
+          include: [
+            {
+              model: ProductImage,
+              as: 'picture',
+            },
+          ],
+        },
         { model: Warehouse, as: 'warehouse' },
         { model: Colour, as: 'colour' },
         { model: Size, as: 'size' },

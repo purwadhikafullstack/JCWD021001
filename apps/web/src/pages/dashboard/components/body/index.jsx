@@ -5,6 +5,7 @@ import { EditProduct } from '../edit-product'
 import { ProductCategory } from '../product-category'
 import { CreateProductCategoryGender } from '../create-product-category-gender'
 import { EditProductCategory } from '../edit-product-category'
+import { StockManagement } from '../stock-management'
 
 export const Body = (props) => {
   const renderComponent = () => {
@@ -13,6 +14,8 @@ export const Body = (props) => {
         return <ProductList />
       case 'product-category':
         return <ProductCategory />
+      case 'stock-management':
+        return <StockManagement />
     }
   }
   const renderComponentAgain = () => {
@@ -30,7 +33,13 @@ export const Body = (props) => {
   const create = renderComponentAgain()
   const rendered = renderComponent()
   return (
-    <Box bgColor={'grey.50'} maxH={'80%'} w={'100%'} p={'1em'}>
+    <Box
+      bgColor={'grey.50'}
+      h={'100%'}
+      w={'100%'}
+      p={'1em'}
+      display={props?.collapseSidebar ? 'none' : 'block'}
+    >
       {props?.createProduct ? create : rendered}
     </Box>
   )

@@ -15,7 +15,7 @@ export const Dashboard = () => {
   return (
     <Box h={'100vh'}>
       <Navbar />
-      <Box display={{ md: 'flex' }} gap={'1em'} w={'100%'}>
+      <Box display={{ md: 'flex' }} gap={'1em'} h={'100%'}>
         <Box display={{ md: 'flex' }}>
           <Sidebar
             collapseSideBar={collapseSideBar}
@@ -23,7 +23,11 @@ export const Dashboard = () => {
             toggleSideBar={toggleSideBar}
           />
         </Box>
-        <Body destination={destination} createProduct={createProduct} />
+        <Body
+          destination={destination}
+          createProduct={createProduct}
+          collapseSideBar={collapseSideBar}
+        />
       </Box>
       <Flex
         zIndex={'3'}

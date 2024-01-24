@@ -33,6 +33,7 @@ export const Sidebar = (props) => {
                 onClick={() => {
                   navigate('/dashboard/product-list?pa=1')
                 }}
+                cursor={'pointer'}
               >
                 Product List
               </Text>
@@ -40,6 +41,28 @@ export const Sidebar = (props) => {
                 onClick={() => {
                   navigate('/dashboard/product-category')
                 }}
+                cursor={'pointer'}
+              >
+                Product Category
+              </Text>
+            </VStack>
+          </Box>
+          <SidebarButton label={'Inventory'} icon={Squares2X2Icon} />
+          <Box p={'0 1.3em'} borderLeft={'2px solid lightgray'}>
+            <VStack align={'stretch'} spacing={'1.5em'}>
+              <Text
+                onClick={() => {
+                  navigate('/dashboard/stock-management?pa=1')
+                }}
+                cursor={'pointer'}
+              >
+                Stock Management
+              </Text>
+              <Text
+                onClick={() => {
+                  navigate('/dashboard/product-category')
+                }}
+                cursor={'pointer'}
               >
                 Product Category
               </Text>
