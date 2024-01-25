@@ -149,21 +149,19 @@ export const EditProduct = () => {
   const renderedCategory = finalArray.map((el, index) => {
     return el.category.map((elPT, index) => {
       return (
-        <>
-          {editable[el?.name] && (
-            <Text
-              key={index}
-              itemID={elPT.id}
-              onClick={() => {
-                setCategoryId(elPT.id)
-                setCategoryValue(elPT.name)
-                setGroup(el?.name)
-              }}
-            >
-              {elPT.name}
-            </Text>
-          )}
-        </>
+        editable[el?.name] && (
+          <Text
+            key={index}
+            itemID={elPT.id}
+            onClick={() => {
+              setCategoryId(elPT.id)
+              setCategoryValue(elPT.name)
+              setGroup(el?.name)
+            }}
+          >
+            {elPT.name}
+          </Text>
+        )
       )
     })
   })
@@ -191,28 +189,48 @@ export const EditProduct = () => {
   }
   // HANDLE SUBMIT
 
-  // SET {PRODUCT}
-  const { epid } = useParams()
-  const [product, setProduct] = useState(null)
-  useEffect(() => {
-    getProductDetails(epid, setProduct)
-  }, [editable])
   // SET PRODUCT
+  const { epid } = useParams()
+  const [product, setProduct] = useState({})
+  useEffect(() => {
+    getProductDetails(epid).then((data) => {
+      setProduct(data)
+    })
+  }, [])
+  // SET PRODUCT
+  console.log(!!product)
+  // FORMIK INITIAL VALUES
+  // const initialValues = {
+  //   name: product?.name && product?.name,
+  //   price: product?.price || '',
+  //   productCategoryId: product?.productCategoryId || '',
+  //   description: product?.description || '',
+  // }
+  // FORMIK INITIAL VALUES
+  const [initialValues, setInitialValues] = useState({
+    name: '',
+    price: '',
+    productCategoryId: '',
+    description: '',
+  })
+  useEffect(() => {
+    if (product) {
+      setInitialValues({
+        name: product.name,
+        price: product.price,
+        productCategoryId: product.productCategoryId,
+        description: product.description,
+      })
+    }
+  }, [product])
 
-  // FORMIK INITIAL VALUES
-  const initialValues = {
-    name: product?.name || '',
-    price: product?.price || '',
-    productCategoryId: product?.productCategoryId || '',
-    description: product?.description || '',
-  }
-  // FORMIK INITIAL VALUES
+  console.log('initialValues', initialValues)
   return (
     <Box p={'1em'} bgColor={'white'}>
       <Text fontWeight={'bold'} mb={'2em'}>
         Edit Product
       </Text>
-      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+      <Formik initialValues={initialValues} enableReinitialize={true} onSubmit={handleSubmit}>
         <Form>
           <VStack direction="column" align="flex-start">
             <Field name="name">
@@ -224,17 +242,16 @@ export const EditProduct = () => {
                   <Text fontWeight={'bold'} mb={'1em'}>
                     {product?.name}
                   </Text>
-                  {editable[field.name] && (
-                    <Input
-                      {...field}
-                      id="name"
-                      placeholder={'Input youre new product name'}
-                      borderColor={'transparent'}
-                      focusBorderColor={'transparent'}
-                      bgColor={'grey.50'}
-                      mb={'1em'}
-                    />
-                  )}
+                  <Input
+                    {...field}
+                    id="name"
+                    placeholder={'Input youre new product name'}
+                    borderColor={'transparent'}
+                    focusBorderColor={'transparent'}
+                    bgColor={'grey.50'}
+                    mb={'1em'}
+                  />
+
                   <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                   <Button
                     _hover={{

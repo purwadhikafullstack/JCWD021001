@@ -1,5 +1,5 @@
 import { createStockQuery, getSpesificStockQuery } from '../queries/stock.queries'
-import { createStockJournalQuery } from '../queries/stockJournal.queries'
+import { createStockJournalQuery, getStockJournalQuery } from '../queries/stockJournal.queries'
 
 export const createStockJournalService = async (
   productId,
@@ -78,6 +78,15 @@ export const createStockJournalService = async (
       )
       return res
     }
+  } catch (err) {
+    throw err
+  }
+}
+
+export const getStockJournalService = async (warehouseId, stockId) => {
+  try {
+    const res = await getStockJournalQuery(warehouseId, stockId)
+    return res
   } catch (err) {
     throw err
   }

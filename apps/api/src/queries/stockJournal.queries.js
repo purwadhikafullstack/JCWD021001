@@ -1,4 +1,6 @@
+import { Op } from 'sequelize'
 import StockJournal from '../models/stockJournal.model'
+
 export const createStockJournalQuery = async (
   productId,
   warehouseId,
@@ -23,6 +25,26 @@ export const createStockJournalQuery = async (
       qtyAfter,
       stockId,
       isUpdate,
+    })
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
+export const getStockJournalQuery = async (warehouseId, stockId) => {
+  try {
+    const res = await StockJournal.findAndCountAll({
+      where: {
+        [Op.and]: [
+          {
+            warehouseId: warehouseId,
+          },
+          {
+            stockId: stockId,
+          },
+        ],
+      },
     })
     return res
   } catch (err) {

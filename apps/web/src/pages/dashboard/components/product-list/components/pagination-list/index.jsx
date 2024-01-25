@@ -11,6 +11,8 @@ export const PaginationList = (props) => {
     props?.pageValue > pageNumbers[pageNumbers.length - 1]
       ? pageNumbers[pageNumbers.length - 1] + 1
       : pageNumbers[pageNumbers.length - 1]
+
+  // RENDERED PAGE NUMBER
   const renderedPageNumbers = pageNumbers?.map((pageNumber, index, pageNumbers) => {
     return (
       <>

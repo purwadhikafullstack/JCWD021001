@@ -33,8 +33,6 @@ export const StockManagement = () => {
   // QUERY PARAMS
   const pageValue = queryParams.get('pa')
 
-  console.log('PAGEVALUE', pageValue)
-
   // PATHNAME
   const pathName = location.pathname
 
@@ -105,7 +103,7 @@ export const StockManagement = () => {
                   </Tr>
                 </Thead>
                 <Tbody position={'relative'} color={'#6D6D6D'} fontWeight={'500'}>
-                  <TableBody stocks={stocks} warehouseId={warehouseId} />
+                  <TableBody stocks={stocks} warehouseId={warehouseId} pathName={pathName} />
                 </Tbody>
               </Table>
             </TableContainer>

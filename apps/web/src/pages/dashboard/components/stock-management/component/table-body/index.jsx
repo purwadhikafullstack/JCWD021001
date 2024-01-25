@@ -2,7 +2,11 @@ import { AspectRatio, Button, HStack, Image, Input, Td, Text, Tr, useToast } fro
 import toRupiah from '@develoka/angka-rupiah-js'
 import { useState, useRef } from 'react'
 import { createStockJournal } from '../../services/createStocks'
+import { useNavigate } from 'react-router-dom'
 export const TableBody = (props) => {
+  // NAVIGATE
+  const navigate = useNavigate()
+
   // TOAST
   const toast = useToast()
 
@@ -141,7 +145,9 @@ export const TableBody = (props) => {
                     border={'1px solid #e3024b'}
                     bgColor={'transparent'}
                     color={'redPure.500'}
-                    onClick={() => {}}
+                    onClick={() => {
+                      navigate(`${props?.pathName}/order-history/${stock?.id}`)
+                    }}
                   >
                     History
                   </Button>

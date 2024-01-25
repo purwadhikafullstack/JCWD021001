@@ -6,6 +6,7 @@ import { ProductCategory } from '../product-category'
 import { CreateProductCategoryGender } from '../create-product-category-gender'
 import { EditProductCategory } from '../edit-product-category'
 import { StockManagement } from '../stock-management'
+import { OrderHistory } from '../order-history'
 
 export const Body = (props) => {
   const renderComponent = () => {
@@ -28,6 +29,8 @@ export const Body = (props) => {
         return <CreateProductCategoryGender />
       case 'edit-product-category':
         return <EditProductCategory />
+      case 'order-history':
+        return <OrderHistory />
     }
   }
   const create = renderComponentAgain()
