@@ -44,7 +44,8 @@ export const createStockJournalController = async (req, res) => {
 export const getStockJournalController = async (req, res) => {
   try {
     const { warehouseId, stockId } = req.params
-    const result = await getStockJournalService(warehouseId, stockId)
+    const { page, pageSize } = req.query
+    const result = await getStockJournalService(warehouseId, stockId, page, pageSize)
     return res.status(200).json({
       message: 'Get Stock Success',
       data: result,

@@ -45,7 +45,6 @@ export const ProductList = () => {
     getProduct('', '', '', '', setProducts, 'name', 'ASC', pageValue)
   }, [pageValue])
 
-  console.log('PRODUCTS', products)
   // DELETE PRODUCT IMAGES
   const deleteProductImage = async (id, productId) => {
     try {

@@ -13,7 +13,7 @@ export const Dashboard = () => {
     setCollapseSideBar(!collapseSideBar)
   }
   return (
-    <Box h={'100vh'}>
+    <Box minH={'100vh'}>
       <Navbar />
       <Box display={{ md: 'flex' }} gap={'1em'} h={'100%'}>
         <Box display={{ md: 'flex' }}>

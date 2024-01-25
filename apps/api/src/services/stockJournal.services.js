@@ -83,9 +83,9 @@ export const createStockJournalService = async (
   }
 }
 
-export const getStockJournalService = async (warehouseId, stockId) => {
+export const getStockJournalService = async (warehouseId, stockId, page, pageSize) => {
   try {
-    const res = await getStockJournalQuery(warehouseId, stockId)
+    const res = await getStockJournalQuery(warehouseId, stockId, page, pageSize)
     return res
   } catch (err) {
     throw err

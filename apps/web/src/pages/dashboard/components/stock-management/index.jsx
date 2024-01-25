@@ -1,14 +1,10 @@
 import {
-  AspectRatio,
   Box,
   Button,
   Flex,
-  HStack,
-  Image,
   Table,
   TableContainer,
   Tbody,
-  Td,
   Text,
   Th,
   Thead,
@@ -49,7 +45,7 @@ export const StockManagement = () => {
   }, [warehouseId, pageValue])
 
   return (
-    <Box p={'1em'} h={'100%'} w={'100%'}>
+    <Box p={'1em'} h={'100%'} w={'100%'} bgColor={'white'}>
       <Flex flexDir={'column'} justifyContent={'space-between'} h={'100%'}>
         <VStack align={'stretch'}>
           <Flex alignItems={'center'} justifyContent={'space-between'}>

@@ -146,7 +146,7 @@ export const TableBody = (props) => {
                     bgColor={'transparent'}
                     color={'redPure.500'}
                     onClick={() => {
-                      navigate(`${props?.pathName}/order-history/${stock?.id}`)
+                      navigate(`${props?.pathName}/order-history/${stock?.id}?pa=1`)
                     }}
                   >
                     History

@@ -198,31 +198,17 @@ export const EditProduct = () => {
     })
   }, [])
   // SET PRODUCT
+
   console.log(!!product)
+
   // FORMIK INITIAL VALUES
-  // const initialValues = {
-  //   name: product?.name && product?.name,
-  //   price: product?.price || '',
-  //   productCategoryId: product?.productCategoryId || '',
-  //   description: product?.description || '',
-  // }
+  const initialValues = {
+    name: product?.name || '',
+    price: product?.price || '',
+    productCategoryId: product?.productCategoryId || '',
+    description: product?.description || '',
+  }
   // FORMIK INITIAL VALUES
-  const [initialValues, setInitialValues] = useState({
-    name: '',
-    price: '',
-    productCategoryId: '',
-    description: '',
-  })
-  useEffect(() => {
-    if (product) {
-      setInitialValues({
-        name: product.name,
-        price: product.price,
-        productCategoryId: product.productCategoryId,
-        description: product.description,
-      })
-    }
-  }, [product])
 
   console.log('initialValues', initialValues)
   return (
