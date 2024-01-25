@@ -6,12 +6,16 @@ import { useEffect, useState } from "react";
 import FormCurrentLocation from "./components/current-location/Index";
 import Map from "./components/map";
 import { Navbar } from "../../components/navbar";
+import { findOpenCageAndCity } from "./services/readUserAddress";
 
 function CreateAddress(){
 
     const [formCurrentLocation, setFormCurrentLocation] = useState(false)
     const [latitude, setLatitude] = useState(null)
     const [longitude, setLongitude] = useState(null)
+    const [address, setAddress] = useState('');
+    const [selectedAddress, setSelectedAddress] = useState('');
+    const [marker, setMarker] = useState(false)
     
     useEffect (() => {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -20,9 +24,28 @@ function CreateAddress(){
         })
     }, [])
 
+    console.log("ini lat", latitude, "ini lng", longitude, "ini address", address)
+
+    useEffect(() => {
+        const fetchAddress = async () => {
+          if (latitude && longitude) {
+            try {
+              const fetchedAddress = await findOpenCageAndCity(latitude, longitude);
+              setAddress(fetchedAddress);
+            } catch (error) {
+              console.error("Error fetching address:", error);
+            }
+          }
+        };
+    
+        fetchAddress();
+      }, [latitude, longitude]);
+
     const handleClick = async () => {
         try {
             setFormCurrentLocation(true)
+            setSelectedAddress('')
+            setMarker(true)
         } catch (error) {
             console.error("Error fetching address:", error);
         }
@@ -77,7 +100,12 @@ function CreateAddress(){
                     height={'474px'}
                     bg={'green.100'}
                     marginBottom={'33px'}>
-                        <Map lat={latitude} lng={longitude}/>
+                        <Map lat={latitude} lng={longitude} 
+                        setSelectedAddress={setSelectedAddress} 
+                        setFormCurrentLocation={setFormCurrentLocation} 
+                        marker={marker}
+                        setMarker={setMarker}
+                        />
                     </Box>
                     <Text fontSize={'16px'}
                     fontWeight={'700'}
@@ -85,7 +113,7 @@ function CreateAddress(){
                     mb={'24px'}>
                         CONTACT
                     </Text>
-                    {formCurrentLocation ? <FormCurrentLocation lat={latitude} lng={longitude}/> : <FormCreateAddress/>}
+                    {formCurrentLocation ? <FormCurrentLocation address={selectedAddress || address} /> : <FormCreateAddress/>}
                 </Box>
             </Box>
             <Footer/>
