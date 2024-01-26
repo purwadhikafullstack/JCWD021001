@@ -1,5 +1,5 @@
-'use strict';
-import { DataTypes, Model } from 'sequelize';
+'use strict'
+import { DataTypes, Model } from 'sequelize'
 export default class Mutation extends Model {
   /**
    * Helper method for defining associations.
@@ -13,30 +13,34 @@ export default class Mutation extends Model {
 export const init = (sequelize) => {
   Mutation.init(
     {
-      senderWarehouseId: {
+      requesterWarehouseId: {
         allowNull: false,
         type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: 'warehouses',
+          },
+          key: 'id',
+        },
       },
-      receiverWarehouseId: {
+      recipientWarehouseId: {
         allowNull: false,
         type: DataTypes.INTEGER,
-      },
-      productId: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: 'warehouses',
+          },
+          key: 'id',
+        },
       },
       qty: {
         allowNull: false,
         type: DataTypes.INTEGER,
         validate: {
           checkQty(value) {
-            if (value <= 0) throw new Error('Quantity cannot be 0');
+            if (value <= 0) throw new Error('Quantity cannot be 0')
           },
         },
-      },
-      statusId: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
       },
       createdAt: {
         allowNull: false,
@@ -48,10 +52,36 @@ export const init = (sequelize) => {
         type: DataTypes.DATE,
         defaultValue: Date.now(),
       },
+      stockJournalIdRecipient: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: 'stockJournals',
+          },
+          key: 'id',
+        },
+      },
+      isAccepted: {
+        allowNull: false,
+        type: DataTypes.BOOLEAN,
+        defaultValue: 0,
+      },
+      stockJournalIdRequester: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: 'stockJournals',
+          },
+          key: 'id',
+        },
+      },
     },
     {
       sequelize,
       modelName: 'Mutation',
+      timestamps: true,
     },
-  );
-};
+  )
+}
