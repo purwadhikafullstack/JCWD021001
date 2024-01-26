@@ -1,12 +1,19 @@
-import { Box, Button, Input, Text, VStack } from '@chakra-ui/react'
+import { Box, Button, Input, Text, VStack, useToast } from '@chakra-ui/react'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { getProduct } from '../../../product-list/services/readProduct'
 import { getColours } from './services/readColour'
 import { ProductList } from './component/product-list'
 import { StockSelection } from './component/stock-selection'
+import { createStockJournal } from './services/createStock'
 
 export const CreateStock = () => {
+  // TOAST
+  const toast = useToast()
+
+  // WAREHOUSE ID
+  const [warehouseId, setWarehouseId] = useState(4)
+
   // COLOUR
   const [colours, setColours] = useState([])
   const [colourId, setColourId] = useState(0)
@@ -36,6 +43,9 @@ export const CreateStock = () => {
     }
   }, [productSelected?.name])
 
+  // STOCK VALUE
+  const [stockValue, setStockValue] = useState(0)
+
   //   PRODUCT ID WILL BE SENT
   const [productId, setProductId] = useState(0)
   const [productName, setProductName] = useState('')
@@ -57,6 +67,31 @@ export const CreateStock = () => {
       })
     },
   })
+
+  const handleCreateStockJournal = async (
+    productId,
+    warehouseId,
+    sizeId,
+    colourId,
+    qty,
+    isUpdate,
+  ) => {
+    try {
+      const res = await createStockJournal(productId, warehouseId, sizeId, colourId, qty, isUpdate)
+      console.log('RES', res)
+      toast({
+        title: `${res?.data?.title}`,
+        status: 'success',
+        placement: 'bottom',
+      })
+    } catch (err) {
+      toast({
+        title: `${err?.message}`,
+        status: 'error',
+      })
+    }
+  }
+
   return (
     <Box p={'1em'} h={'100%'} w={'100%'} bgColor={'white'}>
       <VStack align={'stretch'}>
@@ -84,16 +119,32 @@ export const CreateStock = () => {
               colours={colours}
               setColourId={setColourId}
               setSizeId={setSizeId}
+              stockValue={stockValue}
+              setStockValue={setStockValue}
             />
             <Button
               alignSelf={'flex-end'}
-              type="submit"
               width={'168px'}
               padding={'12px 16px'}
               bgColor={'brand.lightred'}
               color={'white'}
               _hover={{ bg: '#f50f5a' }}
               _active={{ opacity: '70%' }}
+              onClick={async () => {
+                await handleCreateStockJournal(
+                  productId,
+                  warehouseId,
+                  sizeId,
+                  colourId,
+                  Number(stockValue),
+                  false,
+                )
+                setProductId(0)
+                setWarehouseId(warehouseId)
+                setSizeId(0)
+                setColourId(0)
+                setStockValue(0)
+              }}
             >
               Create
             </Button>

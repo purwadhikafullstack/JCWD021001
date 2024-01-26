@@ -31,12 +31,12 @@ export const createStockJournalController = async (req, res) => {
     )
 
     return res.status(200).json({
-      message: 'Create Stock Journal Service Success',
+      title: 'Create Stock Journal Service Success',
       data: result,
     })
   } catch (err) {
     return res.status(500).json({
-      message: err.message,
+      title: err.message,
     })
   }
 }
