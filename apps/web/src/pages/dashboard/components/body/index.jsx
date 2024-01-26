@@ -41,7 +41,7 @@ export const Body = (props) => {
   return (
     <Box
       bgColor={'grey.50'}
-      h={'100%'}
+      minH={'100vh'}
       w={'100%'}
       p={'1em'}
       display={props?.collapseSidebar ? 'none' : 'block'}

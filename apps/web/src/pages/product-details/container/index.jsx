@@ -8,8 +8,9 @@ export const ProductDetails = () => {
   const { id } = useParams()
   const [product, setProduct] = useState(null)
   useEffect(() => {
-    getProductDetails(id, setProduct)
+    getProductDetails(id).then((data) => setProduct(data))
   }, [])
+  console.log(product)
   return (
     <Box>
       <Navbar />
