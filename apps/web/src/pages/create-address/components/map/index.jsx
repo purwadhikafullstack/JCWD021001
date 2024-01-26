@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMapEvent } from 'react-leafl
 import { findOpenCageAndCity } from '../../services/readUserAddress';
 import 'leaflet/dist/leaflet.css';
 
-function ClickableMap({ initialPosition, setSelectedAddress, setFormCurrentLocation, marker, setMarker, mapRef }) {
+function ClickableMap({ initialPosition, setSelectedAddress, setFormCurrentLocation, marker, setMarker, mapRef, setLat, setLng }) {
   const [markerPosition, setMarkerPosition] = useState(initialPosition);
 
 
@@ -25,6 +25,8 @@ useEffect(() => {
       try {
         const response = await findOpenCageAndCity(markerPosition.lat, markerPosition.lng);
         setSelectedAddress(response); 
+        setLat(markerPosition.lat);
+        setLng(markerPosition.lng);
         if (markerPosition !== initialPosition){
           setFormCurrentLocation(true);
         }
@@ -44,7 +46,7 @@ useEffect(() => {
   );
 }
 
-function Map({ lat, lng , setSelectedAddress, setFormCurrentLocation, marker, setMarker}) {
+function Map({ lat, lng , setSelectedAddress, setFormCurrentLocation, marker, setMarker, setLat, setLng}) {
   const mapRef = useRef(null);
 
   if (lat == null || lng == null) {
@@ -59,7 +61,15 @@ function Map({ lat, lng , setSelectedAddress, setFormCurrentLocation, marker, se
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <ClickableMap initialPosition={initialPosition} setSelectedAddress={setSelectedAddress} setFormCurrentLocation={setFormCurrentLocation} marker={marker} setMarker={setMarker} mapRef={mapRef}/>
+          <ClickableMap 
+          initialPosition={initialPosition} 
+          setSelectedAddress={setSelectedAddress} 
+          setFormCurrentLocation={setFormCurrentLocation} 
+          marker={marker} 
+          setMarker={setMarker} 
+          mapRef={mapRef}
+          setLat={setLat}
+          setLng={setLng}/>
       </MapContainer>
   )
 }

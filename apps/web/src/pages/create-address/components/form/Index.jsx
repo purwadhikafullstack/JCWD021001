@@ -70,7 +70,8 @@ function FormCreateAddress () {
                             variant={'filled'}
                             mb={'32px'}
                             value={formik.values.fullName}
-                            onChange={formik.handleChange}/>
+                            onChange={formik.handleChange}
+                            isDisabled/>
                     </Box>
                     <Box>  
                             <Text fontSize={'16px'}
@@ -87,7 +88,8 @@ function FormCreateAddress () {
                             mb={'24px'}
                             name="phoneNumber"
                             value={formik.values.phoneNumber}
-                            onChange={formik.handleChange}/>       
+                            onChange={formik.handleChange}
+                            isDisabled/>       
                     </Box>
                 </Grid>
                 <Text 
@@ -114,6 +116,7 @@ function FormCreateAddress () {
                             variant={'filled'} 
                             color={'brand.grey350'}
                             mb={'24px'}
+                            isDisabled
                             value={selectedProvince}
                             onChange={(e) => setSelectedProvince(e.target.value)}>
                                 {provinceList?.map((province) => (
@@ -136,6 +139,7 @@ function FormCreateAddress () {
                             variant={'filled'} 
                             mb={'24px'}
                             name="cityId"
+                            isDisabled
                             onChange={(e) => {
                                 setSelectedCity(e.target.value);
                                 formik.handleChange(e);
@@ -155,6 +159,7 @@ function FormCreateAddress () {
                                 Postal Code
                             </Text>
                             <Input
+                            isDisabled
                             placeholder="Type a postal code"
                             _placeholder={{color: 'brand.grey350'}}
                             bg={'brand.grey100'}
@@ -177,6 +182,7 @@ function FormCreateAddress () {
                             bg={'brand.grey100'}
                             variant={'filled'} 
                             h={'210px'}
+                            isDisabled
                             value={formik.values.specificAddress}
                             onChange={formik.handleChange}/>
                     </Box>
@@ -193,6 +199,7 @@ function FormCreateAddress () {
                     borderColor={'brand.lightred'}
                     _hover={{borderColor: '#f50f5a', color: '#f50f5a'}} 
                     _active={{opacity:'70%'}}
+                    onClick={() => navigate("/manage-address")}
                     >
                         Cancel
                     </Button>
@@ -201,6 +208,7 @@ function FormCreateAddress () {
                     padding={'12px 16px'}
                     bgColor={'brand.lightred'}
                     color={'white'}
+                    isDisabled
                     _hover={{bg: '#f50f5a'}} 
                     _active={{opacity:'70%'}}
                     >

@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createUserAddress } from "../../services/createUserAddress";
 
-function FormCurrentLocation ({ address }) {
+function FormCurrentLocation ({ address, lat, lng }) {
     const [selectedCity, setSelectedCity] = useState('')
     const [citylist, setCityList] = useState([])
     const [provinceList, setProvinceList] = useState([]);
@@ -43,6 +43,7 @@ function FormCurrentLocation ({ address }) {
         fetchCityData();
     }, [address]);
     
+    console.log("ini lat form", lat, "ini lng form", lng);
     const formik = useFormik({
         initialValues:{
             specificAddress:"", cityId: null, fullName:"", phoneNumber:"", postalCode: "",
@@ -50,7 +51,7 @@ function FormCurrentLocation ({ address }) {
         onSubmit: async (values, {resetForm}) => {
             try{
                 console.log("Formik Submission Values:", values);
-                await createUserAddress(user.id, values.specificAddress, values.cityId, values.fullName, values.phoneNumber, values.postalCode);    
+                await createUserAddress(user.id, values.specificAddress, values.cityId, values.fullName, values.phoneNumber, values.postalCode, lat, lng);    
                 navigate('/manage-address')
             } catch (err){
                 console.log(err.message);
@@ -214,6 +215,7 @@ function FormCurrentLocation ({ address }) {
                     borderColor={'brand.lightred'}
                     _hover={{borderColor: '#f50f5a', color: '#f50f5a'}} 
                     _active={{opacity:'70%'}}
+                    onClick={() => navigate("/manage-address")}
                     >
                         Cancel
                     </Button>

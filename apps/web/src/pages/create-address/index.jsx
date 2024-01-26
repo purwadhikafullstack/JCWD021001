@@ -7,6 +7,7 @@ import FormCurrentLocation from "./components/current-location/Index";
 import Map from "./components/map";
 import { Navbar } from "../../components/navbar";
 import { findOpenCageAndCity } from "./services/readUserAddress";
+import ModalMapAddressEntry from "./components/modal";
 
 function CreateAddress(){
 
@@ -16,6 +17,8 @@ function CreateAddress(){
     const [address, setAddress] = useState('');
     const [selectedAddress, setSelectedAddress] = useState('');
     const [marker, setMarker] = useState(false)
+    const [lat, setLat] = useState(null)
+    const [lng, setLng] = useState(null)
     
     useEffect (() => {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -24,7 +27,7 @@ function CreateAddress(){
         })
     }, [])
 
-    console.log("ini lat", latitude, "ini lng", longitude, "ini address", address)
+    console.log("ini latitude", latitude, "ini longitude", longitude, "ini address", address, "ini lat", lat, "ini lng", lng)
 
     useEffect(() => {
         const fetchAddress = async () => {
@@ -57,6 +60,7 @@ function CreateAddress(){
             <Navbar/>
             <Box padding={'0px 100px'}
              marginBottom={'150px'}>
+                <ModalMapAddressEntry/>
                 <Flex className="create-address-top"
                 flexDir={'column'}
                 gap={'16px'}
@@ -105,6 +109,8 @@ function CreateAddress(){
                         setFormCurrentLocation={setFormCurrentLocation} 
                         marker={marker}
                         setMarker={setMarker}
+                        setLat={setLat}
+                        setLng={setLng}
                         />
                     </Box>
                     <Text fontSize={'16px'}
@@ -113,7 +119,13 @@ function CreateAddress(){
                     mb={'24px'}>
                         CONTACT
                     </Text>
-                    {formCurrentLocation ? <FormCurrentLocation address={selectedAddress || address} /> : <FormCreateAddress/>}
+                    {formCurrentLocation ? 
+                        <FormCurrentLocation 
+                        address={selectedAddress || address} 
+                        lat={lat || latitude} 
+                        lng={lng || longitude}/> 
+                    : 
+                        <FormCreateAddress/>}
                 </Box>
             </Box>
             <Footer/>

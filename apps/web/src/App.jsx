@@ -20,6 +20,7 @@ import { ProductSearch } from './pages/product-search/container'
 import OrderList from './pages/order-list'
 import Payment from './pages/payments'
 import { Dashboard } from './pages/dashboard/container'
+import DeliveryAddress from './components/order/deliveryAddress'
 function App() {
   // const { user, isLogin } = useSelector((state) => state.AuthReducer);
   console.log('halo')
@@ -62,6 +63,7 @@ function App() {
           <Route path="/dashboard/:destination?/:createProduct?" element={<Dashboard />} />
           <Route path="/dashboard/:destination?/:createProduct?/:epid" element={<Dashboard />} />
           <Route path="/manage-address" element={<ManageAddress />} />
+          <Route path="/delivery-address" element={<DeliveryAddress/>}/>
         </Routes>
       </Auth>
     </Box>

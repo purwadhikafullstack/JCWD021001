@@ -12,7 +12,7 @@ userAddressRouter.get("/address-city", findOpencageAndCityController);
 
 
 //POST 
-userAddressRouter.post("/create-user-address/:id", createUserAddressController);
+userAddressRouter.post("/create-user-address", createUserAddressController);
 
 //PATCH
 userAddressRouter.patch("/update-user-address/:id", updateUserAddressController)
