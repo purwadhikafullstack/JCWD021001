@@ -36,7 +36,6 @@ export const BreadCrumbs = (props) => {
       </HStack>
     )
   })
-  console.log('BREADCRUMBS LINKS', breadCrumbsLinks)
   return (
     <HStack justifyContent={'flex-start'} alignItems={'center'}>
       {breadCrumbsLinks}

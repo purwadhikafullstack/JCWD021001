@@ -46,6 +46,8 @@ export const Body = (props) => {
     getStock(props?.product?.id, sizeValue, colourValue, setStock)
   }, [colourValue, sizeValue])
 
+  console.log('PRO', props?.product)
+
   const shouldDisable = !stock ? true : false
   return (
     <Box p={'1em'} bgColor={'grey.50'} minH={'100vh'}>
