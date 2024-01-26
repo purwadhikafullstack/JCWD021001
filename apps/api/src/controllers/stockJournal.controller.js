@@ -1,4 +1,7 @@
-import { createStockJournalService } from '../services/stockJournal.services'
+import {
+  createStockJournalService,
+  getStockJournalService,
+} from '../services/stockJournal.services'
 
 export const createStockJournalController = async (req, res) => {
   try {
@@ -12,6 +15,7 @@ export const createStockJournalController = async (req, res) => {
       qtyBefore,
       qtyAfter,
       stockId,
+      isUpdate,
     } = req.body
     const result = await createStockJournalService(
       productId,
@@ -23,9 +27,27 @@ export const createStockJournalController = async (req, res) => {
       qtyBefore,
       qtyAfter,
       stockId,
+      isUpdate,
     )
+
     return res.status(200).json({
       message: 'Create Stock Journal Service Success',
+      data: result,
+    })
+  } catch (err) {
+    return res.status(500).json({
+      message: err.message,
+    })
+  }
+}
+
+export const getStockJournalController = async (req, res) => {
+  try {
+    const { warehouseId, stockId } = req.params
+    const { page, pageSize } = req.query
+    const result = await getStockJournalService(warehouseId, stockId, page, pageSize)
+    return res.status(200).json({
+      message: 'Get Stock Success',
       data: result,
     })
   } catch (err) {

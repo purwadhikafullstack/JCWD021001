@@ -5,9 +5,9 @@ import {
   getStockQuery,
 } from '../queries/stock.queries'
 
-export const getStockService = async (warehouseId) => {
+export const getStockService = async (warehouseId, page, pageSize) => {
   try {
-    const res = await getStockQuery(warehouseId)
+    const res = await getStockQuery(warehouseId, page, pageSize)
     return res
   } catch (err) {
     throw err

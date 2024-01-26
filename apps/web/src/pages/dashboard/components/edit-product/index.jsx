@@ -14,21 +14,32 @@ import {
   VStack,
   useToast,
   Image,
+  Icon,
 } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
-import { Formik, Field, Form, ErrorMessage, useFormik } from 'formik'
-import * as Yup from 'yup'
+import { Formik, Field, Form } from 'formik'
 import { useParams } from 'react-router-dom'
 import { getProductDetails } from '../../../product-details/services/readProductDetails'
 import { getProductCategory } from '../../../product-list/services/readProductCategory'
 import { getGender } from '../../services/readGender'
 import axios from 'axios'
 import { ImageUpload } from '../image-upload'
+import { ChevronRightIcon } from '@chakra-ui/icons'
 
 export const EditProduct = () => {
   // SET TOAST
   const toast = useToast()
   // SET TOAST
+
+  // EDITABLE
+  const [editable, setEditable] = useState({})
+  const handleEditClick = (id) => {
+    setEditable((set) => ({
+      ...set,
+      [id]: !set[id],
+    }))
+  }
+  // EDITABLE
 
   // UPDATE PRODUCT
   const updateProduct = async (name, price, description, productCategoryId, id) => {
@@ -73,22 +84,96 @@ export const EditProduct = () => {
     }
   }
   // DELETE PRODUCT IMAGES
-  // Start set product
-  const { epid } = useParams()
-  const [product, setProduct] = useState(null)
-  useEffect(() => {
-    getProductDetails(epid, setProduct)
-  }, [])
-  // End set product
 
-  // Start validation schema
-  const validationSchema = Yup.object().shape({
-    // name: Yup.string().required('Name is required'),
-    // price: Yup.string().required('Price is required'),
-    // productCategoryId: Yup.string().required('Category is required'),
-    // description: Yup.string().required('Description is required'),
+  // CATEGORY VALUE TO BE SHOWED IN INPUT
+  const [gender, setGender] = useState('Men')
+  const [group, setGroup] = useState('')
+  const [categoryValue, setCategoryValue] = useState('')
+  // CATEGORY VALUE TO BE SHOWED IN INPUT
+
+  // GET PRODUCT CATEGORIES
+  const [productCategories, setProductCategories] = useState([])
+
+  const groupedArray = productCategories?.reduce((result, item) => {
+    const parentName = item?.parent?.name
+    const parentId = item?.parent?.id
+    if (!result[parentName]) {
+      result[parentName] = { name: parentName, id: parentId, category: [] }
+    }
+    result[parentName].category.push({ id: item.id, name: item.name })
+    return result
+  }, {})
+  const finalArray = Object.values(groupedArray)
+
+  //  GENDER
+  const [genders, setGenders] = useState([])
+  useEffect(() => {
+    getGender(setGenders)
+  }, [])
+  const renderedGender = genders?.map((el, index) => {
+    return (
+      <Text
+        key={index}
+        itemID={el.id}
+        onClick={() => {
+          setGender(el?.name)
+          setGroup('')
+          setCategoryValue('')
+        }}
+      >
+        {el?.name}
+      </Text>
+    )
   })
-  // End validation schema
+  // GENDER
+
+  // GROUP
+  const renderedGroup = finalArray.map((el, index) => {
+    return (
+      <Text
+        key={index}
+        itemID={el.id}
+        onClick={() => {
+          setGroup(el?.name)
+          setCategoryValue('')
+          handleEditClick(el?.name)
+        }}
+      >
+        {el.name}
+      </Text>
+    )
+  })
+  // GROUP
+
+  // CATEGORY
+  const renderedCategory = finalArray.map((el, index) => {
+    return el.category.map((elPT, index) => {
+      return (
+        editable[el?.name] && (
+          <Text
+            key={index}
+            itemID={elPT.id}
+            onClick={() => {
+              setCategoryId(elPT.id)
+              setCategoryValue(elPT.name)
+              setGroup(el?.name)
+            }}
+          >
+            {elPT.name}
+          </Text>
+        )
+      )
+    })
+  })
+  // CATEGORY
+  useEffect(() => {
+    getProductCategory(setProductCategories, gender)
+  }, [gender])
+  // GET PRODUCT CATEGORIES
+
+  // CATEGORY ID WANT TO SEND
+  const [categoryId, setCategoryId] = useState(0)
+  // CATEGORY ID WANT TO SEND
 
   // HANDLE SUBMIT
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -104,103 +189,34 @@ export const EditProduct = () => {
   }
   // HANDLE SUBMIT
 
-  // GET GENDER
-  const [gender, setGender] = useState([])
+  // SET PRODUCT
+  const { epid } = useParams()
+  const [product, setProduct] = useState({})
   useEffect(() => {
-    getGender(setGender)
-  }, [])
-  const renderedGender = gender?.map((el, index) => {
-    return (
-      <Text key={index} itemID={el.id}>
-        {el.name}
-      </Text>
-    )
-  })
-  // GET GENDER
-
-  // GET PRODUCT CATEGORIES
-  const [productCategories, setProductCategories] = useState([])
-
-  const groupedArray = productCategories.reduce((result, item) => {
-    const parentName = item.parent.name
-    const parentId = item.parent.id
-    if (!result[parentName]) {
-      result[parentName] = { name: parentName, id: parentId, category: [] }
-    }
-    result[parentName].category.push({ id: item.id, name: item.name })
-    return result
-  }, {})
-  const finalArray = Object.values(groupedArray)
-  const renderedCategory = finalArray.map((el, index) => {
-    return el.category.map((elPT, index) => {
-      return (
-        <Text
-          key={index}
-          itemID={elPT.id}
-          onClick={() => {
-            setCategoryId(elPT.id)
-            setCategoryValue(elPT.name)
-          }}
-        >
-          {elPT.name}
-        </Text>
-      )
+    getProductDetails(epid).then((data) => {
+      setProduct(data)
     })
-  })
-  const renderedGroup = finalArray.map((el, index) => {
-    return (
-      <Text key={index} itemID={el.id}>
-        {el.name}
-      </Text>
-    )
-  })
-  // GET PRODUCT CATEGORIES
+  }, [])
+  // SET PRODUCT
 
-  // CATEGORY ID WANT TO SEND
-  const [categoryId, setCategoryId] = useState(0)
-  // CATEGORY ID WANT TO SEND
-
-  // CATEGORY VALUE TO BE SHOWED IN INPUT
-  const [categoryValue, setCategoryValue] = useState('')
-  // CATEGORY VALUE TO BE SHOWED IN INPUT
+  console.log(!!product)
 
   // FORMIK INITIAL VALUES
   const initialValues = {
     name: product?.name || '',
     price: product?.price || '',
-    productCategoryId: product?.category?.name || '',
+    productCategoryId: product?.productCategoryId || '',
     description: product?.description || '',
   }
   // FORMIK INITIAL VALUES
-  const [editable, setEditable] = useState({})
-  const handleEditClick = (id) => {
-    setEditable((set) => ({
-      ...set,
-      [id]: !set[id],
-    }))
-  }
 
-  const formik = useFormik({
-    initialValues: {
-      name: product?.name || '',
-      price: product?.price || '',
-      productCategoryId: product?.category?.name || '',
-      description: product?.description || '',
-    },
-  })
-  useEffect(() => {
-    getProductCategory(setProductCategories)
-  }, [])
+  console.log('initialValues', initialValues)
   return (
     <Box p={'1em'} bgColor={'white'}>
       <Text fontWeight={'bold'} mb={'2em'}>
         Edit Product
       </Text>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
+      <Formik initialValues={initialValues} enableReinitialize={true} onSubmit={handleSubmit}>
         <Form>
           <VStack direction="column" align="flex-start">
             <Field name="name">
@@ -212,17 +228,16 @@ export const EditProduct = () => {
                   <Text fontWeight={'bold'} mb={'1em'}>
                     {product?.name}
                   </Text>
-                  {editable[field.name] && (
-                    <Input
-                      {...field}
-                      id="name"
-                      placeholder={'Input youre product name'}
-                      borderColor={'transparent'}
-                      focusBorderColor={'transparent'}
-                      bgColor={'grey.50'}
-                      mb={'1em'}
-                    />
-                  )}
+                  <Input
+                    {...field}
+                    id="name"
+                    placeholder={'Input youre new product name'}
+                    borderColor={'transparent'}
+                    focusBorderColor={'transparent'}
+                    bgColor={'grey.50'}
+                    mb={'1em'}
+                  />
+
                   <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                   <Button
                     _hover={{
@@ -233,8 +248,9 @@ export const EditProduct = () => {
                     color={'white'}
                     isLoading={false}
                     onClick={() => handleEditClick(field.name)}
+                    type={'reset'}
                   >
-                    Edit
+                    {editable[field.name] ? 'Cancel' : 'Edit'}
                   </Button>
                 </FormControl>
               )}
@@ -248,6 +264,13 @@ export const EditProduct = () => {
                   <FormLabel htmlFor="productCategoryId" fontWeight={'bold'}>
                     Category
                   </FormLabel>
+                  <HStack mb={'1em'}>
+                    <Text>{product?.category?.parent?.parent?.name}</Text>
+                    <Icon as={ChevronRightIcon} />
+                    <Text>{product?.category?.parent?.name}</Text>
+                    <Icon as={ChevronRightIcon} />
+                    <Text>{product?.category?.name}</Text>
+                  </HStack>
                   {editable[field.name] && (
                     <Input
                       {...field}
@@ -258,8 +281,31 @@ export const EditProduct = () => {
                       focusBorderColor={'transparent'}
                       bgColor={'grey.50'}
                       color={'black'}
+                      value={`${gender} > ${group} > ${categoryValue}`}
                       isReadOnly
                     />
+                  )}
+                  {editable['productCategoryId'] && (
+                    <Grid
+                      mb={'1em'}
+                      templateColumns="repeat(3, 1fr)"
+                      w={'100%'}
+                      gap={'1em'}
+                      border={'2px solid #f2f2f2'}
+                      borderRadius={'.5em'}
+                      p={'1em'}
+                      fontWeight={'bold'}
+                    >
+                      <Box p={'.5em'}>
+                        <VStack align={'stretch'}>{renderedGender}</VStack>
+                      </Box>
+                      <Box p={'.5em'} borderLeft={'2px solid lightgray'}>
+                        <VStack align={'stretch'}>{renderedGroup}</VStack>
+                      </Box>
+                      <Box p={'0 .5em'} borderLeft={'2px solid lightgray'}>
+                        <VStack align={'stretch'}>{renderedCategory}</VStack>
+                      </Box>
+                    </Grid>
                   )}
                   <Button
                     _hover={{
@@ -269,36 +315,19 @@ export const EditProduct = () => {
                     bgColor={'redPure.500'}
                     color={'white'}
                     isLoading={false}
-                    onClick={() => handleEditClick(field.name)}
+                    onClick={() => {
+                      handleEditClick(field.name)
+                      setCategoryValue('')
+                    }}
                   >
-                    Edit
+                    {editable[field.name] ? 'Cancel' : 'Edit'}
                   </Button>
                   <FormErrorMessage>{form.errors.productCategoryId}</FormErrorMessage>
                 </FormControl>
               )}
             </Field>
+
             <Text fontWeight={'bold'}>Photo Product</Text>
-            {editable['productCategoryId'] && (
-              <Grid
-                templateColumns="repeat(3, 1fr)"
-                w={'100%'}
-                gap={'1em'}
-                border={'2px solid #f2f2f2'}
-                borderRadius={'.5em'}
-                p={'1em'}
-                fontWeight={'bold'}
-              >
-                <Box p={'.5em'}>
-                  <VStack align={'stretch'}>{renderedGender}</VStack>
-                </Box>
-                <Box p={'.5em'} borderLeft={'2px solid lightgray'}>
-                  <VStack align={'stretch'}>{renderedGroup}</VStack>
-                </Box>
-                <Box p={'0 .5em'} borderLeft={'2px solid lightgray'}>
-                  <VStack align={'stretch'}>{renderedCategory}</VStack>
-                </Box>
-              </Grid>
-            )}
             <Grid w={'100%'} templateColumns={'repeat(3, 1fr)'} gap={'.5em'}>
               {product?.picture?.map((el, index) => {
                 return (
@@ -356,8 +385,9 @@ export const EditProduct = () => {
                     color={'white'}
                     isLoading={false}
                     onClick={() => handleEditClick(field.name)}
+                    type={'reset'}
                   >
-                    Edit
+                    {editable[field.name] ? 'Cancel' : 'Edit'}
                   </Button>
                   <FormErrorMessage>{form.errors.description}</FormErrorMessage>
                 </FormControl>
@@ -401,7 +431,7 @@ export const EditProduct = () => {
                     isLoading={false}
                     onClick={() => handleEditClick(field.name)}
                   >
-                    Edit
+                    {editable[field.name] ? 'Cancel' : 'Edit'}
                   </Button>
                   <FormErrorMessage>{form.errors.price}</FormErrorMessage>
                 </FormControl>

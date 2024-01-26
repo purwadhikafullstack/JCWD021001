@@ -81,9 +81,7 @@ export const ProductCategory = (props) => {
                 return (
                   <Tr cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'} key={index}>
                     <Td textAlign={'center'}>
-                      <Flex justifyContent={'space-between'} alignItems={'center'}>
-                        <Text>{el?.name}</Text>
-                      </Flex>
+                      <Text>{el?.name}</Text>
                     </Td>
                     <Td textAlign={'center'} alignItems={'center'}>
                       <HStack>

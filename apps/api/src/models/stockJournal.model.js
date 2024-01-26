@@ -1,8 +1,10 @@
 'use strict'
 const { DataTypes, Model } = require('sequelize')
-
+import Product from './product.model'
 export default class StockJournal extends Model {
-  static associate(models) {}
+  static associate(models) {
+    StockJournal.belongsTo(Product, { as: 'product' })
+  }
 }
 
 export const init = (sequelize) => {
