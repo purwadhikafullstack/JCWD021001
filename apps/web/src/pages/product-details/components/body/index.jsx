@@ -46,9 +46,8 @@ export const Body = (props) => {
     getStock(props?.product?.id, sizeValue, colourValue, setStock)
   }, [colourValue, sizeValue])
 
-  console.log('PRO', props?.product)
-
   const shouldDisable = !stock ? true : false
+
   return (
     <Box p={'1em'} bgColor={'grey.50'} minH={'100vh'}>
       <VStack align={'sretch'}>
@@ -96,14 +95,19 @@ export const Body = (props) => {
                 <HStack>
                   {filteredStocks?.map((el, index) => {
                     return (
-                      <Box p={'.5em'} border={'2px solid #f2f2f2'} borderRadius={'.5em'}>
+                      <Box
+                        p={'.5em'}
+                        border={'2px solid #f2f2f2'}
+                        borderRadius={'.5em'}
+                        key={index}
+                      >
                         <VStack spacing={'1em'}>
                           <Box
                             bgColor={el?.colour?.name}
                             w={'2.5em'}
                             h={'2.5em'}
                             borderRadius={'.5em'}
-                            onClick={() => navigate(`${pathName}?col=${el?.id}&sz=0`)}
+                            onClick={() => navigate(`${pathName}?col=${el?.ColourId}&sz=0`)}
                           ></Box>
                           <Text fontWeight={'bold'} fontSize={'.75em'}>
                             {el?.colour?.name}
