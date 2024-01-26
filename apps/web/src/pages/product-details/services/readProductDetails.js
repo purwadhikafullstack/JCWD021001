@@ -1,9 +1,11 @@
 import axios from 'axios'
 
-export const getProductDetails = async (id, setProduct) => {
+export const getProductDetails = async (id) => {
   try {
     const res = await axios.get(`http://localhost:8000/api/product/details/${id}`)
-    return setProduct(res?.data?.data[0])
+    const product = res?.data?.data?.rows[0]
+    return product
+    // setProduct(res?.data?.data?.rows[0])
   } catch (err) {
     throw err
   }

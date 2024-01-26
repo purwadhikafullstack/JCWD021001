@@ -26,6 +26,16 @@ export const CreateProduct = () => {
   const toast = useToast()
   // TOAST
 
+  // EDITABLE
+  const [editable, setEditable] = useState({})
+  const handleEditClick = (id) => {
+    setEditable((set) => ({
+      ...set,
+      [id]: !set[id],
+    }))
+  }
+  // EDITABLE
+
   // VALIDATION SCHEMA
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
@@ -35,6 +45,96 @@ export const CreateProduct = () => {
   })
   // VALIDATION SCHEMA
 
+  // CATEGORY VALUE TO BE SHOWED IN INPUT
+  const [gender, setGender] = useState('Men')
+  const [group, setGroup] = useState('')
+  const [categoryValue, setCategoryValue] = useState('')
+  // CATEGORY VALUE TO BE SHOWED IN INPUT
+
+  // CATEGORIES
+  const [productCategories, setProductCategories] = useState([])
+  useEffect(() => {
+    getProductCategory(setProductCategories, gender)
+  }, [])
+  const groupedArray = productCategories.reduce((result, item) => {
+    const parentName = item.parent.name
+    const parentId = item.parent.id
+    if (!result[parentName]) {
+      result[parentName] = { name: parentName, id: parentId, category: [] }
+    }
+    result[parentName].category.push({ id: item.id, name: item.name })
+    return result
+  }, {})
+  const finalArray = Object.values(groupedArray)
+  // CATEGORY ID WANT TO SEND
+  const [categoryId, setCategoryId] = useState(0)
+  // CATEGORY ID WANT TO SEND
+
+  // GENDER
+  const [genders, setGenders] = useState([])
+  useEffect(() => {
+    getGender(setGenders)
+  }, [])
+  const renderedGenders = genders?.map((el, index) => {
+    return (
+      <Text
+        key={index}
+        itemID={el.id}
+        onClick={() => {
+          setGender(el?.name)
+          setGroup('')
+          setCategoryValue('')
+        }}
+      >
+        {el?.name}
+      </Text>
+    )
+  })
+  // GENDER
+
+  // GROUP
+  const renderedGroup = finalArray.map((el, index) => {
+    return (
+      <Text
+        key={index}
+        itemID={el.id}
+        onClick={() => {
+          setGroup(el?.name)
+          setCategoryValue('')
+          handleEditClick(el?.name)
+        }}
+      >
+        {el.name}
+      </Text>
+    )
+  })
+  // GROUP
+
+  // CATEGORY
+  const renderedCategory = finalArray.map((el) => {
+    return el.category.map((elPT, index) => {
+      return (
+        <>
+          {editable[el?.name] && (
+            <Text
+              key={index}
+              itemID={elPT.id}
+              onClick={() => {
+                setCategoryId(elPT.id)
+                setCategoryValue(elPT.name)
+                setGroup(el?.name)
+              }}
+            >
+              {elPT.name}
+            </Text>
+          )}
+        </>
+      )
+    })
+  })
+  // CATEGORY
+  // CATEGORIES
+
   // HANDLE SUBMIT
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
@@ -42,7 +142,7 @@ export const CreateProduct = () => {
         values.name,
         Number(values.price),
         values.description,
-        Number(prodCatId),
+        Number(categoryId),
       )
       toast({
         title: `${res?.data?.message}`,
@@ -60,63 +160,6 @@ export const CreateProduct = () => {
     }
   }
   // HANDLE SUBMIT
-
-  // GET CATEGORY BY GENDER
-  const [gender, setGender] = useState([])
-  useEffect(() => {
-    getGender(setGender)
-  }, [])
-  // GET CATEGORY BY GENDER
-
-  const renderedGender = gender?.map((el, index) => {
-    return (
-      <Text key={index} itemID={el.id} cursor={'pointer'}>
-        {el.name}
-      </Text>
-    )
-  })
-
-  const [productCategories, setProductCategories] = useState([])
-  useEffect(() => {
-    getProductCategory(setProductCategories)
-  }, [])
-  const groupedArray = productCategories.reduce((result, item) => {
-    const parentName = item.parent.name
-    const parentId = item.parent.id
-    if (!result[parentName]) {
-      result[parentName] = { name: parentName, id: parentId, category: [] }
-    }
-    result[parentName].category.push({ id: item.id, name: item.name })
-    return result
-  }, {})
-  const finalArray = Object.values(groupedArray)
-  const [categoryValue, setCategoryValue] = useState('')
-  const [prodCatId, setProdCatId] = useState(0)
-
-  const renderedCategory = finalArray.map((el) => {
-    return el.category.map((elPT, index) => {
-      return (
-        <Text
-          key={index}
-          itemID={elPT.id}
-          onClick={() => {
-            setCategoryValue(elPT.name)
-            setProdCatId(elPT.id)
-          }}
-          cursor={'pointer'}
-        >
-          {elPT.name}
-        </Text>
-      )
-    })
-  })
-  const renderedGroup = finalArray.map((el, index) => {
-    return (
-      <Text key={index} itemID={el.id} cursor={'pointer'}>
-        {el.name}
-      </Text>
-    )
-  })
 
   // FORMIK INITIAL VALUES
   const initialValues = {
@@ -138,11 +181,9 @@ export const CreateProduct = () => {
       >
         <Form>
           <VStack direction="column" align="center">
-            {/* Input 1 */}
             <Field name="name">
               {({ field, form }) => (
                 <FormControl isInvalid={form.errors.name && form.touched.name} mb={3}>
-                  {console.log(field)}
                   <FormLabel htmlFor="name" fontWeight={'bold'}>
                     Product Name
                   </FormLabel>
@@ -170,13 +211,13 @@ export const CreateProduct = () => {
                   </FormLabel>
                   <Input
                     // {...field}
-                    value={categoryValue}
                     name="productCategoryId"
                     id="productCategoryId"
                     placeholder="Select Category"
                     borderColor={'transparent'}
                     focusBorderColor={'transparent'}
                     bgColor={'grey.50'}
+                    value={`${gender} > ${group} > ${categoryValue}`}
                     readOnly
                   />
                   <FormErrorMessage>{form.errors.productCategoryId}</FormErrorMessage>
@@ -191,7 +232,7 @@ export const CreateProduct = () => {
                     fontWeight={'bold'}
                   >
                     <Box p={'.5em'}>
-                      <VStack align={'stretch'}>{renderedGender}</VStack>
+                      <VStack align={'stretch'}>{renderedGenders}</VStack>
                     </Box>
                     <Box p={'.5em'} borderLeft={'2px solid lightgray'}>
                       <VStack align={'stretch'}>{renderedGroup}</VStack>
@@ -214,7 +255,6 @@ export const CreateProduct = () => {
                 </FormControl>
               )}
             </Field>
-            {/* Input 2 */}
             <Field name="price">
               {({ field, form }) => (
                 <FormControl isInvalid={form.errors.price && form.touched.price} mb={3}>

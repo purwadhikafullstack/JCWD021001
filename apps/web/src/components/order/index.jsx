@@ -33,11 +33,11 @@ const OrderBody = ({ orderData }) => {
         shippingCost: 20000,
         orderStatusId: 1,
         products: order.CartProducts.map((product) => ({
-          stockId: product?.Stock?.id,
-          productId: product?.Stock?.Product?.id,
+          stockId: product?.stocks?.id,
+          productId: product?.stocks?.products?.id,
           quantity: product?.quantity,
           price: parseFloat(product?.price),
-          priceProduct: product?.Stock?.Product?.price,
+          priceProduct: product?.stocks?.products?.price,
           
         })),
       }
@@ -195,7 +195,7 @@ const OrderBody = ({ orderData }) => {
                           <Box w={'64px'} h={'64px'} bgColor={'brand.grey100'} />
                           <Box display={'flex'} flexDirection={'column'} w={'full'}>
                             <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
-                              {item?.Stock?.Product?.name}
+                              {item?.stocks?.products?.name}
                             </Text>
                             <Text
                               fontFamily={'body'}
@@ -211,7 +211,7 @@ const OrderBody = ({ orderData }) => {
                               justifyContent={'space-between'}
                             >
                               <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
-                                {item?.quantity} x Rp {item?.Stock?.Product?.price}
+                                {item?.quantity} x Rp {item?.stocks?.product?.price}
                               </Text>
                               <Text
                                 fontFamily={'body'}
@@ -252,10 +252,10 @@ const OrderBody = ({ orderData }) => {
                                   gap={'10px'}
                                 >
                                   <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                                    {item?.Stock?.Product?.name}
+                                    {item?.stocks?.products?.name}
                                   </Text>
                                   <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                                    Rp {item?.Stock?.Product?.price}
+                                    Rp {item?.stocks?.products?.price}
                                   </Text>
                                 </Box>
                               </Box>

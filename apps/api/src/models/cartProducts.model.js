@@ -7,7 +7,7 @@ export default class CartProducts extends Model {
    * The `models/index` file will call this method automatically.
    */
   static associate(models) {
-    this.belongsTo(models.Stock, { foreignKey: 'stockId' });
+    this.belongsTo(models.Stock, { as: 'stocks', foreignKey: 'stockId', });
     this.belongsTo(models.Carts, { foreignKey: 'cartId' });
   }
 }

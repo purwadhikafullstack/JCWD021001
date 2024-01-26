@@ -1,6 +1,7 @@
 import { Model, DataTypes } from 'sequelize'
 import ProductCategory from './productCategory.model'
 import ProductImage from './productImage.model'
+import StockJournal from './stockJournal.model'
 
 export default class Product extends Model {
   /**
@@ -13,6 +14,7 @@ export default class Product extends Model {
     Product.hasMany(models.Stock, { as: 'stocks', foreignKey: 'productId' })
     Product.belongsTo(ProductCategory, { foreignKey: 'productCategoryId', as: 'category' })
     Product.hasMany(ProductImage, { as: 'picture' })
+    Product.hasMany(StockJournal, { as: 'history' })
   }
 }
 

@@ -4,7 +4,6 @@ import { Body } from '../components/body'
 import { Sidebar } from '../components/sidebar'
 import { useState } from 'react'
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
-import { ProductList } from '../components/product-list'
 import { useParams } from 'react-router-dom'
 
 export const Dashboard = () => {
@@ -16,7 +15,7 @@ export const Dashboard = () => {
   return (
     <Box minH={'100vh'}>
       <Navbar />
-      <Box display={{ md: 'flex' }} gap={'1em'} w={'100%'}>
+      <Box display={{ md: 'flex' }} gap={'1em'} h={'100%'}>
         <Box display={{ md: 'flex' }}>
           <Sidebar
             collapseSideBar={collapseSideBar}
@@ -24,9 +23,11 @@ export const Dashboard = () => {
             toggleSideBar={toggleSideBar}
           />
         </Box>
-        <Box w={'100%'}>
-          <Body destination={destination} createProduct={createProduct} />
-        </Box>
+        <Body
+          destination={destination}
+          createProduct={createProduct}
+          collapseSideBar={collapseSideBar}
+        />
       </Box>
       <Flex
         zIndex={'3'}

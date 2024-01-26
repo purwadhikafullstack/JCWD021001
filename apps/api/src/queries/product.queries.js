@@ -17,7 +17,6 @@ export const getProductQuery = async (
   page = null,
   pageSize = null,
 ) => {
-  page = 1
   const offset = (page - 1) * pageSize
   try {
     const filter = {}
@@ -71,7 +70,7 @@ export const getProductQuery = async (
         }
       }
     }
-    const res = await Product.findAll({
+    const res = await Product.findAndCountAll({
       attributes: ['id', 'name', 'price', 'description'],
       include: [
         {

@@ -8,7 +8,7 @@ export const SidebarButton = (props) => {
       variant="ghost"
       onClick={props?.onClick}
     >
-      <Flex alignItems={'center'} justifyContent={'space-between'}>
+      <Flex alignItems={'center'} justifyContent={'space-between'} cursor={'pointer'}>
         <HStack>
           <Icon as={props?.icon} />
           <Text>{props?.label}</Text>
