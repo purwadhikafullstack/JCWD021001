@@ -157,6 +157,7 @@ function FormEditAddress({
                     value={selectedProvince}
                     onChange={(e) => setSelectedProvince(e.target.value)}
                   >
+                    <option>Value</option>
                     {provinceList?.map((province) => (
                       <option key={province.id} value={province.id}>
                         {province.name}

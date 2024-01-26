@@ -63,7 +63,7 @@ export const Body = (props) => {
   }
 
   // Product Card Mapping
-  const renderedProducts = props?.products?.map((product, index) => {
+  const renderedProducts = props?.products?.rows?.map((product, index) => {
     return <ProductCard {...product} key={index} />
   })
   const sortBy = ['name A - Z', 'name Z - A', 'price Lo - Hi', 'price Hi - Lo']

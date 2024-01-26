@@ -15,7 +15,7 @@ import { ChevronDownIcon } from '@chakra-ui/icons'
 import capitalize from 'capitalize'
 import { useState } from 'react'
 export const Body = (props) => {
-  const renderedProducts = props?.products?.map((product, index) => {
+  const renderedProducts = props?.products?.rows?.map((product, index) => {
     return <ProductCard {...product} key={index} />
   })
   const sortBy = ['name', 'price']

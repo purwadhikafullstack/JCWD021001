@@ -33,10 +33,10 @@ const OrderBody = ({ orderData }) => {
         orderStatusId: 1,
         products: order.CartProducts.map((product) => ({
           stockId: product?.stocks?.id,
-          productId: product?.stocks?.products?.id,
+          productId: product?.stocks?.product?.id,
           quantity: product?.quantity,
           price: parseFloat(product?.price),
-          priceProduct: product?.stocks?.products?.price,
+          priceProduct: product?.stocks?.product?.price,
         })),
       }
 
@@ -194,7 +194,7 @@ const OrderBody = ({ orderData }) => {
                           <Box w={'64px'} h={'64px'} bgColor={'brand.grey100'} />
                           <Box display={'flex'} flexDirection={'column'} w={'full'}>
                             <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
-                              {item?.stocks?.products?.name}
+                              {item?.stocks?.product?.name}
                             </Text>
                             <Text
                               fontFamily={'body'}
@@ -251,10 +251,10 @@ const OrderBody = ({ orderData }) => {
                                   gap={'10px'}
                                 >
                                   <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                                    {item?.stocks?.products?.name}
+                                    {item?.stocks?.product?.name}
                                   </Text>
                                   <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                                    Rp {item?.stocks?.products?.price}
+                                    Rp {item?.stocks?.product?.price}
                                   </Text>
                                 </Box>
                               </Box>

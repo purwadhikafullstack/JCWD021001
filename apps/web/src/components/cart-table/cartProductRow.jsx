@@ -14,6 +14,7 @@ const CartProductRow = ({
   handleSelectAllChange,
   productData,
 }) => {
+  console.log('cartItem', cartItem);
   return (
     <Box w={{ xl: '1100px', '2xl': '1420px' }}>
       <TableContainer>
@@ -81,10 +82,10 @@ const CartProductRow = ({
                       gap={'10px'}
                     >
                       <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                        {item?.stocks?.products?.name}
+                        {item?.stocks?.product?.name}
                       </Text>
                       <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                        {toRupiah(+item?.stocks?.products?.price, { floatingPoint: 0 })}
+                        {toRupiah(+item?.stocks?.product?.price, { floatingPoint: 0 })}
                       </Text>
                     </Box>
                   </Box>

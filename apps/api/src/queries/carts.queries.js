@@ -45,7 +45,7 @@ export const createCartQuery = async (userId, stockId, calcPrice, quantity) => {
 export const findCartQuery = async (cartProductId) => {
   try {
     const res = await CartProducts.findOne({
-      include: [{ model: Stock, as: 'stocks', include: [{model: Product, as: 'products'}] }],
+      include: [{ model: Stock, as: 'stocks', include: [{model: Product, as: 'product'}] }],
       where: { id: cartProductId },
     })
     return res
@@ -123,7 +123,7 @@ export const getCartQuery = async (userId) => {
     const res = await Carts.findAll({
       include: [
         { model: User },
-        { model: CartProducts, include: [{ model: Stock, as: 'stocks', include: [{ model: Product, as: 'products' }] }] },
+        { model: CartProducts, include: [{ model: Stock, as: 'stocks', include: [{ model: Product, as: 'product' }] }] },
       ],
       where: { userId: userId },
     })
