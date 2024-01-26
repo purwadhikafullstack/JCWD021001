@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom'
 
 const useCartState = (cartData, onCartUpdated) => {
   const [selectedCartProducts, setSelectedCartProducts] = useState([])
-  console.log('select', selectedCartProducts);
   const [selectAllChecked, setSelectAllChecked] = useState(false)
   const [productData, setProductData] = useState(() => {
     const storedProductData = localStorage.getItem('productData')

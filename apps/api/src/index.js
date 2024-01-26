@@ -68,7 +68,7 @@ const main = () => {
     if (err) {
       console.log(`ERROR: ${err}`)
     } else {
-      console.log(path.join(__dirname, './public/images'))
+      // console.log(path.join(__dirname, './public/images'))
       console.log(`  ➜  [API] Local:   http://localhost:${PORT}/`)
     }
   })

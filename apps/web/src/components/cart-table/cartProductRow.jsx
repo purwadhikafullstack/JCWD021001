@@ -14,7 +14,6 @@ const CartProductRow = ({
   handleSelectAllChange,
   productData,
 }) => {
-  console.log('cartItem', cartItem);
   return (
     <Box w={{ xl: '1100px', '2xl': '1420px' }}>
       <TableContainer>
