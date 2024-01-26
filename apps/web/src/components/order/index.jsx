@@ -18,7 +18,6 @@ import { CreatePayment } from '../../pages/order/services/CreatePayment'
 import { createOrder } from '../../pages/order/services/createOrder'
 import { useNavigate } from 'react-router-dom'
 
-
 const OrderBody = ({ orderData }) => {
   // console.log('orderdata', orderData);
   const navigate = useNavigate()
@@ -34,18 +33,17 @@ const OrderBody = ({ orderData }) => {
         orderStatusId: 1,
         products: order.CartProducts.map((product) => ({
           stockId: product?.stocks?.id,
-          productId: product?.stocks?.products?.id,
+          productId: product?.stocks?.product?.id,
           quantity: product?.quantity,
           price: parseFloat(product?.price),
-          priceProduct: product?.stocks?.products?.price,
-          
+          priceProduct: product?.stocks?.product?.price,
         })),
       }
-    
-      const result = await createOrder(dataOrder);
+
+      const result = await createOrder(dataOrder)
       // console.log('asdasda', result);
-      const midtransToken = result?.midtransToken;
-      const orderId = result?.order?.id;
+      const midtransToken = result?.midtransToken
+      const orderId = result?.order?.id
 
       if (midtransToken) {
         const snapScript = 'https://app.sandbox.midtrans.com/snap/snap.js'
@@ -59,15 +57,16 @@ const OrderBody = ({ orderData }) => {
           window.snap.pay(midtransToken, {
             onSuccess: function (result) {
               /* You may add your own implementation here */
-              alert('payment success!')
-              CreatePayment(result, orderId)
-              navigate('/order-list', { state: { refresh: true, activeTab: 1 } });
+              // alert('payment success!')
+              console.log(result);
+              // CreatePayment(result, orderId)
+              // navigate('/order-list', { state: { refresh: true, activeTab: 1 } })
             },
             onPending: function (result) {
               /* You may add your own implementation here */
               alert('wating your payment!')
               CreatePayment(result, orderId)
-              navigate('/order-list', { state: { refresh: true, activeTab: 0 } });
+              navigate('/order-list', { state: { refresh: true, activeTab: 0 } })
             },
             onError: function (result) {
               /* You may add your own implementation here */
@@ -195,7 +194,7 @@ const OrderBody = ({ orderData }) => {
                           <Box w={'64px'} h={'64px'} bgColor={'brand.grey100'} />
                           <Box display={'flex'} flexDirection={'column'} w={'full'}>
                             <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
-                              {item?.stocks?.products?.name}
+                              {item?.stocks?.product?.name}
                             </Text>
                             <Text
                               fontFamily={'body'}
@@ -252,10 +251,10 @@ const OrderBody = ({ orderData }) => {
                                   gap={'10px'}
                                 >
                                   <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                                    {item?.stocks?.products?.name}
+                                    {item?.stocks?.product?.name}
                                   </Text>
                                   <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                                    Rp {item?.stocks?.products?.price}
+                                    Rp {item?.stocks?.product?.price}
                                   </Text>
                                 </Box>
                               </Box>
@@ -369,7 +368,7 @@ const OrderBody = ({ orderData }) => {
             </Text>
             <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
               <Text fontFamily={'body'} fontWeight={'400'} fontSize={'16px'}>
-                Total Price (8 Items)
+                Total Price ({orderItem?.totalQuantity} Items)
               </Text>
               <Text fontFamily={'body'} fontWeight={'400'} fontSize={'16px'} color={'#838383'}>
                 Rp {orderItem?.totalPrice}
@@ -397,7 +396,7 @@ const OrderBody = ({ orderData }) => {
                 Rp {orderItem?.totalPrice}
               </Text>
             </Box>
-            <Button bgColor={'#CD0244'} color={'#ffffff'}>
+            <Button bgColor={'#CD0244'} color={'#ffffff'} onClick={() => handlePayment(orderItem)}>
               Process to Payment
             </Button>
           </Box>

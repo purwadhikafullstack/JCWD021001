@@ -4,9 +4,10 @@ import Payments from '../models/payments.model'
 import Product from '../models/product.model'
 import { generateMidtransToken } from '../midtrans'
 import User from '../models/user.model'
-import UserAddress from '../models/userAddress.model'
 import Warehouse from '../models/warehouse.model'
 import Stock from '../models/stock.model'
+import UserAddress from '../models/userAddress.model'
+
 
 export const createOrderQuery = async (
   userId,
@@ -90,10 +91,10 @@ export const getOrderQuery = async (userId) => {
     const res = await Orders.findAll({
       include: [
         { model: User },
-        { model: UserAddress },
+        { model: UserAddress},
         { model: Warehouse, as: 'warehouse' },
         { model: Payments },
-        { model: OrderProducts, include: [{ model: Stock, as: 'stocks', include: [{ model: Product, as: 'products' }] }] },
+        { model: OrderProducts, include: [{ model: Stock, as: 'stocks', include: [{ model: Product, as: 'product' }] }] },
       ],
       where: { userId: userId },
     })

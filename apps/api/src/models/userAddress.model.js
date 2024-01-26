@@ -17,7 +17,7 @@ export default class UserAddress extends Model {
 export const init = (sequelize) => {
   UserAddress.init(
     {
-      specificAddress: DataTypes.STRING,
+      spesificAddress: DataTypes.STRING,
       cityId: DataTypes.INTEGER,
       userId: DataTypes.INTEGER,
       fullName: DataTypes.STRING,
