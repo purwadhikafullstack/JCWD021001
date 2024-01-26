@@ -199,8 +199,6 @@ export const EditProduct = () => {
   }, [])
   // SET PRODUCT
 
-  console.log(!!product)
-
   // FORMIK INITIAL VALUES
   const initialValues = {
     name: product?.name || '',

@@ -60,11 +60,11 @@ export const Sidebar = (props) => {
               </Text>
               <Text
                 onClick={() => {
-                  navigate('/dashboard/product-category')
+                  navigate('/dashboard/stock-mutation')
                 }}
                 cursor={'pointer'}
               >
-                Product Category
+                Stock Mutation
               </Text>
             </VStack>
           </Box>

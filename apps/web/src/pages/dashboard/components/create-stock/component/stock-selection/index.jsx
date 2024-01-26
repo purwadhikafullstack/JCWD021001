@@ -12,12 +12,8 @@ import {
   Tr,
   VStack,
 } from '@chakra-ui/react'
-import { useState } from 'react'
 
 export const StockSelection = (props) => {
-  console.log('SIZES', props?.sizes)
-  console.log('COLOURS', props?.colours)
-  const [stockValue, setStockValue] = useState(0)
   return (
     <VStack align={'stretch'}>
       <Text>Stock</Text>
@@ -90,9 +86,9 @@ export const StockSelection = (props) => {
                   <Input
                     w={'3.5em'}
                     type="number"
-                    value={stockValue}
+                    value={props?.stockValue}
                     onFocus={() => {}}
-                    onChange={(e) => setStockValue(e.target.value)}
+                    onChange={(e) => props?.setStockValue(e.target.value)}
                   />
                 </Td>
               </Tr>
