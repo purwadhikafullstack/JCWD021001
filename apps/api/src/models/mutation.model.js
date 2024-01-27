@@ -75,6 +75,16 @@ export const init = (sequelize) => {
           key: 'id',
         },
       },
+      stockId: {
+        allowNull: true,
+        type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: 'stocks',
+          },
+          key: 'id',
+        },
+      },
     },
     {
       sequelize,
