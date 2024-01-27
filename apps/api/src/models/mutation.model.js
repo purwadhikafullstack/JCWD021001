@@ -45,15 +45,13 @@ export const init = (sequelize) => {
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
-        defaultValue: Date.now(),
       },
       updatedAt: {
         allowNull: false,
         type: DataTypes.DATE,
-        defaultValue: Date.now(),
       },
       stockJournalIdRecipient: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         references: {
           model: {
@@ -68,7 +66,7 @@ export const init = (sequelize) => {
         defaultValue: 0,
       },
       stockJournalIdRequester: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         references: {
           model: {
