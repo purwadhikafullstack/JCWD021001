@@ -8,6 +8,7 @@ import { EditProductCategory } from '../edit-product-category'
 import { StockManagement } from '../stock-management'
 import { OrderHistory } from '../order-history'
 import { CreateStock } from '../create-stock'
+import { StockMutation } from '../stock-mutation'
 
 export const Body = (props) => {
   const renderComponent = () => {
@@ -18,6 +19,8 @@ export const Body = (props) => {
         return <ProductCategory />
       case 'stock-management':
         return <StockManagement />
+      case 'stock-mutation':
+        return <StockMutation />
     }
   }
   const renderComponentAgain = () => {

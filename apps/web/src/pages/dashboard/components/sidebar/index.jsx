@@ -60,7 +60,7 @@ export const Sidebar = (props) => {
               </Text>
               <Text
                 onClick={() => {
-                  navigate('/dashboard/stock-mutation')
+                  navigate('/dashboard/stock-mutation?pa=1&fi=0')
                 }}
                 cursor={'pointer'}
               >
