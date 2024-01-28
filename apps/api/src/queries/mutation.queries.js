@@ -1,5 +1,8 @@
 import { Op } from 'sequelize'
 import Mutation from '../models/mutation.model'
+import Warehouse from '../models/warehouse.model'
+import Stock from '../models/stock.model'
+import Product from '../models/product.model'
 
 export const getMutationQueryById = async (id) => {
   try {
@@ -13,7 +16,7 @@ export const getMutationQueryById = async (id) => {
 // GET ALL MUTATION BY WAREHOUSE ID
 export const getMutationQuery = async (
   requesterWarehouseId,
-  isAccepted,
+  recipientWarehouseId,
   page = null,
   pageSize = null,
 ) => {
@@ -26,25 +29,38 @@ export const getMutationQuery = async (
           [Op.eq]: requesterWarehouseId,
         },
       }
-    if (requesterWarehouseId) {
-      if (isAccepted) {
-        filter.where = {
-          [Op.and]: [
-            {
-              requesterWarehouseId: {
-                [Op.eq]: requesterWarehouseId,
-              },
-            },
-            {
-              isAccepted: {
-                [Op.eq]: isAccepted,
-              },
-            },
-          ],
-        }
+    if (recipientWarehouseId) {
+      filter.where = {
+        recipientWarehouseId: {
+          [Op.eq]: recipientWarehouseId,
+        },
       }
     }
     const res = await Mutation.findAndCountAll({
+      include: [
+        {
+          model: Warehouse,
+          as: 'requester',
+          foreignKey: 'requesterWarehouseId',
+        },
+        {
+          model: Warehouse,
+          as: 'recipient',
+          foreignKey: 'recipientWarehouseId',
+        },
+        {
+          model: Stock,
+          as: 'stock',
+          foreignKey: 'stockId',
+          include: [
+            {
+              model: Product,
+              as: 'product',
+              foreignKey: 'productId',
+            },
+          ],
+        },
+      ],
       ...filter,
       subQuery: false,
       limit: +pageSize,

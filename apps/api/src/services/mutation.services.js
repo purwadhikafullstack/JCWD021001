@@ -11,9 +11,14 @@ import {
 } from '../queries/stock.queries'
 import { createStockJournalQuery } from '../queries/stockJournal.queries'
 
-export const getMutationService = async (requesterWarehouseId, isAccepted, page, pageSize) => {
+export const getMutationService = async (
+  requesterWarehouseId,
+  recipientWarehouseId,
+  page,
+  pageSize,
+) => {
   try {
-    const res = await getMutationQuery(requesterWarehouseId, isAccepted, page, pageSize)
+    const res = await getMutationQuery(requesterWarehouseId, recipientWarehouseId, page, pageSize)
     return res
   } catch (err) {
     throw err

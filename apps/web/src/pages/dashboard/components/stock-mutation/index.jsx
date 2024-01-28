@@ -6,6 +6,7 @@ import {
   Table,
   TableContainer,
   Tbody,
+  Td,
   Text,
   Th,
   Thead,
@@ -16,6 +17,7 @@ import {
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { getMutations } from './services/readMutation'
+import { approveMutation } from './services/createMutation'
 
 export const StockMutation = () => {
   // LOCATION
@@ -24,10 +26,23 @@ export const StockMutation = () => {
 
   // WAREHOUSE ID
   const [warehouseId, setWarehouseId] = useState(5)
+  const [requesterWarehouseId, setRequesterWarehouseId] = useState(0)
+  const [recipientWarehouseId, setRecipientWarehouseId] = useState(0)
 
   // QUERY PARAMS
   const pageValue = queryParams.get('pa')
-  const filterValue = queryParams.get('fi')
+  const filterValue = queryParams.get('sta')
+
+  // HANDLE REQUEST APPROVAL
+  const handleRequestApproval = (filterValue) => {
+    if (filterValue === 'app') {
+      setRequesterWarehouseId(warehouseId)
+      setRecipientWarehouseId('')
+    } else {
+      setRequesterWarehouseId('')
+      setRecipientWarehouseId(warehouseId)
+    }
+  }
 
   // PATHNAME
   const pathName = location.pathname
@@ -41,13 +56,76 @@ export const StockMutation = () => {
   //   MUTATIONS
   const [mutations, setMutations] = useState([])
 
+  // CONST HANDLE RECIPIENT
+  const [isJuragan, setIsJuragan] = useState(false)
+  const handleJuragan = (recipientWarehouseId, warehouseId) => {
+    if (recipientWarehouseId === warehouseId) {
+      setIsJuragan(true)
+    } else {
+      setIsJuragan(false)
+    }
+  }
+
   useEffect(() => {
-    getMutations(warehouseId, filterValue, pageValue, 10).then((data) => {
+    getMutations(requesterWarehouseId, recipientWarehouseId, pageValue, 10).then((data) => {
       setMutations(data)
     })
+    handleJuragan(recipientWarehouseId, warehouseId)
   }, [pageValue, filterValue])
 
-  console.log('MUTATIONS', mutations)
+  console.log('IS JURAGAN', isJuragan)
+  // HANDLE APPROVE
+  const handleApprove = async (mutationId) => {
+    try {
+      const res = await approveMutation(mutationId)
+      toast({
+        title: `${res?.data?.title}`,
+        status: 'success',
+        placement: 'bottom',
+      })
+    } catch (err) {
+      toast({
+        title: `${err?.message}`,
+        status: 'error',
+      })
+    }
+  }
+
+  // TABLE BODY
+  const renderedTableBody = mutations?.rows?.map((mutation, index) => {
+    return (
+      <Tr key={index}>
+        <Td>{mutation?.id}</Td>
+        <Td>{mutation?.requester?.address}</Td>
+        <Td>{mutation?.recipient?.address}</Td>
+        <Td>{mutation?.stock?.product?.name}</Td>
+        <Td>{mutation?.qty}</Td>
+        <Td>
+          <Button
+            _hover={{
+              bgColor: 'transparent',
+            }}
+            w={'5em'}
+            border={'1px solid #e3024b'}
+            bgColor={'transparent'}
+            color={'redPure.500'}
+            onClick={() => {
+              isJuragan ? handleApprove(mutation?.id) : null
+            }}
+          >
+            {isJuragan
+              ? mutation?.isAccepted
+                ? 'Accepted'
+                : 'Approve'
+              : mutation?.isAccepted
+                ? 'History'
+                : 'Waiting'}
+          </Button>
+        </Td>
+      </Tr>
+    )
+  })
+
   return (
     <Box p={'1em'} h={'100%'} w={'100%'}>
       <Flex flexDir={'column'} justifyContent={'space-between'} h={'100%'}>
@@ -69,8 +147,22 @@ export const StockMutation = () => {
             </Button>
           </Flex>
           <HStack>
-            <Text onClick={() => navigate(`${pathName}?pa=${pageValue}&fi=0`)}>Request</Text>
-            <Text onClick={() => navigate(`${pathName}?pa=${pageValue}&fi=1`)}>Approval</Text>
+            <Text
+              onClick={async () => {
+                navigate(`${pathName}?pa=${pageValue}&sta=req`)
+                handleRequestApproval(filterValue)
+              }}
+            >
+              Request
+            </Text>
+            <Text
+              onClick={async () => {
+                navigate(`${pathName}?pa=${pageValue}&sta=app`)
+                handleRequestApproval(filterValue)
+              }}
+            >
+              Approval
+            </Text>
           </HStack>
           <Box
             h={'70vh'}
@@ -106,7 +198,9 @@ export const StockMutation = () => {
                     </Th>
                   </Tr>
                 </Thead>
-                <Tbody position={'relative'} color={'#6D6D6D'} fontWeight={'500'}></Tbody>
+                <Tbody position={'relative'} color={'#6D6D6D'} fontWeight={'500'}>
+                  {renderedTableBody}
+                </Tbody>
               </Table>
             </TableContainer>
           </Box>

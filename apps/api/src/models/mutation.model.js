@@ -1,5 +1,7 @@
 'use strict'
 import { DataTypes, Model } from 'sequelize'
+import Warehouse from './warehouse.model'
+import Stock from './stock.model'
 export default class Mutation extends Model {
   /**
    * Helper method for defining associations.
@@ -8,6 +10,18 @@ export default class Mutation extends Model {
    */
   static associate(models) {
     // define association here
+    Mutation.belongsTo(Warehouse, {
+      as: 'requester',
+      foreignKey: 'requesterWarehouseId',
+    })
+    Mutation.belongsTo(Warehouse, {
+      as: 'recipient',
+      foreignKey: 'recipientWarehouseId',
+    })
+    Mutation.belongsTo(Stock, {
+      as: 'stock',
+      foreignKey: 'stockId',
+    })
   }
 }
 export const init = (sequelize) => {

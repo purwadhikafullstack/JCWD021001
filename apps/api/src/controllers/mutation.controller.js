@@ -6,8 +6,13 @@ import {
 
 export const getMutationController = async (req, res) => {
   try {
-    const { requesterWarehouseId, isAccepted, page, pageSize } = req.query
-    const result = await getMutationService(requesterWarehouseId, isAccepted, page, pageSize)
+    const { requesterWarehouseId, recipientWarehouseId, page, pageSize } = req.query
+    const result = await getMutationService(
+      requesterWarehouseId,
+      recipientWarehouseId,
+      page,
+      pageSize,
+    )
     return res.status(200).json({
       message: 'Get Mutation Success',
       data: result,
