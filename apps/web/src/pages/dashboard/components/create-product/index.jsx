@@ -18,7 +18,7 @@ import {
 import { Formik, Field, Form } from 'formik'
 import * as Yup from 'yup'
 import { getGender } from '../../services/readGender'
-import { getProductCategory } from '../../../product-list/services/readProductCategory'
+import { getProductCategories } from '../../../product-list/services/readProductCategory'
 import { createProduct } from '../../services/createProduct'
 
 export const CreateProduct = () => {
@@ -54,7 +54,7 @@ export const CreateProduct = () => {
   // CATEGORIES
   const [productCategories, setProductCategories] = useState([])
   useEffect(() => {
-    getProductCategory(setProductCategories, gender)
+    getProductCategories(setProductCategories, gender)
   }, [])
   const groupedArray = productCategories.reduce((result, item) => {
     const parentName = item.parent.name
