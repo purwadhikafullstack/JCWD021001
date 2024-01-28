@@ -73,7 +73,6 @@ export const StockMutation = () => {
     handleJuragan(recipientWarehouseId, warehouseId)
   }, [pageValue, filterValue])
 
-  console.log('IS JURAGAN', isJuragan)
   // HANDLE APPROVE
   const handleApprove = async (mutationId) => {
     try {
@@ -140,7 +139,7 @@ export const StockMutation = () => {
               bgColor={'redPure.500'}
               color={'white'}
               onClick={() => {
-                navigate('/dashboard/stock-management/create-stock')
+                navigate('/dashboard/stock-mutation/form-mutation?pa=1')
               }}
             >
               Form Mutation
