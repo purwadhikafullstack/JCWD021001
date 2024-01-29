@@ -14,8 +14,8 @@ export const SideBar = (props) => {
   // Handle Toggle
   const changeToggleType = (id) => {
     setToggleType((set) => ({
-      ...set,
       [id]: !set[id],
+      [!id]: set[id],
     }))
   }
 

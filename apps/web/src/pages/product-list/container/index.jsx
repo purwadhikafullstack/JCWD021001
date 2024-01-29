@@ -78,13 +78,13 @@ export const Product = () => {
   useEffect(() => {
     getProductCategories(setProductCategories, gender)
   }, [])
-  console.log('product-categories', productCategories)
   // Collapse Sidebar
   const [collapseSideBar, setCollapseSideBar] = useState(false)
   const toggleSideBar = () => {
     setCollapseSideBar(!collapseSideBar)
   }
 
+  console.log('products', products)
   return (
     <Box minH={'100vh'}>
       <Navbar

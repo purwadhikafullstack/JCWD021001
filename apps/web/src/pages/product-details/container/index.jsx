@@ -10,6 +10,7 @@ export const ProductDetails = () => {
   useEffect(() => {
     getProductDetails(id).then((data) => setProduct(data))
   }, [])
+  console.log('product-container', product)
   return (
     <Box>
       <Navbar />
