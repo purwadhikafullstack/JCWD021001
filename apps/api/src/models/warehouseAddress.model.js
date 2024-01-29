@@ -24,6 +24,7 @@ export const init = (sequelize) => {
     {
       sequelize,
       modelName: 'WarehouseAddress',
+      timestamps: false,
     },
   );
 };
