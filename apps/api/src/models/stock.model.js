@@ -14,7 +14,7 @@ export default class Stock extends Model {
     Stock.belongsTo(models.Warehouse, { as: 'warehouse', foreignKey: 'warehouseId' })
     Stock.belongsTo(models.Size, { as: 'size', foreignKey: 'sizeId' })
     Stock.belongsTo(models.Colour, { as: 'colour', foreignKey: 'colourId' })
-    Stock.hasMany(models.CartProducts, { as: 'cartProducts', foreignKey: 'stockId' })
+    // Stock.hasMany(models.CartProducts, { as: 'cartProducts', foreignKey: 'stockId' })
     Stock.hasMany(models.OrderProducts, { as: 'orderProducts', foreignKey: 'stockId' })
     Stock.hasMany(Mutation, { foreignKey: 'stockId' })
   }

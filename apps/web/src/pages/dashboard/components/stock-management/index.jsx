@@ -25,7 +25,7 @@ export const StockManagement = () => {
   const queryParams = new URLSearchParams(location.search)
 
   // WAREHOUSE ID
-  const [warehouseId, setWarehouseId] = useState(4)
+  const [warehouseId, setWarehouseId] = useState(1)
 
   // QUERY PARAMS
   const pageValue = queryParams.get('pa')

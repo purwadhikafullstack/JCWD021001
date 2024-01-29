@@ -18,11 +18,12 @@ import { CreatePayment } from '../../pages/order/services/CreatePayment'
 import { createOrder } from '../../pages/order/services/createOrder'
 import { useNavigate } from 'react-router-dom'
 
-const OrderBody = ({ orderData }) => {
+const OrderBody = ({ orderData, totalPrice, totalQuantity }) => {
   // console.log('orderdata', orderData);
   const navigate = useNavigate()
   const handlePayment = async (order) => {
     try {
+      // perbaikan
       const dataOrder = {
         userId: order?.User?.id,
         userAddressId: 1,
@@ -58,7 +59,7 @@ const OrderBody = ({ orderData }) => {
             onSuccess: function (result) {
               /* You may add your own implementation here */
               // alert('payment success!')
-              console.log(result);
+              console.log(result)
               // CreatePayment(result, orderId)
               // navigate('/order-list', { state: { refresh: true, activeTab: 1 } })
             },
@@ -194,7 +195,7 @@ const OrderBody = ({ orderData }) => {
                           <Box w={'64px'} h={'64px'} bgColor={'brand.grey100'} />
                           <Box display={'flex'} flexDirection={'column'} w={'full'}>
                             <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
-                              {item?.stocks?.product?.name}
+                              {item?.product?.name}
                             </Text>
                             <Text
                               fontFamily={'body'}
@@ -202,7 +203,7 @@ const OrderBody = ({ orderData }) => {
                               fontSize={'14px'}
                               color={'#838383'}
                             >
-                              S, Dark Blue
+                              {item?.size?.name}, {item?.colour?.name}
                             </Text>
                             <Box
                               display={'flex'}
@@ -210,7 +211,7 @@ const OrderBody = ({ orderData }) => {
                               justifyContent={'space-between'}
                             >
                               <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
-                                {item?.quantity} x Rp {item?.stocks?.product?.price}
+                                {item?.quantity} x Rp {item?.product?.price}
                               </Text>
                               <Text
                                 fontFamily={'body'}
@@ -251,17 +252,17 @@ const OrderBody = ({ orderData }) => {
                                   gap={'10px'}
                                 >
                                   <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                                    {item?.stocks?.product?.name}
+                                    {item?.product?.name}
                                   </Text>
                                   <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                                    Rp {item?.stocks?.product?.price}
+                                    Rp {item?.product?.price}
                                   </Text>
                                 </Box>
                               </Box>
                             </Td>
                             <Td>
                               <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                                L
+                                {item?.size?.name}
                               </Text>
                             </Td>
                             <Td>
@@ -273,7 +274,7 @@ const OrderBody = ({ orderData }) => {
                                   borderRadius={'6px'}
                                 />
                                 <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                                  Dark Blue
+                                  {item?.colour?.name}
                                 </Text>
                               </Box>
                             </Td>
@@ -312,12 +313,13 @@ const OrderBody = ({ orderData }) => {
                 <Text fontFamily={'body'} fontWeight={'700'} fontSize={'18px'}>
                   Shopping Summary
                 </Text>
+
                 <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
                   <Text fontFamily={'body'} fontWeight={'400'} fontSize={'16px'}>
-                    Total Price ({orderItem?.totalQuantity} Items)
+                    Total Price ({totalQuantity} Items)
                   </Text>
                   <Text fontFamily={'body'} fontWeight={'400'} fontSize={'16px'} color={'#838383'}>
-                    Rp {orderItem?.totalPrice}
+                    Rp {totalPrice}
                   </Text>
                 </Box>
                 <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
@@ -339,7 +341,7 @@ const OrderBody = ({ orderData }) => {
                     Total Price
                   </Text>
                   <Text fontFamily={'body'} fontWeight={'700'} fontSize={'18px'} color={'#CD0244'}>
-                    Rp {orderItem?.totalPrice}
+                    Rp {totalPrice}
                   </Text>
                 </Box>
                 <Button
@@ -368,10 +370,10 @@ const OrderBody = ({ orderData }) => {
             </Text>
             <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
               <Text fontFamily={'body'} fontWeight={'400'} fontSize={'16px'}>
-                Total Price ({orderItem?.totalQuantity} Items)
+                Total Price ({totalQuantity} Items)
               </Text>
               <Text fontFamily={'body'} fontWeight={'400'} fontSize={'16px'} color={'#838383'}>
-                Rp {orderItem?.totalPrice}
+                Rp {totalPrice}
               </Text>
             </Box>
             <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
@@ -393,7 +395,7 @@ const OrderBody = ({ orderData }) => {
                 Total Price
               </Text>
               <Text fontFamily={'body'} fontWeight={'700'} fontSize={'18px'} color={'#CD0244'}>
-                Rp {orderItem?.totalPrice}
+                Rp {totalPrice}
               </Text>
             </Box>
             <Button bgColor={'#CD0244'} color={'#ffffff'} onClick={() => handlePayment(orderItem)}>
