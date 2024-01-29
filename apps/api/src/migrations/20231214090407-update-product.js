@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /** @type {import('sequelize-cli').Migration} */
 export async function up(queryInterface, Sequelize) {
@@ -11,7 +11,7 @@ export async function up(queryInterface, Sequelize) {
       },
       key: 'id',
     },
-  });
+  })
   await queryInterface.addColumn('products', 'productTypeId', {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -21,7 +21,7 @@ export async function up(queryInterface, Sequelize) {
       },
       key: 'id',
     },
-  });
+  })
   await queryInterface.addColumn('products', 'colourId', {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -31,10 +31,10 @@ export async function up(queryInterface, Sequelize) {
       },
       key: 'id',
     },
-  });
+  })
 }
 export async function down(queryInterface, Sequelize) {
-  await queryInterface.removeColumn('products', 'productGroupId');
-  await queryInterface.removeColumn('products', 'productTypeId');
-  await queryInterface.removeColumn('products', 'colourId');
+  await queryInterface.removeColumn('products', 'productGroupId')
+  await queryInterface.removeColumn('products', 'productTypeId')
+  await queryInterface.removeColumn('products', 'colourId')
 }

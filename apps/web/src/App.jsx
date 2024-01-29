@@ -21,9 +21,9 @@ import OrderList from './pages/order-list'
 import Payment from './pages/payments'
 import { Dashboard } from './pages/dashboard/container'
 import DeliveryAddress from './components/order/deliveryAddress'
+import OrderManagement from './pages/order-management'
+
 function App() {
-  // const { user, isLogin } = useSelector((state) => state.AuthReducer);
-  console.log('halo')
   return (
     <Box>
       <Auth>
@@ -50,12 +50,11 @@ function App() {
               </LoggedInRoute>
             }
           />
-          <Route path="/order" element={<Order />} />
-          <Route path="/cart" element={<Cart />} />
           <Route path="/product" element={<Product />} />
+          <Route path="/cart" element={<Cart />} />
           <Route path="/order" element={<Order />} />
           <Route path="/order-list" element={<OrderList />} />
-          <Route path="/cart" element={<Cart />} />
+          <Route path="/order-management" element={<OrderManagement />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/p/:gender/:group?/:category?" element={<Product />} />
           <Route path="/search" element={<ProductSearch />} />

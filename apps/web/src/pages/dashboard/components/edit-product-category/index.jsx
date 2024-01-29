@@ -137,26 +137,27 @@ export const EditProductCategory = () => {
       [id]: !set[id],
     }))
   }
-
   return (
     <Box bgColor={'white'} p={'1em'}>
       <VStack align={'stretch'}>
         <Text fontWeight={'bold'}>Edit Product Category</Text>
-        <Text>{gender[0]?.name}</Text>
+        <Text fontWeight={'bold'}>{gender[0]?.name}</Text>
         <VStack align={'stretch'}>
           {finalArray.map((el, index) => {
             return (
-              <VStack key={index} align={'stretch'} p={'.5em'} border={'2px solid gray'}>
+              <VStack key={index} align={'stretch'} p={'.5em'}>
                 <Box borderBottom={'2px solid gray'}>
                   <VStack align={'stretch'} pb={'.5em'}>
-                    <Input
-                      id="name"
-                      placeholder={el?.name}
-                      borderColor={'transparent'}
-                      focusBorderColor={'transparent'}
-                      bgColor={'grey.50'}
-                      value={el?.name}
-                    />
+                    <Text fontWeight={'bold'}>{el?.name}</Text>
+                    {editable[el?.name] && (
+                      <Input
+                        id="name"
+                        placeholder={el?.name}
+                        borderColor={'transparent'}
+                        focusBorderColor={'transparent'}
+                        bgColor={'grey.50'}
+                      />
+                    )}
                     <HStack>
                       <Button
                         _hover={{
@@ -166,39 +167,11 @@ export const EditProductCategory = () => {
                         bgColor={'redPure.500'}
                         color={'white'}
                         isLoading={false}
-                        onClick={() => handleEditClick(field.name)}
+                        onClick={() => handleEditClick(el?.name)}
                       >
-                        Edit
+                        {editable[el?.name] ? 'Cancel' : 'Edit'}
                       </Button>
-                      <Button
-                        id="name"
-                        _hover={{
-                          bgColor: 'redPure.500',
-                        }}
-                        w={'5em'}
-                        bgColor={'redPure.500'}
-                        color={'white'}
-                        isLoading={false}
-                        onClick={() => {
-                          editProductCategory(el?.id)
-                        }}
-                      >
-                        Submit
-                      </Button>
-                    </HStack>
-                  </VStack>
-                </Box>
-                {el?.category?.map((elPC, index) => {
-                  return (
-                    <Box>
-                      <VStack align={'stretch'}>
-                        <Input
-                          id="name"
-                          placeholder={elPC?.name}
-                          borderColor={'transparent'}
-                          focusBorderColor={'transparent'}
-                          bgColor={'grey.50'}
-                        />
+                      {editable[el?.name] && (
                         <Button
                           _hover={{
                             bgColor: 'redPure.500',
@@ -208,108 +181,178 @@ export const EditProductCategory = () => {
                           color={'white'}
                           isLoading={false}
                           onClick={() => {
-                            editProductCategory(elPC?.id)
+                            editProductCategory(el?.id)
                           }}
                         >
                           Submit
                         </Button>
+                      )}
+                    </HStack>
+                  </VStack>
+                </Box>
+                {el?.category?.map((elPC, index) => {
+                  return (
+                    <Box>
+                      <VStack align={'stretch'}>
+                        <Text fontWeight={'bold'}>{elPC?.name}</Text>
+                        {editable[elPC?.name] && (
+                          <Input
+                            id="name"
+                            placeholder={elPC?.name}
+                            borderColor={'transparent'}
+                            focusBorderColor={'transparent'}
+                            bgColor={'grey.50'}
+                          />
+                        )}
+                        <HStack>
+                          <Button
+                            _hover={{
+                              bgColor: 'redPure.500',
+                            }}
+                            w={'5em'}
+                            bgColor={'redPure.500'}
+                            color={'white'}
+                            isLoading={false}
+                            onClick={() => handleEditClick(elPC?.name)}
+                          >
+                            {editable[elPC?.name] ? 'Cancel' : 'Edit'}
+                          </Button>
+                          {editable[elPC?.name] && (
+                            <Button
+                              _hover={{
+                                bgColor: 'redPure.500',
+                              }}
+                              w={'5em'}
+                              bgColor={'redPure.500'}
+                              color={'white'}
+                              isLoading={false}
+                              onClick={() => {
+                                editProductCategory(elPC?.id)
+                              }}
+                            >
+                              Submit
+                            </Button>
+                          )}
+                        </HStack>
                       </VStack>
                     </Box>
                   )
                 })}
-
-                <Input
-                  id={`${el.id}`}
-                  placeholder={'Input new product categories'}
-                  borderColor={'transparent'}
-                  focusBorderColor={'transparent'}
-                  bgColor={'grey.50'}
-                  value={findById(el?.id)}
-                  onFocus={(e) => onFocusInput(el?.id, e.target.value)}
-                  onBlur={() => {
-                    setInput([{}])
-                  }}
-                  onChange={(e) => {
-                    handleInput(el?.id, e.target.value)
-                  }}
-                />
-                <Button
-                  _hover={{
-                    bgColor: 'redPure.500',
-                  }}
-                  w={'5em'}
-                  bgColor={'redPure.500'}
-                  color={'white'}
-                  isLoading={false}
-                  onClick={async () => {
-                    await createProductCategory(fixInput, el?.id)
-                    setFixInput('')
-                  }}
-                >
-                  Submit
-                </Button>
+                {editable[el?.id] && (
+                  <Input
+                    id={`${el.id}`}
+                    placeholder={'Input new product categories'}
+                    borderColor={'transparent'}
+                    focusBorderColor={'transparent'}
+                    bgColor={'grey.50'}
+                    value={findById(el?.id)}
+                    onFocus={(e) => onFocusInput(el?.id, e.target.value)}
+                    onBlur={() => {
+                      setInput([{}])
+                    }}
+                    onChange={(e) => {
+                      handleInput(el?.id, e.target.value)
+                    }}
+                  />
+                )}
+                <HStack>
+                  <Button
+                    _hover={{
+                      bgColor: 'redPure.500',
+                    }}
+                    w={'5em'}
+                    bgColor={'redPure.500'}
+                    color={'white'}
+                    isLoading={false}
+                    onClick={() => handleEditClick(el.id)}
+                  >
+                    {editable[el?.id] ? 'Cancel' : 'Add'}
+                  </Button>
+                  {editable[el?.id] && (
+                    <Button
+                      _hover={{
+                        bgColor: 'redPure.500',
+                      }}
+                      w={'5em'}
+                      bgColor={'redPure.500'}
+                      color={'white'}
+                      isLoading={false}
+                      onClick={async () => {
+                        await createProductCategory(fixInput, el?.id)
+                        setFixInput('')
+                      }}
+                    >
+                      Submit
+                    </Button>
+                  )}
+                </HStack>
               </VStack>
             )
           })}
         </VStack>
-        <Text>Parent</Text>
-        <Input
-          id={`${gender[0]?.id}`}
-          placeholder={'Input new product categories'}
-          borderColor={'transparent'}
-          focusBorderColor={'transparent'}
-          bgColor={'grey.50'}
-          value={findById(gender[0]?.id)}
-          onFocus={(e) => onFocusInput(gender[0]?.id, e.target.value)}
-          onBlur={() => {
-            setInput([{}])
-          }}
-          onChange={(e) => {
-            handleInput(gender[0]?.id, e.target.value)
-          }}
-        />
-        {/* <Button
-          _hover={{
-            bgColor: 'redPure.500',
-          }}
-          w={'5em'}
-          bgColor={'redPure.500'}
-          color={'white'}
-          isLoading={false}
-          onClick={async () => {
-            await createProductCategory(fixInput, gender[0]?.id)
-            setFixInput('')
-          }}
-        >
-          Submit
-        </Button> */}
-        <Text>Children</Text>
-        <Input
-          id={`${gender[0]?.id}`}
-          placeholder={'Input new product categories'}
-          borderColor={'transparent'}
-          focusBorderColor={'transparent'}
-          bgColor={'grey.50'}
-          onChange={(e) => {
-            setNewChildren(e.target.value)
-          }}
-        />
-        <Button
-          _hover={{
-            bgColor: 'redPure.500',
-          }}
-          w={'5em'}
-          bgColor={'redPure.500'}
-          color={'white'}
-          isLoading={false}
-          onClick={async (e) => {
-            const res = await createProductCategory(fixInput, gender[0]?.id)
-            createProductCategory(newChildren, res?.data?.data?.id)
-            setFixInput('')
-          }}
-        >
-          Submit
-        </Button>
+        <Text fontWeight={'bold'}>Parent</Text>
+        {editable[gender[0]?.id] && (
+          <>
+            <Input
+              id={`${gender[0]?.id}`}
+              placeholder={'Input new product categories'}
+              borderColor={'transparent'}
+              focusBorderColor={'transparent'}
+              bgColor={'grey.50'}
+              value={findById(gender[0]?.id)}
+              onFocus={(e) => onFocusInput(gender[0]?.id, e.target.value)}
+              onBlur={() => {
+                setInput([{}])
+              }}
+              onChange={(e) => {
+                handleInput(gender[0]?.id, e.target.value)
+              }}
+            />
+            <Text>Children</Text>
+            <Input
+              id={`${gender[0]?.id}`}
+              placeholder={'Input new product categories'}
+              borderColor={'transparent'}
+              focusBorderColor={'transparent'}
+              bgColor={'grey.50'}
+              onChange={(e) => {
+                setNewChildren(e.target.value)
+              }}
+            />
+          </>
+        )}
+        <HStack>
+          <Button
+            _hover={{
+              bgColor: 'redPure.500',
+            }}
+            w={'5em'}
+            bgColor={'redPure.500'}
+            color={'white'}
+            isLoading={false}
+            onClick={() => handleEditClick(gender[0]?.id)}
+          >
+            {editable[gender[0]?.id] ? 'Cancel' : 'Add'}
+          </Button>
+          {editable[gender[0]?.id] && (
+            <Button
+              _hover={{
+                bgColor: 'redPure.500',
+              }}
+              w={'5em'}
+              bgColor={'redPure.500'}
+              color={'white'}
+              isLoading={false}
+              onClick={async (e) => {
+                const res = await createProductCategory(fixInput, gender[0]?.id)
+                createProductCategory(newChildren, res?.data?.data?.id)
+                setFixInput('')
+              }}
+            >
+              Submit
+            </Button>
+          )}
+        </HStack>
       </VStack>
     </Box>
   )

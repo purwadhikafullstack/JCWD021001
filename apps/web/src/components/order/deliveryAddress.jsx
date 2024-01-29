@@ -20,7 +20,7 @@ function DeliveryAddress (){
             }
         }
 
-        console.log(selectedAddress);
+        console.log("ini selected address", selectedAddress);
     useEffect(() => {
         fetchData()
     }, [user.id])

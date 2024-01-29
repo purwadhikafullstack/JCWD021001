@@ -47,7 +47,7 @@ function Home() {
       console.log(err.message);
     }
   }
-  console.log(products);n
+  console.log(products)
   // useEffect(() => {
   //   fetchData()
   // }, [])

@@ -8,15 +8,12 @@ export default class Stock extends Model {
    */
   static associate(models) {
     // define association here
-    Stock.belongsTo(models.Product, { as: 'stocks', foreignKey: 'productId' })
-    Stock.belongsTo(models.Warehouse, {
-      as: 'warehouse',
-      // foreignKey: 'warehouseId',
-    })
+    Stock.belongsTo(models.Product, { as: 'product', foreignKey: 'productId' })
+    Stock.belongsTo(models.Warehouse, { as: 'warehouse', foreignKey: 'warehouseId' })
     Stock.belongsTo(models.Size, { as: 'size', foreignKey: 'sizeId' })
     Stock.belongsTo(models.Colour, { as: 'colour', foreignKey: 'colourId' })
-    // Stock.hasMany(models.CartProducts)
-    // Stock.hasMany(models.OrderProducts)
+    Stock.hasMany(models.CartProducts, { as: 'cartProducts', foreignKey: 'stockId' })
+    Stock.hasMany(models.OrderProducts, { as: 'orderProducts', foreignKey: 'stockId' })
   }
 }
 export const init = (sequelize) => {

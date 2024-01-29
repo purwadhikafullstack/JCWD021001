@@ -55,7 +55,7 @@ function ChangeAddressModal ({setSelectedAddress, selectedAddress}){
             <ModalCloseButton />
             <ModalBody>
                 <RadioGroup onChange={e => handleAddressChange(e.target.value)} value={tempSelectedAddress}>
-                {address.map((address) => ( 
+                {address?.map((address) => ( 
                 
                 <Flex 
                 key={address.id}
