@@ -20,6 +20,19 @@ import {
   Avatar,
   AspectRatio,
 } from '@chakra-ui/react'
+// edit by andri
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
+} from '@chakra-ui/react'
+//
 import {
   MagnifyingGlassIcon,
   ShoppingCartIcon,
@@ -28,15 +41,23 @@ import {
   ChevronDownIcon,
 } from '@heroicons/react/24/outline'
 import pure from '/logo/pure.png'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { SearchModal } from './components/search-modal'
 import { SearchMenu } from './components/search-menu'
+import { useState, useEffect } from 'react'
+import { getCart } from '../../pages/cart/services/getCart'
+import { useCart } from './services/cartContext'
+import ShoppingCartBox from './components/shopping-cart-box'
 
 export const Navbar = (props) => {
   const user = useSelector((state) => state.AuthReducer.user)
   const isLogin = useSelector((state) => state.AuthReducer.isLogin)
   const navigate = useNavigate()
+  // edit by andri
+  const { cartData, cartCount } = useCart()
+  console.log('cart', cartData)
+
   return (
     <Box p={'1em 2em'} bg={'white'}>
       <Flex alignItems={'center'} justifyContent={'space-between'} overflow={'hidden'}>
@@ -52,6 +73,11 @@ export const Navbar = (props) => {
         <HStack visibility={props?.collapseSideBar ? 'hidden' : 'visible'}>
           <HStack fontSize={'1.5em'} spacing={'.5em'}>
             <SearchModal />
+            <HStack fontSize={'1.5em'} spacing={'.5em'} position="relative">
+              <Box>
+                <ShoppingCartBox cartData={cartData} cartCount={cartCount} />
+              </Box>
+            </HStack>
             <Icon as={ShoppingCartIcon} />
             <Icon as={BellIcon} />
           </HStack>

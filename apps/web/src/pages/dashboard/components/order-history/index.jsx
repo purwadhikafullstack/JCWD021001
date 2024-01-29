@@ -31,7 +31,7 @@ export const OrderHistory = () => {
   const [stockJournals, setStockJournals] = useState([])
 
   // WAREHOUSE ID
-  const [warehouseId, setWarehouseId] = useState(4)
+  const [warehouseId, setWarehouseId] = useState(1)
 
   // EPID
   const { epid } = useParams()
