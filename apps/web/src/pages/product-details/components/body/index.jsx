@@ -61,7 +61,6 @@ export const Body = (props) => {
     getStock(props?.product?.id, sizeValue, colourValue, setStock)
   }, [colourValue, sizeValue])
 
-  // Disable button if product doesn have stock
   const shouldDisable = !stock ? true : false
 
   // Toggle Sidebar

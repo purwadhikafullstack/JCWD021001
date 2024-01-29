@@ -75,7 +75,7 @@ export const findCityOpenCageBasedQuery = async (city) => {
 }
 
 // POST 
-export const createUserAddressQuery = async (id, specificAddress, cityId, fullName, phoneNumber, postalCode) => {
+export const createUserAddressQuery = async (id, specificAddress, cityId, fullName, phoneNumber, postalCode, latitude, longitude) => {
     try{
         return await UserAddress.create(
             {   specificAddress,
@@ -83,7 +83,9 @@ export const createUserAddressQuery = async (id, specificAddress, cityId, fullNa
                 userId: id,
                 fullName,
                 phoneNumber,
-                postalCode
+                postalCode,
+                latitude, 
+                longitude
             })
     } catch (err){
         throw err;
