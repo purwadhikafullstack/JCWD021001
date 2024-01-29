@@ -17,13 +17,15 @@ export default class UserAddress extends Model {
 export const init = (sequelize) => {
   UserAddress.init(
     {
-      spesificAddress: DataTypes.STRING,
+      specificAddress: DataTypes.STRING,
       cityId: DataTypes.INTEGER,
       userId: DataTypes.INTEGER,
       fullName: DataTypes.STRING,
       phoneNumber: DataTypes.STRING,
       isMainAddress: DataTypes.BOOLEAN,
       postalCode: DataTypes.INTEGER,
+      latitude: DataTypes.DECIMAL(10, 8),
+      longitude: DataTypes.DECIMAL(11, 8),
     },
     {
       sequelize,

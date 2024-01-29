@@ -84,23 +84,21 @@ export const ProductList = (props) => {
                       </HStack>
                     </Td>
                     <Td textAlign={'center'} alignItems={'center'}>
-                      <HStack>
-                        <Button
-                          _hover={{
-                            bgColor: 'redPure.500',
-                          }}
-                          w={'5em'}
-                          bgColor={'redPure.500'}
-                          color={'white'}
-                          onClick={() => {
-                            props?.setProductId(product?.id)
-                            props?.setProductName(product?.name)
-                            props?.setProductSelected(product)
-                          }}
-                        >
-                          Choose
-                        </Button>
-                      </HStack>
+                      <Button
+                        _hover={{
+                          bgColor: 'redPure.500',
+                        }}
+                        w={'5em'}
+                        bgColor={'redPure.500'}
+                        color={'white'}
+                        onClick={() => {
+                          props?.setProductId(product?.id)
+                          props?.setProductName(product?.name)
+                          props?.setProductSelected(product)
+                        }}
+                      >
+                        Choose
+                      </Button>
                     </Td>
                   </Tr>
                 )

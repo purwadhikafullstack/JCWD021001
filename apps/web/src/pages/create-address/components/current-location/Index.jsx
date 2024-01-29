@@ -5,12 +5,8 @@ import { useFormik } from "formik";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createUserAddress } from "../../services/createUserAddress";
-import { findOpenCageAndCity } from "../../services/readUserAddress";
 
-
-function FormCurrentLocation ({ lat, lng }) {
- 
-    const [address, setAddress] = useState('')
+function FormCurrentLocation ({ address, lat, lng }) {
     const [selectedCity, setSelectedCity] = useState('')
     const [citylist, setCityList] = useState([])
     const [provinceList, setProvinceList] = useState([]);
@@ -19,76 +15,49 @@ function FormCurrentLocation ({ lat, lng }) {
     const user = useSelector((state) => state.AuthReducer.user);
 
     useEffect(() => {
-        if (lat && lng ) {
-            const fetchData = async () => {
-                try {
-                    const address = await findOpenCageAndCity(lat, lng);
-                    setAddress(address);
-                    setSelectedProvince(address.city.provinceId)
-                } catch (error) {
-                    console.error("Error fetching address:", error);
-                }
-            };
-            fetchData(lat, lng);
+        if (address && address.city) {
+            setSelectedProvince(address.city.provinceId);
+            setSelectedCity(address.city.id);
         }
-    }, [lat, lng]);
 
-    useEffect(() => {
+        const fetchProvinceData = async () => {
+            try {
+                const data = await getProvince();
+                setProvinceList(data);
+            } catch (error) {
+                console.error("Error fetching province data:", error);
+            }
+        };
+        fetchProvinceData();
+
         const fetchCityData = async () => {
-            if (selectedProvince) {
+            if (address?.city?.provinceId) {
                 try {
-                    const cityData = await getCity(selectedProvince);
+                    const cityData = await getCity(address.city.provinceId);
                     setCityList(cityData);
-                    if (selectedProvince) {
-                        setSelectedCity(address.city.id);
-                    }
                 } catch (error) {
                     console.error("Error fetching city data:", error);
                 }
             }
         };
-    
         fetchCityData();
-    }, [selectedProvince, address]);
-
-    useEffect(() => {
-        const fetchProvinceData = async () => {
-            try {
-                const data = await getProvince();
-                setProvinceList(data);
-                console.log(data);
-            } catch (error) {
-                console.error("Error fetching province data:", error);
-            }
-        };
+    }, [address]);
     
-        fetchProvinceData();
-    }, []);
-
-    
+    console.log("ini lat form", lat, "ini lng form", lng);
     const formik = useFormik({
-        
         initialValues:{
-            specificAddress:"", 
-            cityId: null, 
-            fullName:"", 
-            phoneNumber:"",
-            postalCode: "",
+            specificAddress:"", cityId: null, fullName:"", phoneNumber:"", postalCode: "",
         },
         onSubmit: async (values, {resetForm}) => {
             try{
                 console.log("Formik Submission Values:", values);
-                await createUserAddress(user.id, values.specificAddress, values.cityId, values.fullName, values.phoneNumber, values.postalCode);    
+                await createUserAddress(user.id, values.specificAddress, values.cityId, values.fullName, values.phoneNumber, values.postalCode, lat, lng);    
                 navigate('/manage-address')
             } catch (err){
                 console.log(err.message);
             }
             resetForm({values:
-                {specificAddress:"", 
-                cityId: null, 
-                fullName:"", 
-                phoneNumber:"",
-                postalCode: "",
+                {specificAddress:"", cityId: null, fullName:"", phoneNumber:"", postalCode: "",
                 }})
         }
     })
@@ -101,8 +70,6 @@ function FormCurrentLocation ({ lat, lng }) {
         }
     }, [address, formik.setFieldValue]);
 
-    
-     
 
     return (
         <>
@@ -248,6 +215,7 @@ function FormCurrentLocation ({ lat, lng }) {
                     borderColor={'brand.lightred'}
                     _hover={{borderColor: '#f50f5a', color: '#f50f5a'}} 
                     _active={{opacity:'70%'}}
+                    onClick={() => navigate("/manage-address")}
                     >
                         Cancel
                     </Button>

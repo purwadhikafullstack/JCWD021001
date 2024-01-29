@@ -6,7 +6,7 @@ export const BreadCrumbs = (props) => {
   const navigate = useNavigate()
   const breadCrumbsLinks = props?.breadCrumbs?.map((segment, index, array) => {
     return (
-      <HStack>
+      <HStack key={index}>
         {segment.label === 'Home' ? (
           <Icon
             as={HomeIcon}

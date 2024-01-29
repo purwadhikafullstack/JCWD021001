@@ -5,8 +5,8 @@ import { getProduct } from '../services/readProduct'
 import { useEffect, useState } from 'react'
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import { SideBar } from '../../../components/sidebar'
-import { getProductCategory } from '../services/readProductCategory'
 import { Navbar } from '../../../components/Navbar'
+import { getProductCategories } from '../services/readProductCategory'
 
 export const Product = () => {
   // useLocation to know url route
@@ -76,14 +76,15 @@ export const Product = () => {
   const [productCategories, setProductCategories] = useState([])
   // Get Product Category Data
   useEffect(() => {
-    getProductCategory(setProductCategories)
+    getProductCategories(setProductCategories, gender)
   }, [])
-  // Sidebar
+  // Collapse Sidebar
   const [collapseSideBar, setCollapseSideBar] = useState(false)
   const toggleSideBar = () => {
     setCollapseSideBar(!collapseSideBar)
   }
 
+  console.log('products', products)
   return (
     <Box minH={'100vh'}>
       <Navbar

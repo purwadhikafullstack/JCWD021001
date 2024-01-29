@@ -7,17 +7,30 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { createCart } from '../../../cart/services/createCart' // edit by andri
 import { useCart } from '../../../../components/Navbar/services/cartContext' // edit by andri
 import { useToast } from '@chakra-ui/react' // edit by andri
+import { ColourBox } from '../colour-box'
+import { SizeBox } from '../size-box'
 
 export const Body = (props) => {
-  const images = [props?.product?.picture]
-  const sizes = props?.product?.category?.parent?.size
+  // Location
   const location = useLocation()
-  const queryParams = new URLSearchParams(location.search)
-  const navigate = useNavigate()
-  const colourValue = queryParams.get('col')
-  const sizeValue = queryParams.get('sz')
   const pathName = location.pathname
-  // FILTER STOCK
+
+  // Query params
+  const queryParams = new URLSearchParams(location.search)
+
+  // Colour Id
+  const colourValue = queryParams.get('col')
+
+  // Size id
+  const sizeValue = queryParams.get('sz')
+  const navigate = useNavigate()
+  // Image carousel
+  const images = [props?.product?.picture]
+
+  // Define size
+  const sizes = props?.product?.category?.parent?.size
+
+  // Unique colour id take from stocks that have colourId
   const uniqueColorIds = new Set()
   const filteredStocks = props?.product?.stocks?.filter((stock) => {
     if (!uniqueColorIds.has(stock.colourId)) {
@@ -26,13 +39,14 @@ export const Body = (props) => {
     }
     return false
   })
-  // FILTER STOCK
 
+  // Displaying selected image
   const [selectedImage, setSelectedImage] = useState('')
   const handleSelectImage = (image) => {
     setSelectedImage(image)
   }
 
+  // Get stock
   const [stock, setStock] = useState(null)
 
   const getStock = async (productId, sizeId, colourId, setStock) => {
@@ -45,6 +59,7 @@ export const Body = (props) => {
       throw err
     }
   }
+
   useEffect(() => {
     getStock(props?.product?.id, sizeValue, colourValue, setStock)
   }, [colourValue, sizeValue])
@@ -104,6 +119,26 @@ export const Body = (props) => {
     }
   }
   //
+  // Toggle Sidebar
+  const [colourToggle, setColourToggle] = useState({})
+
+  // Handle Toggle
+  const changeColourToggle = (id) => {
+    setColourToggle((set) => ({
+      [id]: !set[id],
+      [!id]: set[id],
+    }))
+  }
+  // Toggle Sidebar
+  const [sizeToggle, setSizeToggle] = useState({})
+
+  // Handle Toggle
+  const changeSizeToggle = (id) => {
+    setSizeToggle((set) => ({
+      [id]: !set[id],
+      [!id]: set[id],
+    }))
+  }
 
   return (
     <Box p={'1em'} bgColor={'grey.50'} minH={'100vh'}>
@@ -150,22 +185,16 @@ export const Body = (props) => {
                   Color
                 </Text>
                 <HStack>
-                  {filteredStocks?.map((el, index) => {
+                  {filteredStocks?.map((filteredStock, index) => {
                     return (
-                      <Box p={'.5em'} border={'2px solid #f2f2f2'} borderRadius={'.5em'}>
-                        <VStack spacing={'1em'}>
-                          <Box
-                            bgColor={el?.colour?.name}
-                            w={'2.5em'}
-                            h={'2.5em'}
-                            borderRadius={'.5em'}
-                            onClick={() => navigate(`${pathName}?col=${el?.ColourId}&sz=0`)}
-                          ></Box>
-                          <Text fontWeight={'bold'} fontSize={'.75em'}>
-                            {el?.colour?.name}
-                          </Text>
-                        </VStack>
-                      </Box>
+                      <ColourBox
+                        {...filteredStock}
+                        pathName={pathName}
+                        index={index}
+                        changeColourToggle={changeColourToggle}
+                        colourToggle={colourToggle}
+                        sizeValue={sizeValue}
+                      />
                     )
                   })}
                 </HStack>
@@ -176,19 +205,16 @@ export const Body = (props) => {
                   <Text color={'redPure.500'}>View Size Chart</Text>
                 </Flex>
                 <HStack>
-                  {sizes?.map((el, index) => {
+                  {sizes?.map((size, index) => {
                     return (
-                      <Box
-                        key={index}
-                        borderRadius={'.5em'}
-                        p={'.5em 1em'}
-                        fontSize={{ base: '.75em', md: '1em' }}
-                        border={'2px solid #f2f2f2'}
-                        fontWeight={'bold'}
-                        onClick={() => navigate(`${pathName}?col=${colourValue}&sz=${el?.id}`)}
-                      >
-                        <Text>{el?.name}</Text>
-                      </Box>
+                      <SizeBox
+                        {...size}
+                        index={index}
+                        changeSizeToggle={changeSizeToggle}
+                        pathName={pathName}
+                        sizeToggle={sizeToggle}
+                        colourValue={colourValue}
+                      />
                     )
                   })}
                 </HStack>

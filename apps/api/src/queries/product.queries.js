@@ -33,6 +33,7 @@ export const getProductQuery = async (
           [Op.like]: `%${name}%`,
         },
       }
+
     if (gender) {
       if (group) {
         if (category) {
@@ -111,7 +112,7 @@ export const getProductQuery = async (
       order: [[`${sortBy}`, `${orderBy}`]],
       ...filter,
       subQuery: false,
-      limit: id ? 1 : +pageSize,
+      limit: id ? 1000 : +pageSize,
       offset: offset,
     })
     return res

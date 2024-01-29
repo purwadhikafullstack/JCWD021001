@@ -4,6 +4,7 @@ import {
   Button,
   Flex,
   HStack,
+  Heading,
   Image,
   Table,
   TableContainer,
@@ -40,14 +41,17 @@ export const ProductCategory = (props) => {
   return (
     <Box p={'1em'}>
       <VStack align={' stretch'}>
-        <Flex justifyContent={'space-between'}>
-          <Text>Product Category</Text>
+        <Flex justifyContent={'space-between'} alignItems={'center'}>
+          <Heading as={'h1'} fontSize={'1.5em'}>
+            Product Category
+          </Heading>
           <Button
-            _hover={{
-              bgColor: 'redPure.500',
-            }}
+            h={'3em'}
             w={'10em'}
-            bgColor={'redPure.500'}
+            _hover={{
+              bgColor: 'redPure.600',
+            }}
+            bgColor={'redPure.600'}
             color={'white'}
             onClick={() => {
               navigate('/dashboard/product-list/create-product-category')
@@ -66,31 +70,33 @@ export const ProductCategory = (props) => {
               overflow: 'hidden',
             }}
           >
-            <Thead bg={'redPure.500'} position={'relative'}>
+            <Thead bg={'redPure.600'} position={'relative'}>
               <Tr>
-                <Th color={'#FEFEFE'} textAlign={'center'}>
+                <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
                   Product Category Name
                 </Th>
-                <Th color={'#FEFEFE'} textAlign={'center'} w={'10em'}>
+                <Th color={'#FEFEFE'} w={'10em'} textTransform={'none'} fontSize={'1em'}>
                   Action
                 </Th>
               </Tr>
             </Thead>
-            <Tbody position={'relative'} color={'#6D6D6D'} fontWeight={'500'}>
+            <Tbody position={'relative'} fontWeight={'bold'}>
               {gender?.map((el, index) => {
                 return (
                   <Tr cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'} key={index}>
-                    <Td textAlign={'center'}>
+                    <Td>
                       <Text>{el?.name}</Text>
                     </Td>
-                    <Td textAlign={'center'} alignItems={'center'}>
+                    <Td alignItems={'center'}>
                       <HStack>
                         <Button
                           _hover={{
-                            bgColor: 'redPure.500',
+                            bgColor: 'redPure.600',
                           }}
+                          fontSize={'.8em'}
+                          h={'2.5em'}
                           w={'5em'}
-                          bgColor={'redPure.500'}
+                          bgColor={'redPure.600'}
                           color={'white'}
                           onClick={() => {
                             navigate(
@@ -104,10 +110,12 @@ export const ProductCategory = (props) => {
                           _hover={{
                             bgColor: 'transparent',
                           }}
+                          fontSize={'.8em'}
+                          h={'2.5em'}
                           w={'5em'}
-                          border={'1px solid #e3024b'}
+                          border={'1px solid #CD0244'}
                           bgColor={'transparent'}
-                          color={'redPure.500'}
+                          color={'redPure.600'}
                           onClick={() => {}}
                         >
                           Delete

@@ -8,6 +8,7 @@ import { useToast } from "@chakra-ui/react";
 
 
 const useCartState = (cartData, onCartUpdated) => {
+  console.log('cartData', cartData);
   const [selectedCartProducts, setSelectedCartProducts] = useState([])
   const [selectAllChecked, setSelectAllChecked] = useState(false)
   const [productData, setProductData] = useState(() => {

@@ -23,6 +23,7 @@ import { Dashboard } from './pages/dashboard/container'
 import OrderManagement from './pages/order-management'
 import { CartProvider } from './components/Navbar/services/cartContext'
 import { AuthenticatedRouteOrder } from './pages/order/authenticatedRouteOrder'
+import DeliveryAddress from './components/order/deliveryAddress'
 
 function App() {
   return (
@@ -71,6 +72,7 @@ function App() {
             <Route path="/dashboard/:destination?/:createProduct?" element={<Dashboard />} />
             <Route path="/dashboard/:destination?/:createProduct?/:epid" element={<Dashboard />} />
             <Route path="/manage-address" element={<ManageAddress />} />
+            <Route path="/delivery-address" element={<DeliveryAddress />} />
           </Routes>
         </CartProvider>
       </Auth>
