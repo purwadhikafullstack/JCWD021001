@@ -4,6 +4,7 @@ import {
   Flex,
   FormControl,
   FormLabel,
+  Heading,
   Input,
   Select,
   Table,
@@ -116,7 +117,7 @@ export const FormMutation = () => {
 
   const renderedTableBody = stocks?.rows?.map((stock, index) => {
     return (
-      <Tr key={index}>
+      <Tr key={index} cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'}>
         <Td>{stock?.product?.name}</Td>
         <Td>{stock?.size?.name}</Td>
         <Td>{stock?.colour?.name}</Td>
@@ -124,10 +125,12 @@ export const FormMutation = () => {
         <Td>
           <Button
             _hover={{
-              bgColor: 'redPure.500',
+              bgColor: 'redPure.600',
             }}
+            fontSize={'.8em'}
+            h={'2.5em'}
             w={'5em'}
-            bgColor={'redPure.500'}
+            bgColor={'redPure.600'}
             color={'white'}
             onClick={() => {
               formik.setFieldValue('productName', stock?.product?.name)
@@ -144,17 +147,19 @@ export const FormMutation = () => {
     )
   })
 
-  console.log('form-data', formData)
-
   return (
     <Box p={'1em'} bgColor={'white'} minH={'100vh'}>
       <Flex dir={'column'} justifyContent={'space-between'}>
         <VStack align={'stretch'} w={'100%'}>
-          <Text>Form Mutation</Text>
+          <Heading as={'h1'} fontSize={'1.5em'}>
+            Form Mutation
+          </Heading>
           <form onSubmit={formik.handleSubmit}>
             <VStack align={'stretch'}>
               <FormControl isRequired>
-                <FormLabel htmlFor={'recipientWarehouseAddress'}>Warehouse Destination</FormLabel>
+                <FormLabel fontWeight={'bold'} htmlFor={'recipientWarehouseAddress'}>
+                  Warehouse Destination
+                </FormLabel>
                 <Select
                   placeholder={'Select warehouse'}
                   id={'recipientWarehouseAddress'}
@@ -162,6 +167,9 @@ export const FormMutation = () => {
                   type={'text'}
                   value={formik.values.recipientWarehouseAddress}
                   onChange={formik.handleChange}
+                  borderColor={'transparent'}
+                  focusBorderColor={'transparent'}
+                  bgColor={'grey.50'}
                 >
                   <option value={'jambi'}>Jambi</option>
                 </Select>
@@ -170,7 +178,9 @@ export const FormMutation = () => {
                 )}
               </FormControl>
               <FormControl isRequired>
-                <FormLabel htmlFor={'productName'}>Product Name</FormLabel>
+                <FormLabel fontWeight={'bold'} htmlFor={'productName'}>
+                  Product Name
+                </FormLabel>
                 <Input
                   placeholder={'Select product'}
                   id={'productName'}
@@ -178,6 +188,9 @@ export const FormMutation = () => {
                   type={'text'}
                   value={formik.values.productName}
                   onChange={formik.handleChange}
+                  borderColor={'transparent'}
+                  focusBorderColor={'transparent'}
+                  bgColor={'grey.50'}
                   isReadOnly
                 />
                 {formik.errors.productName && <Text color="red">{formik.errors.productName}</Text>}
@@ -202,29 +215,38 @@ export const FormMutation = () => {
                       overflow: 'hidden',
                     }}
                   >
-                    <Thead bg={'redPure.500'} position={'relative'}>
+                    <Thead bg={'redPure.600'} position={'relative'}>
                       <Tr>
-                        <Th color={'#FEFEFE'}>Products</Th>
-                        <Th color={'#FEFEFE'}>Size</Th>
-                        <Th color={'#FEFEFE'}>Color</Th>
-                        <Th color={'#FEFEFE'} w={'10em'}>
+                        <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
+                          Products
+                        </Th>
+                        <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
+                          Size
+                        </Th>
+                        <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
+                          Color
+                        </Th>
+                        <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'} w={'10em'}>
                           Stock
                         </Th>
-                        <Th color={'#FEFEFE'} w={'10em'}>
+                        <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'} w={'10em'}>
                           Action
                         </Th>
                       </Tr>
                     </Thead>
-                    <Tbody position={'relative'} color={'#6D6D6D'} fontWeight={'500'}>
+                    <Tbody fontWeight={'bold'} position={'relative'}>
                       {renderedTableBody}
                     </Tbody>
                   </Table>
                 </TableContainer>
               </Box>
               <FormControl isRequired>
-                <FormLabel htmlFor={'qty'}>Quantity</FormLabel>
+                <FormLabel fontWeight={'bold'} htmlFor={'qty'}>
+                  Quantity
+                </FormLabel>
                 <Input
                   placeholder={'Input quantity'}
+                  w={'10em'}
                   id={'qty'}
                   name={'qty'}
                   type={'number'}
@@ -236,6 +258,9 @@ export const FormMutation = () => {
                       qty: e.target.value,
                     }))
                   }}
+                  borderColor={'transparent'}
+                  focusBorderColor={'transparent'}
+                  bgColor={'grey.50'}
                 />
                 {formik.errors.qty && <Text color="red">{formik.errors.qty}</Text>}
               </FormControl>

@@ -107,8 +107,8 @@ export const Navbar = (props) => {
               ) : (
                 <HStack>
                   <Button
-                    color="brand.lightred"
-                    borderColor={'brand.lightred'}
+                    color="#CD0244"
+                    borderColor={'#CD0244'}
                     variant={'outline'}
                     width={'5.5em'}
                     _hover={{
@@ -120,7 +120,7 @@ export const Navbar = (props) => {
                   </Button>
                   <Button
                     color="white"
-                    bg={'brand.lightred'}
+                    bg={'redPure.600'}
                     width={'5.5em'}
                     _hover={{
                       fontWeight: 'bold',

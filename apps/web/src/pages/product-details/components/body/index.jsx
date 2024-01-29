@@ -26,8 +26,7 @@ export const Body = (props) => {
 
   // Define size
   const sizes = props?.product?.category?.parent?.size
-  console.log('product', props?.product?.category)
-  console.log('sizes', sizes)
+
   // Unique colour id take from stocks that have colourId
   const uniqueColorIds = new Set()
   const filteredStocks = props?.product?.stocks?.filter((stock) => {

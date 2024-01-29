@@ -93,7 +93,7 @@ export const StockMutation = () => {
   // TABLE BODY
   const renderedTableBody = mutations?.rows?.map((mutation, index) => {
     return (
-      <Tr key={index}>
+      <Tr key={index} cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'}>
         <Td>{mutation?.id}</Td>
         <Td>{mutation?.requester?.address}</Td>
         <Td>{mutation?.recipient?.address}</Td>
@@ -104,10 +104,12 @@ export const StockMutation = () => {
             _hover={{
               bgColor: 'transparent',
             }}
+            fontSize={'.8em'}
+            h={'2.5em'}
             w={'5em'}
-            border={'1px solid #e3024b'}
+            border={'1px solid #CD0244'}
             bgColor={'transparent'}
-            color={'redPure.500'}
+            color={'redPure.600'}
             onClick={() => {
               isJuragan ? handleApprove(mutation?.id) : null
             }}
@@ -124,6 +126,16 @@ export const StockMutation = () => {
       </Tr>
     )
   })
+  // Toggle Box Colour
+  const [textToggle, setTextToggle] = useState({ req: true })
+
+  // Handle Toggle
+  const changeTextToggle = (id) => {
+    setTextToggle((set) => ({
+      [id]: !set[id],
+      [!id]: set[id],
+    }))
+  }
 
   return (
     <Box p={'1em'} h={'100%'} w={'100%'}>
@@ -133,10 +145,11 @@ export const StockMutation = () => {
             <Text fontWeight={'bold'}>Stock Mutation</Text>
             <Button
               _hover={{
-                bgColor: 'redPure.500',
+                bgColor: 'redPure.600',
               }}
+              h={'3em'}
               w={'10em'}
-              bgColor={'redPure.500'}
+              bgColor={'redPure.600'}
               color={'white'}
               onClick={() => {
                 navigate('/dashboard/stock-mutation/form-mutation?pa=1')
@@ -145,9 +158,16 @@ export const StockMutation = () => {
               Form Mutation
             </Button>
           </Flex>
-          <HStack>
+          <HStack fontWeight={'bold'} spacing={'1.5em'}>
             <Text
-              onClick={async () => {
+              id={'req'}
+              borderBottom={
+                textToggle[document.getElementById('req')?.innerText] ? '3px solid #CD0244' : 'none'
+              }
+              color={textToggle[document.getElementById('req')?.innerText] ? '#CD0244' : 'black'}
+              cursor={'pointer'}
+              onClick={() => {
+                changeTextToggle(document.getElementById('req')?.innerText)
                 navigate(`${pathName}?pa=${pageValue}&sta=req`)
                 handleRequestApproval(filterValue)
               }}
@@ -155,7 +175,14 @@ export const StockMutation = () => {
               Request
             </Text>
             <Text
-              onClick={async () => {
+              id={'app'}
+              borderBottom={
+                textToggle[document.getElementById('app')?.innerText] ? '3px solid #CD0244' : 'none'
+              }
+              color={textToggle[document.getElementById('app')?.innerText] ? '#CD0244' : 'black'}
+              cursor={'pointer'}
+              onClick={() => {
+                changeTextToggle(document.getElementById('app')?.innerText)
                 navigate(`${pathName}?pa=${pageValue}&sta=app`)
                 handleRequestApproval(filterValue)
               }}
@@ -183,21 +210,29 @@ export const StockMutation = () => {
                   overflow: 'hidden',
                 }}
               >
-                <Thead bg={'redPure.500'} position={'relative'}>
+                <Thead bg={'redPure.600'} position={'relative'}>
                   <Tr>
-                    <Th color={'#FEFEFE'}>ID MUTATION</Th>
-                    <Th color={'#FEFEFE'}>Warehouse Origin</Th>
-                    <Th color={'#FEFEFE'}>Warehouse Destination</Th>
-                    <Th color={'#FEFEFE'}>Products</Th>
-                    <Th color={'#FEFEFE'} w={'10em'}>
+                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
+                      Id Mutation
+                    </Th>
+                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
+                      Warehouse Origin
+                    </Th>
+                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
+                      Warehouse Destination
+                    </Th>
+                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
+                      Products
+                    </Th>
+                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'} w={'10em'}>
                       Qty
                     </Th>
-                    <Th color={'#FEFEFE'} w={'10em'}>
+                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'} w={'10em'}>
                       Action
                     </Th>
                   </Tr>
                 </Thead>
-                <Tbody position={'relative'} color={'#6D6D6D'} fontWeight={'500'}>
+                <Tbody fontWeight={'bold'} position={'relative'}>
                   {renderedTableBody}
                 </Tbody>
               </Table>
