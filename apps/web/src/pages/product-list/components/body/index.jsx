@@ -153,11 +153,13 @@ export const Body = (props) => {
                     base: 'repeat(2, 1fr)',
                     sm: 'repeat(3, 1fr)',
                     md: 'repeat(3, 1fr)',
-                    lg: 'repeat(4, 1fr)',
-                    xl: 'repeat(5, 1fr)',
+                    lg: 'repeat(5, 1fr)',
+                    xl: 'repeat(7, 1fr)',
                   }}
-                  rowGap={{ base: '.5em', md: '1.5em' }}
-                  columnGap={{ base: '.5em', md: '1.5em' }}
+                  // gridGap={{ base: '2em' }}
+                  gridColumnGap={'1.5em'}
+                  gridRowGap={'1.5em'}
+                  justifyItems={'center'}
                 >
                   {renderedProducts}
                 </Grid>

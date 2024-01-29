@@ -15,10 +15,10 @@ import {
   VStack,
   useToast,
 } from '@chakra-ui/react'
-import { Formik, Field, Form } from 'formik'
+import { Formik, Field, Form, useFormik } from 'formik'
 import * as Yup from 'yup'
 import { getGender } from '../../services/readGender'
-import { getProductCategory } from '../../../product-list/services/readProductCategory'
+import { getProductCategories } from '../../../product-list/services/readProductCategory'
 import { createProduct } from '../../services/createProduct'
 
 export const CreateProduct = () => {
@@ -30,8 +30,8 @@ export const CreateProduct = () => {
   const [editable, setEditable] = useState({})
   const handleEditClick = (id) => {
     setEditable((set) => ({
-      ...set,
       [id]: !set[id],
+      [!id]: set[!id],
     }))
   }
   // EDITABLE
@@ -40,7 +40,7 @@ export const CreateProduct = () => {
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     price: Yup.number().required('Price is required'),
-    productCategoryId: Yup.string().required('Category is required'),
+    productCategoryId: Yup.number().required('Category is required'),
     description: Yup.string().required('Description is required'),
   })
   // VALIDATION SCHEMA
@@ -54,21 +54,8 @@ export const CreateProduct = () => {
   // CATEGORIES
   const [productCategories, setProductCategories] = useState([])
   useEffect(() => {
-    getProductCategory(setProductCategories, gender)
+    getProductCategories(setProductCategories, gender)
   }, [])
-  const groupedArray = productCategories.reduce((result, item) => {
-    const parentName = item.parent.name
-    const parentId = item.parent.id
-    if (!result[parentName]) {
-      result[parentName] = { name: parentName, id: parentId, category: [] }
-    }
-    result[parentName].category.push({ id: item.id, name: item.name })
-    return result
-  }, {})
-  const finalArray = Object.values(groupedArray)
-  // CATEGORY ID WANT TO SEND
-  const [categoryId, setCategoryId] = useState(0)
-  // CATEGORY ID WANT TO SEND
 
   // GENDER
   const [genders, setGenders] = useState([])
@@ -78,6 +65,7 @@ export const CreateProduct = () => {
   const renderedGenders = genders?.map((el, index) => {
     return (
       <Text
+        cursor={'pointer'}
         key={index}
         itemID={el.id}
         onClick={() => {
@@ -93,39 +81,42 @@ export const CreateProduct = () => {
   // GENDER
 
   // GROUP
-  const renderedGroup = finalArray.map((el, index) => {
+  const renderedGroup = productCategories.map((productGroup, index) => {
     return (
       <Text
+        cursor={'pointer'}
         key={index}
-        itemID={el.id}
+        itemID={productGroup.id}
         onClick={() => {
-          setGroup(el?.name)
+          setGroup(productGroup?.name)
           setCategoryValue('')
-          handleEditClick(el?.name)
+          formik.setFieldValue('productCategoryId', '')
+          handleEditClick(productGroup?.name)
         }}
       >
-        {el.name}
+        {productGroup.name}
       </Text>
     )
   })
   // GROUP
 
   // CATEGORY
-  const renderedCategory = finalArray.map((el) => {
-    return el.category.map((elPT, index) => {
+  const renderedCategory = productCategories.map((productGroup) => {
+    return productGroup.category.map((productCategory, index) => {
       return (
         <>
-          {editable[el?.name] && (
+          {editable[productGroup?.name] && (
             <Text
+              cursor={'pointer'}
               key={index}
-              itemID={elPT.id}
+              itemID={productCategory.id}
               onClick={() => {
-                setCategoryId(elPT.id)
-                setCategoryValue(elPT.name)
-                setGroup(el?.name)
+                setCategoryValue(productCategory.name)
+                setGroup(productGroup?.name)
+                formik.setFieldValue('productCategoryId', productCategory?.id)
               }}
             >
-              {elPT.name}
+              {productCategory.name}
             </Text>
           )}
         </>
@@ -142,7 +133,7 @@ export const CreateProduct = () => {
         values.name,
         Number(values.price),
         values.description,
-        Number(categoryId),
+        Number(values.productCategoryId),
       )
       toast({
         title: `${res?.data?.message}`,
@@ -162,158 +153,155 @@ export const CreateProduct = () => {
   // HANDLE SUBMIT
 
   // FORMIK INITIAL VALUES
-  const initialValues = {
-    name: '',
-    price: '',
-    productCategoryId: '',
-    description: '',
-  }
   // FORMIK INITIAL VALUES
+
+  const formik = useFormik({
+    validateOnBlur: true,
+    initialValues: {
+      name: '',
+      price: '',
+      productCategoryId: '',
+      description: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: handleSubmit,
+  })
+
   return (
     <Box p={'1em'} bgColor={'white'}>
       <Text fontWeight={'bold'} mb={'2em'}>
         Create Product
       </Text>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        <Form>
-          <VStack direction="column" align="center">
-            <Field name="name">
-              {({ field, form }) => (
-                <FormControl isInvalid={form.errors.name && form.touched.name} mb={3}>
-                  <FormLabel htmlFor="name" fontWeight={'bold'}>
-                    Product Name
-                  </FormLabel>
-                  <Input
-                    {...field}
-                    id="name"
-                    placeholder="Type Product Name Here"
-                    borderColor={'transparent'}
-                    focusBorderColor={'transparent'}
-                    bgColor={'grey.50'}
-                  />
-                  <FormErrorMessage>{form.errors.name}</FormErrorMessage>
-                </FormControl>
-              )}
-            </Field>
-            <Field name="productCategoryId">
-              {({ field, form }) => (
-                <FormControl
-                  isInvalid={form.errors.productCategoryId && form.touched.productCategoryId}
-                  mb={3}
-                >
-                  <Text display={'none'}>{(form.values.productCategoryId = categoryValue)}</Text>
-                  <FormLabel htmlFor="productCategoryId" fontWeight={'bold'}>
-                    Category
-                  </FormLabel>
-                  <Input
-                    // {...field}
-                    name="productCategoryId"
-                    id="productCategoryId"
-                    placeholder="Select Category"
-                    borderColor={'transparent'}
-                    focusBorderColor={'transparent'}
-                    bgColor={'grey.50'}
-                    value={`${gender} > ${group} > ${categoryValue}`}
-                    readOnly
-                  />
-                  <FormErrorMessage>{form.errors.productCategoryId}</FormErrorMessage>
-                  <Grid
-                    mt={'1em'}
-                    templateColumns="repeat(3, 1fr)"
-                    w={'100%'}
-                    gap={'1em'}
-                    border={'2px solid #f2f2f2'}
-                    borderRadius={'.5em'}
-                    p={'1em'}
-                    fontWeight={'bold'}
-                  >
-                    <Box p={'.5em'}>
-                      <VStack align={'stretch'}>{renderedGenders}</VStack>
-                    </Box>
-                    <Box p={'.5em'} borderLeft={'2px solid lightgray'}>
-                      <VStack align={'stretch'}>{renderedGroup}</VStack>
-                    </Box>
-                    <Box p={'0 .5em'} borderLeft={'2px solid lightgray'}>
-                      <VStack align={'stretch'}>{renderedCategory}</VStack>
-                    </Box>
-                  </Grid>
-                </FormControl>
-              )}
-            </Field>
-            <Field name="description">
-              {({ field, form }) => (
-                <FormControl isInvalid={form.errors.description && form.touched.description} mb={3}>
-                  <FormLabel htmlFor="description" fontWeight={'bold'}>
-                    Description
-                  </FormLabel>
-                  <Textarea {...field} id="description" placeholder="Input Description" />
-                  <FormErrorMessage>{form.errors.description}</FormErrorMessage>
-                </FormControl>
-              )}
-            </Field>
-            <Field name="price">
-              {({ field, form }) => (
-                <FormControl isInvalid={form.errors.price && form.touched.price} mb={3}>
-                  <FormLabel htmlFor="price" fontWeight={'bold'}>
-                    Price
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      color="grey.500"
-                      fontSize="1em"
-                      children="Rp"
-                      bgColor={'grey.50'}
-                      borderRadius={'.5em 0 0 .5em'}
-                    />
-                    <Input
-                      ml={'1em'}
-                      {...field}
-                      id="price"
-                      placeholder="Input Price Here"
-                      borderColor={'grey.50'}
-                      _focus={{ borderColor: 'grey.50' }}
-                      focusBorderColor={'transparent'}
-                    />
-                  </InputGroup>
-                  <FormErrorMessage>{form.errors.price}</FormErrorMessage>
-                </FormControl>
-              )}
-            </Field>
-            <HStack alignSelf={'flex-end'}>
-              <Button
-                type="reset"
-                _hover={{
-                  bgColor: 'transparent',
-                }}
-                w={'5em'}
-                border={'1px solid #e3024b'}
-                bgColor={'transparent'}
-                color={'redPure.500'}
-                isLoadButtoning={false}
-              >
-                Reset
-              </Button>
-              <Button
-                type="submit"
-                _hover={{
-                  bgColor: 'redPure.500',
-                }}
-                w={'5em'}
-                bgColor={'redPure.500'}
-                color={'white'}
-                isLoading={false}
-              >
-                Submit
-              </Button>
-            </HStack>
-          </VStack>
-        </Form>
-      </Formik>
+      <form onSubmit={formik.handleSubmit}>
+        <VStack direction="column" align="center">
+          <FormControl isRequired>
+            <FormLabel htmlFor="name" fontWeight={'bold'}>
+              Product Name
+            </FormLabel>
+            <Input
+              id="name"
+              name="name"
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              placeholder="Type Product Name Here"
+              borderColor={'transparent'}
+              focusBorderColor={'transparent'}
+              bgColor={'grey.50'}
+            />
+            {formik.errors.name && <Text color="red">{formik.errors.name}</Text>}
+          </FormControl>
+
+          <FormControl isRequired>
+            <Text display={'none'}></Text>
+            <FormLabel htmlFor="productCategoryId" fontWeight={'bold'}>
+              Category
+            </FormLabel>
+            <Input
+              name="productCategoryId"
+              id="productCategoryId"
+              fontWeight={'bold'}
+              onChange={formik.handleChange}
+              placeholder="Select Category"
+              borderColor={'transparent'}
+              focusBorderColor={'transparent'}
+              bgColor={'grey.50'}
+              value={`${gender}   |   ${group}   |   ${categoryValue}`}
+              readOnly
+            />
+            {formik.errors.productCategoryId && (
+              <Text color="red">{formik.errors.productCategoryId}</Text>
+            )}
+            <Grid
+              mt={'1em'}
+              templateColumns="repeat(3, 1fr)"
+              w={'100%'}
+              gap={'1em'}
+              border={'2px solid #f2f2f2'}
+              borderRadius={'.5em'}
+              p={'1em'}
+              fontWeight={'bold'}
+            >
+              <Box p={'.5em'}>
+                <VStack align={'stretch'}>{renderedGenders}</VStack>
+              </Box>
+              <Box p={'.5em'} borderLeft={'2px solid lightgray'}>
+                <VStack align={'stretch'}>{renderedGroup}</VStack>
+              </Box>
+              <Box p={'0 .5em'} borderLeft={'2px solid lightgray'}>
+                <VStack align={'stretch'}>{renderedCategory}</VStack>
+              </Box>
+            </Grid>
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel htmlFor="description" fontWeight={'bold'}>
+              Description
+            </FormLabel>
+            <Textarea
+              id="description"
+              name="description"
+              value={formik.values.description}
+              onChange={formik.handleChange}
+              placeholder="Input Description"
+            />
+            {formik.errors.description && <Text color="red">{formik.errors.description}</Text>}
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel htmlFor="price" fontWeight={'bold'}>
+              Price
+            </FormLabel>
+            <InputGroup>
+              <InputLeftElement
+                pointerEvents="none"
+                color="grey.500"
+                fontSize="1em"
+                children="Rp"
+                bgColor={'grey.50'}
+                borderRadius={'.5em 0 0 .5em'}
+              />
+              <Input
+                ml={'1em'}
+                id={'price'}
+                name={'price'}
+                type={'number'}
+                value={formik.values.price}
+                onChange={formik.handleChange}
+                placeholder="Input Price Here"
+                borderColor={'grey.50'}
+                _focus={{ borderColor: 'grey.50' }}
+                focusBorderColor={'transparent'}
+              />
+            </InputGroup>
+            {formik.errors.price && <Text color="red">{formik.errors.price}</Text>}
+          </FormControl>
+          <HStack alignSelf={'flex-end'}>
+            <Button
+              type="reset"
+              _hover={{
+                bgColor: 'transparent',
+              }}
+              w={'5em'}
+              border={'1px solid #e3024b'}
+              bgColor={'transparent'}
+              color={'redPure.500'}
+              isLoadButtoning={false}
+            >
+              Reset
+            </Button>
+            <Button
+              type="submit"
+              _hover={{
+                bgColor: 'redPure.500',
+              }}
+              w={'5em'}
+              bgColor={'redPure.500'}
+              color={'white'}
+              isLoading={false}
+            >
+              Submit
+            </Button>
+          </HStack>
+        </VStack>
+      </form>
     </Box>
   )
 }
