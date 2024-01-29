@@ -78,7 +78,6 @@ export const Navbar = (props) => {
                 <ShoppingCartBox cartData={cartData} cartCount={cartCount} />
               </Box>
             </HStack>
-            <Icon as={ShoppingCartIcon} />
             <Icon as={BellIcon} />
           </HStack>
           <Center height="2em">

@@ -92,8 +92,8 @@ export const Body = (props) => {
         position: 'top-right',
         duration: 3000,
         isClosable: true,
-      });
-      return; 
+      })
+      return
     }
     try {
       await createCart(newItem)
