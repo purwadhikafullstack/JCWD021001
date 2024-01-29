@@ -12,6 +12,7 @@ export default class Size extends Model {
       as: 'size',
       foreignKey: 'productCategoryId',
     })
+    Size.hasMany(models.CartProducts, { as: 'cartProducts', foreignKey: 'sizeId' })
   }
 }
 

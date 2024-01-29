@@ -4,9 +4,9 @@ import { useLocation, useParams } from 'react-router-dom'
 import { getProduct } from '../services/readProduct'
 import { useEffect, useState } from 'react'
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
-import { Navbar } from '../../../components/navbar'
 import { SideBar } from '../../../components/sidebar'
 import { getProductCategory } from '../services/readProductCategory'
+import { Navbar } from '../../../components/Navbar'
 
 export const Product = () => {
   // useLocation to know url route

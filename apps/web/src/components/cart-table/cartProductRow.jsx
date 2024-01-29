@@ -82,10 +82,10 @@ const CartProductRow = ({
                       gap={'10px'}
                     >
                       <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                        {item?.stocks?.product?.name}
+                        {item?.product?.name}
                       </Text>
                       <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                        {toRupiah(+item?.stocks?.product?.price, { floatingPoint: 0 })}
+                        {toRupiah(+item?.product?.price, { floatingPoint: 0 })}
                       </Text>
                     </Box>
                   </Box>
@@ -106,7 +106,7 @@ const CartProductRow = ({
                       fontSize={'16px'}
                       color={'#838383'}
                     >
-                      L
+                      {item?.size?.name}
                     </Text>
                   </Box>
                 </Td>
@@ -128,7 +128,7 @@ const CartProductRow = ({
                         fontSize={'16px'}
                         color={'#838383'}
                       >
-                        Dark Blue
+                        {item?.colour?.name}
                       </Text>
                     </Box>
                   </Box>

@@ -5,7 +5,8 @@ import LaptopCartTable from '../../components/cart-table'
 // import MobileCartTable from '../../components/cart-table/mobileCartTable'
 import { useState, useEffect } from 'react'
 import { getCart } from './services/getCart'
-import { Navbar } from '../../components/navbar'
+import { Navbar } from '../../components/Navbar'
+
 
 const Cart = () => {
   const [cartData, setCartData] = useState([])

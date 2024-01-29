@@ -16,8 +16,8 @@ const sendResponse = (res, statusCode, result, errorMessage) => {
 
 export const createCartController = async (req, res) => {
     try {
-        const { userId, stockId, price, quantity } = req.body;
-        const result = await createCartService(userId, stockId, price, quantity);
+        const { userId, productId, colourId, sizeId, price, quantity } = req.body;
+        const result = await createCartService(userId, productId, colourId, sizeId, price, quantity);
         return res.status(200).json({
             message: "success",
             data: result,
@@ -54,7 +54,8 @@ export const deleteCartController = async (req, res) => {
 export const getCartController = async (req, res) => {
     try {
         const { userId } = req.params
-        const result = await getCartService(userId)
+        const { stockIds } = req.query
+        const result = await getCartService(userId, stockIds)
         return sendResponse(res, 200, result, null);
     } catch (err) {
         console.log(err);

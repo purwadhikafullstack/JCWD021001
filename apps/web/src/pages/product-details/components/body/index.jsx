@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react'
 import { Carousel } from '../carousel'
 import axios from 'axios'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { createCart } from '../../../cart/services/createCart' // edit by andri
+import { useCart } from '../../../../components/Navbar/services/cartContext' // edit by andri
+import { useToast } from '@chakra-ui/react' // edit by andri
 
 export const Body = (props) => {
   const images = [props?.product?.picture]
@@ -47,8 +50,61 @@ export const Body = (props) => {
   }, [colourValue, sizeValue])
 
   console.log('PRO', props?.product)
-
   const shouldDisable = !stock ? true : false
+
+  // edit by andri
+  const { cartData, fetchCartCount } = useCart()
+  const toast = useToast()
+  const handleAddToCart = async () => {
+    const newItem = {
+      userId: 1,
+      productId: props?.product?.id,
+      colourId: colourValue,
+      sizeId: sizeValue,
+      price: props?.product?.price,
+      quantity: 1,
+    }
+
+    const isProductInCart = cartData.some((cartItem) =>
+      cartItem.CartProducts.some((product) => product.product.id === newItem.productId),
+    )
+
+    if (isProductInCart) {
+      toast({
+        title: 'Product Already in Cart',
+        description: 'This product is already in your cart.',
+        status: 'warning',
+        position: 'top-right',
+        duration: 3000,
+        isClosable: true,
+      });
+      return; 
+    }
+    try {
+      await createCart(newItem)
+      toast({
+        title: 'Cart Created',
+        description: 'Your cart has been successfully created.',
+        status: 'success',
+        position: 'top-right',
+        duration: 3000,
+        isClosable: true,
+      })
+
+      await fetchCartCount()
+    } catch (err) {
+      toast({
+        title: 'Error',
+        description: err?.response?.data?.error || 'An error occurred.',
+        status: 'error',
+        position: 'top-right',
+        duration: 3000,
+        isClosable: true,
+      })
+    }
+  }
+  //
+
   return (
     <Box p={'1em'} bgColor={'grey.50'} minH={'100vh'}>
       <VStack align={'sretch'}>
@@ -103,7 +159,7 @@ export const Body = (props) => {
                             w={'2.5em'}
                             h={'2.5em'}
                             borderRadius={'.5em'}
-                            onClick={() => navigate(`${pathName}?col=${el?.id}&sz=0`)}
+                            onClick={() => navigate(`${pathName}?col=${el?.ColourId}&sz=0`)}
                           ></Box>
                           <Text fontWeight={'bold'} fontSize={'.75em'}>
                             {el?.colour?.name}
@@ -162,6 +218,7 @@ export const Body = (props) => {
               </VStack>
               <HStack>
                 <Button
+                  onClick={handleAddToCart} // edit by andri
                   _hover={{
                     bgColor: stock ? 'redPure.500' : 'grey.50',
                   }}

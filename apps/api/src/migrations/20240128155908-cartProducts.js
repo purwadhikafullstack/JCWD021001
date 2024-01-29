@@ -8,12 +8,13 @@ export async function up(queryInterface, Sequelize) {
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-    stockId: {
+    productId: {
       allowNull: false,
       type: Sequelize.INTEGER,
+      unique: true,
       reference: {
         model: {
-          tableName: 'stocks',
+          tableName: 'products',
         },
         key: 'id',
       },
@@ -24,6 +25,26 @@ export async function up(queryInterface, Sequelize) {
       reference: {
         model: {
           tableName: 'carts',
+        },
+        key: 'id',
+      },
+    },
+    colourId: {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+      reference: {
+        model: {
+          tableName: 'colours',
+        },
+        key: 'id',
+      },
+    },
+    sizeId: {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+      reference: {
+        model: {
+          tableName: 'sizes',
         },
         key: 'id',
       },
