@@ -6,12 +6,19 @@ import { useEffect, useState } from "react";
 import FormCurrentLocation from "./components/current-location/Index";
 import Map from "./components/map";
 import { Navbar } from "../../components/navbar";
+import { findOpenCageAndCity } from "./services/readUserAddress";
+import ModalMapAddressEntry from "./components/modal";
 
 function CreateAddress(){
 
     const [formCurrentLocation, setFormCurrentLocation] = useState(false)
     const [latitude, setLatitude] = useState(null)
     const [longitude, setLongitude] = useState(null)
+    const [address, setAddress] = useState('');
+    const [selectedAddress, setSelectedAddress] = useState('');
+    const [marker, setMarker] = useState(false)
+    const [lat, setLat] = useState(null)
+    const [lng, setLng] = useState(null)
     
     useEffect (() => {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -20,9 +27,28 @@ function CreateAddress(){
         })
     }, [])
 
+    console.log("ini latitude", latitude, "ini longitude", longitude, "ini address", address, "ini lat", lat, "ini lng", lng)
+
+    useEffect(() => {
+        const fetchAddress = async () => {
+          if (latitude && longitude) {
+            try {
+              const fetchedAddress = await findOpenCageAndCity(latitude, longitude);
+              setAddress(fetchedAddress);
+            } catch (error) {
+              console.error("Error fetching address:", error);
+            }
+          }
+        };
+    
+        fetchAddress();
+      }, [latitude, longitude]);
+
     const handleClick = async () => {
         try {
             setFormCurrentLocation(true)
+            setSelectedAddress('')
+            setMarker(true)
         } catch (error) {
             console.error("Error fetching address:", error);
         }
@@ -34,6 +60,7 @@ function CreateAddress(){
             <Navbar/>
             <Box padding={'0px 100px'}
              marginBottom={'150px'}>
+                <ModalMapAddressEntry/>
                 <Flex className="create-address-top"
                 flexDir={'column'}
                 gap={'16px'}
@@ -77,7 +104,14 @@ function CreateAddress(){
                     height={'474px'}
                     bg={'green.100'}
                     marginBottom={'33px'}>
-                        <Map lat={latitude} lng={longitude}/>
+                        <Map lat={latitude} lng={longitude} 
+                        setSelectedAddress={setSelectedAddress} 
+                        setFormCurrentLocation={setFormCurrentLocation} 
+                        marker={marker}
+                        setMarker={setMarker}
+                        setLat={setLat}
+                        setLng={setLng}
+                        />
                     </Box>
                     <Text fontSize={'16px'}
                     fontWeight={'700'}
@@ -85,7 +119,13 @@ function CreateAddress(){
                     mb={'24px'}>
                         CONTACT
                     </Text>
-                    {formCurrentLocation ? <FormCurrentLocation lat={latitude} lng={longitude}/> : <FormCreateAddress/>}
+                    {formCurrentLocation ? 
+                        <FormCurrentLocation 
+                        address={selectedAddress || address} 
+                        lat={lat || latitude} 
+                        lng={lng || longitude}/> 
+                    : 
+                        <FormCreateAddress/>}
                 </Box>
             </Box>
             <Footer/>

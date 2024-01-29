@@ -1,4 +1,6 @@
 import { DataTypes, Model } from 'sequelize'
+import Warehouse from './warehouse.model'
+import Mutation from './mutation.model'
 
 export default class Stock extends Model {
   /**
@@ -14,6 +16,7 @@ export default class Stock extends Model {
     Stock.belongsTo(models.Colour, { as: 'colour', foreignKey: 'colourId' })
     Stock.hasMany(models.CartProducts, { as: 'cartProducts', foreignKey: 'stockId' })
     Stock.hasMany(models.OrderProducts, { as: 'orderProducts', foreignKey: 'stockId' })
+    Stock.hasMany(Mutation, { foreignKey: 'stockId' })
   }
 }
 export const init = (sequelize) => {

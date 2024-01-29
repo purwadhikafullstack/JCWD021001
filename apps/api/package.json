@@ -11,6 +11,7 @@
     "sequelize": "npx sequelize-cli"
   },
   "dependencies": {
+    "axios": "^1.6.7",
     "bcrypt": "^5.1.1",
     "capitalize": "^2.0.4",
     "cors": "^2.8.5",

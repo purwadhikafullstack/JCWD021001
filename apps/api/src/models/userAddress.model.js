@@ -24,6 +24,8 @@ export const init = (sequelize) => {
       phoneNumber: DataTypes.STRING,
       isMainAddress: DataTypes.BOOLEAN,
       postalCode: DataTypes.INTEGER,
+      latitude: DataTypes.DECIMAL(10, 8),
+      longitude: DataTypes.DECIMAL(11, 8),
     },
     {
       sequelize,

@@ -20,7 +20,7 @@ import React, { useEffect, useState } from 'react'
 import { Formik, Field, Form } from 'formik'
 import { useParams } from 'react-router-dom'
 import { getProductDetails } from '../../../product-details/services/readProductDetails'
-import { getProductCategory } from '../../../product-list/services/readProductCategory'
+import { getProductCategories } from '../../../product-list/services/readProductCategory'
 import { getGender } from '../../services/readGender'
 import axios from 'axios'
 import { ImageUpload } from '../image-upload'
@@ -167,7 +167,7 @@ export const EditProduct = () => {
   })
   // CATEGORY
   useEffect(() => {
-    getProductCategory(setProductCategories, gender)
+    getProductCategories(setProductCategories, gender)
   }, [gender])
   // GET PRODUCT CATEGORIES
 

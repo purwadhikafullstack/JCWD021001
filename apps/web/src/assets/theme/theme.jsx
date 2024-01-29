@@ -56,8 +56,8 @@ export const theme = extendTheme({
       200: '#ff7fa9',
       300: '#fe4d87',
       400: '#fd1c65',
-      500: '#e3024b', //used
-      600: '#b2003b',
+      500: '#e3024b',
+      600: '#CD0244', //used
       700: '#80002a',
       800: '#4f0018',
       900: '#200008',
@@ -75,7 +75,7 @@ export const theme = extendTheme({
       900: '#0d0d0d',
     },
     customTableColor: {
-      100: '#ffe2ef',
+      100: '#FFF1F5',
       900: '#200008',
     },
   },

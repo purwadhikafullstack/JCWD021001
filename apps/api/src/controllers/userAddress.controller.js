@@ -97,9 +97,9 @@ export const findOpencageAndCityController = async (req, res) => {
 
 export const createUserAddressController = async (req, res) => {
     try{
-        const {id} = req.params
+        const {id, latitude, longitude} = req.query
         const { specificAddress, cityId, fullName, phoneNumber, postalCode} = req.body
-        const result = await createUserAddressService (id, specificAddress, cityId, fullName, phoneNumber, postalCode)
+        const result = await createUserAddressService (id, specificAddress, cityId, fullName, phoneNumber, postalCode, latitude, longitude)
         return res.status(200).json({
             message: "success",
             data: result

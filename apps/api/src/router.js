@@ -6,6 +6,7 @@ import { orderRouter } from './routers/orders.router'
 import { productRouter } from './routers/product.router'
 import { userRouter } from './routers/user.router'
 import { userAddressRouter } from './routers/userAddress.router'
+import { warehouseAddressRouter } from './routers/warehouseAddress.router'
 
 import { paymentRouter } from './routers/payments.router'
 import { stockRouter } from './routers/stock.router'
@@ -13,6 +14,7 @@ import { productCategoryRouter } from './routers/productCategory.router'
 import { productImageRouter } from './routers/productImage.router'
 import { colourRouter } from './routers/colour.router'
 import { stockJournalRouter } from './routers/stockJournal.router'
+import { mutationRouter } from './routers/mutation.router'
 const router = Router()
 
 router.get('/', (req, res) => {
@@ -28,10 +30,12 @@ router.use('/order', orderRouter)
 router.use('/product', productRouter)
 router.use('/user', userRouter)
 router.use('/user-address', userAddressRouter)
+router.use('/warehouse-address', warehouseAddressRouter)
 router.use('/payment', paymentRouter)
 router.use('/stock', stockRouter)
 router.use('/product-category', productCategoryRouter)
 router.use('/product-image', productImageRouter)
 router.use('/colour', colourRouter)
 router.use('/stock-journal', stockJournalRouter)
+router.use('/mutation', mutationRouter)
 export default router

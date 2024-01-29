@@ -22,10 +22,14 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import product1 from '../../assets/images/homepage-images/product-1.png'
 import { useNavigate } from 'react-router-dom'
+import { getProducts } from './services/readProducts';
+
 // import './Home.css';
 
 
-  function Home() {
+function Home() {
+
+  const [products, setProducts] = useState([])
     const bestDeals = async () => {
       try {
         await axios.get('http:localhost:8000/product')
@@ -33,7 +37,22 @@ import { useNavigate } from 'react-router-dom'
         console.log(err);
       }
     }
-const navigate = useNavigate()
+  const navigate = useNavigate()
+
+  const fetchData = async (page, pageSize) => {
+    try {
+      const fetchProducts = await getProducts(page, pageSize)
+      setProducts(fetchProducts)
+    } catch (err){
+      console.log(err.message);
+    }
+  }
+  console.log(products)
+  // useEffect(() => {
+  //   fetchData()
+  // }, [])
+ 
+
   return (
     <>
     <Navbar/>

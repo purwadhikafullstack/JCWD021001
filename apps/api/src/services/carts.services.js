@@ -15,7 +15,7 @@ export const updateCartService = async (cartProductId, quantity) => {
         const existingCartProduct = await findCartQuery(cartProductId);
         if (!existingCartProduct) throw new Error("Cart product not found");
     
-        const productPrice = existingCartProduct?.stocks?.products?.price || 0;
+        const productPrice = existingCartProduct?.stocks?.product?.price || 0;
         const quantityDifference = quantity - existingCartProduct?.quantity;
         const calcPrice = productPrice * quantityDifference;
 

@@ -20,6 +20,9 @@ import { ProductSearch } from './pages/product-search/container'
 import OrderList from './pages/order-list'
 import Payment from './pages/payments'
 import { Dashboard } from './pages/dashboard/container'
+import DeliveryAddress from './components/order/deliveryAddress'
+import OrderManagement from './pages/order-management'
+
 function App() {
   return (
     <Box>
@@ -47,12 +50,11 @@ function App() {
               </LoggedInRoute>
             }
           />
-          <Route path="/order" element={<Order />} />
-          <Route path="/cart" element={<Cart />} />
           <Route path="/product" element={<Product />} />
+          <Route path="/cart" element={<Cart />} />
           <Route path="/order" element={<Order />} />
           <Route path="/order-list" element={<OrderList />} />
-          <Route path="/cart" element={<Cart />} />
+          <Route path="/order-management" element={<OrderManagement />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/p/:gender/:group?/:category?" element={<Product />} />
           <Route path="/search" element={<ProductSearch />} />
@@ -60,6 +62,7 @@ function App() {
           <Route path="/dashboard/:destination?/:createProduct?" element={<Dashboard />} />
           <Route path="/dashboard/:destination?/:createProduct?/:epid" element={<Dashboard />} />
           <Route path="/manage-address" element={<ManageAddress />} />
+          <Route path="/delivery-address" element={<DeliveryAddress/>}/>
         </Routes>
       </Auth>
     </Box>

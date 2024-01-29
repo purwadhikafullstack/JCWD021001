@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 
 export const getOrder = async (orderId) => {
     try {
-        const response = await axios.get(`http://localhost:8000/api/order/4`);
+        const response = await axios.get(`http://localhost:8000/api/order/1`);
         // alert("payment created")
         return response.data.data
     } catch (err){
