@@ -6,7 +6,7 @@ export default class Warehouse extends Model {
   static associate(models) {
     // define association here
     this.belongsTo(models.User, { foreignKey: 'userId' })
-    this.belongsTo(models.WarehouseAddress, { foreignKey: 'warehouseAddressId' })
+    this.belongsTo(models.WarehouseAddress, { foreignKey: 'warehouseAddressId', as: 'addresses' })
     this.hasMany(models.Orders, { foreignKey: 'warehouseId', as: 'warehouse' })
     Warehouse.hasMany(Stock, { as: 'stock' })
     Warehouse.hasMany(Mutation, { as: 'requester', foreignKey: 'requesterWarehouseId' })

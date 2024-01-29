@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes } from 'sequelize'
 
 export default class WarehouseAddress extends Model {
   /**
@@ -7,13 +7,13 @@ export default class WarehouseAddress extends Model {
    * The `models/index` file will call this method automatically.
    */
   static associate(models) {
-    this.hasOne(models.Warehouse, { foreignKey: 'warehouseAddressId' });
-    this.belongsTo(models.City, { foreignKey: 'cityId' });
+    this.hasOne(models.Warehouse, { foreignKey: 'warehouseAddressId', as: 'warehouse' })
+    this.belongsTo(models.City, { foreignKey: 'cityId' })
   }
 }
 
 export const init = (sequelize) => {
-    WarehouseAddress.init(
+  WarehouseAddress.init(
     {
       location: DataTypes.STRING,
       cityId: DataTypes.INTEGER,
@@ -26,5 +26,5 @@ export const init = (sequelize) => {
       modelName: 'WarehouseAddress',
       timestamps: false,
     },
-  );
-};
+  )
+}

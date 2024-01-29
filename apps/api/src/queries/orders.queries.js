@@ -7,7 +7,7 @@ import User from '../models/user.model'
 import Warehouse from '../models/warehouse.model'
 import Stock from '../models/stock.model'
 import UserAddress from '../models/userAddress.model'
-
+import WarehouseAddress from '../models/warehouseAddress.model'
 
 export const createOrderQuery = async (
   userId,
@@ -29,7 +29,7 @@ export const createOrderQuery = async (
       totalQuantity: totalQuantity,
       shippingCost: shippingCost,
       orderStatusId: orderStatusId,
-      orderNumber: orderNumber
+      orderNumber: orderNumber,
     })
     // const orderProduct = await OrderProducts.create({ orderId: order.id, productId: productId, price, quantity: quantity })
     const orderProduct = await Promise.all(
@@ -91,12 +91,39 @@ export const getOrderQuery = async (userId) => {
     const res = await Orders.findAll({
       include: [
         { model: User },
-        { model: UserAddress},
+        { model: UserAddress },
         { model: Warehouse, as: 'warehouse' },
         { model: Payments },
-        { model: OrderProducts, include: [{ model: Stock, as: 'stocks', include: [{ model: Product, as: 'product' }] }] },
+        {
+          model: OrderProducts,
+          include: [{ model: Stock, as: 'stocks', include: [{ model: Product, as: 'product' }] }],
+        },
       ],
       where: { userId: userId },
+    })
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
+export const getAllOrderQuery = async () => {
+  try {
+    const res = await Orders.findAll({
+      include: [
+        { model: User },
+        { model: UserAddress },
+        {
+          model: Warehouse,
+          as: 'warehouse',
+          include: [{ model: WarehouseAddress, as: 'addresses' }],
+        },
+        { model: Payments },
+        {
+          model: OrderProducts,
+          include: [{ model: Stock, as: 'stocks', include: [{ model: Product, as: 'product' }] }],
+        },
+      ],
     })
     return res
   } catch (err) {

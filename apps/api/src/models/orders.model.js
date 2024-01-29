@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes } from 'sequelize'
 
 export default class Orders extends Model {
   /**
@@ -8,12 +8,12 @@ export default class Orders extends Model {
    */
   static associate(models) {
     // define association here
-    this.belongsTo(models.User, { foreignKey: 'userId' });
-    this.belongsTo(models.UserAddress, { foreignKey: 'userAddressId' });
-    this.belongsTo(models.Warehouse, { foreignKey: 'warehouseId', as: 'warehouse' });
-    this.belongsTo(models.OrderStatuses, { foreignKey: 'orderStatusId' });
-    this.hasMany(models.OrderProducts, { foreignKey: 'orderId' });
-    this.hasOne(models.Payments, { foreignKey: 'orderId' });
+    this.belongsTo(models.User, { foreignKey: 'userId' })
+    this.belongsTo(models.UserAddress, { foreignKey: 'userAddressId' })
+    this.belongsTo(models.Warehouse, { foreignKey: 'warehouseId', as: 'warehouse' })
+    this.belongsTo(models.OrderStatuses, { foreignKey: 'orderStatusId' })
+    this.hasMany(models.OrderProducts, { foreignKey: 'orderId' })
+    this.hasOne(models.Payments, { foreignKey: 'orderId' })
   }
 }
 
@@ -36,5 +36,5 @@ export const init = (sequelize) => {
       updatedAt: false,
       modelName: 'Orders',
     },
-  );
-};
+  )
+}
