@@ -44,7 +44,7 @@ export const ProductList = () => {
   // PRODUCTS
   const [products, setProducts] = useState([])
   useEffect(() => {
-    getProduct('', '', '', '', setProducts, 'name', 'ASC', pageValue)
+    getProduct('', '', '', '', setProducts, 'name', 'ASC', pageValue, 10)
   }, [pageValue])
 
   // DELETE PRODUCT IMAGES
@@ -61,7 +61,7 @@ export const ProductList = () => {
     try {
       await deleteProductImage('', productId)
       const res = await axios.delete(`http://localhost:8000/api/product/${id}`)
-      setProducts((products) => products.filter((product) => product.id !== id))
+      setProducts((products) => products?.rows?.filter((product) => product.id !== id))
       toast({
         title: `${res?.data?.title}`,
         status: 'success',
