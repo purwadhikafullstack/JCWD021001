@@ -67,9 +67,9 @@ export const getOrderService = async (userId) => {
   }
 }
 
-export const getAllOrderService = async () => {
+export const getAllOrderService = async (sortBy, orderBy, page, pageSize, startDate, endDate) => {
   try {
-    const res = await getAllOrderQuery()
+    const res = await getAllOrderQuery(sortBy, orderBy, page, pageSize, startDate, endDate)
     return res
   } catch (err) {
     throw err

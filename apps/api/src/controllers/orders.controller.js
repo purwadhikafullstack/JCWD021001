@@ -46,6 +46,7 @@ export const createOrderController = async (req, res) => {
     return sendResponse(res, 500, null, err.message)
   }
 }
+
 // export const getOrderController = async (req, res) => {
 //     try {
 //         const { orderId } = req.params
@@ -70,7 +71,8 @@ export const getOrderController = async (req, res) => {
 
 export const getAllOrderController = async (req, res) => {
   try {
-    const result = await getAllOrderService()
+    const { sortBy, orderBy, page, pageSize, startDate, endDate } = req.query
+    const result = await getAllOrderService(sortBy, orderBy, page, pageSize, startDate, endDate)
     return res.status(200).json({
       message: 'Get All Order Success',
       data: result,

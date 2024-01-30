@@ -1,4 +1,5 @@
 import { Model, DataTypes } from 'sequelize'
+import OrderStatuses from './orderStatuses.model'
 
 export default class Orders extends Model {
   /**
@@ -14,6 +15,7 @@ export default class Orders extends Model {
     this.belongsTo(models.OrderStatuses, { foreignKey: 'orderStatusId' })
     this.hasMany(models.OrderProducts, { foreignKey: 'orderId' })
     this.hasOne(models.Payments, { foreignKey: 'orderId' })
+    this.belongsTo(OrderStatuses, { foreignKey: 'orderStatusId', as: 'status' })
   }
 }
 
@@ -27,7 +29,15 @@ export const init = (sequelize) => {
       totalQuantity: DataTypes.INTEGER,
       shippingCost: DataTypes.DECIMAL,
       orderDate: DataTypes.DATE,
-      orderStatusId: DataTypes.INTEGER,
+      orderStatusId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: 'order_statuses',
+          },
+          key: 'id',
+        },
+      },
       orderNumber: DataTypes.STRING,
     },
     {

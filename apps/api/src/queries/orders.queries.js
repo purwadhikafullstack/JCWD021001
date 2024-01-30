@@ -8,6 +8,9 @@ import Warehouse from '../models/warehouse.model'
 import Stock from '../models/stock.model'
 import UserAddress from '../models/userAddress.model'
 import WarehouseAddress from '../models/warehouseAddress.model'
+import OrderStatuses from '../models/orderStatuses.model'
+import ProductCategory from '../models/productCategory.model'
+import { Op, Sequelize } from 'sequelize'
 
 export const createOrderQuery = async (
   userId,
@@ -107,23 +110,84 @@ export const getOrderQuery = async (userId) => {
   }
 }
 
-export const getAllOrderQuery = async () => {
+export const getAllOrderQuery = async (
+  sortBy = null,
+  orderBy = null,
+  page = null,
+  pageSize = null,
+  startDate = null,
+  endDate = null,
+) => {
   try {
+    let filteredAttributes = [
+      'id',
+      'warehouseId',
+      'totalPrice',
+      'totalQuantity',
+      'orderDate',
+      'orderStatusId',
+      [
+        Sequelize.literal(
+          `(SELECT SUM(totalPrice) FROM Orders WHERE orderDate BETWEEN '${startDate}' AND '${endDate}')`,
+        ),
+        'totalPriceSum',
+      ],
+    ]
+    const filter = {}
+
+    filter.where = {
+      orderDate: {
+        [Op.lte]: new Date(endDate),
+        [Op.gte]: new Date(startDate),
+      },
+    }
+
     const res = await Orders.findAll({
+      attributes: filteredAttributes,
       include: [
-        { model: User },
-        { model: UserAddress },
         {
           model: Warehouse,
           as: 'warehouse',
           include: [{ model: WarehouseAddress, as: 'addresses' }],
         },
-        { model: Payments },
         {
           model: OrderProducts,
-          include: [{ model: Stock, as: 'stocks', include: [{ model: Product, as: 'product' }] }],
+          attributes: ['price', 'quantity'],
+          include: [
+            {
+              model: Stock,
+              as: 'stocks',
+              attributes: ['productId'],
+              include: [
+                {
+                  model: Product,
+                  as: 'product',
+                  attributes: ['name', 'price', 'productCategoryId'],
+                  include: [
+                    {
+                      model: ProductCategory,
+                      as: 'category',
+                      include: [
+                        {
+                          model: ProductCategory,
+                          as: 'parent',
+                          include: [{ model: ProductCategory, as: 'parent' }],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          model: OrderStatuses,
+          as: 'status',
+          attributes: ['name'],
         },
       ],
+      ...filter,
     })
     return res
   } catch (err) {
