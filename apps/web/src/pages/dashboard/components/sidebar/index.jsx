@@ -3,11 +3,22 @@ import { Box, Flex, HStack, Icon, Text, VStack } from '@chakra-ui/react'
 import { Squares2X2Icon } from '@heroicons/react/24/outline'
 import { SidebarButton } from '../sidebar-button'
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 export const Sidebar = (props) => {
   // NAVIGATE
   const navigate = useNavigate()
   // NAVIGATE
 
+  // Toggle Box Colour
+  const [boxToggle, setBoxToggle] = useState({})
+
+  // Handle Toggle
+  const changeBoxToggle = (id) => {
+    setBoxToggle((set) => ({
+      [id]: !set[id],
+      [!id]: set[id],
+    }))
+  }
   return (
     <Box
       position={'relative'}
@@ -26,7 +37,12 @@ export const Sidebar = (props) => {
           <Text>Dashboard</Text>
         </HStack>
         <VStack align={'stretch'} spacing={'1.5em'}>
-          <SidebarButton label={'Product'} icon={Squares2X2Icon} />
+          <SidebarButton
+            label={'Product'}
+            icon={Squares2X2Icon}
+            boxToggle={boxToggle}
+            changeBoxToggle={changeBoxToggle}
+          />
           <Box p={'0 1.3em'} borderLeft={'2px solid lightgray'}>
             <VStack align={'stretch'} spacing={'1.5em'}>
               <Text
@@ -65,6 +81,27 @@ export const Sidebar = (props) => {
                 cursor={'pointer'}
               >
                 Stock Mutation
+              </Text>
+            </VStack>
+          </Box>
+          <SidebarButton label={'Report'} icon={Squares2X2Icon} />
+          <Box p={'0 1.3em'} borderLeft={'2px solid lightgray'}>
+            <VStack align={'stretch'} spacing={'1.5em'}>
+              <Text
+                onClick={() => {
+                  navigate('/dashboard/stock-management?pa=1')
+                }}
+                cursor={'pointer'}
+              >
+                Sales Report
+              </Text>
+              <Text
+                onClick={() => {
+                  navigate('/dashboard/stock-mutation?pa=1&sta=req')
+                }}
+                cursor={'pointer'}
+              >
+                Stock Report
               </Text>
             </VStack>
           </Box>
