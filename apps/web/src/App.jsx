@@ -22,6 +22,7 @@ import Payment from './pages/payments'
 import { Dashboard } from './pages/dashboard/container'
 import DeliveryAddress from './components/order/deliveryAddress'
 import OrderManagement from './pages/order-management'
+import AdminList from './pages/admin-list'
 
 function App() {
   return (
@@ -63,6 +64,7 @@ function App() {
           <Route path="/dashboard/:destination?/:createProduct?/:epid" element={<Dashboard />} />
           <Route path="/manage-address" element={<ManageAddress />} />
           <Route path="/delivery-address" element={<DeliveryAddress/>}/>
+          <Route path='/admin-list' element={<AdminList/>}/>
         </Routes>
       </Auth>
     </Box>

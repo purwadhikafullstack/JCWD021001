@@ -89,7 +89,7 @@ export const Navbar = (props) => {
                     {user?.avatar ? (
                       <Avatar
                         name={user?.fullName}
-                        src={`${import.meta.env.VITE_APP_IMAGE_URL}/api/avatar/${user?.avatar}`}
+                        src={`${import.meta.env.VITE_APP_API_IMAGE_URL}/avatar/${user?.avatar}`}
                         w={'48px'}
                         h={'48px'}
                       />
