@@ -23,49 +23,61 @@ import { Dashboard } from './pages/dashboard/container'
 import DeliveryAddress from './components/order/deliveryAddress'
 import OrderManagement from './pages/order-management'
 import AdminList from './pages/admin-list'
+import { AuthenticatedRouteOrder } from './pages/order/authenticatedRouteOrder'
+import { CartProvider } from './components/navbar/services/cartContext'
+
 
 function App() {
   return (
     <Box>
       <Auth>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/auth/email-verification" element={<Verification />} />
-          <Route path="/signin" element={<Signin />} />
-          <Route path="/password-reset-request" element={<RequestPasswordReset />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route
-            path="/profile"
-            element={
-              <LoggedInRoute>
-                <Profile />
-              </LoggedInRoute>
-            }
-          />
-          <Route
-            path="/create-address"
-            element={
-              <LoggedInRoute>
-                <CreateAddress />
-              </LoggedInRoute>
-            }
-          />
-          <Route path="/product" element={<Product />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/order" element={<Order />} />
-          <Route path="/order-list" element={<OrderList />} />
-          <Route path="/order-management" element={<OrderManagement />} />
-          <Route path="/payment" element={<Payment />} />
-          <Route path="/p/:gender/:group?/:category?" element={<Product />} />
-          <Route path="/search" element={<ProductSearch />} />
-          <Route path="/product/:id" element={<ProductDetails />} />
-          <Route path="/dashboard/:destination?/:createProduct?" element={<Dashboard />} />
-          <Route path="/dashboard/:destination?/:createProduct?/:epid" element={<Dashboard />} />
-          <Route path="/manage-address" element={<ManageAddress />} />
-          <Route path="/delivery-address" element={<DeliveryAddress/>}/>
-          <Route path='/admin-list' element={<AdminList/>}/>
-        </Routes>
+        <CartProvider>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/auth/email-verification" element={<Verification />} />
+            <Route path="/signin" element={<Signin />} />
+            <Route path="/password-reset-request" element={<RequestPasswordReset />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route
+              path="/profile"
+              element={
+                <LoggedInRoute>
+                  <Profile />
+                </LoggedInRoute>
+              }
+            />
+            <Route
+              path="/create-address"
+              element={
+                <LoggedInRoute>
+                  <CreateAddress />
+                </LoggedInRoute>
+              }
+            />
+            <Route path="/product" element={<Product />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route
+              path="/cart/order"
+              element={
+                <AuthenticatedRouteOrder>
+                  <Order />
+                </AuthenticatedRouteOrder>
+              }
+            />
+            <Route path="/order-list" element={<OrderList />} />
+            <Route path="/order-management" element={<OrderManagement />} />
+            <Route path="/payment" element={<Payment />} />
+            <Route path="/p/:gender/:group?/:category?" element={<Product />} />
+            <Route path="/search" element={<ProductSearch />} />
+            <Route path="/product/:id" element={<ProductDetails />} />
+            <Route path="/dashboard/:destination?/:createProduct?" element={<Dashboard />} />
+            <Route path="/dashboard/:destination?/:createProduct?/:epid" element={<Dashboard />} />
+            <Route path="/manage-address" element={<ManageAddress />} />
+            <Route path="/delivery-address" element={<DeliveryAddress />} />
+            <Route path='/admin-list' element={<AdminList/>}/>
+          </Routes>
+        </CartProvider>
       </Auth>
     </Box>
   )

@@ -27,8 +27,6 @@ export const findWarehouseAddressService = async (provinceId, userLat, userLong)
         let nearestWarehouse = null;
         let shortestDistance = Infinity;
 
-        console.log("ini warehouse",warehouseProvince);
-
         if (warehouseProvince){
         warehouseProvince.forEach(warehouse => {
             const warehouseLat = warehouse.WarehouseAddress.latitude

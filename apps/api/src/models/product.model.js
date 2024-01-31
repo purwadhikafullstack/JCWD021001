@@ -15,6 +15,7 @@ export default class Product extends Model {
     Product.belongsTo(ProductCategory, { foreignKey: 'productCategoryId', as: 'category' })
     Product.hasMany(ProductImage, { as: 'picture' })
     Product.hasMany(StockJournal, { as: 'history' })
+    Product.hasMany(models.CartProducts, { as: 'cartProducts', foreignKey: 'productId' })
   }
 }
 

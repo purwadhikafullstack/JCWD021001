@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Flex,
+  Heading,
   Table,
   TableContainer,
   Tbody,
@@ -24,7 +25,7 @@ export const StockManagement = () => {
   const queryParams = new URLSearchParams(location.search)
 
   // WAREHOUSE ID
-  const [warehouseId, setWarehouseId] = useState(4)
+  const [warehouseId, setWarehouseId] = useState(1)
 
   // QUERY PARAMS
   const pageValue = queryParams.get('pa')
@@ -44,18 +45,31 @@ export const StockManagement = () => {
     getStock(warehouseId, pageValue).then((data) => setStocks(data))
   }, [warehouseId, pageValue])
 
+  // Toggle Box Colour
+  const [boxToggle, setBoxToggle] = useState({ 1: true })
+
+  // Handle Toggle
+  const changeBoxToggle = (id) => {
+    setBoxToggle((set) => ({
+      [id]: !set[id],
+      [!id]: set[id],
+    }))
+  }
   return (
-    <Box p={'1em'} h={'100%'} w={'100%'} bgColor={'white'}>
+    <Box p={'1em'} h={'100%'} w={'100%'}>
       <Flex flexDir={'column'} justifyContent={'space-between'} h={'100%'}>
         <VStack align={'stretch'}>
           <Flex alignItems={'center'} justifyContent={'space-between'}>
-            <Text fontWeight={'bold'}>Stock Management</Text>
+            <Heading as={'h1'} fontSize={'1.5em'} fontWeight={'bold'}>
+              Stock Management
+            </Heading>
             <Button
               _hover={{
-                bgColor: 'redPure.500',
+                bgColor: 'redPure.600',
               }}
+              h={'3em'}
               w={'10em'}
-              bgColor={'redPure.500'}
+              bgColor={'redPure.600'}
               color={'white'}
               onClick={() => {
                 navigate('/dashboard/stock-management/create-stock')
@@ -84,28 +98,42 @@ export const StockManagement = () => {
                   overflow: 'hidden',
                 }}
               >
-                <Thead bg={'redPure.500'} position={'relative'}>
+                <Thead bg={'redPure.600'} position={'relative'}>
                   <Tr>
-                    <Th color={'#FEFEFE'}>Products</Th>
-                    <Th color={'#FEFEFE'}>Size</Th>
-                    <Th color={'#FEFEFE'}>Color</Th>
-                    <Th color={'#FEFEFE'}>Price</Th>
-                    <Th color={'#FEFEFE'} w={'10em'}>
+                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
+                      Products
+                    </Th>
+                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
+                      Size
+                    </Th>
+                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
+                      Color
+                    </Th>
+                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
+                      Price
+                    </Th>
+                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'} w={'10em'}>
                       Stock
                     </Th>
-                    <Th color={'#FEFEFE'} w={'10em'}>
+                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'} w={'10em'}>
                       Action
                     </Th>
                   </Tr>
                 </Thead>
-                <Tbody position={'relative'} color={'#6D6D6D'} fontWeight={'500'}>
+                <Tbody position={'relative'} fontWeight={'bold'}>
                   <TableBody stocks={stocks} warehouseId={warehouseId} pathName={pathName} />
                 </Tbody>
               </Table>
             </TableContainer>
           </Box>
         </VStack>
-        <PaginationList location={location} pathName={pathName} pageValue={pageValue} />
+        <PaginationList
+          boxToggle={boxToggle}
+          changeBoxToggle={changeBoxToggle}
+          location={location}
+          pathName={pathName}
+          pageValue={pageValue}
+        />
       </Flex>
     </Box>
   )

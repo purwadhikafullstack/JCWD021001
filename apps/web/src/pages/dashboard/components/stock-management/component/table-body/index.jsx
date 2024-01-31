@@ -82,6 +82,8 @@ export const TableBody = (props) => {
             <Td>
               {isEditable ? (
                 <Input
+                  borderColor={'#D9D9D9'}
+                  focusBorderColor={'#D9D9D9'}
                   id={stock?.id}
                   w={'3.5em'}
                   type="number"
@@ -92,17 +94,26 @@ export const TableBody = (props) => {
                   isReadOnly={!isEditable}
                 />
               ) : (
-                <Input w={'3.5em'} type="number" value={stock?.qty} isReadOnly />
+                <Input
+                  borderColor={'#D9D9D9'}
+                  focusBorderColor={'#D9D9D9'}
+                  w={'3.5em'}
+                  type="number"
+                  value={stock?.qty}
+                  isReadOnly
+                />
               )}
             </Td>
             <Td>
               <HStack>
                 <Button
                   _hover={{
-                    bgColor: 'redPure.500',
+                    bgColor: 'redPure.600',
                   }}
+                  fontSize={'.8em'}
+                  h={'2.5em'}
                   w={'5em'}
-                  bgColor={'redPure.500'}
+                  bgColor={'redPure.600'}
                   color={'white'}
                   onClick={() => {
                     {
@@ -113,14 +124,33 @@ export const TableBody = (props) => {
                 >
                   {isEditable ? 'Cancel' : 'Edit'}
                 </Button>
+                {!isEditable && (
+                  <Button
+                    _hover={{
+                      bgColor: 'redPure.600',
+                    }}
+                    fontSize={'.8em'}
+                    h={'2.5em'}
+                    w={'5em'}
+                    bgColor={'redPure.600'}
+                    color={'white'}
+                    onClick={() => {
+                      navigate(`${props?.pathName}/order-history/${stock?.id}?pa=1`)
+                    }}
+                  >
+                    History
+                  </Button>
+                )}
                 <Button
                   _hover={{
                     bgColor: 'transparent',
                   }}
+                  fontSize={'.8em'}
+                  h={'2.5em'}
                   w={'5em'}
-                  border={'1px solid #e3024b'}
+                  border={'1px solid #CD0244'}
                   bgColor={'transparent'}
-                  color={'redPure.500'}
+                  color={'redPure.600'}
                   onClick={() => {
                     isEditable
                       ? handleSaveClick(
@@ -136,22 +166,6 @@ export const TableBody = (props) => {
                 >
                   {isEditable ? 'Save' : 'Delete'}
                 </Button>
-                {!isEditable && (
-                  <Button
-                    _hover={{
-                      bgColor: 'transparent',
-                    }}
-                    w={'5em'}
-                    border={'1px solid #e3024b'}
-                    bgColor={'transparent'}
-                    color={'redPure.500'}
-                    onClick={() => {
-                      navigate(`${props?.pathName}/order-history/${stock?.id}?pa=1`)
-                    }}
-                  >
-                    History
-                  </Button>
-                )}
               </HStack>
             </Td>
           </Tr>

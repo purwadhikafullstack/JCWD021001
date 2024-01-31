@@ -16,9 +16,9 @@ export const findWarehouseProvinceQuery = async (provinceId) => {
                     model: City,
                     include: [{
                         model: Province,
-                        where: {id: provinceId}
+                        where: { id: provinceId }
                     }]
-                }],
+                }]
             }]
         });
     } catch (err) {
