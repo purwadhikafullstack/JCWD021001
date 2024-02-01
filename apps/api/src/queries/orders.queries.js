@@ -114,6 +114,7 @@ export const getAllOrderQuery = async (
   orderBy = 'DESC',
   page = 1,
   pageSize = 10,
+  warehouseId = null,
   startDate = null,
   endDate = null,
 ) => {
@@ -135,6 +136,9 @@ export const getAllOrderQuery = async (
     ]
     const filter = {}
     filter.where = {
+      warehouseId: {
+        [Op.eq]: warehouseId,
+      },
       orderDate: {
         [Op.lte]: new Date(endDate),
         [Op.gte]: new Date(startDate),
@@ -192,6 +196,29 @@ export const getAllOrderQuery = async (
       limit: +pageSize,
       offset: offset,
     })
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
+export const getAllOrderByCategoryQuery = async (warehouseId, startDate, endDate) => {
+  try {
+    console.log('start-date', startDate)
+    const res = await OrderProducts.sequelize
+      .query(`SELECT  grandparent_category.name as grandparent_name, parent_category.name AS group_name, parent_category.id as group_id,  
+      SUM(orderProducts.quantity) as ordercount,
+      SUM(orderProducts.price * orderProducts.quantity) AS total
+      FROM orders
+      JOIN orderProducts ON orders.id = orderProducts.orderId
+      JOIN stocks ON orderProducts.stockId = stocks.id
+      JOIN products ON stocks.productId = products.id
+      JOIN productCategories AS child_category ON products.productCategoryId = child_category.id
+      JOIN productCategories AS parent_category ON child_category.parentId = parent_category.id
+      JOIN productCategories AS grandparent_category ON parent_category.parentId = grandparent_category.id
+      WHERE orders.orderDate >= '${startDate}' AND orders.orderDate <= '${endDate}'
+      AND orders.warehouseId = ${warehouseId}
+      GROUP BY parent_category.id;`)
     return res
   } catch (err) {
     throw err

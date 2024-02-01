@@ -1,6 +1,7 @@
 import {
   createOrderQuery,
   findOrderIdQuery,
+  getAllOrderByCategoryQuery,
   getAllOrderQuery,
   getOrderQuery,
 } from '../queries/orders.queries'
@@ -67,9 +68,34 @@ export const getOrderService = async (userId) => {
   }
 }
 
-export const getAllOrderService = async (sortBy, orderBy, page, pageSize, startDate, endDate) => {
+export const getAllOrderService = async (
+  sortBy,
+  orderBy,
+  page,
+  pageSize,
+  warehouseId,
+  startDate,
+  endDate,
+) => {
   try {
-    const res = await getAllOrderQuery(sortBy, orderBy, page, pageSize, startDate, endDate)
+    const res = await getAllOrderQuery(
+      sortBy,
+      orderBy,
+      page,
+      pageSize,
+      warehouseId,
+      startDate,
+      endDate,
+    )
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
+export const getAllOrderByCategoryService = async (warehouseId, startDate, endDate) => {
+  try {
+    const res = await getAllOrderByCategoryQuery(warehouseId, startDate, endDate)
     return res
   } catch (err) {
     throw err
