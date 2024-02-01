@@ -2,6 +2,7 @@ import {
   createOrderQuery,
   findOrderIdQuery,
   getAllOrderByCategoryQuery,
+  getAllOrderByProductQuery,
   getAllOrderQuery,
   getOrderQuery,
 } from '../queries/orders.queries'
@@ -96,6 +97,21 @@ export const getAllOrderService = async (
 export const getAllOrderByCategoryService = async (warehouseId, startDate, endDate) => {
   try {
     const res = await getAllOrderByCategoryQuery(warehouseId, startDate, endDate)
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
+export const getAllOrderByProductService = async (
+  page,
+  pageSize,
+  warehouseId,
+  startDate,
+  endDate,
+) => {
+  try {
+    const res = await getAllOrderByProductQuery(page, pageSize, warehouseId, startDate, endDate)
     return res
   } catch (err) {
     throw err

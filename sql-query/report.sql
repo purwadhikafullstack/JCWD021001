@@ -34,7 +34,7 @@ JOIN products ON stocks.productId = products.id
 JOIN productCategories AS child_category ON products.productCategoryId = child_category.id
 JOIN productCategories AS parent_category ON child_category.parentId = parent_category.id
 JOIN productCategories AS grandparent_category ON parent_category.parentId = grandparent_category.id
-WHERE orders.orderDate >= '2024-01-30 00:00:00' AND orders.orderDate <= '2024-01-30 00:00:00'
+WHERE orders.orderDate >= '2024-01-30' AND orders.orderDate <= '2024-01-30'
 AND orders.warehouseId = 5
 GROUP BY parent_category.id;
 
@@ -76,4 +76,6 @@ join stocks on stockJournals.stockId = stocks.id
 where stocks.warehouseId = 4
 GROUP BY stocks.id;
 
+use pure;
+select * from orders;
 

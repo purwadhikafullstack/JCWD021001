@@ -204,7 +204,6 @@ export const getAllOrderQuery = async (
 
 export const getAllOrderByCategoryQuery = async (warehouseId, startDate, endDate) => {
   try {
-    console.log('start-date', startDate)
     const res = await OrderProducts.sequelize
       .query(`SELECT  grandparent_category.name as grandparent_name, parent_category.name AS group_name, parent_category.id as group_id,  
       SUM(orderProducts.quantity) as ordercount,
@@ -219,6 +218,34 @@ export const getAllOrderByCategoryQuery = async (warehouseId, startDate, endDate
       WHERE orders.orderDate >= '${startDate}' AND orders.orderDate <= '${endDate}'
       AND orders.warehouseId = ${warehouseId}
       GROUP BY parent_category.id;`)
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
+export const getAllOrderByProductQuery = async (
+  page,
+  pageSize,
+  warehouseId,
+  startDate,
+  endDate,
+) => {
+  try {
+    const offset = (page - 1) * pageSize
+    const res = await OrderProducts.sequelize.query(`SELECT p.id, p.name, 
+  SUM(op.price * op.quantity) as total, 
+  SUM(op.quantity) as sold
+FROM orders as o
+JOIN orderProducts as op ON o.id = op.orderId
+JOIN stocks as st ON op.stockId = st.id
+JOIN products as p ON st.productId = p.id
+WHERE o.orderDate >= '${startDate}' 
+  AND o.orderDate <= '${endDate}' 
+  AND o.warehouseId = ${Number(warehouseId)}
+GROUP BY p.id
+LIMIT ${pageSize} OFFSET ${offset};
+`)
     return res
   } catch (err) {
     throw err

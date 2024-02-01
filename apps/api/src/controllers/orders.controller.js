@@ -1,6 +1,7 @@
 import {
   createOrderService,
   getAllOrderByCategoryService,
+  getAllOrderByProductService,
   getAllOrderService,
   getOrderService,
 } from '../services/orders.services'
@@ -100,6 +101,27 @@ export const getAllOrderByCategoryController = async (req, res) => {
     return res.status(200).json({
       message: 'Get All Order Success',
       data: result[0],
+    })
+  } catch (err) {
+    return res.status(500).json({
+      message: err.message,
+    })
+  }
+}
+
+export const getAllOrderByProductController = async (req, res) => {
+  try {
+    const { page, pageSize, warehouseId, startDate, endDate } = req.query
+    const result = await getAllOrderByProductService(
+      page,
+      pageSize,
+      warehouseId,
+      startDate,
+      endDate,
+    )
+    return res.status(200).json({
+      message: 'Get All Order Success',
+      data: result,
     })
   } catch (err) {
     return res.status(500).json({
