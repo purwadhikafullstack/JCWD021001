@@ -10,6 +10,7 @@ import { OrderHistory } from '../order-history'
 import { CreateStock } from '../create-stock'
 import { StockMutation } from '../stock-mutation'
 import { FormMutation } from '../form-mutation'
+import { SalesReport } from '../sales-report'
 
 export const Body = (props) => {
   const renderComponent = () => {
@@ -22,7 +23,8 @@ export const Body = (props) => {
         return <StockManagement />
       case 'stock-mutation':
         return <StockMutation />
-
+      case 'sales-report':
+        return <SalesReport />
     }
   }
   const renderComponentAgain = () => {

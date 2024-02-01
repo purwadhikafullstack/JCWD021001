@@ -21,7 +21,6 @@ export const createOrderQuery = async (
   shippingCost,
   orderStatusId,
   orderNumber,
-  products,
 ) => {
   try {
     const order = await Orders.create({
@@ -111,14 +110,15 @@ export const getOrderQuery = async (userId) => {
 }
 
 export const getAllOrderQuery = async (
-  sortBy = null,
-  orderBy = null,
-  page = null,
-  pageSize = null,
+  sortBy = 'orderDate',
+  orderBy = 'DESC',
+  page = 1,
+  pageSize = 10,
   startDate = null,
   endDate = null,
 ) => {
   try {
+    const offset = (page - 1) * pageSize
     let filteredAttributes = [
       'id',
       'warehouseId',
@@ -134,7 +134,6 @@ export const getAllOrderQuery = async (
       ],
     ]
     const filter = {}
-
     filter.where = {
       orderDate: {
         [Op.lte]: new Date(endDate),
@@ -147,8 +146,9 @@ export const getAllOrderQuery = async (
       include: [
         {
           model: Warehouse,
+          attributes: ['name'],
           as: 'warehouse',
-          include: [{ model: WarehouseAddress, as: 'addresses' }],
+          include: [{ model: WarehouseAddress, attributes: ['location'], as: 'addresses' }],
         },
         {
           model: OrderProducts,
@@ -188,6 +188,9 @@ export const getAllOrderQuery = async (
         },
       ],
       ...filter,
+      order: [[`${sortBy}`, `${orderBy}`]],
+      limit: +pageSize,
+      offset: offset,
     })
     return res
   } catch (err) {

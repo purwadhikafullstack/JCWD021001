@@ -128,7 +128,6 @@ export const StockMutation = () => {
   })
   // Toggle Box Colour
   const [textToggle, setTextToggle] = useState({ Request: true })
-  console.log('text-toggle', textToggle)
   // Handle Toggle
   const changeTextToggle = (id) => {
     setTextToggle((set) => ({

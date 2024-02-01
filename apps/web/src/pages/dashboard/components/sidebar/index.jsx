@@ -89,7 +89,7 @@ export const Sidebar = (props) => {
             <VStack align={'stretch'} spacing={'1.5em'}>
               <Text
                 onClick={() => {
-                  navigate('/dashboard/stock-management?pa=1')
+                  navigate('/dashboard/sales-report?pa=1&cat=all&mo=jan')
                 }}
                 cursor={'pointer'}
               >
@@ -97,7 +97,7 @@ export const Sidebar = (props) => {
               </Text>
               <Text
                 onClick={() => {
-                  navigate('/dashboard/stock-mutation?pa=1&sta=req')
+                  navigate('/dashboard/stock-report?pa=1&cat=all&mo=jan')
                 }}
                 cursor={'pointer'}
               >
