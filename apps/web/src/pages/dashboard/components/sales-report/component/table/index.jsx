@@ -2,6 +2,7 @@ import { Box, Text } from '@chakra-ui/react'
 import { SalesTable } from '../sales-table'
 import { CategoryTable } from '../category-table'
 import { useEffect, useState } from 'react'
+import { ProductTable } from '../product-table'
 
 export const ReportTable = (props) => {
   console.log('props', props)
@@ -22,6 +23,15 @@ export const ReportTable = (props) => {
             warehouseId={props?.warehouseId}
             startDate={props?.startDate}
             endDate={props?.endDate}
+          />
+        )
+      case 'pro':
+        return (
+          <ProductTable
+            warehouseId={props?.warehouseId}
+            startDate={props?.startDate}
+            endDate={props?.endDate}
+            pageValue={props?.pageValue}
           />
         )
     }

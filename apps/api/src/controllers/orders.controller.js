@@ -121,7 +121,7 @@ export const getAllOrderByProductController = async (req, res) => {
     )
     return res.status(200).json({
       message: 'Get All Order Success',
-      data: result,
+      data: result[0],
     })
   } catch (err) {
     return res.status(500).json({
