@@ -14,14 +14,14 @@ export const BreadCrumbs = () => {
           <BreadcrumbLink color={'brand.lightred'}
           fontWeight={'700'}
           fontSize={'12px'}>
-              User Management
+              Manage Address
           </BreadcrumbLink>
       </BreadcrumbItem>
       <BreadcrumbItem isCurrentPage>
           <BreadcrumbLink color={'brand.lightred'}
           fontWeight={'700'}
           fontSize={'12px'}>
-              Admin List
+              Create Address
           </BreadcrumbLink>
       </BreadcrumbItem>
   </Breadcrumb>
