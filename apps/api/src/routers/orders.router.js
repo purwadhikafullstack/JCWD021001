@@ -1,8 +1,17 @@
-import { Router } from 'express';
-import { createOrderController, getOrderController } from '../controllers/orders.controller';
-const orderRouter = Router();
+import { Router } from 'express'
+import {
+  createOrderController,
+  getOrderController,
+  getOrderManagementController,
+  getWarehouseController,
+  updateOrderController,
+} from '../controllers/orders.controller'
+const orderRouter = Router()
 
-orderRouter.post("/", createOrderController)
-orderRouter.get("/:userId", getOrderController)
+orderRouter.post('/', createOrderController)
+orderRouter.patch('/:orderId', updateOrderController)
+orderRouter.get('/management', getOrderManagementController)
+orderRouter.get('/warehouse', getWarehouseController)
+orderRouter.get('/:userId', getOrderController)
 
-export {orderRouter}
+export { orderRouter }

@@ -21,8 +21,11 @@ import {
   XMarkIcon,
   ChevronDownIcon,
 } from '@heroicons/react/24/outline'
+import { useNavigate } from 'react-router-dom'
+
 
 const ShoppingCartBox = ({ cartData, cartCount }) => {
+  const navigate = useNavigate()
   return (
     <Popover>
       <PopoverTrigger>
@@ -56,7 +59,7 @@ const ShoppingCartBox = ({ cartData, cartCount }) => {
             Shopping Cart
           </Text>
         </PopoverHeader>
-        <PopoverBody>
+        <PopoverBody padding={'18px'}>
           {cartData?.map((cartItems) => (
             <Box key={cartItems.id} display={'flex'} flexDirection={'column'} gap={'14px'}>
               {cartItems?.CartProducts?.slice(0, 3).map((items) => (
@@ -73,7 +76,7 @@ const ShoppingCartBox = ({ cartData, cartCount }) => {
                       <Text
                         fontFamily={'nunito'}
                         fontWeight={'700'}
-                        fontSize={'16px'}
+                        fontSize={'14px'}
                         color={'#CD0244'}
                       >
                         Rp {items?.price}
@@ -85,6 +88,20 @@ const ShoppingCartBox = ({ cartData, cartCount }) => {
             </Box>
           ))}
         </PopoverBody>
+        <PopoverFooter
+          border={'none'}
+          bgColor={'#FFF1F5'}
+          borderBottomRadius={'12px'}
+          textAlign={'center'}
+          fontFamily={'nunito'}
+          fontWeight={'700'}
+          fontSize={'12px'}
+          color={'#CD0244'}
+          cursor={'pointer'}
+          onClick={() => navigate('/cart')}
+        >
+          Show All Shopping Cart
+        </PopoverFooter>
       </PopoverContent>
     </Popover>
   )

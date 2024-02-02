@@ -20,11 +20,14 @@ import { ProductSearch } from './pages/product-search/container'
 import OrderList from './pages/order-list'
 import Payment from './pages/payments'
 import { Dashboard } from './pages/dashboard/container'
-import DeliveryAddress from './components/order/deliveryAddress'
 import OrderManagement from './pages/order-management'
-import AdminList from './pages/admin-list'
 import { AuthenticatedRouteOrder } from './pages/order/authenticatedRouteOrder'
-import { CartProvider } from './components/navbar/services/cartContext'
+import DeliveryAddress from './components/order/deliveryAddress'
+import OrderDetails from './pages/order-details'
+import OrderManagementDetails from './pages/order-management-details'
+import AdminList from './pages/admin-list'
+import { CartProvider } from './components/navbar/components/use-cart'
+
 
 
 function App() {
@@ -66,7 +69,9 @@ function App() {
               }
             />
             <Route path="/order-list" element={<OrderList />} />
+            <Route path="/order-details" element={<OrderDetails />} />
             <Route path="/order-management" element={<OrderManagement />} />
+            <Route path="/order-management/details" element={<OrderManagementDetails />} />
             <Route path="/payment" element={<Payment />} />
             <Route path="/p/:gender/:group?/:category?" element={<Product />} />
             <Route path="/search" element={<ProductSearch />} />

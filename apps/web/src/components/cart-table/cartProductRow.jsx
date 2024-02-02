@@ -14,7 +14,7 @@ const CartProductRow = ({
   handleSelectAllChange,
   productData,
 }) => {
-  console.log('cartItem', cartItem);
+  console.log('cartItem', cartItem)
   return (
     <Box w={{ xl: '1100px', '2xl': '1420px' }}>
       <TableContainer>
@@ -112,7 +112,13 @@ const CartProductRow = ({
                 </Td>
                 <Td>
                   <Box display={'flex'} alignItems={'center'} gap={'16px'}>
-                    <Box w={'36px'} h={'36px'} bgColor={'#2F4E7A'} borderRadius={'6px'} />
+                    <Box
+                      w={'36px'}
+                      h={'36px'}
+                      bgColor={item?.colour?.name}
+                      border={'1px'}
+                      borderRadius={'6px'}
+                    />
                     <Box
                       w={'116px'}
                       h={'36px'}

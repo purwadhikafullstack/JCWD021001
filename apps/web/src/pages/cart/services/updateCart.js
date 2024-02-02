@@ -1,8 +1,6 @@
 import axios from 'axios'
 
-
 export const updateCart = async (cartProductId, quantity, onCartUpdated) => {
-  console.log("dfdsf",quantity);
   try {
     const response = await axios.patch(`http://localhost:8000/api/cart/${cartProductId}`, {
       quantity: quantity,
