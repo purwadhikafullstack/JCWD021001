@@ -113,14 +113,14 @@ export const Navbar = (props) => {
                 <Flex w={'48px'} h={'48px'} borderRadius={'full'} ml={'24px'}>
                   {user?.avatar ? (
                     <Avatar
-                      name={user?.fullName}
-                      src={`${import.meta.env.VITE_APP_IMAGE_URL}/api/avatar/${user?.avatar}`}
+                      name={user?.username}
+                      src={`${import.meta.env.VITE_APP_API_IMAGE_URL}/avatar/${user?.avatar}`}
                       w={'48px'}
                       h={'48px'}
                     />
                   ) : (
                     <Avatar
-                      name={user?.fullName}
+                      name={user?.username}
                       bg="rgba(40, 96, 67, 1)"
                       src={'https://bit.ly/broken-link'}
                       w={'48px'}

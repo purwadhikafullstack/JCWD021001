@@ -20,10 +20,12 @@ import { ProductSearch } from './pages/product-search/container'
 import OrderList from './pages/order-list'
 import Payment from './pages/payments'
 import { Dashboard } from './pages/dashboard/container'
-import OrderManagement from './pages/order-management'
-import { CartProvider } from './components/Navbar/services/cartContext'
-import { AuthenticatedRouteOrder } from './pages/order/authenticatedRouteOrder'
 import DeliveryAddress from './components/order/deliveryAddress'
+import OrderManagement from './pages/order-management'
+import AdminList from './pages/admin-list'
+import { AuthenticatedRouteOrder } from './pages/order/authenticatedRouteOrder'
+import { CartProvider } from './components/navbar/services/cartContext'
+
 
 function App() {
   return (
@@ -73,6 +75,7 @@ function App() {
             <Route path="/dashboard/:destination?/:createProduct?/:epid" element={<Dashboard />} />
             <Route path="/manage-address" element={<ManageAddress />} />
             <Route path="/delivery-address" element={<DeliveryAddress />} />
+            <Route path='/admin-list' element={<AdminList/>}/>
           </Routes>
         </CartProvider>
       </Auth>

@@ -11,6 +11,7 @@ function UploadAvatar () {
     const [imagePreview, setImagePreview] = useState(null);
     const inputRef = useRef(null);
 
+    const token = localStorage.getItem("token")
     const handleImageClick = (event) => {
         event.stopPropagation();
         inputRef.current.click();
@@ -33,7 +34,12 @@ function UploadAvatar () {
                 `${
                 import.meta.env.VITE_API_URL
                 }user/upload-avatar/${user.id}`,
-                formData)
+                formData,
+                {
+                    headers: {
+                      Authorization: `Bearer ${token}`
+                    }
+                  })
                 alert(data?.message);
         } catch (err){
             console.log(err);
