@@ -31,6 +31,7 @@ const uploadAvatarFile = multer({
   fileFilter,
   limits,
 }).single('avatar')
+
 const productImageStorage = multer.diskStorage({
   destination: (req, res, cb) => {
     cb(null, path.join(__dirname, '../public/images/productImages'))

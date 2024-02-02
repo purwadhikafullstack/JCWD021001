@@ -65,10 +65,10 @@ const CartProductRowMobile = ({
                           gap={'10px'}
                         >
                           <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                            {item?.stocks?.product?.name}
+                            {item?.product?.name}
                           </Text>
                           <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                            {toRupiah(+item?.stocks?.product?.price, { floatingPoint: 0 })}
+                            {toRupiah(+item?.product?.price, { floatingPoint: 0 })}
                           </Text>
                         </Box>
                       </Box>
