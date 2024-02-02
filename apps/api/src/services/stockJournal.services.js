@@ -48,13 +48,15 @@ export const createStockJournalService = async (
         )
         return res
       }
+      // mengurang stock
       await check.increment('qty', { by: qty })
       const res = await createStockJournalQuery(
         productId,
         warehouseId,
         sizeId,
         colourId,
-        qty > 0 ? 1 : 0,
+        // qty > 0 ? 1 : 0,
+        0,
         qty,
         check.dataValues.qty,
         check.dataValues.qty + qty,

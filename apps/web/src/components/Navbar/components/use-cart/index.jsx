@@ -1,6 +1,6 @@
 // CartContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { getCart } from '../../../pages/cart/services/getCart';
+import { getCart } from '../../../../pages/cart/services/getCart';
 
 const CartContext = createContext();
 

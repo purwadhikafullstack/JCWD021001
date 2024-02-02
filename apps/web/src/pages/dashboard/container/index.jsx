@@ -1,10 +1,11 @@
 import { Box, Flex, Icon, Text } from '@chakra-ui/react'
-import { Navbar } from '../../../components/navbar'
+import { Navbar } from '../../../components/Navbar'
 import { Body } from '../components/body'
 import { Sidebar } from '../components/sidebar'
 import { useState } from 'react'
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import { useParams } from 'react-router-dom'
+
 
 export const Dashboard = () => {
   const { destination, createProduct } = useParams()
