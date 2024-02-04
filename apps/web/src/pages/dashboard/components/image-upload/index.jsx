@@ -58,6 +58,7 @@ export const ImageUpload = (props) => {
         status: 'success',
         placement: 'bottom',
       })
+      setSelectedImage(null)
     } catch (err) {
       toast({
         title: `${err?.message}`,
@@ -67,7 +68,7 @@ export const ImageUpload = (props) => {
   }
   // UPLOAD IMAGE
   return (
-    <Box mt={'2em'}>
+    <Box>
       <VStack align={'stretch'}>
         <Box
           onClick={() => document.getElementById('file-input').click()}

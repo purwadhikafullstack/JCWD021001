@@ -130,7 +130,7 @@ export const getProductQuery = async (
 export const getProductByIdQuery = async (id) => {
   try {
     const res = await Product.findByPk(id, {
-      attributes: ['id', 'name', 'price'],
+      attributes: ['id', 'name', 'price', 'description'],
       include: [
         {
           model: ProductCategory,

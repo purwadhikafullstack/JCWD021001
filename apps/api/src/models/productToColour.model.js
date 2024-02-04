@@ -9,30 +9,14 @@ export default class ProductToColour extends Model {
    * The `models/index` file will call this method automatically.
    */
   static associate(models) {
-    ProductToColour.belongsTo(Product, { foreignKey: 'productId', as: 'product' })
+    // ProductToColour.belongsTo(Product, { foreignKey: 'productId' })
+    // ProductToColour.belongsTo(Colour, { foreignKey: 'colourId' })
   }
 }
 
 export const init = (sequelize) => {
   ProductToColour.init(
-    {
-      productId: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
-        references: {
-          model: Product,
-          key: 'id',
-        },
-      },
-      colourId: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
-        references: {
-          model: Colour,
-          key: 'id',
-        },
-      },
-    },
+    {},
     {
       sequelize,
       tableName: 'productsToColours',

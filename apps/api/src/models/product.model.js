@@ -32,6 +32,13 @@ export const init = (sequelize) => {
       price: {
         allowNull: false,
         type: DataTypes.DECIMAL(10, 0),
+        validate: {
+          notZero(value) {
+            if (value === 0) {
+              throw new Error('Price cannot be 0')
+            }
+          },
+        },
       },
       description: {
         allowNull: false,

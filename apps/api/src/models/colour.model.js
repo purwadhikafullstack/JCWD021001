@@ -11,6 +11,7 @@ export default class Colour extends Model {
   static associate(models) {
     Colour.hasOne(models.Stock)
     Colour.hasMany(models.CartProducts, { as: 'cartProducts', foreignKey: 'colourId' })
+    Colour.belongsToMany(Product, { through: ProductToColour })
   }
 }
 
