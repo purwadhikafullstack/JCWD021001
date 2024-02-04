@@ -25,7 +25,6 @@ export const SalesTable = (props) => {
     )
   }, [])
 
-  console.log('data-sales', data)
   const renderedTableBody = data?.map((order, index) => {
     const timestamp = order?.orderDate
     const dateObject = new Date(timestamp)

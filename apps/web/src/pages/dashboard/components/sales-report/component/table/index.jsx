@@ -1,7 +1,6 @@
-import { Box, Text } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import { SalesTable } from '../sales-table'
 import { CategoryTable } from '../category-table'
-import { useEffect, useState } from 'react'
 import { ProductTable } from '../product-table'
 
 export const ReportTable = (props) => {
