@@ -5,6 +5,7 @@ import Size from '../models/size.model'
 import ProductImage from '../models/productImage.model'
 import Stock from '../models/stock.model'
 import Colour from '../models/colour.model'
+import ProductToColour from '../models/productToColour.model'
 
 export const getProductQuery = async (
   name = null,
@@ -72,7 +73,7 @@ export const getProductQuery = async (
       }
     }
     const res = await Product.findAndCountAll({
-      attributes: ['id', 'name', 'price', 'description'],
+      attributes: ['id', 'name', 'price'],
       include: [
         {
           model: ProductCategory,
@@ -89,6 +90,7 @@ export const getProductQuery = async (
                 },
                 {
                   model: Size,
+                  attributes: ['id', 'name', 'productCategoryId'],
                   as: 'size',
                 },
               ],
@@ -108,6 +110,10 @@ export const getProductQuery = async (
           as: 'stocks',
           include: [{ model: Colour, as: 'colour' }],
         },
+        {
+          model: Colour,
+          as: 'colour',
+        },
       ],
       order: [[`${sortBy}`, `${orderBy}`]],
       ...filter,
@@ -115,6 +121,59 @@ export const getProductQuery = async (
       limit: id ? 1000 : +pageSize,
       offset: offset,
     })
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
+export const getProductByIdQuery = async (id) => {
+  try {
+    const res = await Product.findByPk(id, {
+      attributes: ['id', 'name', 'price'],
+      include: [
+        {
+          model: ProductCategory,
+          as: 'category',
+          attributes: ['id', 'name'],
+          include: [
+            {
+              model: ProductCategory,
+              as: 'parent',
+              include: [
+                {
+                  model: ProductCategory,
+                  as: 'parent',
+                },
+                {
+                  model: Size,
+                  attributes: ['id', 'name', 'productCategoryId'],
+                  as: 'size',
+                },
+              ],
+            },
+            {
+              model: Size,
+              as: 'size',
+            },
+          ],
+        },
+        {
+          model: ProductImage,
+          as: 'picture',
+        },
+        {
+          model: Stock,
+          as: 'stocks',
+          include: [{ model: Colour, as: 'colour' }],
+        },
+        {
+          model: Colour,
+          as: 'colour',
+        },
+      ],
+    })
+
     return res
   } catch (err) {
     throw err

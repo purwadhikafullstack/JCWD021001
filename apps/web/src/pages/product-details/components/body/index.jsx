@@ -24,6 +24,7 @@ export const Body = (props) => {
   // Size id
   const sizeValue = queryParams.get('sz')
   const navigate = useNavigate()
+
   // Image carousel
   const images = [props?.product?.picture]
 
@@ -64,7 +65,6 @@ export const Body = (props) => {
     getStock(props?.product?.id, sizeValue, colourValue, setStock)
   }, [colourValue, sizeValue])
 
-  console.log('PRO', props?.product)
   const shouldDisable = !stock ? true : false
 
   // edit by andri

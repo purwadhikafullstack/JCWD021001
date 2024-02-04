@@ -1,4 +1,6 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes } from 'sequelize'
+import Product from './product.model'
+import ProductToColour from './productToColour.model'
 
 export default class Colour extends Model {
   /**
@@ -7,7 +9,7 @@ export default class Colour extends Model {
    * The `models/index` file will call this method automatically.
    */
   static associate(models) {
-    Colour.hasOne(models.Stock);
+    Colour.hasOne(models.Stock)
     Colour.hasMany(models.CartProducts, { as: 'cartProducts', foreignKey: 'colourId' })
   }
 }
@@ -28,5 +30,5 @@ export const init = (sequelize) => {
       modelName: 'Colour',
       timestamps: false,
     },
-  );
-};
+  )
+}
