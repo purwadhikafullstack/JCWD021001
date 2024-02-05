@@ -46,7 +46,7 @@ export const createMutationService = async (
       // CREATING MUTATION
       const recipientStockJournal = null
       const receiverStockJournal = null
-      const isAccepted = false
+      const isAccepted = null
       const res = await createMutationQuery(
         requesterWarehouseId,
         recipientWarehouseId,

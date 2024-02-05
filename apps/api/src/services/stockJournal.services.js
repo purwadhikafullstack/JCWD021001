@@ -14,9 +14,13 @@ export const createStockJournalService = async (
   isUpdate,
 ) => {
   try {
+    // Check if the stock is exist
     const check = await getSpesificStockQuery(productId, warehouseId, sizeId, colourId)
+
     if (check) {
+      // If exist, check if isUpdate is true(edit stock from stock-management table)
       if (isUpdate) {
+        // Check if qty wants to be update is < from the qty exist
         if (qty < check.dataValues.qty) {
           const newQty = check.dataValues.qty - qty
           await check.increment('qty', { by: -1 * newQty })
@@ -33,6 +37,7 @@ export const createStockJournalService = async (
           )
           return res
         }
+        // If > than qty exist, just add it
         const newQty = qty - check.dataValues.qty
         await check.increment('qty', { by: newQty })
         const res = await createStockJournalQuery(
@@ -48,6 +53,7 @@ export const createStockJournalService = async (
         )
         return res
       }
+      // This was an condition where decrement stock from cart
       await check.increment('qty', { by: -1 * qty })
       const res = await createStockJournalQuery(
         productId,
@@ -57,12 +63,13 @@ export const createStockJournalService = async (
         0,
         qty,
         check.dataValues.qty,
-        check.dataValues.qty + qty,
+        check.dataValues.qty + -1 * qty,
         check.dataValues.id,
       )
       return res
     } else if (!check) {
-      if (qty < 0) throw new Error('WAREHOUSE STOCK IS EMPTY')
+      // Condition when stock is not exist, so we make new stock and then create the stockJournal
+      if (qty < 0) throw new Error('Cant make stock if qty is 0')
       const createStocks = await createStockQuery(productId, warehouseId, 0, sizeId, colourId)
       await createStocks.increment('qty', { by: qty })
       const res = await createStockJournalQuery(
