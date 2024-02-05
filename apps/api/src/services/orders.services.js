@@ -10,7 +10,6 @@ import {
   updateOrderQuery,
 } from '../queries/orders.queries'
 
-
 const calcTotalPrice = (products) => {
   return products.reduce((total, product) => {
     return total + product.priceProduct * product.quantity
@@ -131,11 +130,136 @@ export const productToStockIdService = async (productId) => {
   }
 }
 
-// export const calculationCheckStockService = async () => {
-//   try {
-//     const res = await calculationCheckStock()
-//     return res
-//   } catch (err) {
-//     throw err
-//   }
-// }
+function calculateDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371 // Radius of the Earth in kilometers
+  const dLat = (lat2 - lat1) * (Math.PI / 180)
+  const dLon = (lon2 - lon1) * (Math.PI / 180)
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * (Math.PI / 180)) *
+      Math.cos(lat2 * (Math.PI / 180)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2)
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+  const distance = R * c // Distance in kilometers
+
+  return distance
+}
+
+export const calculationCheckStockService = async (orderId) => {
+  try {
+    const { orders, warehouse } = await calculationCheckStock(orderId)
+
+    const checkStockResults = []
+
+    for (const orderProduct of orders.OrderProducts) {
+      const { quantity, stocks } = orderProduct
+      const { productId } = stocks
+
+      const selectedWarehouse = warehouse.find((wh) => wh.id === orders.warehouseId)
+
+      if (selectedWarehouse) {
+        const selectedStock = selectedWarehouse.stock.find((stock) => stock.productId === productId)
+
+        if (selectedStock) {
+          const availableQuantity = selectedStock.qty
+
+          if (availableQuantity >= quantity) {
+            checkStockResults.push({
+              productId,
+              quantity,
+              status: 'Available',
+              selectedWarehouse: {
+                id: selectedWarehouse.id,
+                name: selectedWarehouse.name,
+              },
+              availableQuantity,
+            })
+          } else {
+            // Find the nearest warehouse
+            const { latitude: originLat, longitude: originLon } = selectedWarehouse.WarehouseAddress
+
+            let nearestWarehouse = selectedWarehouse // Initialize nearestWarehouse with selectedWarehouse
+            let nearestWarehouseQuantity = availableQuantity // Initialize with the availableQuantity of selectedWarehouse
+
+            while (nearestWarehouseQuantity < quantity) {
+              // Find the next nearest warehouse
+              const nextNearestWarehouse = warehouse
+                .filter((wh) => wh.id !== orders.warehouseId && wh.id !== nearestWarehouse.id)
+                .reduce(
+                  (nextNearest, wh) => {
+                    const { latitude, longitude } = wh.WarehouseAddress
+                    const distance = calculateDistance(originLat, originLon, latitude, longitude)
+                    if (distance < nextNearest.distance) {
+                      return { distance, warehouse: wh }
+                    }
+                    return nextNearest
+                  },
+                  { distance: Infinity, warehouse: null },
+                )
+
+              // Check stock in the next nearest warehouse
+              const nextNearestWarehouseStock = nextNearestWarehouse.warehouse.stock.find(
+                (stock) => stock.productId === productId,
+              )
+
+              if (nextNearestWarehouseStock) {
+                console.log('halo', nextNearestWarehouseStock.qty)
+                nearestWarehouse = nextNearestWarehouse.warehouse // Update nearestWarehouse to the new nearest warehouse
+                nearestWarehouseQuantity =
+                  nextNearestWarehouseStock.qty > nearestWarehouseQuantity
+                    ? nextNearestWarehouseStock.qty
+                    : nearestWarehouseQuantity
+              } else {
+                // Handle the case where stock is not found in the next nearest warehouse
+                break // Exit the loop if stock is not found in any warehouse
+              }
+            }
+
+            const needSelectedWarehouseQuantity = quantity - availableQuantity;
+
+            // Update checkStockResults based on the condition
+            checkStockResults.push({
+              productId,
+              quantity,
+              status: availableQuantity >= quantity ? 'Available Stock' : 'Insufficient Stock',
+              selectedWarehouse: {
+                id: selectedWarehouse.id,
+                name: selectedWarehouse.name,
+              },
+              selectedWarehouseQuantity: availableQuantity,
+              nearestWarehouse: {
+                id: nearestWarehouse.id,
+                name: nearestWarehouse.name,
+              },
+              nearestWarehouseStatus:
+                nearestWarehouseQuantity >= quantity ? 'Available Stock' : 'Insufficient Stock',
+              nearestWarehouseQuantity,
+              needSelectedWarehouseQuantity
+            })
+          }
+        } else {
+          checkStockResults.push({
+            productId,
+            quantity,
+            status: 'Stock Not Found',
+          })
+        }
+      } else {
+        checkStockResults.push({
+          productId,
+          quantity,
+          status: 'Warehouse Not Found',
+        })
+      }
+    }
+
+    return {
+      // orders,
+      // warehouse,
+      checkStockResults,
+    }
+  } catch (err) {
+    throw err
+  }
+}

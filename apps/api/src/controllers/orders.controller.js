@@ -123,13 +123,13 @@ export const productToStockIdController = async (req, res) => {
   }
 }
 
-// export const calculationCheckStockController = async () => {
-//   try {
-//     const { orderId } = req.params
-//     const result = await calculationCheckStockService(orderId)
-//     return sendResponse(res, 200, result, null)
-//   } catch (err) {
-//     console.log(err)
-//     return sendResponse(res, 500, null, err.message)
-//   }
-// }
+export const calculationCheckStockController = async (req, res) => {
+  try {
+    const { orderId } = req.params
+    const result = await calculationCheckStockService(orderId)
+    return sendResponse(res, 200, result, null)
+  } catch (err) {
+    console.log(err)
+    return sendResponse(res, 500, null, err.message)
+  }
+}

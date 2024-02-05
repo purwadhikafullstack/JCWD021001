@@ -11,7 +11,7 @@ import UserAddress from '../models/userAddress.model'
 import Size from '../models/size.model'
 import Colour from '../models/colour.model'
 import OrderStatuses from '../models/orderStatuses.model'
-import Order from '../../../web/src/pages/order/Index'
+import WarehouseAddress from '../models/warehouseAddress.model'
 
 export const createOrderQuery = async (
   userId,
@@ -278,54 +278,55 @@ export const getWarehouseQuery = async () => {
 
 export const productToStockIdQuery = async (productId) => {
   try {
-
     let whereCondition = {}
 
     if (productId && productId.length > 0) {
       const productIdArray = productId.map((item) => item.productId)
       whereCondition = {
         ...whereCondition,
-        '$productId$': { [Sequelize.Op.in]: productIdArray },
+        $productId$: { [Sequelize.Op.in]: productIdArray },
       }
     }
     const res = await Stock.findAll({
       where: whereCondition,
     })
-    return res 
+    return res
   } catch (err) {
     throw err
   }
 }
 
-// export const calculationCheckStock = async (orderId) => {
-//   try {
-//     const orders = await Orders.findOne(
-//       {
-//         include: [
-//           { model: User },
-//           { model: UserAddress },
-//           { model: Warehouse, as: 'warehouse' },
-//           { model: Payments },
-//           { model: OrderStatuses },
-//           {
-//             model: OrderProducts,
-//             include: [
-//               {
-//                 model: Stock,
-//                 as: 'stocks',
-//                 include: [
-//                   { model: Product, as: 'product' },
-//                   { model: Size, as: 'size' },
-//                   { model: Colour, as: 'colour' },
-//                 ],
-//               },
-//             ],
-//           },
-//         ],
-//         where: {id: orderId}
-//     })
-//     return { orders: orders}
-//   } catch (err) {
-//     throw err
-//   }
-// }
+export const calculationCheckStock = async (orderId) => {
+  try {
+    const orders = await Orders.findOne({
+      include: [
+        { model: User },
+        { model: UserAddress },
+        { model: Warehouse, as: 'warehouse' },
+        { model: Payments },
+        { model: OrderStatuses },
+        {
+          model: OrderProducts,
+          include: [
+            {
+              model: Stock,
+              as: 'stocks',
+              include: [
+                { model: Product, as: 'product' },
+                { model: Size, as: 'size' },
+                { model: Colour, as: 'colour' },
+              ],
+            },
+          ],
+        },
+      ],
+      where: { id: orderId },
+    })
+    const warehouse = await Warehouse.findAll({
+      include: [{ model: WarehouseAddress }, { model: Stock, as: 'stock' }],
+    })
+    return { orders: orders, warehouse: warehouse }
+  } catch (err) {
+    throw err
+  }
+}
