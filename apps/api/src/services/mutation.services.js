@@ -157,6 +157,7 @@ export const acceptMutationService = async (id, isAccepted) => {
         requester?.dataValues?.id,
         false,
       )
+
       await recipientStock?.increment('qty', { by: -1 * mutation?.qty })
 
       const recipientJournal = await createStockJournalQuery(

@@ -100,30 +100,71 @@ export const StockMutation = () => {
         <Td>{mutation?.stock?.product?.name}</Td>
         <Td>{mutation?.qty}</Td>
         <Td>
-          <Button
-            _hover={{
-              bgColor: 'transparent',
-            }}
-            fontSize={'.8em'}
-            h={'2.5em'}
-            w={'5em'}
-            border={'1px solid #CD0244'}
-            bgColor={'transparent'}
-            color={'redPure.600'}
-            onClick={() => {
-              isJuragan ? handleApprove(mutation?.id, 1) : null
-            }}
-          >
-            {isJuragan
-              ? mutation?.isAccepted
-                ? 'Accepted'
-                : 'Approve'
-              : +mutation?.isAccepted === 1
-                ? 'History'
-                : +mutation?.isAccepted === 0
-                  ? 'Rejected'
-                  : 'Waiting'}
-          </Button>
+          <HStack>
+            <Button
+              _hover={{
+                bgColor: 'transparent',
+              }}
+              fontSize={'.8em'}
+              h={'2.5em'}
+              w={'5em'}
+              border={'1px solid #CD0244'}
+              bgColor={'transparent'}
+              color={'redPure.600'}
+            >
+              {isJuragan
+                ? +mutation?.isAccepted === 1
+                  ? 'Accepted'
+                  : +mutation?.isAccepted === 0 && mutation?.isAccepted !== null
+                    ? 'Rejected'
+                    : mutation?.isAccepted === null
+                      ? 'Waiting'
+                      : ''
+                : +mutation?.isAccepted === 1
+                  ? 'History'
+                  : +mutation?.isAccepted === 0
+                    ? 'Rejected'
+                    : 'Waiting'}
+            </Button>
+            <Button
+              visibility={
+                filterValue == 'app' && mutation?.isAccepted === null ? 'visible' : 'hidden'
+              }
+              _hover={{
+                bgColor: 'transparent',
+              }}
+              fontSize={'.8em'}
+              h={'2.5em'}
+              w={'5em'}
+              border={'1px solid #CD0244'}
+              bgColor={'transparent'}
+              color={'redPure.600'}
+              onClick={() => {
+                isJuragan ? handleApprove(mutation?.id, 1) : null
+              }}
+            >
+              {isJuragan ? 'Approve' : ''}
+            </Button>
+            <Button
+              visibility={
+                filterValue == 'app' && mutation?.isAccepted === null ? 'visible' : 'hidden'
+              }
+              _hover={{
+                bgColor: 'transparent',
+              }}
+              fontSize={'.8em'}
+              h={'2.5em'}
+              w={'5em'}
+              border={'1px solid #CD0244'}
+              bgColor={'transparent'}
+              color={'redPure.600'}
+              onClick={() => {
+                isJuragan ? handleApprove(mutation?.id, 0) : null
+              }}
+            >
+              {isJuragan ? 'Reject' : ''}
+            </Button>
+          </HStack>
         </Td>
       </Tr>
     )
