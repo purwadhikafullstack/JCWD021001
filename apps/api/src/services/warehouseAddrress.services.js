@@ -2,6 +2,7 @@ import {
   findWarehouseProvinceQuery,
   findWarehousesQuery,
   getShippingCostQuery,
+  getWarehouseQuery,
 } from '../queries/warehouseAddress.queries'
 
 //GET
@@ -80,9 +81,9 @@ export const getShippingCostService = async (origin, destination, weight, courie
   }
 }
 
-export const getWarehousesService = async () => {
+export const getWarehousesService = async (warehouseId) => {
   try {
-    const res = await findWarehousesQuery()
+    const res = await getWarehouseQuery(warehouseId)
     return res
   } catch (err) {
     throw err

@@ -6,6 +6,7 @@ import {
   getAllOrderQuery,
   getOrderQuery,
 } from '../queries/orders.queries'
+import { getSpesificStockQuery } from '../queries/stock.queries'
 
 const calcTotalPrice = (products) => {
   return products.reduce((total, product) => {
@@ -113,6 +114,41 @@ export const getAllOrderByProductService = async (
   try {
     const res = await getAllOrderByProductQuery(page, pageSize, warehouseId, startDate, endDate)
     return res
+  } catch (err) {
+    throw err
+  }
+}
+
+export const checkSomethingService = async (
+  requesterWarehouseId, //Warehouse yang akan dikirimkan barang
+  lattWarehouseId,
+  longWarehouseId,
+  arrayOfProducts,
+  provinceUserId,
+  lattUserId,
+  longUserId,
+  province,
+) => {
+  try {
+    /*
+    Qty yang kita punya ada di stock.
+    const stock = getStockByIdQuery(stockId)
+    const conditon = stock.dataValues.qty < qty
+    
+    qtyNeeded = didapat dari arrayOfProducts
+      jika qty yang dibutuhkan > stock yang dipunya, melakukan mapping
+    
+      if (conditon) {
+      -- Mencari gudang terdekat dari gudang penanggung jawab --
+      let nearest = findWarehouse(requesterWarehouseId,  lattWarehouseId, longWarehouseId)
+      function(checking) {
+
+      } 
+
+    }
+    */
+    const stock = await getSpesificStockQuery(139, requesterWarehouseId, 58, 6)
+    return stock
   } catch (err) {
     throw err
   }

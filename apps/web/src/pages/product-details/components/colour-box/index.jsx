@@ -15,23 +15,15 @@ export const ColourBox = (props) => {
       key={props?.index}
       onClick={() => {
         props?.changeColourToggle(props?.id)
+        navigate(
+          `${props?.pathName}?col=${props?.colourToggle[props?.id] ? 0 : props?.id}&sz=${
+            props?.sizeValue
+          }`,
+        )
       }}
     >
       <VStack spacing={'1em'}>
-        <Box
-          p={'.5em'}
-          bgColor={props?.name}
-          w={'2.5em'}
-          h={'2.5em'}
-          borderRadius={'.5em'}
-          onClick={() =>
-            navigate(
-              `${props?.pathName}?col=${props?.colourToggle[props?.id] ? 0 : props?.id}&sz=${
-                props?.sizeValue
-              }`,
-            )
-          }
-        ></Box>
+        <Box p={'.5em'} bgColor={props?.name} w={'2.5em'} h={'2.5em'} borderRadius={'.5em'}></Box>
         <Text fontWeight={'bold'} fontSize={'.75em'}>
           {props?.name}
         </Text>

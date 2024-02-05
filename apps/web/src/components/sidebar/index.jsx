@@ -24,6 +24,7 @@ export const SideBar = (props) => {
     slug.extend({
       '&': 'and',
     })
+
     return (
       <VStack align={'stretch'} key={index} spacing={'1.5em'} cursor={'pointer'}>
         <Flex

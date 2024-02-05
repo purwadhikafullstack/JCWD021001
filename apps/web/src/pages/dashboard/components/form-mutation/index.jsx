@@ -24,6 +24,7 @@ import * as yup from 'yup'
 import { getStock } from '../stock-management/services/readStock'
 import { useLocation } from 'react-router-dom'
 import { createMutation } from '../stock-mutation/services/createMutation'
+import { getWarehouses } from './services/readWarehouse'
 
 export const FormMutation = () => {
   // LOCATION
@@ -40,10 +41,19 @@ export const FormMutation = () => {
   const [warehouseId, setWarehouseId] = useState(4)
 
   //   CONST RECIPIENT WAREHOUSE ID
-  const [recipientWarehouseId, setRecipientWarehouseId] = useState(5)
+  const [recipientWarehouseId, setRecipientWarehouseId] = useState(null)
 
   //   TOAST
   const toast = useToast()
+
+  // Warehouse lists
+  const [warehouses, setWarehouses] = useState([])
+
+  useEffect(() => {
+    getWarehouses(warehouseId).then((data) => {
+      setWarehouses(data)
+    })
+  }, [])
 
   //   HANDLE CREATE MUTATION
   const handleCreateMutation = async (
@@ -77,10 +87,30 @@ export const FormMutation = () => {
   //   FORM DATA
   const [formData, setFormData] = useState({
     requesterWarehouseId: warehouseId,
-    recipientWarehouseId: recipientWarehouseId,
+    recipientWarehouseId: 0,
     qty: 0,
-    isAccepted: 0,
+    isAccepted: null,
     stockId: 0,
+  })
+
+  // Warehouse options
+  const warehouseOptions = warehouses?.map((warehouse, index) => {
+    return (
+      <option
+        key={index}
+        id={warehouse?.id}
+        value={warehouse?.address}
+        onClick={() => {
+          setFormData((formData) => ({
+            ...formData,
+            recipientWarehouseId: warehouse?.id,
+          }))
+          formik.setFieldValue('recipientWarehouseAddress', warehouse?.address)
+        }}
+      >
+        {warehouse?.address}
+      </option>
+    )
   })
 
   // FORMIK
@@ -97,7 +127,6 @@ export const FormMutation = () => {
       qty: yup.number().required('Input quantity'),
     }),
     onSubmit: (values) => {
-      console.log('form-mutation', values)
       handleCreateMutation(
         formData?.requesterWarehouseId,
         formData?.recipientWarehouseId,
@@ -107,13 +136,12 @@ export const FormMutation = () => {
       )
     },
   })
-
   //   STOCKS
   const [stocks, setStocks] = useState([])
 
   useEffect(() => {
-    getStock(recipientWarehouseId, pageValue).then((data) => setStocks(data))
-  }, [pageValue])
+    getStock(4, pageValue).then((data) => setStocks(data))
+  }, [pageValue, recipientWarehouseId])
 
   const renderedTableBody = stocks?.rows?.map((stock, index) => {
     return (
@@ -146,7 +174,8 @@ export const FormMutation = () => {
       </Tr>
     )
   })
-
+  console.log('formData', formData)
+  console.log('formik', formik.values)
   return (
     <Box p={'1em'} bgColor={'white'} minH={'100vh'}>
       <Flex dir={'column'} justifyContent={'space-between'}>
@@ -166,12 +195,16 @@ export const FormMutation = () => {
                   name={'recipientWarehouseAddress'}
                   type={'text'}
                   value={formik.values.recipientWarehouseAddress}
-                  onChange={formik.handleChange}
+                  // onChange={formik.handleChange}
+                  onChange={(e) => {
+                    console.log('target', e.target)
+                    formik.setFieldValue('recipientWarehouseAddress', e.target.value)
+                  }}
                   borderColor={'transparent'}
                   focusBorderColor={'transparent'}
                   bgColor={'grey.50'}
                 >
-                  <option value={'jambi'}>Jambi</option>
+                  {warehouseOptions}
                 </Select>
                 {formik.errors.recipientWarehouseAddress && (
                   <Text color="red">{formik.errors.recipientWarehouseAddress}</Text>

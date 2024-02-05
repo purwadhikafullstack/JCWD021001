@@ -105,6 +105,7 @@ export const Sidebar = (props) => {
               </Text>
             </VStack>
           </Box>
+          <SidebarButton label={'Test'} icon={Squares2X2Icon} />
         </VStack>
         <Flex
           alignItems={'center'}

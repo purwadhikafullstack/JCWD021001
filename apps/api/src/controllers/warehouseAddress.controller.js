@@ -36,7 +36,8 @@ export const getShippingCostController = async (req, res) => {
 
 export const getWarehousesController = async (req, res) => {
   try {
-    const result = await getWarehousesService()
+    const { warehouseId } = req.query
+    const result = await getWarehousesService(warehouseId)
     return res.status(200).json({
       message: 'Get Warehouse Success',
       data: result,

@@ -5,7 +5,7 @@ import { Carousel } from '../carousel'
 import axios from 'axios'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { createCart } from '../../../cart/services/createCart' // edit by andri
-import { useCart } from '../../../../components/Navbar/services/cartContext' // edit by andri
+// import { useCart } from '../../../../components/Navbar/services/cartContext' // edit by andri
 import { useToast } from '@chakra-ui/react' // edit by andri
 import { ColourBox } from '../colour-box'
 import { SizeBox } from '../size-box'
@@ -61,7 +61,7 @@ export const Body = (props) => {
   const shouldDisable = !stock ? true : false
 
   // edit by andri
-  const { cartData, fetchCartCount } = useCart()
+  // const { cartData, fetchCartCount } = useCart()
   const toast = useToast()
   const handleAddToCart = async () => {
     const newItem = {
@@ -117,10 +117,12 @@ export const Body = (props) => {
 
   // Handle Toggle
   const changeColourToggle = (id) => {
-    setColourToggle((set) => ({
-      [id]: !set[id],
-      [!id]: set[id],
-    }))
+    if (id !== colourValue) {
+      setColourToggle((set) => ({
+        [id]: !set[id],
+        [!id]: set[id],
+      }))
+    }
   }
   // Toggle Sidebar
   const [sizeToggle, setSizeToggle] = useState({})
