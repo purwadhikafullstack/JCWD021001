@@ -3,6 +3,7 @@ import { findWarehouseAddressService, getShippingCostService } from "../services
 export const findWarehouseAddressController = async (req, res) => {
     try{
         const {provinceId, userLat, userLong} = req.query
+        console.log(provinceId, userLat, userLong);
         const result = await findWarehouseAddressService(provinceId, userLat, userLong)
         return res.status(200).json({
             message: "success",

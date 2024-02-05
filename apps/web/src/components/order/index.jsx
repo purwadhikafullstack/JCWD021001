@@ -9,13 +9,24 @@ import ShoppingSummaryDesktop from './shopping-summary-dekstop'
 import ShoppingSummaryMobile from './shopping-summary-mobile'
 import DeliveryAddress from './deliveryAddress'
 
-const OrderBody = ({ orderData, totalPrice, totalQuantity }) => {
+const OrderBody = ({ orderData, stockOrder, totalPrice, totalQuantity }) => {
   const [selectedAddress, setSelectedAddress] = useState(null)
+  const [nearestWarehouse, setNearestWarehouse] = useState(null)
+  const [shippingCost, setShippingCost] = useState(null)
   const navigate = useNavigate()
 
   // handle payment
   const handlePaymentClick = (orderItem) => {
-    paymentHandler(orderItem, selectedAddress, totalPrice, totalQuantity, navigate)
+    paymentHandler(
+      orderItem,
+      stockOrder,
+      selectedAddress,
+      nearestWarehouse,
+      shippingCost,
+      totalPrice,
+      totalQuantity,
+      navigate,
+    )
   }
   return (
     <Box>
@@ -49,6 +60,10 @@ const OrderBody = ({ orderData, totalPrice, totalQuantity }) => {
                 <DeliveryAddress
                   selectedAddress={selectedAddress}
                   setSelectedAddress={setSelectedAddress}
+                  nearestWarehouse={nearestWarehouse}
+                  setNearestWarehouse={setNearestWarehouse}
+                  shippingCost={shippingCost}
+                  setShippingCost={setShippingCost}
                 />
                 {/* Product Display */}
                 <Box
@@ -65,19 +80,25 @@ const OrderBody = ({ orderData, totalPrice, totalQuantity }) => {
                 </Box>
               </Box>
               {/* Shopping Summary - Desktop Version */}
-              <ShoppingSummaryDesktop
-                totalQuantity={totalQuantity}
-                totalPrice={totalPrice}
-                handlePaymentClick={() => handlePaymentClick(orderItem)}
-              />
+              {shippingCost && (
+                <ShoppingSummaryDesktop
+                  shippingCost={shippingCost}
+                  totalQuantity={totalQuantity}
+                  totalPrice={totalPrice}
+                  handlePaymentClick={() => handlePaymentClick(orderItem)}
+                />
+              )}
             </Box>
           </Box>
           {/* Shopping Summary - Mobile Version */}
-          <ShoppingSummaryMobile
-            totalQuantity={totalQuantity}
-            totalPrice={totalPrice}
-            handlePaymentClick={() => handlePaymentClick(orderItem)}
-          />
+          {shippingCost && (
+            <ShoppingSummaryMobile
+              shippingCost={shippingCost}
+              totalQuantity={totalQuantity}
+              totalPrice={totalPrice}
+              handlePaymentClick={() => handlePaymentClick(orderItem)}
+            />
+          )}
         </Box>
       ))}
     </Box>

@@ -6,7 +6,6 @@ const useOrderListState = ({ orderData, loading, onOrderNumberSubmit, onOrderDat
   const location = useLocation()
   const navigate = useNavigate()
 
-  const [sortedOrderData, setSortedOrderData] = useState([])
   const [orderNumber, setOrderNumber] = useState('')
   const [orderDate, setOrderDate] = useState('')
   const [activeTab, setActiveTab] = useState(() => {
@@ -15,31 +14,7 @@ const useOrderListState = ({ orderData, loading, onOrderNumberSubmit, onOrderDat
   })
 
   useEffect(() => {
-    if (!loading && orderData && orderData.length > 0 && orderData[0].orderDate) {
-      // Sort orderData based on the orderDate in descending order
-      const sortedData = [...orderData].sort((a, b) => {
-        const dateA = new Date(a.orderDate).getTime()
-        const dateB = new Date(b.orderDate).getTime()
-        return dateB - dateA
-      })
-      // Update sortedOrderData with the sorted data
-      setSortedOrderData(sortedData)
-    } else {
-      // If orderData is empty or doesn't have valid data, set sortedOrderData to an empty array
-      setSortedOrderData([])
-    }
   }, [orderData, loading])
-
-  const waitingPaymentOrders = sortedOrderData?.filter(
-    (order) => order?.Payment?.paymentStatus === 'pending',
-  )
-  console.log('waiting', waitingPaymentOrders)
-  console.log('orderData', orderData)
-  console.log('sorted', sortedOrderData)
-
-  const onProcessOrders = sortedOrderData?.filter(
-    (order) => order?.Payment?.paymentStatus === 'settlement',
-  )
 
   const handlePayNowClick = (orderId) => {
     const orderToPay = orderData.find((order) => order.id === orderId)
@@ -83,14 +58,14 @@ const useOrderListState = ({ orderData, loading, onOrderNumberSubmit, onOrderDat
 
   const handleOrderNumberSubmit = () => {
     onOrderNumberSubmit(orderNumber)
-    setOrderNumber('')
+
   }
 
   const handleOrderNumberKeyPress = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault()
       onOrderNumberSubmit(orderNumber)
-      setOrderNumber('')
+
     }
   }
 
@@ -106,13 +81,8 @@ const useOrderListState = ({ orderData, loading, onOrderNumberSubmit, onOrderDat
     return new Date(dateString).toLocaleDateString('id-ID', options).replace(/\//g, '-')
   }
 
-
-
-
   return {
     activeTab,
-    waitingPaymentOrders,
-    onProcessOrders,
     expandedProducts,
     isTabListVisible,
     isMobile,

@@ -4,7 +4,9 @@ import { deleteCart } from '../../../pages/cart/services/deleteCart'
 import _debounce from 'lodash/debounce'
 import { useNavigate } from 'react-router-dom'
 import { useToast } from "@chakra-ui/react";
-import { useCart } from '../../navbar/components/use-cart'
+import { useCart } from '../../Navbar/components/use-cart'
+import { productToStock } from '../../../pages/order/services/productToStock'
+
 
 const useCartState = (cartData, onCartUpdated) => {
   console.log('cartData', cartData);

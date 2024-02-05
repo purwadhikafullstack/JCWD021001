@@ -26,7 +26,7 @@ import DeliveryAddress from './components/order/deliveryAddress'
 import OrderDetails from './pages/order-details'
 import OrderManagementDetails from './pages/order-management-details'
 import AdminList from './pages/admin-list'
-import { CartProvider } from './components/navbar/components/use-cart'
+import { CartProvider } from './components/Navbar/components/use-cart'
 
 
 

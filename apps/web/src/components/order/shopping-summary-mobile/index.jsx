@@ -2,7 +2,7 @@ import React from 'react'
 import { Box, Text, Button } from '@chakra-ui/react'
 import toRupiah from '@develoka/angka-rupiah-js'
 
-const ShoppingSummaryMobile = ({ totalQuantity, totalPrice, handlePaymentClick }) => {
+const ShoppingSummaryMobile = ({ shippingCost, totalQuantity, totalPrice, handlePaymentClick }) => {
   return (
     <Box
       bgColor={'white'}
@@ -31,7 +31,7 @@ const ShoppingSummaryMobile = ({ totalQuantity, totalPrice, handlePaymentClick }
           Shipping Price
         </Text>
         <Text fontFamily={'body'} fontWeight={'400'} fontSize={'16px'} color={'#838383'}>
-          Rp 22.000
+          {toRupiah(+shippingCost[0]?.costs[0]?.cost[0]?.value || 0, { floatingPoint: 0 })}
         </Text>
       </Box>
       <Box w={'full'} h={'2px'} bgColor={'#F1F1F1'} />
