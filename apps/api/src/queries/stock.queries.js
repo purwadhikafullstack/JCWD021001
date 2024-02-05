@@ -145,8 +145,8 @@ export const getStockReportQuery = async (
   try {
     const offset = (page - 1) * pageSize
     const res = await Stock.sequelize.query(`SELECT stocks.id, products.name,
-SUM(CASE WHEN isAdding = 1 THEN stocks.qty ELSE 0 END) AS addition,
-SUM(CASE WHEN isAdding = 0 THEN stocks.qty ELSE 0 END) AS reduction,
+SUM(CASE WHEN isAdding = 1 THEN stockJournals.qty ELSE 0 END) AS addition,
+SUM(CASE WHEN isAdding = 0 THEN stockJournals.qty ELSE 0 END) AS reduction,
 stocks.qty
 FROM stockJournals
 join stocks on stockJournals.stockId = stocks.id

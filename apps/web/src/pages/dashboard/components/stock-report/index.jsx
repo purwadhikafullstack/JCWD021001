@@ -38,7 +38,7 @@ export const StockReport = () => {
 
   const [stockReports, setStockReports] = useState([])
 
-  const [warehouseId, setWarehouseId] = useState(5)
+  const [warehouseId, setWarehouseId] = useState(4)
 
   useEffect(() => {
     setStartDate(getMonthDates(today).startDate)

@@ -25,7 +25,7 @@ export const StockMutation = () => {
   const queryParams = new URLSearchParams(location.search)
 
   // WAREHOUSE ID
-  const [warehouseId, setWarehouseId] = useState(5)
+  const [warehouseId, setWarehouseId] = useState(4)
   const [requesterWarehouseId, setRequesterWarehouseId] = useState(0)
   const [recipientWarehouseId, setRecipientWarehouseId] = useState(0)
 

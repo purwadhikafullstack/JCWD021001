@@ -96,18 +96,7 @@ export const FormMutation = () => {
   // Warehouse options
   const warehouseOptions = warehouses?.map((warehouse, index) => {
     return (
-      <option
-        key={index}
-        id={warehouse?.id}
-        value={warehouse?.address}
-        onClick={() => {
-          setFormData((formData) => ({
-            ...formData,
-            recipientWarehouseId: warehouse?.id,
-          }))
-          formik.setFieldValue('recipientWarehouseAddress', warehouse?.address)
-        }}
-      >
+      <option key={index} id={warehouse?.id} value={warehouse?.id}>
         {warehouse?.address}
       </option>
     )
@@ -140,9 +129,10 @@ export const FormMutation = () => {
   const [stocks, setStocks] = useState([])
 
   useEffect(() => {
-    getStock(4, pageValue).then((data) => setStocks(data))
-  }, [pageValue, recipientWarehouseId])
+    getStock(recipientWarehouseId, pageValue, 10).then((data) => setStocks(data))
+  }, [pageValue, recipientWarehouseId, setRecipientWarehouseId])
 
+  console.log('stocks', stocks)
   const renderedTableBody = stocks?.rows?.map((stock, index) => {
     return (
       <Tr key={index} cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'}>
@@ -195,9 +185,12 @@ export const FormMutation = () => {
                   name={'recipientWarehouseAddress'}
                   type={'text'}
                   value={formik.values.recipientWarehouseAddress}
-                  // onChange={formik.handleChange}
                   onChange={(e) => {
-                    console.log('target', e.target)
+                    setRecipientWarehouseId(e?.target?.value)
+                    setFormData((formData) => ({
+                      ...formData,
+                      recipientWarehouseId: +e.target.value,
+                    }))
                     formik.setFieldValue('recipientWarehouseAddress', e.target.value)
                   }}
                   borderColor={'transparent'}
