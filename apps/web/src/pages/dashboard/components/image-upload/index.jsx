@@ -15,7 +15,6 @@ import axios from 'axios'
 export const ImageUpload = (props) => {
   // TOAST
   const toast = useToast()
-  // TOAST
 
   // IMAGE BOX SOURCE
   const [selectedImage, setSelectedImage] = useState(null)

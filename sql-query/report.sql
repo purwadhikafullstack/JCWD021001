@@ -1,4 +1,12 @@
 USE PURE;
+select * from productsToColours;
+select * from colours;
+
+
+select * from stocks;
+select * from stockJournals;
+
+select * from products;
 
 select stocks.id, stocks.productId, stocks.warehouseId, products.name
 from stocks
@@ -67,13 +75,20 @@ GROUP BY grandparent_category.name;
 select * from stockJournals;
 select * from stocks where warehouseId = 4;
 
-SELECT stocks.id, 
+select * from stocks;
+
+
+select * from stockJournals;
+
+SELECT stocks.id, products.name,
 SUM(CASE WHEN isAdding = 1 THEN stocks.qty ELSE 0 END) AS addition,
 SUM(CASE WHEN isAdding = 0 THEN stocks.qty ELSE 0 END) AS reduction,
 stocks.qty
 FROM stockJournals
 join stocks on stockJournals.stockId = stocks.id
-where stocks.warehouseId = 4
+join products on stocks.productId = products.id
+where stocks.warehouseId = 5 
+AND stockJournals.createdAt>= '2024-01-01 00:00:00' AND stockJournals.createdAt<= '2024-01-30 00:00:00'
 GROUP BY stocks.id;
 
 use pure;

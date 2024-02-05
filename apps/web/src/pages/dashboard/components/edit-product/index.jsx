@@ -27,6 +27,7 @@ import { ImageUpload } from '../image-upload'
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import * as Yup from 'yup'
 import { CreateColour } from './component/create-colour'
+import { ColourBox } from '../../../product-details/components/colour-box'
 
 export const EditProduct = () => {
   // Validation Schema
@@ -93,7 +94,8 @@ export const EditProduct = () => {
       })
     }
   }
-  // DELETE PRODUCT IMAGES
+
+  // Create product colour
 
   // Category value to shown in input
   const [gender, setGender] = useState('')
@@ -215,7 +217,32 @@ export const EditProduct = () => {
     onSubmit: handleSubmit,
   })
 
-  console.log('product', product)
+  console.log('product', product?.colour)
+  const colours = product?.colour?.map((colour, index) => {
+    return (
+      <Box
+        cursor={'pointer'}
+        bgColor={'white'}
+        p={'.5em'}
+        border={'2px solid #f2f2f2'}
+        borderRadius={'.5em'}
+        key={index}
+      >
+        <VStack spacing={'1em'}>
+          <Box
+            p={'.5em'}
+            bgColor={colour?.name}
+            w={'2.5em'}
+            h={'2.5em'}
+            borderRadius={'.5em'}
+          ></Box>
+          <Text fontWeight={'bold'} fontSize={'.75em'}>
+            {colour?.name}
+          </Text>
+        </VStack>
+      </Box>
+    )
+  })
   return (
     <Box p={'1em'} bgColor={'white'}>
       <Text fontWeight={'bold'} mb={'2em'}>
@@ -329,6 +356,8 @@ export const EditProduct = () => {
             />
             {formik.errors.description && <Text color="red">{formik.errors.description}</Text>}
           </FormControl>
+          <Text fontWeight={'bold'}>Product Colours</Text>
+          <HStack>{colours}</HStack>
           <CreateColour productId={product?.id} />
           <FormControl isRequired>
             <FormLabel htmlFor="price" fontWeight={'bold'}>

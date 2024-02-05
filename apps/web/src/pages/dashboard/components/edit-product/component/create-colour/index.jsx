@@ -1,30 +1,65 @@
-import { Box, FormControl, FormLabel, Select, Text, VStack } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Select,
+  Text,
+  VStack,
+  useToast,
+} from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { getColours } from '../../../create-stock/services/readColour'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+import { createProductColour } from './services/createColour'
 
 export const CreateColour = (props) => {
+  // TOAST
+  const toast = useToast()
+
+  // Get colours
   const [colours, setColours] = useState([])
 
   useEffect(() => {
     getColours().then((data) => setColours(data))
   }, [])
 
+  // Crete colour
+  const handleSubmit = async (productId, colourId) => {
+    try {
+      const res = await createProductColour(productId, colourId)
+      toast({
+        title: `${res?.data?.message}`,
+        status: 'success',
+        placement: 'bottom',
+      })
+    } catch (err) {
+      toast({
+        title: `${err?.message}`,
+        status: 'error',
+      })
+    }
+  }
+
+  // Formik
   const formik = useFormik({
     initialValues: {
       colourId: '',
     },
+    onSubmit: handleSubmit,
   })
+
   console.log('colours', colours)
   console.log('formik', formik.values)
+  console.log('productId', props?.productId)
   return (
     <Box>
-      <VStack align={'stretch'}>
-        <form>
+      <form>
+        <VStack align={'stretch'}>
           <FormControl isRequired>
             <FormLabel htmlFor="colourId" fontWeight={'bold'}>
-              Product Colours
+              Add Product Colours
             </FormLabel>
             <Select
               name={'colourId'}
@@ -43,8 +78,25 @@ export const CreateColour = (props) => {
               })}
             </Select>
           </FormControl>
-        </form>
-      </VStack>
+          <Button
+            _hover={{
+              bgColor: 'transparent',
+            }}
+            fontSize={'.75em'}
+            alignSelf={'flex-start'}
+            w={'3em'}
+            h={'2em'}
+            border={'1px solid #e3024b'}
+            bgColor={'transparent'}
+            color={'redPure.500'}
+            onClick={async () => {
+              await handleSubmit(props?.productId, formik.values.colourId)
+            }}
+          >
+            Submit
+          </Button>
+        </VStack>
+      </form>
     </Box>
   )
 }
