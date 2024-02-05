@@ -31,7 +31,7 @@ export const StockReport = () => {
   // NAVIGATE
   const navigate = useNavigate()
 
-  const today = new Date('2024-01-01')
+  const today = new Date('2024-02-01')
 
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')

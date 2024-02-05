@@ -1,12 +1,14 @@
 USE PURE;
 select * from productsToColours;
-select * from colours;
+select * from productCategories;
 
 
 select * from stocks;
-select * from stockJournals;
+select * from specificAddresses;
 
-select * from products;
+select * from mutations;
+
+select * from stocks;
 
 select stocks.id, stocks.productId, stocks.warehouseId, products.name
 from stocks
@@ -15,7 +17,7 @@ where stocks.warehouseId = 4;
 
 select * from orderProducts;
 
-select * from orders;
+select * from stocks;
 
 select p.id, p.name, 
 sum(op.price * op.quantity) as total, 

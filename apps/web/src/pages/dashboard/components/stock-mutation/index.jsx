@@ -74,9 +74,9 @@ export const StockMutation = () => {
   }, [pageValue, filterValue])
 
   // HANDLE APPROVE
-  const handleApprove = async (mutationId) => {
+  const handleApprove = async (mutationId, isAccepted) => {
     try {
-      const res = await approveMutation(mutationId)
+      const res = await approveMutation(mutationId, isAccepted)
       toast({
         title: `${res?.data?.title}`,
         status: 'success',
@@ -111,16 +111,18 @@ export const StockMutation = () => {
             bgColor={'transparent'}
             color={'redPure.600'}
             onClick={() => {
-              isJuragan ? handleApprove(mutation?.id) : null
+              isJuragan ? handleApprove(mutation?.id, 1) : null
             }}
           >
             {isJuragan
               ? mutation?.isAccepted
                 ? 'Accepted'
                 : 'Approve'
-              : mutation?.isAccepted
+              : +mutation?.isAccepted === 1
                 ? 'History'
-                : 'Waiting'}
+                : +mutation?.isAccepted === 0
+                  ? 'Rejected'
+                  : 'Waiting'}
           </Button>
         </Td>
       </Tr>
