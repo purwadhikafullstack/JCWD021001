@@ -18,17 +18,17 @@ export const createStockJournalService = async (
     if (check) {
       if (isUpdate) {
         if (qty < check.dataValues.qty) {
-          const newQty = -1 * (check.dataValues.qty - qty)
-          await check.increment('qty', { by: newQty })
+          const newQty = check.dataValues.qty - qty
+          await check.increment('qty', { by: -1 * newQty })
           const res = await createStockJournalQuery(
             productId,
             warehouseId,
             sizeId,
             colourId,
-            newQty > check.dataValues.qty ? 1 : 0,
+            0,
             newQty,
             check.dataValues.qty,
-            check.dataValues.qty + newQty,
+            check.dataValues.qty - newQty,
             check.dataValues.id,
           )
           return res
@@ -40,7 +40,7 @@ export const createStockJournalService = async (
           warehouseId,
           sizeId,
           colourId,
-          newQty > 0 ? 1 : 0,
+          1,
           newQty,
           check.dataValues.qty,
           check.dataValues.qty + newQty,
