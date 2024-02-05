@@ -23,7 +23,6 @@ export const Body = (props) => {
 
   // Size id
   const sizeValue = queryParams.get('sz')
-  const navigate = useNavigate()
 
   // Image carousel
   const images = [props?.product?.picture]
@@ -31,15 +30,8 @@ export const Body = (props) => {
   // Define size
   const sizes = props?.product?.category?.parent?.size
 
-  // Unique colour id take from stocks that have colourId
-  const uniqueColorIds = new Set()
-  const filteredStocks = props?.product?.stocks?.filter((stock) => {
-    if (!uniqueColorIds.has(stock.colourId)) {
-      uniqueColorIds.add(stock.colourId)
-      return true
-    }
-    return false
-  })
+  // Define colours
+  const colours = props?.product?.colour
 
   // Displaying selected image
   const [selectedImage, setSelectedImage] = useState('')
@@ -65,6 +57,7 @@ export const Body = (props) => {
     getStock(props?.product?.id, sizeValue, colourValue, setStock)
   }, [colourValue, sizeValue])
 
+  // Disable if stock doesnt exist
   const shouldDisable = !stock ? true : false
 
   // edit by andri
@@ -185,10 +178,10 @@ export const Body = (props) => {
                   Color
                 </Text>
                 <HStack>
-                  {filteredStocks?.map((filteredStock, index) => {
+                  {colours?.map((colour, index) => {
                     return (
                       <ColourBox
-                        {...filteredStock}
+                        {...colour}
                         pathName={pathName}
                         index={index}
                         changeColourToggle={changeColourToggle}
