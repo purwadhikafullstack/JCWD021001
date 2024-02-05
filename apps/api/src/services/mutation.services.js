@@ -25,44 +25,6 @@ export const getMutationService = async (
   }
 }
 
-export const createMutationService = async (
-  requesterWarehouseId,
-  recipientWarehouseId,
-  qty,
-  isAccepted,
-  stockId,
-) => {
-  try {
-    //Check its an manual or automatic mutation
-    if (!isAccepted) {
-      // Check recipient warehouse stock
-      const recipientStock = await getStockByIdQuery(stockId)
-      if (!recipientStock) {
-        throw new Error('Sorry, stock doesnt exist')
-      } else {
-        if (recipientStock?.dataValues?.qty <= 0) throw new Error('Sorry, stock is empty')
-      }
-
-      // Creating mutation
-      const recipientStockJournal = null // Recipient Stock Journal(the one who will send the stock)
-      const receiverStockJournal = null // Requester Stock Journal(the one who will reveive the sended stock)
-      const isAccepted = null // Default value is null, can be acc or reject
-      const res = await createMutationQuery(
-        requesterWarehouseId,
-        recipientWarehouseId,
-        qty,
-        recipientStockJournal,
-        isAccepted,
-        receiverStockJournal,
-        stockId,
-      )
-      return res
-    }
-  } catch (err) {
-    throw err
-  }
-}
-
 export const acceptMutationService = async (id, isAccepted) => {
   try {
     // Get mutation data
@@ -178,6 +140,66 @@ export const acceptMutationService = async (id, isAccepted) => {
         recipientJournal?.dataValues?.id,
         requesterJournal?.dataValues?.id,
         id,
+      )
+      return res
+    }
+  } catch (err) {
+    throw err
+  }
+}
+
+export const createMutationService = async (
+  requesterWarehouseId,
+  recipientWarehouseId,
+  qty,
+  isAccepted,
+  stockId,
+) => {
+  try {
+    //Check its an manual or automatic mutation
+    if (isAccepted === 1) {
+      const recipientStock = await getStockByIdQuery(stockId)
+      if (!recipientStock) {
+        throw new Error('Sorry, stock doesnt exist')
+      } else {
+        if (recipientStock?.dataValues?.qty <= 0) throw new Error('Sorry, stock is empty')
+      }
+      const recipientStockJournal = null // Recipient Stock Journal(the one who will send the stock)
+      const receiverStockJournal = null // Requester Stock Journal(the one who will reveive the sended stock)
+      const res = await createMutationQuery(
+        requesterWarehouseId,
+        recipientWarehouseId,
+        qty,
+        recipientStockJournal,
+        null,
+        receiverStockJournal,
+        stockId,
+      )
+      const acceptMutation = await acceptMutationService(res?.dataValues?.id, isAccepted)
+      return acceptMutation
+    }
+
+    if (!isAccepted) {
+      // Check recipient warehouse stock
+      const recipientStock = await getStockByIdQuery(stockId)
+      if (!recipientStock) {
+        throw new Error('Sorry, stock doesnt exist')
+      } else {
+        if (recipientStock?.dataValues?.qty <= 0) throw new Error('Sorry, stock is empty')
+      }
+
+      // Creating mutation
+      const recipientStockJournal = null // Recipient Stock Journal(the one who will send the stock)
+      const receiverStockJournal = null // Requester Stock Journal(the one who will reveive the sended stock)
+      const isAccepted = null // Default value is null, can be acc or reject
+      const res = await createMutationQuery(
+        requesterWarehouseId,
+        recipientWarehouseId,
+        qty,
+        recipientStockJournal,
+        isAccepted,
+        receiverStockJournal,
+        stockId,
       )
       return res
     }
