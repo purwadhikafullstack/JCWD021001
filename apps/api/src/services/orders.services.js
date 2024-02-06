@@ -8,7 +8,6 @@ import {
   getSpesificStockQuery,
   findWarehouseQuery,
   getOrderManagementQuery,
-  getOrderQuery,
   getWarehouseQuery,
   updateOrderQuery,
 } from '../queries/orders.queries'
