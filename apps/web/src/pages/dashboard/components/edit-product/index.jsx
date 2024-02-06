@@ -5,7 +5,6 @@ import {
   Button,
   FormControl,
   FormLabel,
-  FormErrorMessage,
   Textarea,
   InputGroup,
   InputLeftElement,
@@ -14,20 +13,18 @@ import {
   VStack,
   useToast,
   Image,
-  Icon,
 } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
-import { Formik, Field, Form, useFormik } from 'formik'
+import { useFormik } from 'formik'
 import { useParams } from 'react-router-dom'
 import { getProductDetails } from '../../../product-details/services/readProductDetails'
 import { getProductCategories } from '../../../product-list/services/readProductCategory'
 import { getGender } from '../../services/readGender'
 import axios from 'axios'
 import { ImageUpload } from '../image-upload'
-import { ChevronRightIcon } from '@chakra-ui/icons'
 import * as Yup from 'yup'
 import { CreateColour } from './component/create-colour'
-import { ColourBox } from '../../../product-details/components/colour-box'
+import { API_ROUTE } from '../../../../services/route'
 
 export const EditProduct = () => {
   // Validation Schema
@@ -55,7 +52,7 @@ export const EditProduct = () => {
   // UPDATE PRODUCT
   const updateProduct = async (name, price, description, productCategoryId, id) => {
     try {
-      const res = await axios.patch(`http://localhost:8000/api/product/${id}`, {
+      const res = await axios.patch(`${API_ROUTE}/api/product/${id}`, {
         name,
         price,
         description,
