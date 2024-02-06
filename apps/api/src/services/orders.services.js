@@ -120,10 +120,10 @@ export const getWarehouseService = async () => {
   }
 }
 
-export const productToStockIdService = async (productId) => {
+export const productToStockIdService = async (products, nearestWarehouse) => {
   try {
     // console.log('productId', productId);
-    const res = await productToStockIdQuery(productId)
+    const res = await productToStockIdQuery(products, nearestWarehouse)
     return res
   } catch (err) {
     throw err
@@ -166,6 +166,7 @@ export const calculationCheckStockService = async (orderId) => {
 
           if (availableQuantity >= quantity) {
             checkStockResults.push({
+              orderId: orders.id,
               productId,
               quantity,
               status: 'Available',
@@ -179,8 +180,8 @@ export const calculationCheckStockService = async (orderId) => {
             // Find the nearest warehouse
             const { latitude: originLat, longitude: originLon } = selectedWarehouse.WarehouseAddress
 
-            let nearestWarehouse = selectedWarehouse // Initialize nearestWarehouse with selectedWarehouse
-            let nearestWarehouseQuantity = availableQuantity // Initialize with the availableQuantity of selectedWarehouse
+            let nearestWarehouse = selectedWarehouse
+            let nearestWarehouseQuantity = availableQuantity
 
             while (nearestWarehouseQuantity < quantity) {
               // Find the next nearest warehouse
@@ -205,21 +206,21 @@ export const calculationCheckStockService = async (orderId) => {
 
               if (nextNearestWarehouseStock) {
                 console.log('halo', nextNearestWarehouseStock.qty)
-                nearestWarehouse = nextNearestWarehouse.warehouse // Update nearestWarehouse to the new nearest warehouse
+                nearestWarehouse = nextNearestWarehouse.warehouse
                 nearestWarehouseQuantity =
                   nextNearestWarehouseStock.qty > nearestWarehouseQuantity
                     ? nextNearestWarehouseStock.qty
                     : nearestWarehouseQuantity
               } else {
-                // Handle the case where stock is not found in the next nearest warehouse
-                break // Exit the loop if stock is not found in any warehouse
+                break
               }
             }
 
-            const needSelectedWarehouseQuantity = quantity - availableQuantity;
+            const needSelectedWarehouseQuantity = quantity - availableQuantity
 
             // Update checkStockResults based on the condition
             checkStockResults.push({
+              orderId: orders.id,
               productId,
               quantity,
               status: availableQuantity >= quantity ? 'Available Stock' : 'Insufficient Stock',
@@ -235,11 +236,12 @@ export const calculationCheckStockService = async (orderId) => {
               nearestWarehouseStatus:
                 nearestWarehouseQuantity >= quantity ? 'Available Stock' : 'Insufficient Stock',
               nearestWarehouseQuantity,
-              needSelectedWarehouseQuantity
+              needSelectedWarehouseQuantity,
             })
           }
         } else {
           checkStockResults.push({
+            orderId: orders.id,
             productId,
             quantity,
             status: 'Stock Not Found',
@@ -247,6 +249,7 @@ export const calculationCheckStockService = async (orderId) => {
         }
       } else {
         checkStockResults.push({
+          orderId: orders.id,
           productId,
           quantity,
           status: 'Warehouse Not Found',

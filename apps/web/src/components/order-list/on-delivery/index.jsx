@@ -7,6 +7,7 @@ const OnDelivery = ({
   formatDate,
   expandedProducts,
   handleToggleProducts,
+  handleConfirmButton,
   navigate,
 }) => {
   return (
@@ -102,7 +103,7 @@ const OnDelivery = ({
                       color={'#838383'}
                     >
                       {order?.OrderProducts[0]?.quantity} item x{' '}
-                      {toRupiah(+order?.OrderProducts[0]?.price, { floatingPoint: 0 })}
+                      {toRupiah(+order?.OrderProducts[0]?.stocks?.product?.price, { floatingPoint: 0 })}
                     </Text>
                     {order.OrderProducts.length > 1 && (
                       <Box>
@@ -175,7 +176,7 @@ const OnDelivery = ({
               <Button
                 bgColor={'#CD0244'}
                 color={'white'}
-                // onClick={() => handlePayNowClick(order.id)}
+                onClick={() => handleConfirmButton(order.id)}
               >
                 Confirm Order
               </Button>

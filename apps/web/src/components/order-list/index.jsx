@@ -42,6 +42,7 @@ const OrderListBody = ({
     handleOrderNumberSubmit,
     handleOrderNumberKeyPress,
     formatDate,
+    handleConfirmButton,
   } = useOrderListState({ orderData, loading, onOrderNumberSubmit, onOrderDateSubmit })
   return (
     <Box padding={'24px'}>
@@ -123,6 +124,7 @@ const OrderListBody = ({
                 formatDate={formatDate}
                 expandedProducts={expandedProducts}
                 handleToggleProducts={handleToggleProducts}
+                handleConfirmButton={handleConfirmButton}
                 navigate={navigate}
               />
               <Pagination

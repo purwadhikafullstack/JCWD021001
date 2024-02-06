@@ -16,6 +16,6 @@ orderRouter.get('/management', getOrderManagementController)
 orderRouter.get('/warehouse', getWarehouseController)
 orderRouter.get('/stock', productToStockIdController)
 orderRouter.get('/:userId', getOrderController)
-orderRouter.get('/stock/new/:orderId', calculationCheckStockController)
+orderRouter.get('/stock/:orderId', calculationCheckStockController)
 
 export { orderRouter }

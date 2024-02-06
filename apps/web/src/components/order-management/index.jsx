@@ -19,6 +19,7 @@ import OrderConfirmedTable from './order-management-table/order-confirmed-table'
 import OrderConfirmed from './order-card/order-confirmed'
 import OrderCancelledTable from './order-management-table/order-cancelled-table'
 import OrderCancelled from './order-card/order-cancelled'
+import ModalCheck from './modal-check'
 
 const OrderManagementBody = ({
   orderData,
@@ -31,8 +32,6 @@ const OrderManagementBody = ({
   pagination,
 }) => {
   const {
-    newOrder,
-    onProcess,
     expandedProducts,
     orderNumber,
     orderDate,
@@ -48,6 +47,11 @@ const OrderManagementBody = ({
     handleOrderNumberSubmit,
     handleOrderNumberKeyPress,
     handleSelectWarehouseChange,
+    checkStock,
+    handleCheckStock,
+    isOpen,
+    onClose,
+    handleSendButton,
   } = useOrderManagementState({
     orderData,
     onOrderNumberSubmit,
@@ -137,8 +141,8 @@ const OrderManagementBody = ({
                   orderData={orderData}
                   expandedProducts={expandedProducts}
                   handleToggleProducts={handleToggleProducts}
-                  handleAcceptButton={handleAcceptButton}
                   handleRejectButton={handleRejectButton}
+                  handleCheckStock={handleCheckStock}
                 />
                 <Pagination
                   currentPage={pagination?.currentPage}
@@ -152,15 +156,17 @@ const OrderManagementBody = ({
                   onProcessOrders={orderData}
                   expandedProducts={expandedProducts}
                   handleToggleProducts={handleToggleProducts}
-                  handleAcceptButton={handleAcceptButton}
-                  handleRejectButton={handleRejectButton}
+                  handleSendButton={handleSendButton}
+                  // handleAcceptButton={handleAcceptButton}
+                  // handleRejectButton={handleRejectButton}
                 />
                 <OnProcessTable
                   orderData={orderData}
                   expandedProducts={expandedProducts}
                   handleToggleProducts={handleToggleProducts}
-                  handleAcceptButton={handleAcceptButton}
-                  handleRejectButton={handleRejectButton}
+                  handleSendButton={handleSendButton}
+                  // handleAcceptButton={handleAcceptButton}
+                  // handleRejectButton={handleRejectButton}
                 />
                 <Pagination
                   currentPage={pagination?.currentPage}
@@ -233,6 +239,7 @@ const OrderManagementBody = ({
               </TabPanel>
             </TabPanels>
           </Tabs>
+          <ModalCheck checkStock={checkStock} isOpen={isOpen} onClose={onClose} handleAcceptButton={handleAcceptButton}/>
         </Box>
       </Box>
     </Box>

@@ -276,20 +276,41 @@ export const getWarehouseQuery = async () => {
   }
 }
 
-export const productToStockIdQuery = async (productId) => {
+export const productToStockIdQuery = async (products, nearestWarehouse) => {
+  
   try {
+    console.log('products', products);
     let whereCondition = {}
+    
+    if (products && products.length > 0) {
+      const productIdArray = products.map((item) => item.productId)
+      const colourIdArray = products.map((item) => item.colourId)
+      const sizeIdArray = products.map((item) => item.sizeId)
 
-    if (productId && productId.length > 0) {
-      const productIdArray = productId.map((item) => item.productId)
       whereCondition = {
         ...whereCondition,
-        $productId$: { [Sequelize.Op.in]: productIdArray },
+        productId: { [Sequelize.Op.in]: productIdArray },
+        colourId: { [Sequelize.Op.in]: colourIdArray },
+        sizeId: { [Sequelize.Op.in]: sizeIdArray },
+      }
+    }
+
+    let warehouseCondition = {}
+    if (nearestWarehouse) {
+      // Disini tambahkan logika untuk menemukan warehouse terdekat
+      warehouseCondition = {
+        warehouseId: nearestWarehouse, // Contoh sederhana, asumsikan nearestWarehouse adalah warehouseId
       }
     }
     const res = await Stock.findAll({
-      where: whereCondition,
+      where: {
+        ...whereCondition,
+        ...warehouseCondition,
+      },
     })
+
+
+    console.log('hasil res', res);
     return res
   } catch (err) {
     throw err

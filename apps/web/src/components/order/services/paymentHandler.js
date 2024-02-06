@@ -6,7 +6,7 @@ export const paymentHandler = async (
   stockOrder,
   selectedAddress,
   nearestWarehouse,
-  shippingCost,
+  costResult,
   totalPrice,
   totalQuantity,
   navigate,
@@ -29,7 +29,7 @@ export const paymentHandler = async (
       warehouseId: nearestWarehouse?.id,
       totalPrice: parseFloat(totalPrice),
       totalQuantity: totalQuantity,
-      shippingCost: shippingCost[0]?.costs[0]?.cost[0]?.value,
+      shippingCost: costResult,
       orderStatusId: 1,
       products: mappedProducts,
     }

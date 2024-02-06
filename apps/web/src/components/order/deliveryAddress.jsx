@@ -13,8 +13,8 @@ function DeliveryAddress({
   setSelectedAddress,
   nearestWarehouse,
   setNearestWarehouse,
-  shippingCost,
-  setShippingCost,
+  costResult,
+  setCostResult,
 }) {
   // const [address, setAddress] = useState([])
   //   const [selectedAddress, setSelectedAddress] = useState(null)
@@ -129,8 +129,8 @@ function DeliveryAddress({
           <ShippingCost
             nearestWarehouse={nearestWarehouse}
             selectedAddress={selectedAddress}
-            shippingCost={shippingCost}
-            setShippingCost={setShippingCost}
+            costResult={costResult}
+            setCostResult={setCostResult}
           />
         )}
       </Box>

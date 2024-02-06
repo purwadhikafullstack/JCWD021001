@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useBreakpointValue } from '@chakra-ui/react'
+import { useBreakpointValue, useDisclosure } from '@chakra-ui/react'
 import { useToast } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import { createStockJournal } from '../../../pages/dashboard/components/stock-management/services/createStocks'
 import { updateOrder } from '../../../pages/order/services/updateOrder'
+import { getCheckStock } from '../../../pages/order-management/service/getCheckStock'
 
 const useOrderManagementState = ({
   orderData,
@@ -11,35 +12,14 @@ const useOrderManagementState = ({
   onOrderDateSubmit,
   onWarehouseSubmit,
 }) => {
-  const [sortedOrderData, setSortedOrderData] = useState([])
   const [orderNumber, setOrderNumber] = useState('')
   const [orderDate, setOrderDate] = useState('')
   const [selectedWarehouse, setSelectedWarehouse] = useState('')
+  const [checkStock, setCheckStock] = useState([])
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const toast = useToast()
   const navigate = useNavigate()
-
-  useEffect(() => {
-    if (orderData && orderData.length > 0 && orderData[0].orderDate) {
-      // Sort orderData based on the orderDate in descending order
-      const sortedData = [...orderData].sort((a, b) => {
-        const dateA = new Date(a.orderDate).getTime()
-        const dateB = new Date(b.orderDate).getTime()
-        return dateB - dateA
-      })
-      // Update sortedOrderData with the sorted data
-      setSortedOrderData(sortedData)
-    } else {
-      // If orderData is empty or doesn't have valid data, set sortedOrderData to an empty array
-      setSortedOrderData([])
-    }
-  }, [orderData])
-
-  const newOrder = sortedOrderData?.filter(
-    (order) => order?.OrderStatus?.name === 'Waiting Confirmed',
-  )
-  const onProcess = sortedOrderData?.filter((order) => order?.OrderStatus?.name === 'On Process')
-  // console.log('newOrder', newOrder)
 
   const [expandedProducts, setExpandedProducts] = useState({})
 
@@ -54,7 +34,7 @@ const useOrderManagementState = ({
   const handleAcceptButton = async (orderId) => {
     try {
       // Find the corresponding order based on orderId
-      const clickedItem = newOrder.find((order) => order.id === orderId)
+      const clickedItem = orderData.find((order) => order.id === orderId)
 
       if (clickedItem) {
         // Map OrderProducts to an array of parameters
@@ -67,33 +47,33 @@ const useOrderManagementState = ({
           isUpdate: false,
         }))
 
-        // Loop through orderProducts and call createStockJournal for each
-        for (const productParams of orderProducts) {
-          try {
-            // Call createStockJournal for each OrderProduct
-            const res = await createStockJournal(
-              productParams.productId,
-              productParams.warehouseId,
-              productParams.sizeId,
-              productParams.colourId,
-              productParams.qty,
-              productParams.isUpdate,
-            )
+        // // Loop through orderProducts and call createStockJournal for each
+        // for (const productParams of orderProducts) {
+        //   try {
+        //     // Call createStockJournal for each OrderProduct
+        //     const res = await createStockJournal(
+        //       productParams.productId,
+        //       productParams.warehouseId,
+        //       productParams.sizeId,
+        //       productParams.colourId,
+        //       productParams.qty,
+        //       productParams.isUpdate,
+        //     )
 
-            // Handle success for each OrderProduct
-            toast({
-              title: `${res?.data?.message}`,
-              status: 'success',
-              placement: 'bottom',
-            })
-          } catch (error) {
-            // Handle error for each OrderProduct
-            toast({
-              title: `${error?.message}`,
-              status: 'error',
-            })
-          }
-        }
+        //     // Handle success for each OrderProduct
+        //     toast({
+        //       title: `${res?.data?.message}`,
+        //       status: 'success',
+        //       placement: 'bottom',
+        //     })
+        //   } catch (error) {
+        //     // Handle error for each OrderProduct
+        //     toast({
+        //       title: `${error?.message}`,
+        //       status: 'error',
+        //     })
+        //   }
+        // }
 
         try {
           const newUpdateOrder = {
@@ -127,7 +107,7 @@ const useOrderManagementState = ({
 
   // reject
   const handleRejectButton = async (orderId) => {
-    const clickedItem = newOrder.find((order) => order.id === orderId)
+    const clickedItem = orderData.find((order) => order.id === orderId)
     try {
       const newUpdateOrder = {
         orderId: clickedItem?.id,
@@ -186,9 +166,48 @@ const useOrderManagementState = ({
     onWarehouseSubmit(event.target.value)
   }
 
+  const handleCheckStock = async (orderId) => {
+    try {
+      const check = await getCheckStock(orderId)
+      setCheckStock(check)
+      onOpen()
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+   // Customer Confirm
+   const handleSendButton = async (orderId) => {
+    try {
+      // Find the corresponding order based on orderId
+      const clickedItem = orderData.find((order) => order.id === orderId)
+
+      if (clickedItem) {
+        const newUpdateOrder = {
+          orderId: clickedItem?.id,
+          orderStatusId: 4,
+        }
+        // Update the order status after processing OrderProducts
+        const updateOrderRes = await updateOrder(newUpdateOrder)
+        // Handle success for updateOrder
+        toast({
+          title: `${updateOrderRes?.data?.message}`,
+          status: 'success',
+          placement: 'bottom',
+        })
+      }
+    } catch (err) {
+      // Handle error for finding the order
+      toast({
+        title: `${err?.message}`,
+        status: 'error',
+      })
+    }
+  }
+
+
+
   return {
-    newOrder,
-    onProcess,
     expandedProducts,
     orderNumber,
     orderDate,
@@ -204,6 +223,11 @@ const useOrderManagementState = ({
     handleOrderNumberSubmit,
     handleOrderNumberKeyPress,
     handleSelectWarehouseChange,
+    checkStock,
+    handleCheckStock,
+    isOpen,
+    onClose,
+    handleSendButton,
   }
 }
 

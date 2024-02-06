@@ -14,14 +14,17 @@ import {
 } from '@chakra-ui/react'
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
 import toRupiah from '@develoka/angka-rupiah-js'
+import { useNavigate } from 'react-router-dom'
 
 const OnProcessTable = ({
   orderData,
   expandedProducts,
   handleToggleProducts,
-  handleAcceptButton,
-  handleRejectButton,
+  handleSendButton,
+  // handleAcceptButton,
+  // handleRejectButton,
 }) => {
+  const navigate = useNavigate()
   return (
     <Box>
       <TableContainer display={{ base: 'none', xl: 'block' }} borderRadius={'8px'}>
@@ -55,7 +58,7 @@ const OnProcessTable = ({
               </Td>
               <Td>
                 <Text fontFamily={'body'} fontWeight={'700'} fontSize={'14px'} color={'white'}>
-                  Total Price
+                  Gross Amount
                 </Text>
               </Td>
               <Td>
@@ -179,7 +182,7 @@ const OnProcessTable = ({
                 </Td>
                 <Td>
                   <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
-                    {toRupiah(+items?.totalPrice, { floatingPoint: 0 })}
+                    {toRupiah(+items?.Payment?.grossAmount, { floatingPoint: 0 })}
                   </Text>
                 </Td>
                 <Td>
@@ -193,7 +196,7 @@ const OnProcessTable = ({
                       size={'sm'}
                       bgColor={'#CD0244'}
                       color={'white'}
-                      onClick={() => handleAcceptButton(items?.id)}
+                      onClick={() => handleSendButton(items?.id)}
                     >
                       Send
                     </Button>
@@ -201,7 +204,7 @@ const OnProcessTable = ({
                       size={'sm'}
                       border={'1px solid #CD0244'}
                       color={'#CD0244'}
-                      onClick={() => handleRejectButton(items?.id)}
+                      // onClick={() => handleRejectButton(items?.id)}
                     >
                       Cancel
                     </Button>

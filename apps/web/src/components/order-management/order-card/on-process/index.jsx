@@ -7,8 +7,9 @@ const OnProcess = ({
   onProcessOrders,
   expandedProducts,
   handleToggleProducts,
-  handleAcceptButton,
-  handleRejectButton,
+  handleSendButton
+  // handleAcceptButton,
+  // handleRejectButton,
 }) => {
   const navigate = useNavigate()
   return (
@@ -173,14 +174,14 @@ const OnProcess = ({
                 bgColor={'white'}
                 color={'#CD0244'}
                 border={'1px solid #CD0244'}
-                onClick={() => handleRejectButton(items?.id)}
+                // onClick={() => handleRejectButton(items?.id)}
               >
                 Cancel
               </Button>
               <Button
                 bgColor={'#CD0244'}
                 color={'white'}
-                onClick={() => handleAcceptButton(items?.id)}
+                onClick={() => handleSendButton(items?.id)}
               >
                 Send
               </Button>

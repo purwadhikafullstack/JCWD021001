@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useBreakpointValue } from '@chakra-ui/react'
+import { updateOrder } from '../../../pages/order/services/updateOrder'
+import { useToast } from '@chakra-ui/react'
 
 const useOrderListState = ({ orderData, loading, onOrderNumberSubmit, onOrderDateSubmit }) => {
   const location = useLocation()
   const navigate = useNavigate()
+  const toast = useToast()
 
   const [orderNumber, setOrderNumber] = useState('')
   const [orderDate, setOrderDate] = useState('')
@@ -13,8 +16,7 @@ const useOrderListState = ({ orderData, loading, onOrderNumberSubmit, onOrderDat
     return location.state?.activeTab || 0
   })
 
-  useEffect(() => {
-  }, [orderData, loading])
+  useEffect(() => {}, [orderData, loading])
 
   const handlePayNowClick = (orderId) => {
     const orderToPay = orderData.find((order) => order.id === orderId)
@@ -58,14 +60,12 @@ const useOrderListState = ({ orderData, loading, onOrderNumberSubmit, onOrderDat
 
   const handleOrderNumberSubmit = () => {
     onOrderNumberSubmit(orderNumber)
-
   }
 
   const handleOrderNumberKeyPress = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault()
       onOrderNumberSubmit(orderNumber)
-
     }
   }
 
@@ -79,6 +79,35 @@ const useOrderListState = ({ orderData, loading, onOrderNumberSubmit, onOrderDat
       second: '2-digit',
     }
     return new Date(dateString).toLocaleDateString('id-ID', options).replace(/\//g, '-')
+  }
+
+  // Customer Confirm
+  const handleConfirmButton = async (orderId) => {
+    try {
+      // Find the corresponding order based on orderId
+      const clickedItem = orderData.find((order) => order.id === orderId)
+
+      if (clickedItem) {
+        const newUpdateOrder = {
+          orderId: clickedItem?.id,
+          orderStatusId: 5,
+        }
+        // Update the order status after processing OrderProducts
+        const updateOrderRes = await updateOrder(newUpdateOrder)
+        // Handle success for updateOrder
+        toast({
+          title: `${updateOrderRes?.data?.message}`,
+          status: 'success',
+          placement: 'bottom',
+        })
+      }
+    } catch (err) {
+      // Handle error for finding the order
+      toast({
+        title: `${err?.message}`,
+        status: 'error',
+      })
+    }
   }
 
   return {
@@ -97,7 +126,7 @@ const useOrderListState = ({ orderData, loading, onOrderNumberSubmit, onOrderDat
     handleOrderNumberSubmit,
     handleOrderNumberKeyPress,
     formatDate,
-
+    handleConfirmButton,
   }
 }
 

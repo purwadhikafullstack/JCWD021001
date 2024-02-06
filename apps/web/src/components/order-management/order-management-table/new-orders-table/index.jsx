@@ -14,14 +14,16 @@ import {
 } from '@chakra-ui/react'
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
 import toRupiah from '@develoka/angka-rupiah-js'
+import { useNavigate } from 'react-router-dom'
 
 const NewOrderTable = ({
   orderData,
   expandedProducts,
   handleToggleProducts,
-  handleAcceptButton,
   handleRejectButton,
+  handleCheckStock,
 }) => {
+  const navigate = useNavigate()
   return (
     <Box>
       <TableContainer display={{ base: 'none', xl: 'block' }} borderRadius={'8px'}>
@@ -55,7 +57,7 @@ const NewOrderTable = ({
               </Td>
               <Td>
                 <Text fontFamily={'body'} fontWeight={'700'} fontSize={'14px'} color={'white'}>
-                  Total Price
+                  Gross Amount
                 </Text>
               </Td>
               <Td>
@@ -179,7 +181,7 @@ const NewOrderTable = ({
                 </Td>
                 <Td>
                   <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
-                    {toRupiah(+items?.totalPrice, { floatingPoint: 0 })}
+                    {toRupiah(+items?.Payment?.grossAmount, { floatingPoint: 0 })}
                   </Text>
                 </Td>
                 <Td>
@@ -193,9 +195,10 @@ const NewOrderTable = ({
                       size={'sm'}
                       bgColor={'#CD0244'}
                       color={'white'}
-                      onClick={() => handleAcceptButton(items?.id)}
+                      // onClick={() => handleAcceptButton(items?.id)}
+                      onClick={() => handleCheckStock(items?.id)}
                     >
-                      Accept
+                      Check Stock
                     </Button>
                     <Button
                       size={'sm'}

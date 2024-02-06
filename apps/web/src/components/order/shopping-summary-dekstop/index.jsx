@@ -3,7 +3,7 @@ import { Box, Text, Button } from '@chakra-ui/react'
 import toRupiah from '@develoka/angka-rupiah-js'
 
 const ShoppingSummaryDesktop = ({
-  shippingCost,
+  costResult,
   totalQuantity,
   totalPrice,
   handlePaymentClick,
@@ -36,7 +36,7 @@ const ShoppingSummaryDesktop = ({
           Shipping Price
         </Text>
         <Text fontFamily={'body'} fontWeight={'400'} fontSize={'16px'} color={'#838383'}>
-          {toRupiah(+shippingCost[0]?.costs[0]?.cost[0]?.value || 0, { floatingPoint: 0 })}
+          {toRupiah(+costResult, { floatingPoint: 0 })}
         </Text>
       </Box>
       <Box w={'full'} h={'2px'} bgColor={'#F1F1F1'} />
@@ -45,7 +45,7 @@ const ShoppingSummaryDesktop = ({
           Total Price
         </Text>
         <Text fontFamily={'body'} fontWeight={'700'} fontSize={'18px'} color={'#CD0244'}>
-          {toRupiah(+totalPrice, { floatingPoint: 0 })}
+          {toRupiah(+totalPrice + +costResult, { floatingPoint: 0 })}
         </Text>
       </Box>
       <Button bgColor={'#CD0244'} color={'#ffffff'} onClick={handlePaymentClick}>
