@@ -25,7 +25,7 @@ export const StockMutation = () => {
   const queryParams = new URLSearchParams(location.search)
 
   // WAREHOUSE ID
-  const [warehouseId, setWarehouseId] = useState(5)
+  const [warehouseId, setWarehouseId] = useState(4)
   const [requesterWarehouseId, setRequesterWarehouseId] = useState(0)
   const [recipientWarehouseId, setRecipientWarehouseId] = useState(0)
 
@@ -74,9 +74,9 @@ export const StockMutation = () => {
   }, [pageValue, filterValue])
 
   // HANDLE APPROVE
-  const handleApprove = async (mutationId) => {
+  const handleApprove = async (mutationId, isAccepted) => {
     try {
-      const res = await approveMutation(mutationId)
+      const res = await approveMutation(mutationId, isAccepted)
       toast({
         title: `${res?.data?.title}`,
         status: 'success',
@@ -100,35 +100,77 @@ export const StockMutation = () => {
         <Td>{mutation?.stock?.product?.name}</Td>
         <Td>{mutation?.qty}</Td>
         <Td>
-          <Button
-            _hover={{
-              bgColor: 'transparent',
-            }}
-            fontSize={'.8em'}
-            h={'2.5em'}
-            w={'5em'}
-            border={'1px solid #CD0244'}
-            bgColor={'transparent'}
-            color={'redPure.600'}
-            onClick={() => {
-              isJuragan ? handleApprove(mutation?.id) : null
-            }}
-          >
-            {isJuragan
-              ? mutation?.isAccepted
-                ? 'Accepted'
-                : 'Approve'
-              : mutation?.isAccepted
-                ? 'History'
-                : 'Waiting'}
-          </Button>
+          <HStack>
+            <Button
+              _hover={{
+                bgColor: 'transparent',
+              }}
+              fontSize={'.8em'}
+              h={'2.5em'}
+              w={'5em'}
+              border={'1px solid #CD0244'}
+              bgColor={'transparent'}
+              color={'redPure.600'}
+            >
+              {isJuragan
+                ? +mutation?.isAccepted === 1
+                  ? 'Accepted'
+                  : +mutation?.isAccepted === 0 && mutation?.isAccepted !== null
+                    ? 'Rejected'
+                    : mutation?.isAccepted === null
+                      ? 'Waiting'
+                      : ''
+                : +mutation?.isAccepted === 1
+                  ? 'History'
+                  : +mutation?.isAccepted === 0
+                    ? 'Rejected'
+                    : 'Waiting'}
+            </Button>
+            <Button
+              visibility={
+                filterValue == 'app' && mutation?.isAccepted === null ? 'visible' : 'hidden'
+              }
+              _hover={{
+                bgColor: 'transparent',
+              }}
+              fontSize={'.8em'}
+              h={'2.5em'}
+              w={'5em'}
+              border={'1px solid #CD0244'}
+              bgColor={'transparent'}
+              color={'redPure.600'}
+              onClick={() => {
+                isJuragan ? handleApprove(mutation?.id, 1) : null
+              }}
+            >
+              {isJuragan ? 'Approve' : ''}
+            </Button>
+            <Button
+              visibility={
+                filterValue == 'app' && mutation?.isAccepted === null ? 'visible' : 'hidden'
+              }
+              _hover={{
+                bgColor: 'transparent',
+              }}
+              fontSize={'.8em'}
+              h={'2.5em'}
+              w={'5em'}
+              border={'1px solid #CD0244'}
+              bgColor={'transparent'}
+              color={'redPure.600'}
+              onClick={() => {
+                isJuragan ? handleApprove(mutation?.id, 0) : null
+              }}
+            >
+              {isJuragan ? 'Reject' : ''}
+            </Button>
+          </HStack>
         </Td>
       </Tr>
     )
   })
   // Toggle Box Colour
   const [textToggle, setTextToggle] = useState({ Request: true })
-  console.log('text-toggle', textToggle)
   // Handle Toggle
   const changeTextToggle = (id) => {
     setTextToggle((set) => ({

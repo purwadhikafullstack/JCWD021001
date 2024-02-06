@@ -1,9 +1,13 @@
 import {
   createOrderQuery,
   findOrderIdQuery,
+  getAllOrderByCategoryQuery,
+  getAllOrderByProductQuery,
+  getAllOrderQuery,
+  getOrderQuery,
+  getSpesificStockQuery,
   findWarehouseQuery,
   getOrderManagementQuery,
-  getOrderQuery,
   getWarehouseQuery,
   updateOrderQuery,
 } from '../queries/orders.queries'
@@ -56,33 +60,73 @@ export const updateOrderService = async (orderId, orderStatusId) => {
   }
 }
 
-export const getOrderService = async (userId, orderNumber, orderDate, orderStatusId, page, pageSize) => {
+export const getOrderService = async (
+  userId,
+  orderNumber,
+  orderDate,
+  orderStatusId,
+  page,
+  pageSize,
+) => {
   try {
     const check = await findOrderIdQuery({ userId })
     if (!check) throw new Error('Data doesnt exist')
-    const res = await getOrderQuery({ userId, orderNumber, orderDate, orderStatusId, page, pageSize})
+    const res = await getOrderQuery({
+      userId,
+      orderNumber,
+      orderDate,
+      orderStatusId,
+      page,
+      pageSize,
+    })
     return res
   } catch (err) {
     throw err
   }
 }
 
-export const getOrderManagementService = async (orderNumber, orderDate, warehouseId) => {
+export const getAllOrderService = async (
+  sortBy,
+  orderBy,
+  page,
+  pageSize,
+  warehouseId,
+  startDate,
+  endDate,
+) => {
   try {
-    //   const check = await findOrderIdQuery({ userId })
-    //   if (!check) throw new Error('Data doesnt exist')
-    const res = await getOrderManagementQuery({ orderNumber, orderDate, warehouseId })
+    const res = await getAllOrderQuery(
+      sortBy,
+      orderBy,
+      page,
+      pageSize,
+      warehouseId,
+      startDate,
+      endDate,
+    )
+  } catch (err) {
+    throw err
+  }
+}
+
+export const getAllOrderByCategoryService = async (warehouseId, startDate, endDate) => {
+  try {
+    const res = await getAllOrderByCategoryQuery(warehouseId, startDate, endDate)
     return res
   } catch (err) {
     throw err
   }
 }
 
-export const getWarehouseService = async () => {
+export const getAllOrderByProductService = async (
+  page,
+  pageSize,
+  warehouseId,
+  startDate,
+  endDate,
+) => {
   try {
-    const check = await findWarehouseQuery()
-    if (!check) throw new Error('Data doesnt exist')
-    const res = await getWarehouseQuery()
+    const res = await getAllOrderByProductQuery(page, pageSize, warehouseId, startDate, endDate)
     return res
   } catch (err) {
     throw err

@@ -27,7 +27,7 @@ export const Dashboard = () => {
         <Body
           destination={destination}
           createProduct={createProduct}
-          collapseSideBar={collapseSideBar}
+          collapseSideBar={collapseSideBar} // responsive
         />
       </Box>
       <Flex

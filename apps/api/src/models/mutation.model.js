@@ -75,7 +75,7 @@ export const init = (sequelize) => {
         },
       },
       isAccepted: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.BOOLEAN,
         defaultValue: 0,
       },
