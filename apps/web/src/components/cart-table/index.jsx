@@ -38,7 +38,11 @@ const LaptopCartTable = ({ cartData, onCartUpdated }) => {
               handleSelectAllChange={handleSelectAllChange}
               productData={productData}
             />
-            <CartSummary totalQuantity={totalQuantity} totalPrice={totalPrice} handleCheckout={handleCheckout}/>
+            <CartSummary
+              totalQuantity={totalQuantity}
+              totalPrice={totalPrice}
+              handleCheckout={handleCheckout}
+            />
           </Box>
         ))}
       </Box>
@@ -55,7 +59,11 @@ const LaptopCartTable = ({ cartData, onCartUpdated }) => {
               handleSelectAllChange={handleSelectAllChange}
               productData={productData}
             />
-            <CartSummaryMobile totalQuantity={totalQuantity} totalPrice={totalPrice} />
+            <CartSummaryMobile
+              totalQuantity={totalQuantity}
+              totalPrice={totalPrice}
+              handleCheckout={handleCheckout}
+            />
           </Box>
         ))}
       </Box>

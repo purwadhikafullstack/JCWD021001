@@ -47,8 +47,9 @@ import { SearchModal } from './components/search-modal'
 import { SearchMenu } from './components/search-menu'
 import { useState, useEffect } from 'react'
 import { getCart } from '../../pages/cart/services/getCart'
-import { useCart } from './services/cartContext'
 import ShoppingCartBox from './components/shopping-cart-box'
+import { useCart } from './components/use-cart'
+import NotificationBox from './components/notification-box'
 
 export const Navbar = (props) => {
   const user = useSelector((state) => state.AuthReducer.user)
@@ -56,11 +57,10 @@ export const Navbar = (props) => {
   const navigate = useNavigate()
   // edit by andri
   const { cartData, cartCount } = useCart()
-  console.log('cart', cartData)
 
   return (
     <Box p={'1em 2em'} bg={'white'}>
-      <Flex alignItems={'center'} justifyContent={'space-between'} overflow={'hidden'}>
+      <Flex alignItems={'center'} justifyContent={'space-between'} >
         <HStack spacing={'2em'}>
           <AspectRatio ratio={1} cursor={'pointer'} w={'3em'} onClick={() => navigate('/')}>
             <Image src={pure} alt="Pure Logo" />
@@ -78,7 +78,13 @@ export const Navbar = (props) => {
                 <ShoppingCartBox cartData={cartData} cartCount={cartCount} />
               </Box>
             </HStack>
-            <Icon as={BellIcon} />
+            <HStack fontSize={'1.5em'} spacing={'.5em'} position="relative">
+              <Box>
+                <NotificationBox  />
+              </Box>
+            </HStack>
+            {/* <Icon as={ShoppingCartIcon} /> */}
+            {/* <Icon as={BellIcon} /> */}
           </HStack>
           <Center height="2em">
             <Divider orientation="vertical" borderWidth={'1px'} />
@@ -113,14 +119,14 @@ export const Navbar = (props) => {
                 <Flex w={'48px'} h={'48px'} borderRadius={'full'} ml={'24px'}>
                   {user?.avatar ? (
                     <Avatar
-                      name={user?.fullName}
-                      src={`${import.meta.env.VITE_APP_IMAGE_URL}/api/avatar/${user?.avatar}`}
+                      name={user?.username}
+                      src={`${import.meta.env.VITE_APP_API_IMAGE_URL}/avatar/${user?.avatar}`}
                       w={'48px'}
                       h={'48px'}
                     />
                   ) : (
                     <Avatar
-                      name={user?.fullName}
+                      name={user?.username}
                       bg="rgba(40, 96, 67, 1)"
                       src={'https://bit.ly/broken-link'}
                       w={'48px'}

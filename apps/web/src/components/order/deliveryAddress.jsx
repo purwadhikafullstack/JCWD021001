@@ -1,13 +1,18 @@
-import { useSelector } from "react-redux";
-import { findUserAddress } from "../../pages/manage-address/services/readUserAddress";
-import { useEffect, useState } from "react";
-import { Box, Flex, Icon, Text } from "@chakra-ui/react";
+import { useSelector } from 'react-redux'
+import { findUserAddress } from '../../pages/manage-address/services/readUserAddress'
+import { useEffect, useState } from 'react'
+import { Box, Flex, Icon, Text } from '@chakra-ui/react'
 import { MapPinIcon } from '@heroicons/react/24/outline'
 import ChangeAddressModal from "./ModalChangeAddress";
+import { getNearestWarehouse, getShippingCost} from "./services/getDeliveryFee";
+import ShippingCost from "./shippingCost";
+import { useFormik } from "formik";
+
 
 function DeliveryAddress (){
     // const [address, setAddress] = useState([])
     const [selectedAddress, setSelectedAddress] = useState(null)
+    const [nearestWarehouse, setNearestWarehouse] = useState(null)
     const user = useSelector((state) => state.AuthReducer.user);
     
         const fetchData = async () => {
@@ -20,10 +25,29 @@ function DeliveryAddress (){
             }
         }
 
-        console.log("ini selected address", selectedAddress);
+        console.log(selectedAddress, selectedAddress?.City?.Province?.id);
     useEffect(() => {
         fetchData()
     }, [user.id])
+
+    
+    const fetchWarehouse = async () => {
+        try{
+            const fetchNearestWarehouse = await getNearestWarehouse(selectedAddress?.City?.Province?.id, selectedAddress?.latitude, selectedAddress?.longitude)
+            setNearestWarehouse(fetchNearestWarehouse)
+        } catch (err){
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
+        if (selectedAddress) {
+            fetchWarehouse();
+        }
+    }, [selectedAddress]);
+    console.log("ini warehouse terdekat", nearestWarehouse)
+
+    
     return(
         <>
         <Box
@@ -101,8 +125,15 @@ function DeliveryAddress (){
                 setSelectedAddress={setSelectedAddress}
                 selectedAddress={selectedAddress}/>
             </Box>
-        </Box>
 
+            {nearestWarehouse && selectedAddress && (
+                <ShippingCost
+                    nearestWarehouse={nearestWarehouse}
+                    selectedAddress={selectedAddress}
+                />
+            )}
+        </Box>
+       
         </>
     )
 }

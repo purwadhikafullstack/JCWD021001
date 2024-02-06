@@ -1,9 +1,9 @@
 import {
   createOrderService,
-  getAllOrderByCategoryService,
-  getAllOrderByProductService,
-  getAllOrderService,
+  getOrderManagementService,
   getOrderService,
+  getWarehouseService,
+  updateOrderService,
 } from '../services/orders.services'
 
 const sendResponse = (res, statusCode, result, errorMessage) => {
@@ -60,16 +60,16 @@ export const createOrderController = async (req, res) => {
 //     }
 // }
 
-export const getOrderController = async (req, res) => {
-  try {
-    const { userId } = req.params
-    const result = await getOrderService(userId)
-    return sendResponse(res, 200, result, null)
-  } catch (err) {
-    console.log(err)
-    return sendResponse(res, 500, null, err.message)
-  }
-}
+// export const getOrderController = async (req, res) => {
+//   try {
+//     const { userId } = req.params
+//     const result = await getOrderService(userId)
+//     return sendResponse(res, 200, result, null)
+//   } catch (err) {
+//     console.log(err)
+//     return sendResponse(res, 500, null, err.message)
+//   }
+// }
 
 export const getAllOrderController = async (req, res) => {
   try {
@@ -127,5 +127,57 @@ export const getAllOrderByProductController = async (req, res) => {
     return res.status(500).json({
       message: err.message,
     })
+  }
+}
+export const updateOrderController = async (req, res) => {
+  try {
+    const { orderId } = req.params
+    const { orderStatusId } = req.body
+    const result = await updateOrderService(orderId, orderStatusId)
+    return sendResponse(res, 200, result, null)
+  } catch (err) {
+    console.log(err)
+    return sendResponse(res, 500, null, err.message)
+  }
+}
+
+export const getOrderController = async (req, res) => {
+  try {
+    const { userId } = req.params
+    const { orderNumber, orderDate, orderStatusId, page, pageSize } = req.query
+    const result = await getOrderService(
+      userId,
+      orderNumber,
+      orderDate,
+      orderStatusId,
+      page,
+      pageSize,
+    )
+    return sendResponse(res, 200, result, null)
+  } catch (err) {
+    console.log(err)
+    return sendResponse(res, 500, null, err.message)
+  }
+}
+
+export const getOrderManagementController = async (req, res) => {
+  try {
+    // const { userId } = req.params
+    const { orderNumber, orderDate, warehouseId } = req.query
+    const result = await getOrderManagementService(orderNumber, orderDate, warehouseId)
+    return sendResponse(res, 200, result, null)
+  } catch (err) {
+    console.log(err)
+    return sendResponse(res, 500, null, err.message)
+  }
+}
+
+export const getWarehouseController = async (req, res) => {
+  try {
+    const result = await getWarehouseService()
+    return sendResponse(res, 200, result, null)
+  } catch (err) {
+    console.log(err)
+    return sendResponse(res, 500, null, err.message)
   }
 }

@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import { useParams } from 'react-router-dom'
 
+
 export const Dashboard = () => {
   const { destination, createProduct } = useParams()
   const [collapseSideBar, setCollapseSideBar] = useState(true)
