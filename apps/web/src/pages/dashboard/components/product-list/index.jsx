@@ -76,7 +76,7 @@ export const ProductList = () => {
   }
 
   // Toggle Box Colour
-  const [boxToggle, setBoxToggle] = useState({ 1: true })
+  const [boxToggle, setBoxToggle] = useState({ [pageValue]: true })
 
   // Handle Toggle
   const changeBoxToggle = (id) => {
