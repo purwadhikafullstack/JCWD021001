@@ -6,7 +6,6 @@ import { useState } from 'react'
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import { useParams } from 'react-router-dom'
 
-
 export const Dashboard = () => {
   const { destination, createProduct } = useParams()
   const [collapseSideBar, setCollapseSideBar] = useState(true)
@@ -14,9 +13,9 @@ export const Dashboard = () => {
     setCollapseSideBar(!collapseSideBar)
   }
   return (
-    <Box minH={'100vh'}>
+    <Box maxW={'100vw'} overflow={{ xl: 'hidden', base: 'hidden' }}>
       <Navbar />
-      <Box display={{ md: 'flex' }} gap={'1em'} h={'100%'}>
+      <Box display={{ md: 'flex' }} w={'100%'}>
         <Box display={{ md: 'flex' }}>
           <Sidebar
             collapseSideBar={collapseSideBar}
