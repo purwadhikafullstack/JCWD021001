@@ -267,7 +267,6 @@ export const EditProductCategory = () => {
             <button type="submit">Submit</button>
           </VStack>
         </form>
-
         <Text fontWeight={'bold'}>Parent</Text>
         {editable[gender[0]?.id] && (
           <>
