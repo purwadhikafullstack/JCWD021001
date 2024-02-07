@@ -112,30 +112,6 @@ export const getOrderManagementService = async (
   }
 }
 
-export const getAllOrderService = async (
-  sortBy,
-  orderBy,
-  page,
-  pageSize,
-  warehouseId,
-  startDate,
-  endDate,
-) => {
-  try {
-    const res = await getAllOrderQuery(
-      sortBy,
-      orderBy,
-      page,
-      pageSize,
-      warehouseId,
-      startDate,
-      endDate,
-    )
-  } catch (err) {
-    throw err
-  }
-}
-
 export const getWarehouseService = async () => {
   try {
     const check = await findWarehouseQuery()
@@ -289,6 +265,31 @@ export const calculationCheckStockService = async (orderId) => {
       // warehouse,
       checkStockResults,
     }
+  } catch (err) {
+    throw err
+  }
+}
+
+
+export const getAllOrderService = async (
+  sortBy,
+  orderBy,
+  page,
+  pageSize,
+  warehouseId,
+  startDate,
+  endDate,
+) => {
+  try {
+    const res = await getAllOrderQuery(
+      sortBy,
+      orderBy,
+      page,
+      pageSize,
+      warehouseId,
+      startDate,
+      endDate,
+    )
   } catch (err) {
     throw err
   }

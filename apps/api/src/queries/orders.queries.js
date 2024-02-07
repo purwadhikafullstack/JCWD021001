@@ -278,7 +278,6 @@ export const getWarehouseQuery = async () => {
 }
 
 export const productToStockIdQuery = async (products, nearestWarehouse) => {
-  
   try {
     console.log('products', products);
     let whereCondition = {}

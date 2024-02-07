@@ -4,6 +4,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useFormik } from 'formik'
 import { API_ROUTE } from '../../../../services/route'
+import { deleteProductCategory } from './services/deleteProductCategory'
 
 export const EditProductCategory = () => {
   // USE PARAMS
@@ -41,9 +42,11 @@ export const EditProductCategory = () => {
   // GET PRODUCT CATEGORY
 
   // HANDLE EDIT
-  const editProductCategory = async (id) => {
+  const editProductCategory = async (id, name) => {
     try {
-      const res = await axios.patch(`${API_ROUTE}/product-category/${id}`)
+      const res = await axios.patch(`${API_ROUTE}/product-category/${id}`, {
+        name,
+      })
       toast({
         title: `${res?.data?.title}`,
         status: 'success',
@@ -61,7 +64,7 @@ export const EditProductCategory = () => {
   // CREATE PRODUCT CATEGORY
   // NEW PARENT
   const [newChildren, setNewChildren] = useState(null)
-  // NEW PARENT
+
   const createProductCategory = async (name, parentId) => {
     try {
       const res = await axios.post(`http://localhost:8000/api/product-category`, {
@@ -71,7 +74,6 @@ export const EditProductCategory = () => {
       toast({
         title: `${res?.data?.title}`,
         status: 'success',
-        placement: 'bottom',
       })
       return res
     } catch (err) {
@@ -81,11 +83,12 @@ export const EditProductCategory = () => {
       })
     }
   }
-  // CREATE PRODUCT CATEGORY
 
   // INPUT VALUE
   const [input, setInput] = useState([{}])
+
   const [fixInput, setFixInput] = useState('')
+
   const onFocusInput = (id, text) => {
     const test = {
       id,
@@ -113,14 +116,13 @@ export const EditProductCategory = () => {
     return foundObject ? foundObject.text : null
   }
 
-  // INPUT VALUE
-
   useEffect(() => {
     getGender(epid)
     getProductCategory(setProductCategory, epid)
   }, [epid])
 
   const [editable, setEditable] = useState({})
+
   const handleEditClick = (id) => {
     setEditable((set) => ({
       ...set,
@@ -144,21 +146,13 @@ export const EditProductCategory = () => {
   })
 
   const flattenData = [].concat(...prodCatData)
-
   const data = [...flattenData]
-
   const initialValues = {}
-
-  // Set initial values for each item in the data array
   data.forEach((item) => {
     initialValues[`name_${item.id}`] = item.name
-
     if (item.category) {
       const flattenData = [].concat(...item.category)
-      console.log('A', flattenData)
-
       flattenData.forEach((el) => {
-        console.log('el', el)
         initialValues[`childName_${el.id}`] = el.name
       })
     }
@@ -167,33 +161,58 @@ export const EditProductCategory = () => {
   const formik = useFormik({
     initialValues,
     enableReinitialize: true,
-    onSubmit: (values) => {
-      // Handle form submission
-      console.log('Form values:', values)
-    },
   })
 
   return (
-    <Box bgColor={'white'} p={'1em'}>
+    <Box bgColor={'white'} p={'1em'} w={'100%'} h={'100%'}>
       <VStack align={'stretch'}>
         <Text fontWeight={'bold'}>Edit Product Category</Text>
         <Text fontWeight={'bold'}>{gender[0]?.name}</Text>
-        <form onSubmit={formik.handleSubmit}>
-          <VStack align={'stretch'}>
+        <form>
+          <VStack align={'stretch'} spacing={'2em'}>
             {productCategory?.map((item) => (
-              <div key={item.id}>
+              <Box key={item.id} boxShadow={'md'} p={'.5em'} borderRadius={'.5em'}>
+                <Text fontWeight={'bold'} mb={'.5em'}>
+                  Group
+                </Text>
                 <Input
-                  mb={'.5em'}
+                  mb={'.3em'}
                   type="text"
                   id={`name_${item.id}`}
                   name={`name_${item.id}`}
                   onChange={formik.handleChange}
                   value={formik.values[`name_${item.id}`]}
                   borderColor={'transparent'}
-                  borderBottom={'2px solid gray'}
                   focusBorderColor={'transparent'}
                   bgColor={'grey.50'}
                 />
+                <Text
+                  w={'5em'}
+                  fontSize={'.75em'}
+                  fontWeight={'bold'}
+                  color={'redPure.600'}
+                  cursor={'pointer'}
+                  onClick={() => {
+                    editProductCategory(item.id, formik.values[`name_${item.id}`])
+                  }}
+                >
+                  Save
+                </Text>
+                <Text
+                  w={'5em'}
+                  fontSize={'.75em'}
+                  fontWeight={'bold'}
+                  color={'redPure.600'}
+                  cursor={'pointer'}
+                  onClick={() => {
+                    deleteProductCategory(item.id, null, null, toast)
+                  }}
+                >
+                  Delete
+                </Text>
+                <Text fontWeight={'bold'} mb={'.5em'}>
+                  Category
+                </Text>
                 <VStack align={'stretch'}>
                   {item.category &&
                     item.category.map((child) => (
@@ -208,71 +227,96 @@ export const EditProductCategory = () => {
                           focusBorderColor={'transparent'}
                           bgColor={'grey.50'}
                         />
-                        {editable[child?.id] && (
-                          <Input
-                            id={`${item.id}`}
-                            placeholder={'Input new product categories'}
-                            borderColor={'transparent'}
-                            focusBorderColor={'transparent'}
-                            bgColor={'grey.50'}
-                            value={findById(item?.id)}
-                            onFocus={(e) => onFocusInput(item?.id, e.target.value)}
-                            onBlur={() => {
-                              setInput([{}])
-                            }}
-                            mt={'.5em'}
-                            onChange={(e) => {
-                              handleInput(item?.id, e.target.value)
-                            }}
-                          />
-                        )}
-                        <HStack>
-                          <Button
-                            mt={'.5em'}
-                            _hover={{
-                              bgColor: 'redPure.500',
-                            }}
-                            w={'5em'}
-                            bgColor={'redPure.500'}
-                            color={'white'}
-                            isLoading={false}
-                            onClick={() => handleEditClick(child.id)}
-                          >
-                            {editable[child?.id] ? 'Cancel' : 'Add'}
-                          </Button>
-                          {editable[child?.id] && (
-                            <Button
-                              mt={'.5em'}
-                              _hover={{
-                                bgColor: 'redPure.500',
-                              }}
-                              w={'5em'}
-                              bgColor={'redPure.500'}
-                              color={'white'}
-                              isLoading={false}
-                              onClick={async () => {
-                                await createProductCategory(fixInput, item?.id)
-                                setFixInput('')
-                              }}
-                            >
-                              Submit
-                            </Button>
-                          )}
-                        </HStack>
+                        <Text
+                          w={'5em'}
+                          fontSize={'.75em'}
+                          fontWeight={'bold'}
+                          color={'redPure.600'}
+                          cursor={'pointer'}
+                          onClick={() => {
+                            editProductCategory(child.id, formik.values[`childName_${child.id}`])
+                          }}
+                        >
+                          Save
+                        </Text>
+                        <Text
+                          w={'5em'}
+                          fontSize={'.75em'}
+                          fontWeight={'bold'}
+                          color={'redPure.600'}
+                          cursor={'pointer'}
+                          onClick={() => {
+                            deleteProductCategory(child.id, item.id, null, toast)
+                          }}
+                        >
+                          Delete
+                        </Text>
                       </div>
                     ))}
                 </VStack>
-              </div>
+                {editable[item?.id] && (
+                  <Input
+                    mt={'.5em'}
+                    id={`${item.id}`}
+                    placeholder={'Input new product categories'}
+                    borderColor={'transparent'}
+                    focusBorderColor={'transparent'}
+                    bgColor={'grey.50'}
+                    value={findById(item?.id)}
+                    onFocus={(e) => onFocusInput(item?.id, e.target.value)}
+                    onBlur={() => {
+                      setInput([{}])
+                    }}
+                    onChange={(e) => {
+                      handleInput(item?.id, e.target.value)
+                    }}
+                  />
+                )}
+                <HStack my={'.5em'}>
+                  <Button
+                    _hover={{
+                      bgColor: 'redPure.600',
+                    }}
+                    fontSize={'.8em'}
+                    h={'2.5em'}
+                    w={'5em'}
+                    bgColor={'redPure.600'}
+                    color={'white'}
+                    onClick={() => handleEditClick(item.id)}
+                  >
+                    {editable[item?.id] ? 'Cancel' : 'Add'}
+                  </Button>
+                  {editable[item?.id] && (
+                    <Button
+                      _hover={{
+                        bgColor: 'redPure.600',
+                      }}
+                      fontSize={'.8em'}
+                      h={'2.5em'}
+                      w={'5em'}
+                      bgColor={'redPure.600'}
+                      color={'white'}
+                      onClick={async () => {
+                        await createProductCategory(fixInput, item?.id)
+                        setFixInput('')
+                      }}
+                    >
+                      Submit
+                    </Button>
+                  )}
+                </HStack>
+              </Box>
             ))}
-            <button type="submit">Submit</button>
           </VStack>
         </form>
-        <Text fontWeight={'bold'}>Parent</Text>
+        <Text fontWeight={'bold'} display={editable[gender[0]?.id] ? 'block' : 'none'}>
+          New Group
+        </Text>
         {editable[gender[0]?.id] && (
           <>
             <Input
               id={`${gender[0]?.id}`}
-              placeholder={'Input new product categories'}
+              placeholder={'Input new product group'}
               borderColor={'transparent'}
               focusBorderColor={'transparent'}
               bgColor={'grey.50'}
@@ -285,10 +329,10 @@ export const EditProductCategory = () => {
                 handleInput(gender[0]?.id, e.target.value)
               }}
             />
-            <Text>Children</Text>
+            <Text fontWeight={'bold'}>New Category</Text>
             <Input
               id={`${gender[0]?.id}`}
-              placeholder={'Input new product categories'}
+              placeholder={'Input the categories of the group'}
               borderColor={'transparent'}
               focusBorderColor={'transparent'}
               bgColor={'grey.50'}
@@ -301,25 +345,27 @@ export const EditProductCategory = () => {
         <HStack>
           <Button
             _hover={{
-              bgColor: 'redPure.500',
+              bgColor: 'redPure.600',
             }}
-            w={'5em'}
-            bgColor={'redPure.500'}
+            fontSize={'.8em'}
+            h={'2.5em'}
+            w={editable[gender[0]?.id] ? '5em' : '10em'}
+            bgColor={'redPure.600'}
             color={'white'}
-            isLoading={false}
             onClick={() => handleEditClick(gender[0]?.id)}
           >
-            {editable[gender[0]?.id] ? 'Cancel' : 'Add'}
+            {editable[gender[0]?.id] ? 'Cancel' : 'Add New Group'}
           </Button>
           {editable[gender[0]?.id] && (
             <Button
               _hover={{
-                bgColor: 'redPure.500',
+                bgColor: 'redPure.600',
               }}
+              fontSize={'.8em'}
+              h={'2.5em'}
               w={'5em'}
-              bgColor={'redPure.500'}
+              bgColor={'redPure.600'}
               color={'white'}
-              isLoading={false}
               onClick={async (e) => {
                 const res = await createProductCategory(fixInput, gender[0]?.id)
                 createProductCategory(newChildren, res?.data?.data?.id)
