@@ -74,7 +74,7 @@ export const findWarehouseAddressService = async (provinceId, userLat, userLong)
 export const getShippingCostService = async (origin, destination, weight, courier) => {
   try {
     const response = await getShippingCostQuery(origin, destination, weight, courier)
-    console.log('ini response', response)
+    // console.log('ini response', response)
     return response
   } catch (err) {
     throw err
