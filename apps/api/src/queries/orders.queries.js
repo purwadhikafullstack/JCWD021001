@@ -1,4 +1,5 @@
 import { Sequelize, Op } from 'sequelize'
+import { literal } from 'sequelize'
 import Orders from '../models/orders.model'
 import OrderProducts from '../models/orderProducts.model'
 import Payments from '../models/payments.model'
@@ -12,6 +13,7 @@ import Size from '../models/size.model'
 import Colour from '../models/colour.model'
 import OrderStatuses from '../models/orderStatuses.model'
 import WarehouseAddress from '../models/warehouseAddress.model'
+import ProductCategory from '../models/productCategory.model'
 
 export const createOrderQuery = async (
   userId,
@@ -22,7 +24,6 @@ export const createOrderQuery = async (
   shippingCost,
   orderStatusId,
   orderNumber,
-  products,
 ) => {
   try {
     const order = await Orders.create({
@@ -347,6 +348,28 @@ export const calculationCheckStock = async (orderId) => {
       include: [{ model: WarehouseAddress }, { model: Stock, as: 'stock' }],
     })
     return { orders: orders, warehouse: warehouse }
+  } catch (err) {
+    throw err
+  }
+}
+
+export const getAllOrderByCategoryQuery = async (warehouseId, startDate, endDate) => {
+  try {
+    const res = await OrderProducts.sequelize
+      .query(`SELECT  grandparent_category.name as grandparent_name, parent_category.name AS group_name, parent_category.id as group_id,  
+      SUM(orderProducts.quantity) as ordercount,
+      SUM(orderProducts.price * orderProducts.quantity) AS total
+      FROM orders
+      JOIN orderProducts ON orders.id = orderProducts.orderId
+      JOIN stocks ON orderProducts.stockId = stocks.id
+      JOIN products ON stocks.productId = products.id
+      JOIN productCategories AS child_category ON products.productCategoryId = child_category.id
+      JOIN productCategories AS parent_category ON child_category.parentId = parent_category.id
+      JOIN productCategories AS grandparent_category ON parent_category.parentId = grandparent_category.id
+      WHERE orders.orderDate >= '${startDate}' AND orders.orderDate <= '${endDate}'
+      AND orders.warehouseId = ${warehouseId}
+      GROUP BY parent_category.id;`)
+    return res
   } catch (err) {
     throw err
   }

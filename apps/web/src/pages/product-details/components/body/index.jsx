@@ -5,10 +5,11 @@ import { Carousel } from '../carousel'
 import axios from 'axios'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { createCart } from '../../../cart/services/createCart' // edit by andri
-import { useCart } from '../../../../components/Navbar/components/use-cart'// edit by andri
+import { useCart } from '../../../../components/navbar/components/use-cart'// edit by andri
 import { useToast } from '@chakra-ui/react' // edit by andri
 import { ColourBox } from '../colour-box'
 import { SizeBox } from '../size-box'
+
 
 
 
@@ -26,22 +27,15 @@ export const Body = (props) => {
 
   // Size id
   const sizeValue = queryParams.get('sz')
-  const navigate = useNavigate()
+
   // Image carousel
   const images = [props?.product?.picture]
 
   // Define size
   const sizes = props?.product?.category?.parent?.size
 
-  // Unique colour id take from stocks that have colourId
-  const uniqueColorIds = new Set()
-  const filteredStocks = props?.product?.stocks?.filter((stock) => {
-    if (!uniqueColorIds.has(stock.colourId)) {
-      uniqueColorIds.add(stock.colourId)
-      return true
-    }
-    return false
-  })
+  // Define colours
+  const colours = props?.product?.colour
 
   // Displaying selected image
   const [selectedImage, setSelectedImage] = useState('')
@@ -67,11 +61,11 @@ export const Body = (props) => {
     getStock(props?.product?.id, sizeValue, colourValue, setStock)
   }, [colourValue, sizeValue])
 
-  console.log('PRO', props?.product)
+  // Disable if stock doesnt exist
   const shouldDisable = !stock ? true : false
 
   // edit by andri
-  const { cartData, fetchCartCount } = useCart()
+  // const { cartData, fetchCartCount } = useCart()
   const toast = useToast()
   const handleAddToCart = async () => {
     const newItem = {
@@ -127,10 +121,12 @@ export const Body = (props) => {
 
   // Handle Toggle
   const changeColourToggle = (id) => {
-    setColourToggle((set) => ({
-      [id]: !set[id],
-      [!id]: set[id],
-    }))
+    if (id !== colourValue) {
+      setColourToggle((set) => ({
+        [id]: !set[id],
+        [!id]: set[id],
+      }))
+    }
   }
   // Toggle Sidebar
   const [sizeToggle, setSizeToggle] = useState({})
@@ -188,10 +184,10 @@ export const Body = (props) => {
                   Color
                 </Text>
                 <HStack>
-                  {filteredStocks?.map((filteredStock, index) => {
+                  {colours?.map((colour, index) => {
                     return (
                       <ColourBox
-                        {...filteredStock}
+                        {...colour}
                         pathName={pathName}
                         index={index}
                         changeColourToggle={changeColourToggle}

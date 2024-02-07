@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes } from 'sequelize'
 
 export default class OrderStatuses extends Model {
   /**
@@ -8,7 +8,7 @@ export default class OrderStatuses extends Model {
    */
   static associate(models) {
     // define association here
-    this.hasMany(models.Orders, { foreignKey: 'orderStatusId' });
+    this.hasMany(models.Orders, { foreignKey: 'orderStatusId', as: 'orders' })
   }
 }
 
@@ -21,6 +21,7 @@ export const init = (sequelize) => {
       sequelize,
       timestamps: false,
       modelName: 'OrderStatuses',
+      tableName: 'order_statuses',
     },
-  );
-};
+  )
+}

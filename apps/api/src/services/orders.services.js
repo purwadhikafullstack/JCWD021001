@@ -8,6 +8,10 @@ import {
   getWarehouseQuery,
   productToStockIdQuery,
   updateOrderQuery,
+  getAllOrderByCategoryQuery, // by putu
+  getAllOrderByProductQuery, // by putu
+  getAllOrderQuery, // by putu
+  getSpesificStockQuery, // by putu
 } from '../queries/orders.queries'
 
 const calcTotalPrice = (products) => {
@@ -30,7 +34,6 @@ export const createOrderService = async (
     const orderNumber = `ORD-${Date.now()}`
     const newTotalPrice = calcTotalPrice(products)
     console.log('ssad', newTotalPrice)
-    console.log('ssad', totalPrice)
     if (newTotalPrice != totalPrice) throw new Error('Total Price is wrong')
     const res = await createOrderQuery(
       userId,
@@ -104,6 +107,30 @@ export const getOrderManagementService = async (
       pageSize,
     })
     return res
+  } catch (err) {
+    throw err
+  }
+}
+
+export const getAllOrderService = async (
+  sortBy,
+  orderBy,
+  page,
+  pageSize,
+  warehouseId,
+  startDate,
+  endDate,
+) => {
+  try {
+    const res = await getAllOrderQuery(
+      sortBy,
+      orderBy,
+      page,
+      pageSize,
+      warehouseId,
+      startDate,
+      endDate,
+    )
   } catch (err) {
     throw err
   }
@@ -262,6 +289,30 @@ export const calculationCheckStockService = async (orderId) => {
       // warehouse,
       checkStockResults,
     }
+  } catch (err) {
+    throw err
+  }
+}
+
+export const getAllOrderByCategoryService = async (warehouseId, startDate, endDate) => {
+  try {
+    const res = await getAllOrderByCategoryQuery(warehouseId, startDate, endDate)
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
+export const getAllOrderByProductService = async (
+  page,
+  pageSize,
+  warehouseId,
+  startDate,
+  endDate,
+) => {
+  try {
+    const res = await getAllOrderByProductQuery(page, pageSize, warehouseId, startDate, endDate)
+    return res
   } catch (err) {
     throw err
   }

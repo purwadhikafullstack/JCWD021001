@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Box, Text, Button, ButtonGroup, Icon } from '@chakra-ui/react'
-import { Navbar } from '../../components/Navbar'
+import { Navbar } from '../../components/navbar'
 import OrderListBody from '../../components/order-list'
 import { getOrder } from '../order/services/getOrder'
 import { useLocation } from 'react-router-dom'
+
 
 const OrderList = () => {
   const [orderData, setOrderData] = useState([])

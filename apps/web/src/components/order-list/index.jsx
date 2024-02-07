@@ -161,6 +161,10 @@ const OrderListBody = ({
                 onPageChange={onPageChange}
               />
             </TabPanel>
+            <TabPanel
+              className={'on-delivery'}
+              padding={{ base: '16px 0 16px 0', xl: '16px' }}
+            ></TabPanel>
           </TabPanels>
         </Tabs>
       </Box>

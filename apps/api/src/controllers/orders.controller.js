@@ -34,7 +34,6 @@ export const createOrderController = async (req, res) => {
       orderStatusId,
       products,
     } = req.body
-    console.log('products', products);
     const result = await createOrderService(
       userId,
       userAddressId,
@@ -51,7 +50,6 @@ export const createOrderController = async (req, res) => {
     return sendResponse(res, 500, null, err.message)
   }
 }
-
 export const updateOrderController = async (req, res) => {
   try {
     const { orderId } = req.params
@@ -133,3 +131,64 @@ export const calculationCheckStockController = async (req, res) => {
     return sendResponse(res, 500, null, err.message)
   }
 }
+
+// create Putu
+export const getAllOrderController = async (req, res) => {
+  try {
+    const { sortBy, orderBy, page, pageSize, warehouseId, startDate, endDate } = req.query
+    const result = await getAllOrderService(
+      sortBy,
+      orderBy,
+      page,
+      pageSize,
+      warehouseId,
+      startDate,
+      endDate,
+    )
+    return res.status(200).json({
+      message: 'Get All Order Success',
+      data: result,
+    })
+  } catch (err) {
+    return res.status(500).json({
+      message: err.message,
+    })
+  }
+}
+
+export const getAllOrderByCategoryController = async (req, res) => {
+  try {
+    const { warehouseId, startDate, endDate } = req.query
+    const result = await getAllOrderByCategoryService(warehouseId, startDate, endDate)
+    return res.status(200).json({
+      message: 'Get All Order Success',
+      data: result[0],
+    })
+  } catch (err) {
+    return res.status(500).json({
+      message: err.message,
+    })
+  }
+}
+
+export const getAllOrderByProductController = async (req, res) => {
+  try {
+    const { page, pageSize, warehouseId, startDate, endDate } = req.query
+    const result = await getAllOrderByProductService(
+      page,
+      pageSize,
+      warehouseId,
+      startDate,
+      endDate,
+    )
+    return res.status(200).json({
+      message: 'Get All Order Success',
+      data: result[0],
+    })
+  } catch (err) {
+    return res.status(500).json({
+      message: err.message,
+    })
+  }
+}
+// 
