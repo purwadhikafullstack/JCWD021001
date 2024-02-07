@@ -19,6 +19,21 @@ export const createStockJournalService = async (
 
     if (check) {
       // If exist, check if isUpdate is true(edit stock from stock-management table)
+      if (isAdding) {
+        await check.increment('qty', { by: qty })
+        const res = await createStockJournalQuery(
+          productId,
+          warehouseId,
+          sizeId,
+          colourId,
+          1,
+          qty,
+          check.dataValues.qty,
+          check.dataValues.qty + qty,
+          check.dataValues.id,
+        )
+        return res
+      }
       if (isUpdate) {
         // Check if qty wants to be update is < from the qty exist
         if (qty < check.dataValues.qty) {

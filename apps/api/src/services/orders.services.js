@@ -2,9 +2,9 @@ import {
   calculationCheckStock,
   createOrderQuery,
   findOrderIdQuery,
+  getOrderQuery,
   findWarehouseQuery,
   getOrderManagementQuery,
-  getOrderQuery,
   getWarehouseQuery,
   productToStockIdQuery,
   updateOrderQuery,
@@ -269,7 +269,6 @@ export const calculationCheckStockService = async (orderId) => {
     throw err
   }
 }
-
 
 export const getAllOrderService = async (
   sortBy,

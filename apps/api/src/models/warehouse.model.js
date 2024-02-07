@@ -4,8 +4,7 @@ import Stock from './stock.model'
 
 export default class Warehouse extends Model {
   static associate(models) {
-
-    this.hasMany(models.User, { foreignKey: 'warehouseId' });
+    this.hasMany(models.User, { foreignKey: 'warehouseId' })
     this.belongsTo(models.WarehouseAddress, { foreignKey: 'warehouseAddressId' })
     this.hasMany(models.Orders, { foreignKey: 'warehouseId', as: 'warehouse' })
     Warehouse.hasMany(Stock, { as: 'stock' })
