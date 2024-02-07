@@ -19,6 +19,7 @@ export const PaginationList = (props) => {
     for (let i = startPage; i <= endPage; i++) {
       box.push(
         <Box
+          boxShadow={'sm'}
           cursor={'pointer'}
           key={i}
           bgColor={props?.boxToggle[i] ? '#ffb1cc' : 'white'}

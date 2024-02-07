@@ -46,7 +46,6 @@ export const getWarehouseQuery = async (warehouseId = null) => {
       include: [
         {
           model: WarehouseAddress,
-          as: 'addresses',
         },
       ],
       ...filter,

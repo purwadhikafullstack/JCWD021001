@@ -3,6 +3,9 @@ import { Box, Text, Tabs, TabPanels, TabPanel } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import WaitingPayment from './waiting-payment'
 import OnProcess from './on-process'
+import OnDelivery from './on-delivery'
+import OrderConfirmed from './order-confirmed'
+import OrderCancelled from './order-cancelled'
 import useOrderListState from './services/useOrderListState'
 import Pagination from './pagination'
 import CustomTabList from './custom-tablist'
@@ -39,6 +42,7 @@ const OrderListBody = ({
     handleOrderNumberSubmit,
     handleOrderNumberKeyPress,
     formatDate,
+    handleConfirmButton,
   } = useOrderListState({ orderData, loading, onOrderNumberSubmit, onOrderDateSubmit })
   return (
     <Box padding={'24px'}>
@@ -59,6 +63,15 @@ const OrderListBody = ({
       </Box>
       {/* breadcrumb */}
       <BreadcrumbNav />
+      <Box mt={'15px'} display={{ base: 'flex', xl: 'none' }} alignItems={'center'} gap={'16px'}>
+        <Search
+          orderNumber={orderNumber}
+          handleOrderNumberChange={handleOrderNumberChange}
+          handleOrderNumberKeyPress={handleOrderNumberKeyPress}
+          handleOrderNumberSubmit={handleOrderNumberSubmit}
+        />
+        <DateFilter orderDate={orderDate} handleOrderDateChange={handleOrderDateChange} />
+      </Box>
       {/* body */}
       <Box mt={'15px'}>
         {/* menu burger tablist mobile*/}
@@ -93,11 +106,59 @@ const OrderListBody = ({
             </TabPanel>
             <TabPanel className={'on-process'} padding={{ base: '16px 0 16px 0', xl: '16px' }}>
               <OnProcess
-                onProcessOrders={onProcessOrders}
+                onProcessOrders={orderData}
                 formatDate={formatDate}
                 expandedProducts={expandedProducts}
                 handleToggleProducts={handleToggleProducts}
                 navigate={navigate}
+              />
+              <Pagination
+                currentPage={pagination?.currentPage}
+                totalPages={pagination?.totalPages}
+                onPageChange={onPageChange}
+              />
+            </TabPanel>
+            <TabPanel className={'on-delivery'} padding={{ base: '16px 0 16px 0', xl: '16px' }}>
+              <OnDelivery
+                onDeliveryOrders={orderData}
+                formatDate={formatDate}
+                expandedProducts={expandedProducts}
+                handleToggleProducts={handleToggleProducts}
+                handleConfirmButton={handleConfirmButton}
+                navigate={navigate}
+              />
+              <Pagination
+                currentPage={pagination?.currentPage}
+                totalPages={pagination?.totalPages}
+                onPageChange={onPageChange}
+              />
+            </TabPanel>
+            <TabPanel className={'order-confirmed'} padding={{ base: '16px 0 16px 0', xl: '16px' }}>
+              <OrderConfirmed
+                onConfirmedOrders={orderData}
+                formatDate={formatDate}
+                expandedProducts={expandedProducts}
+                handleToggleProducts={handleToggleProducts}
+                navigate={navigate}
+              />
+              <Pagination
+                currentPage={pagination?.currentPage}
+                totalPages={pagination?.totalPages}
+                onPageChange={onPageChange}
+              />
+            </TabPanel>
+            <TabPanel className={'order-cancelled'} padding={{ base: '16px 0 16px 0', xl: '16px' }}>
+              <OrderCancelled
+                onCancelledOrders={orderData}
+                formatDate={formatDate}
+                expandedProducts={expandedProducts}
+                handleToggleProducts={handleToggleProducts}
+                navigate={navigate}
+              />
+              <Pagination
+                currentPage={pagination?.currentPage}
+                totalPages={pagination?.totalPages}
+                onPageChange={onPageChange}
               />
             </TabPanel>
             <TabPanel

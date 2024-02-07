@@ -28,8 +28,6 @@ import OrderManagementDetails from './pages/order-management-details'
 import AdminList from './pages/admin-list'
 import { CartProvider } from './components/navbar/components/use-cart'
 
-
-
 function App() {
   return (
     <Box>

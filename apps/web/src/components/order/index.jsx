@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Text, Icon } from '@chakra-ui/react'
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
 import { useNavigate } from 'react-router-dom'
@@ -8,15 +8,46 @@ import OrderBodyMobile from './order-body-mobile'
 import ShoppingSummaryDesktop from './shopping-summary-dekstop'
 import ShoppingSummaryMobile from './shopping-summary-mobile'
 import DeliveryAddress from './deliveryAddress'
+import { fetchStockOrder } from './services/fetchStockOrder'
 
 const OrderBody = ({ orderData, totalPrice, totalQuantity }) => {
+  const [stockOrder, setStockOrder] = useState([])
   const [selectedAddress, setSelectedAddress] = useState(null)
+  const [nearestWarehouse, setNearestWarehouse] = useState(null)
+  const [costResult, setCostResult] = useState('')
   const navigate = useNavigate()
+  console.log('orderStock', stockOrder)
 
   // handle payment
   const handlePaymentClick = (orderItem) => {
-    paymentHandler(orderItem, selectedAddress, totalPrice, totalQuantity, navigate)
+    paymentHandler(
+      orderItem,
+      stockOrder,
+      selectedAddress,
+      nearestWarehouse,
+      costResult,
+      totalPrice,
+      totalQuantity,
+      navigate,
+    )
   }
+
+  // useEffect(() => {
+  //   const fetchStockOrder = async () => {
+  //     try {
+  //       const stockResult = await productToStock(stockData, nearestWarehouse?.id)
+  //       setStockOrder(stockResult)
+  //     } catch (error) {
+  //       console.error('Error fetching stock data:', error)
+  //     }
+  //   }
+
+  //   fetchStockOrder()
+  // }, [stockData, nearestWarehouse])
+  useEffect(() => {
+    fetchStockOrder(orderData, nearestWarehouse, setStockOrder) // Call fetchStockOrder from stockService
+  }, [orderData, nearestWarehouse])
+
   return (
     <Box>
       {orderData.map((orderItem) => (
@@ -49,6 +80,10 @@ const OrderBody = ({ orderData, totalPrice, totalQuantity }) => {
                 <DeliveryAddress
                   selectedAddress={selectedAddress}
                   setSelectedAddress={setSelectedAddress}
+                  nearestWarehouse={nearestWarehouse}
+                  setNearestWarehouse={setNearestWarehouse}
+                  costResult={costResult}
+                  setCostResult={setCostResult}
                 />
                 {/* Product Display */}
                 <Box
@@ -66,6 +101,7 @@ const OrderBody = ({ orderData, totalPrice, totalQuantity }) => {
               </Box>
               {/* Shopping Summary - Desktop Version */}
               <ShoppingSummaryDesktop
+                costResult={costResult? costResult: 0}
                 totalQuantity={totalQuantity}
                 totalPrice={totalPrice}
                 handlePaymentClick={() => handlePaymentClick(orderItem)}
@@ -74,6 +110,7 @@ const OrderBody = ({ orderData, totalPrice, totalQuantity }) => {
           </Box>
           {/* Shopping Summary - Mobile Version */}
           <ShoppingSummaryMobile
+            costResult={costResult? costResult: 0}
             totalQuantity={totalQuantity}
             totalPrice={totalPrice}
             handlePaymentClick={() => handlePaymentClick(orderItem)}

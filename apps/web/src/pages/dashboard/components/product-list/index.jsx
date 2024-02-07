@@ -76,7 +76,7 @@ export const ProductList = () => {
   }
 
   // Toggle Box Colour
-  const [boxToggle, setBoxToggle] = useState({ 1: true })
+  const [boxToggle, setBoxToggle] = useState({ [pageValue]: true })
 
   // Handle Toggle
   const changeBoxToggle = (id) => {
@@ -87,8 +87,8 @@ export const ProductList = () => {
   }
 
   return (
-    <Box p={'1em'} h={'87%'} w={'100%'}>
-      <Flex flexDir={'column'} justifyContent={'space-between'} h={'80%'}>
+    <Box p={'1em'} w={'100%'} h={'100%'}>
+      <Flex flexDir={'column'} justifyContent={'space-between'}>
         <VStack align={'stretch'}>
           <Flex alignItems={'center'} justifyContent={'space-between'}>
             <Heading as={'h1'} fontSize={'1.5em'} fontWeight={'bold'}>
@@ -110,7 +110,9 @@ export const ProductList = () => {
             </Button>
           </Flex>
           <Box
-            h={'65vh'}
+            boxShadow={'md'}
+            h={'27em'}
+            borderRadius={'.5em'}
             overflowX={'scroll'}
             overflowY={'scroll'}
             sx={{
