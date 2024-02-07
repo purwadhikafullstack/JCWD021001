@@ -14,8 +14,6 @@ export const CreateStock = () => {
   // WAREHOUSE ID
   const [warehouseId, setWarehouseId] = useState(4)
 
-  // COLOUR
-  const [colours, setColours] = useState([])
   const [colourId, setColourId] = useState(0)
 
   //   PRODUCT NAME FILTER
@@ -27,11 +25,10 @@ export const CreateStock = () => {
   //   PRODUCT SELECTED
   const [productSelected, setProductSelected] = useState({})
 
+  // COLOUR
+  const colours = productSelected?.colour
   useEffect(() => {
     getProduct(productNameFilter, '', '', '', setProducts, 'name', 'ASC', 1)
-    if (products) {
-      getColours().then((data) => setColours(data))
-    }
   }, [productNameFilter, setProductSelected])
 
   //   PRODUCT SIZES
@@ -78,7 +75,6 @@ export const CreateStock = () => {
   ) => {
     try {
       const res = await createStockJournal(productId, warehouseId, sizeId, colourId, qty, isUpdate)
-      console.log('RES', res)
       toast({
         title: `${res?.data?.title}`,
         status: 'success',

@@ -4,8 +4,26 @@ import Carts from '../models/carts.model'
 import Product from '../models/product.model'
 import User from '../models/user.model'
 import Stock from '../models/stock.model'
+import Colour from '../models/colour.model'
+import Size from '../models/size.model'
 
-export const createCartQuery = async (userId, stockId, calcPrice, quantity) => {
+export const findCartStockQuery = async (productId) => {
+  try {
+    const res = await CartProducts.findOne({
+      include: [
+        { model: Product, as: 'product' },
+        { model: Colour, as: 'colour' },
+        { model: Size, as: 'size' },
+      ],
+      where: { productId: productId },
+    })
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
+export const createCartQuery = async (userId, productId, colourId, sizeId, calcPrice, quantity) => {
   try {
     const existingCart = await Carts.findOne({ where: { userId: userId } })
     if (!existingCart) {
@@ -15,8 +33,10 @@ export const createCartQuery = async (userId, stockId, calcPrice, quantity) => {
         totalQuantity: quantity,
       })
       const cartProduct = await CartProducts.create({
-        stockId: stockId,
+        productId: productId,
         cartId: cart.id,
+        colourId: colourId,
+        sizeId: sizeId,
         price: calcPrice,
         quantity: quantity,
       })
@@ -30,8 +50,10 @@ export const createCartQuery = async (userId, stockId, calcPrice, quantity) => {
         { where: { id: existingCart.id } },
       )
       const cartProduct = await CartProducts.create({
-        stockId: stockId,
+        productId: productId,
         cartId: existingCart.id,
+        colourId: colourId,
+        sizeId: sizeId,
         price: calcPrice,
         quantity: quantity,
       })
@@ -45,7 +67,7 @@ export const createCartQuery = async (userId, stockId, calcPrice, quantity) => {
 export const findCartQuery = async (cartProductId) => {
   try {
     const res = await CartProducts.findOne({
-      include: [{ model: Stock, as: 'stocks', include: [{model: Product, as: 'product'}] }],
+      include: [{ model: Product, as: 'product' }],
       where: { id: cartProductId },
     })
     return res
@@ -118,14 +140,57 @@ export const findCartUserQuery = async (userId) => {
   }
 }
 
-export const getCartQuery = async (userId) => {
+// export const getCartQuery = async (userId) => {
+//   try {
+//     const res = await Carts.findAll({
+//       include: [
+//         { model: User },
+//         { model: CartProducts, include: [{ model: Stock, as: 'stocks', include: [{ model: Product, as: 'product' }] }] },
+//       ],
+//       where: { userId: userId },
+//     })
+//     return res
+//   } catch (err) {
+//     throw err
+//   }
+// }
+
+export const getCartQuery = async (userId, stockIds) => {
   try {
+    let whereCondition = { userId: userId }
+
+    if (stockIds && stockIds.length > 0) {
+      const stockIdsArray = stockIds.map((item) => item.productId)
+      whereCondition = {
+        ...whereCondition,
+        '$cartProducts.product.id$': { [Sequelize.Op.in]: stockIdsArray },
+      }
+    }
+
     const res = await Carts.findAll({
       include: [
-        { model: User },
-        { model: CartProducts, include: [{ model: Stock, as: 'stocks', include: [{ model: Product, as: 'product' }] }] },
+        {
+          model: User,
+        },
+        {
+          model: CartProducts,
+          include: [
+            {
+              model: Product,
+              as: 'product',
+            },
+            {
+              model: Colour,
+              as: 'colour',
+            },
+            {
+              model: Size,
+              as: 'size',
+            },
+          ],
+        },
       ],
-      where: { userId: userId },
+      where: whereCondition,
     })
     return res
   } catch (err) {

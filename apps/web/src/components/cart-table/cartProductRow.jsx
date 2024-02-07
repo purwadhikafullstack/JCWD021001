@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { Box, Text, Button, Icon, Checkbox } from '@chakra-ui/react'
 import { Table, Thead, Tbody, Tr, Td, TableContainer } from '@chakra-ui/react'
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline'
@@ -14,7 +14,7 @@ const CartProductRow = ({
   handleSelectAllChange,
   productData,
 }) => {
-  console.log('cartItem', cartItem);
+  console.log('cartItem', cartItem)
   return (
     <Box w={{ xl: '1100px', '2xl': '1420px' }}>
       <TableContainer>
@@ -82,10 +82,10 @@ const CartProductRow = ({
                       gap={'10px'}
                     >
                       <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                        {item?.stocks?.product?.name}
+                        {item?.product?.name}
                       </Text>
                       <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                        {toRupiah(+item?.stocks?.product?.price, { floatingPoint: 0 })}
+                        {toRupiah(+item?.product?.price, { floatingPoint: 0 })}
                       </Text>
                     </Box>
                   </Box>
@@ -106,13 +106,19 @@ const CartProductRow = ({
                       fontSize={'16px'}
                       color={'#838383'}
                     >
-                      L
+                      {item?.size?.name}
                     </Text>
                   </Box>
                 </Td>
                 <Td>
                   <Box display={'flex'} alignItems={'center'} gap={'16px'}>
-                    <Box w={'36px'} h={'36px'} bgColor={'#2F4E7A'} borderRadius={'6px'} />
+                    <Box
+                      w={'36px'}
+                      h={'36px'}
+                      bgColor={item?.colour?.name}
+                      border={'1px'}
+                      borderRadius={'6px'}
+                    />
                     <Box
                       w={'116px'}
                       h={'36px'}
@@ -128,7 +134,7 @@ const CartProductRow = ({
                         fontSize={'16px'}
                         color={'#838383'}
                       >
-                        Dark Blue
+                        {item?.colour?.name}
                       </Text>
                     </Box>
                   </Box>

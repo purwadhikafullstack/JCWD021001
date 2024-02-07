@@ -1,9 +1,8 @@
-import React from 'react'
 import { Box, Text, Button } from '@chakra-ui/react'
 import toRupiah from '@develoka/angka-rupiah-js'
 import { useNavigate } from 'react-router-dom'
 
-const CartSummaryMobile = ({ totalQuantity, totalPrice }) => {
+const CartSummaryMobile = ({ totalQuantity, totalPrice, handleCheckout }) => {
   const navigate = useNavigate()
   return (
     <Box
@@ -37,7 +36,7 @@ const CartSummaryMobile = ({ totalQuantity, totalPrice }) => {
           {toRupiah(totalPrice, { floatingPoint: 0 })}
         </Text>
       </Box>
-      <Button bgColor={'#CD0244'} color={'#ffffff'} onClick={() => navigate('/order')}>
+      <Button bgColor={'#CD0244'} color={'#ffffff'} onClick={handleCheckout}>
         Process to Checkout
       </Button>
     </Box>

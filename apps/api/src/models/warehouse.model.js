@@ -1,10 +1,15 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes } from 'sequelize'
+import Mutation from './mutation.model'
+import Stock from './stock.model'
 
 export default class Warehouse extends Model {
   static associate(models) {
-    this.belongsTo(models.User, { foreignKey: 'userId' });
-    this.belongsTo(models.WarehouseAddress, { foreignKey: 'warehouseAddressId' });
-    this.hasMany(models.Orders, { foreignKey: 'warehouseId', as: 'warehouse' });
+    this.belongsTo(models.User, { foreignKey: 'userId' })
+    this.belongsTo(models.WarehouseAddress, { foreignKey: 'warehouseAddressId' })
+    this.hasMany(models.Orders, { foreignKey: 'warehouseId', as: 'warehouse' })
+    Warehouse.hasMany(Stock, { as: 'stock' })
+    Warehouse.hasMany(Mutation, { as: 'requester', foreignKey: 'requesterWarehouseId' })
+    Warehouse.hasMany(Mutation, { as: 'recipient', foreignKey: 'recipientWarehouseId' })
   }
 }
 

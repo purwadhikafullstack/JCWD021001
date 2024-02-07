@@ -2,8 +2,9 @@ import UserAddress from '../models/userAddress.model'
 import Province from '../models/province.model'
 import City from '../models/city.model'
 import WarehouseAddress from '../models/warehouseAddress.model'
-import Warehouse from '../models/warehouse.model';
-import axios from 'axios';
+import Warehouse from '../models/warehouse.model'
+import axios from 'axios'
+import { Op } from 'sequelize'
 
 //GET
 

@@ -1,5 +1,5 @@
 import { Box, Flex, Icon, Text } from '@chakra-ui/react'
-import { Navbar } from '../../../components/navbar'
+import { Navbar } from '../../../components/Navbar'
 import { Body } from '../components/body'
 import { Sidebar } from '../components/sidebar'
 import { useState } from 'react'
@@ -13,9 +13,9 @@ export const Dashboard = () => {
     setCollapseSideBar(!collapseSideBar)
   }
   return (
-    <Box minH={'100vh'}>
+    <Box maxW={'100vw'} overflow={{ xl: 'hidden', base: 'hidden' }}>
       <Navbar />
-      <Box display={{ md: 'flex' }} gap={'1em'} h={'100%'}>
+      <Box display={{ md: 'flex' }} w={'100%'}>
         <Box display={{ md: 'flex' }}>
           <Sidebar
             collapseSideBar={collapseSideBar}
@@ -26,7 +26,7 @@ export const Dashboard = () => {
         <Body
           destination={destination}
           createProduct={createProduct}
-          collapseSideBar={collapseSideBar}
+          collapseSideBar={collapseSideBar} // responsive
         />
       </Box>
       <Flex

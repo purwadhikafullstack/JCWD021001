@@ -1,5 +1,7 @@
-'use strict';
-import { DataTypes, Model } from 'sequelize';
+'use strict'
+import { DataTypes, Model } from 'sequelize'
+import Warehouse from './warehouse.model'
+import Stock from './stock.model'
 export default class Mutation extends Model {
   /**
    * Helper method for defining associations.
@@ -8,50 +10,100 @@ export default class Mutation extends Model {
    */
   static associate(models) {
     // define association here
+    Mutation.belongsTo(Warehouse, {
+      as: 'requester',
+      foreignKey: 'requesterWarehouseId',
+    })
+    Mutation.belongsTo(Warehouse, {
+      as: 'recipient',
+      foreignKey: 'recipientWarehouseId',
+    })
+    Mutation.belongsTo(Stock, {
+      as: 'stock',
+      foreignKey: 'stockId',
+    })
   }
 }
 export const init = (sequelize) => {
   Mutation.init(
     {
-      senderWarehouseId: {
+      requesterWarehouseId: {
         allowNull: false,
         type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: 'warehouses',
+          },
+          key: 'id',
+        },
       },
-      receiverWarehouseId: {
+      recipientWarehouseId: {
         allowNull: false,
         type: DataTypes.INTEGER,
-      },
-      productId: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: 'warehouses',
+          },
+          key: 'id',
+        },
       },
       qty: {
         allowNull: false,
         type: DataTypes.INTEGER,
         validate: {
           checkQty(value) {
-            if (value <= 0) throw new Error('Quantity cannot be 0');
+            if (value <= 0) throw new Error('Quantity cannot be 0')
           },
         },
-      },
-      statusId: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
       },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
-        defaultValue: Date.now(),
       },
       updatedAt: {
         allowNull: false,
         type: DataTypes.DATE,
-        defaultValue: Date.now(),
+      },
+      stockJournalIdRecipient: {
+        allowNull: true,
+        type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: 'stockJournals',
+          },
+          key: 'id',
+        },
+      },
+      isAccepted: {
+        allowNull: true,
+        type: DataTypes.BOOLEAN,
+        defaultValue: 0,
+      },
+      stockJournalIdRequester: {
+        allowNull: true,
+        type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: 'stockJournals',
+          },
+          key: 'id',
+        },
+      },
+      stockId: {
+        allowNull: true,
+        type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: 'stocks',
+          },
+          key: 'id',
+        },
       },
     },
     {
       sequelize,
       modelName: 'Mutation',
+      timestamps: true,
     },
-  );
-};
+  )
+}

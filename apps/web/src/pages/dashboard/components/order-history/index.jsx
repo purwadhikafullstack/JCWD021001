@@ -1,10 +1,7 @@
 import {
-  AspectRatio,
   Box,
   Button,
   Flex,
-  HStack,
-  Image,
   Table,
   TableContainer,
   Tbody,
@@ -56,13 +53,13 @@ export const OrderHistory = () => {
       <Tr cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'} key={index}>
         <Td>{formattedDate}</Td>
         <Td>{stockJournal?.qtyBefore}</Td>
-        <Td>{stockJournal?.qty}</Td>
+        <Td>{stockJournal?.isAdding ? `+${stockJournal?.qty}` : `-${stockJournal?.qty}`}</Td>
         <Td>{stockJournal?.qtyAfter}</Td>
       </Tr>
     )
   })
   return (
-    <Box p={'1em'} h={'100%'} w={'100%'} bgColor={'white'}>
+    <Box p={'1em'} h={'100%'} w={'100%'}>
       <Flex flexDir={'column'} justifyContent={'space-between'} h={'100%'}>
         <VStack align={'stretch'}>
           <Flex alignItems={'center'} justifyContent={'space-between'}>
@@ -99,17 +96,23 @@ export const OrderHistory = () => {
                   overflow: 'hidden',
                 }}
               >
-                <Thead bg={'redPure.500'} position={'relative'}>
+                <Thead bg={'redPure.600'} position={'relative'}>
                   <Tr>
-                    <Th color={'#FEFEFE'}>Time</Th>
-                    <Th color={'#FEFEFE'}>Qty before</Th>
-                    <Th color={'#FEFEFE'}>Addition/Reduction</Th>
-                    <Th color={'#FEFEFE'} w={'10em'}>
+                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
+                      Time
+                    </Th>
+                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
+                      Qty before
+                    </Th>
+                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
+                      Addition/Reduction
+                    </Th>
+                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'} w={'10em'}>
                       Total Stock
                     </Th>
                   </Tr>
                 </Thead>
-                <Tbody position={'relative'} color={'#6D6D6D'} fontWeight={'500'}>
+                <Tbody position={'relative'} fontWeight={'bold'}>
                   {renderedTableBody}
                 </Tbody>
               </Table>

@@ -4,6 +4,7 @@ import {
   Button,
   Flex,
   HStack,
+  Heading,
   Image,
   Spacer,
   Table,
@@ -22,6 +23,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { getProduct } from '../../../product-list/services/readProduct'
 import axios from 'axios'
 import { PaginationList } from './components/pagination-list'
+import toRupiah from '@develoka/angka-rupiah-js'
 export const ProductList = () => {
   // LOCATION
   const location = useLocation()
@@ -42,7 +44,7 @@ export const ProductList = () => {
   // PRODUCTS
   const [products, setProducts] = useState([])
   useEffect(() => {
-    getProduct('', '', '', '', setProducts, 'name', 'ASC', pageValue)
+    getProduct('', '', '', '', setProducts, 'name', 'ASC', pageValue, 10)
   }, [pageValue])
 
   // DELETE PRODUCT IMAGES
@@ -59,7 +61,7 @@ export const ProductList = () => {
     try {
       await deleteProductImage('', productId)
       const res = await axios.delete(`http://localhost:8000/api/product/${id}`)
-      setProducts((products) => products.filter((product) => product.id !== id))
+      setProducts((products) => products?.rows?.filter((product) => product.id !== id))
       toast({
         title: `${res?.data?.title}`,
         status: 'success',
@@ -73,18 +75,32 @@ export const ProductList = () => {
     }
   }
 
+  // Toggle Box Colour
+  const [boxToggle, setBoxToggle] = useState({ [pageValue]: true })
+
+  // Handle Toggle
+  const changeBoxToggle = (id) => {
+    setBoxToggle((set) => ({
+      [id]: !set[id],
+      [!id]: set[id],
+    }))
+  }
+
   return (
-    <Box p={'1em'} h={'100%'} w={'100%'}>
-      <Flex flexDir={'column'} justifyContent={'space-between'} h={'100%'}>
+    <Box p={'1em'} w={'100%'} h={'100%'}>
+      <Flex flexDir={'column'} justifyContent={'space-between'}>
         <VStack align={'stretch'}>
           <Flex alignItems={'center'} justifyContent={'space-between'}>
-            <Text fontWeight={'bold'}>Product List</Text>
+            <Heading as={'h1'} fontSize={'1.5em'} fontWeight={'bold'}>
+              Product List
+            </Heading>
             <Button
               _hover={{
-                bgColor: 'redPure.500',
+                bgColor: 'redPure.600',
               }}
+              h={'3em'}
               w={'10em'}
-              bgColor={'redPure.500'}
+              bgColor={'redPure.600'}
               color={'white'}
               onClick={() => {
                 navigate('/dashboard/product-list/create-product')
@@ -94,7 +110,9 @@ export const ProductList = () => {
             </Button>
           </Flex>
           <Box
-            h={'70%'}
+            boxShadow={'md'}
+            h={'27em'}
+            borderRadius={'.5em'}
             overflowX={'scroll'}
             overflowY={'scroll'}
             sx={{
@@ -113,25 +131,25 @@ export const ProductList = () => {
                   overflow: 'hidden',
                 }}
               >
-                <Thead bg={'redPure.500'} position={'relative'}>
+                <Thead bg={'redPure.600'} position={'relative'}>
                   <Tr>
-                    <Th color={'#FEFEFE'} textAlign={'center'}>
+                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
                       Products
                     </Th>
-                    <Th color={'#FEFEFE'} textAlign={'center'}></Th>
-                    <Th color={'#FEFEFE'} textAlign={'center'}>
+                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}></Th>
+                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
                       Price
                     </Th>
-                    <Th color={'#FEFEFE'} textAlign={'center'} w={'10em'}>
+                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'} w={'10em'}>
                       Action
                     </Th>
                   </Tr>
                 </Thead>
-                <Tbody position={'relative'} color={'#6D6D6D'} fontWeight={'500'}>
+                <Tbody position={'relative'} fontWeight={'bold'}>
                   {products?.rows?.map((el, index) => {
                     return (
                       <Tr cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'} key={index}>
-                        <Td textAlign={'center'}>
+                        <Td>
                           <AspectRatio h={'3em'} w={'3em'} ratio={1}>
                             <Image
                               src={`${import.meta.env.VITE_APP_API_IMAGE_URL}/productImages/${
@@ -142,15 +160,17 @@ export const ProductList = () => {
                           </AspectRatio>
                         </Td>
                         <Td>{el?.name}</Td>
-                        <Td textAlign={'center'}>{el.price}</Td>
-                        <Td textAlign={'center'} alignItems={'center'}>
+                        <Td>{toRupiah(el.price)}</Td>
+                        <Td alignItems={'center'}>
                           <HStack>
                             <Button
                               _hover={{
-                                bgColor: 'redPure.500',
+                                bgColor: 'redPure.600',
                               }}
+                              fontSize={'.8em'}
+                              h={'2.5em'}
                               w={'5em'}
-                              bgColor={'redPure.500'}
+                              bgColor={'redPure.600'}
                               color={'white'}
                               onClick={() => {
                                 navigate(`/dashboard/product-list/edit-product/${el.id}`)
@@ -162,10 +182,12 @@ export const ProductList = () => {
                               _hover={{
                                 bgColor: 'transparent',
                               }}
+                              fontSize={'.8em'}
+                              h={'2.5em'}
                               w={'5em'}
-                              border={'1px solid #e3024b'}
+                              border={'1px solid #CD0244'}
                               bgColor={'transparent'}
-                              color={'redPure.500'}
+                              color={'redPure.600'}
                               onClick={() => {
                                 deleteProduct(el?.id, el?.id)
                               }}
@@ -183,7 +205,13 @@ export const ProductList = () => {
           </Box>
         </VStack>
         <Spacer />
-        <PaginationList location={location} pathName={pathName} pageValue={pageValue} />
+        <PaginationList
+          boxToggle={boxToggle}
+          changeBoxToggle={changeBoxToggle}
+          location={location}
+          pathName={pathName}
+          pageValue={pageValue}
+        />
       </Flex>
     </Box>
   )

@@ -1,9 +1,13 @@
-import { useState, useEffect, useCallback } from 'react';
-import { updateCart } from '../../../pages/cart/services/updateCart';
-import { deleteCart } from '../../../pages/cart/services/deleteCart';
-import _debounce from 'lodash/debounce';
+import { useState, useEffect, useCallback } from 'react'
+import { updateCart } from '../../../pages/cart/services/updateCart'
+import { deleteCart } from '../../../pages/cart/services/deleteCart'
+import _debounce from 'lodash/debounce'
 import { useNavigate } from 'react-router-dom'
-// import { CreateOrder } from '../../../pages/order/services/createOrder';
+import { useToast } from "@chakra-ui/react";
+import { useCart } from '../../navbar/components/use-cart'
+import { productToStock } from '../../../pages/order/services/productToStock'
+
+
 
 const useCartState = (cartData, onCartUpdated) => {
   console.log('cartData', cartData);
@@ -14,7 +18,9 @@ const useCartState = (cartData, onCartUpdated) => {
     return storedProductData ? JSON.parse(storedProductData) : {}
   })
   const [dataLoaded, setDataLoaded] = useState(false)
-  const navigate = useNavigate(); 
+  const { fetchCartCount } = useCart()
+  const navigate = useNavigate()
+  const toast = useToast();
 
   const updateProductData = (newProductData) => {
     // Update state dan simpan ke localStorage
@@ -87,22 +93,24 @@ const useCartState = (cartData, onCartUpdated) => {
         })
       }
     }
-  }, [dataLoaded, cartData]);
+  }, [dataLoaded, cartData])
 
-  const handleDeleteButtonClick = () => {
+  const handleDeleteButtonClick = async () => {
     // Check if there are selected products to delete
     if (selectedCartProducts.length > 0) {
       // Perform deletion of selected products
-      deleteCart(selectedCartProducts, onCartUpdated);
+      await deleteCart(selectedCartProducts, onCartUpdated)
 
       // Remove deleted products from selectedCartProducts state
-      setSelectedCartProducts([]);
-      
+      setSelectedCartProducts([])
+
       // Update the local storage
-      localStorage.removeItem('selectedCartProducts');
-      localStorage.removeItem('selectAllChecked');
+      localStorage.removeItem('selectedCartProducts')
+      localStorage.removeItem('selectAllChecked')
+
+      await fetchCartCount()
     }
-  };
+  }
 
   const handleCheckboxChange = (productId) => {
     setSelectedCartProducts((prevSelected) => {
@@ -127,19 +135,19 @@ const useCartState = (cartData, onCartUpdated) => {
 
   const handleSelectAllChange = () => {
     setSelectAllChecked((prevChecked) => {
-      const newCheckedState = !prevChecked;
+      const newCheckedState = !prevChecked
       const newSelectedProducts = newCheckedState
         ? cartData.flatMap((cartItem) => cartItem.CartProducts.map((item) => item.id))
-        : [];
+        : []
 
-      setSelectedCartProducts(newSelectedProducts);
+      setSelectedCartProducts(newSelectedProducts)
 
       // Save to localStorage after updating selectedCartProducts
-      localStorage.setItem('selectedCartProducts', JSON.stringify(newSelectedProducts));
-      localStorage.setItem('selectAllChecked', JSON.stringify(newCheckedState));
+      localStorage.setItem('selectedCartProducts', JSON.stringify(newSelectedProducts))
+      localStorage.setItem('selectAllChecked', JSON.stringify(newCheckedState))
 
-      return newCheckedState;
-    });
+      return newCheckedState
+    })
   }
 
   const calculateTotalPriceAndQuantity = () => {
@@ -149,63 +157,70 @@ const useCartState = (cartData, onCartUpdated) => {
     selectedCartProducts.forEach((productId) => {
       const cartItem = cartData.find(
         (item) =>
-          item.CartProducts && item.CartProducts.some((product) => product.id === productId)
-      );
+          item.CartProducts && item.CartProducts.some((product) => product.id === productId),
+      )
 
       if (cartItem && cartItem.CartProducts) {
-        const selectedItem = cartItem.CartProducts.find((item) => item.id === productId);
+        const selectedItem = cartItem.CartProducts.find((item) => item.id === productId)
         if (selectedItem) {
-          totalPrice += parseFloat(selectedItem.price);
-          totalQuantity += selectedItem.quantity; // Use the quantity of the selected item
+          totalPrice += parseFloat(selectedItem.price)
+          totalQuantity += selectedItem.quantity // Use the quantity of the selected item
         }
       }
-    });
+    })
 
     return { totalPrice, totalQuantity }
   }
 
-  const handleCheckout = async () => {
-    try {
-      // const { totalPrice, totalQuantity } = calculateTotalPriceAndQuantity();
-
-      // // Extract stock data from selected products
-      // const stockData = selectedCartProducts.map((productId) => {
-      //   const cartItem = cartData.find((item) =>
-      //     item.CartProducts.some((product) => product.id === productId)
-      //   );
-      //   const selectedProduct = cartItem?.CartProducts.find((item) => item.id === productId);
-      //   // console.log('sdad', selectedProduct);
-
-      //   return {
-      //     stockId: selectedProduct?.stockId,
-      //     price: selectedProduct?.price,
-      //     quantity: selectedProduct?.quantity,
-      //     priceProduct: selectedProduct?.Stock?.Product?.price
-      //   };
-      // });
-      // console.log('sdad', stockData);
-
-      // // Call the CreateOrder function to send the request
-      // const orderId = await CreateOrder({
-      //   userId: 4, // Update with the actual user ID
-      //   userAddressId: 1, // Update with the actual address ID
-      //   warehouseId: 1, // Update with the actual warehouse ID
-      //   totalPrice,
-      //   totalQuantity,
-      //   shippingCost: 20000, // Update with the actual shipping cost
-      //   orderStatusId: 1, // Update with the actual order status ID
-      //   products: stockData,
-      // });
-      // // console.log("orderId", orderId);
-      // // setOrderId(orderId);
-      // // Navigate to the '/order' page or any other page you want to redirect to after checkout
-      // navigate('/order', { state: { orderId } });
-      navigate('/order');
-    } catch (error) {
-      // Handle errors if needed
-      console.error('Error during checkout:', error);
-    }
+  const showToast = (message) => {
+    toast({
+      title: message,
+      status: "warning", // Sesuaikan dengan status yang sesuai (info, success, warning, error)
+      position: 'top-right',
+      duration: 3000, // Durasi toast ditampilkan dalam milidetik (opsional)
+      isClosable: true, // Mungkin ingin memberikan opsi untuk menutup toast
+    });
   };
+
+  // Mengatur hasVisitedCart ke true ketika pengguna mengunjungi rute /cart
+  const handleVisitCart = () => {
+    localStorage.setItem('hasVisitedCart', 'true')
+    // Lakukan navigasi ke rute /cart jika diperlukan
+  }
+
+  const handleCheckout = async () => {
+    const {totalPrice, totalQuantity} = calculateTotalPriceAndQuantity()
+    try {
+      // Check if selectedCartProducts is not empty
+      if (selectedCartProducts.length === 0) {
+        showToast('Select products to checkout') // Menampilkan pesan toast jika selectedCartProducts kosong
+        return // Menghentikan proses checkout jika selectedCartProducts kosong
+      }
+      // Extract stock data from selected products
+      const stockData = selectedCartProducts.map((productId) => {
+        const cartItem = cartData.find((item) =>
+          item.CartProducts.some((product) => product.id === productId),
+        )
+        const selectedProduct = cartItem?.CartProducts.find((item) => item.id === productId)
+        // console.log('sdasd', selectedProduct);
+        // console.log('sdasdd', cartItem);
+
+        return {
+          productId: selectedProduct?.productId,
+          // price: selectedProduct?.price,
+          // quantity: selectedProduct?.quantity,
+          // priceProduct: selectedProduct?.stocks?.product?.price
+        }
+      })
+      
+      console.log('stockData', stockData)
+
+      handleVisitCart()
+      navigate('/cart/order', { state: { stockData, totalPrice, totalQuantity } })
+    } catch (error) {
+      console.error('Error during checkout:', error)
+    }
+  }
 
   const { totalPrice, totalQuantity } = calculateTotalPriceAndQuantity()
   return {
@@ -222,4 +237,4 @@ const useCartState = (cartData, onCartUpdated) => {
   }
 }
 
-export default useCartState
+export default useCartState;

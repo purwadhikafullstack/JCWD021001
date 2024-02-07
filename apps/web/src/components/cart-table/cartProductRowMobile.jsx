@@ -1,4 +1,3 @@
-import React from 'react'
 import { Box, Text, Button, Icon, Checkbox } from '@chakra-ui/react'
 import { Table, Thead, Tbody, Tr, Td, TableContainer } from '@chakra-ui/react'
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline'
@@ -58,17 +57,17 @@ const CartProductRowMobile = ({
                       <Box display={'flex'} gap={'16px'}>
                         <Box w={'64px'} h={'64px'} bgColor={'brand.grey100'} />
                         <Box
-                          w={{ base: '150px', sm: '300px'}}
+                          w={{ base: '150px', sm: '300px' }}
                           overflow={'hidden'}
                           display={'flex'}
                           flexDirection={'column'}
                           gap={'10px'}
                         >
                           <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                            {item?.stocks?.product?.name}
+                            {item?.product?.name}
                           </Text>
                           <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                            {toRupiah(+item?.stocks?.product?.price, { floatingPoint: 0 })}
+                            {toRupiah(+item?.product?.price, { floatingPoint: 0 })}
                           </Text>
                         </Box>
                       </Box>
@@ -88,10 +87,16 @@ const CartProductRowMobile = ({
                             fontSize={'16px'}
                             color={'#838383'}
                           >
-                            L
+                            {item?.size?.name}
                           </Text>
                         </Box>
-                        <Box w={'36px'} h={'36px'} bgColor={'#2F4E7A'} borderRadius={'6px'} />
+                        <Box
+                          w={'36px'}
+                          h={'36px'}
+                          bgColor={item?.colour?.name}
+                          border={'1px'}
+                          borderRadius={'6px'}
+                        />
                       </Box>
                       <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
                         <Box

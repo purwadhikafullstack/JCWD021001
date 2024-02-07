@@ -5,65 +5,67 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import slug from 'slug'
 export const SideBar = (props) => {
+  // Navigate
   const navigate = useNavigate()
+
+  // Toggle Sidebar
   const [toggleType, setToggleType] = useState({})
+
+  // Handle Toggle
   const changeToggleType = (id) => {
     setToggleType((set) => ({
-      ...set,
       [id]: !set[id],
+      [!id]: set[id],
     }))
   }
-  const groupedArray = props?.productCategories.reduce((result, item) => {
-    const parentName = item.parent.name
-    const parentId = item.parent.id
-    if (!result[parentName]) {
-      result[parentName] = { name: parentName, id: parentId, category: [] }
-    }
-    result[parentName].category.push({ id: item.id, name: item.name })
-    return result
-  }, {})
-  const finalArray = Object.values(groupedArray)
-  const renderedCategories = finalArray.map((el, index) => {
+
+  // Rendered Categories
+  const renderedCategories = props?.productCategories.map((productGroup, index) => {
     slug.extend({
       '&': 'and',
     })
+
     return (
       <VStack align={'stretch'} key={index} spacing={'1.5em'} cursor={'pointer'}>
         <Flex
           alignItems={'center'}
           justifyContent={'space-between'}
           onClick={() => {
-            navigate(`/p/${props?.gender}/${el?.name?.toLowerCase()}`)
-            changeToggleType(el?.id)
+            changeToggleType(productGroup?.id)
           }}
         >
-          <Text>{el?.name}</Text>
-          <Icon as={toggleType[el?.id] ? ChevronUpIcon : ChevronDownIcon} />
+          <Text>{productGroup?.name}</Text>
+          <Icon as={toggleType[productGroup?.id] ? ChevronUpIcon : ChevronDownIcon} />
         </Flex>
         <VStack
           borderLeft={'2px solid lightgray'}
           p={'0 1em'}
-          display={toggleType[el?.id] ? 'block' : 'none'}
-          onClick={() => {
-            props?.setProductGroup(el?.name)
-          }}
+          display={toggleType[productGroup?.id] ? 'block' : 'none'}
         >
-          {el?.category
-            ? el?.category?.map((elPT, index, arr) => {
+          <Text
+            onClick={() => {
+              navigate(`/p/${props?.gender}/${productGroup?.name?.toLowerCase()}`)
+            }}
+            mb={'1.5em'}
+          >
+            All {productGroup?.name}
+          </Text>
+          {productGroup?.category
+            ? productGroup?.category?.map((productCategory, index, arr) => {
                 return (
                   <Text
                     key={index}
                     mb={index == arr.length - 1 ? '0' : '1.5em'}
                     onClick={() => {
-                      props?.setProductCategory(`${elPT?.name}`)
+                      props?.setProductCategory(`${productCategory?.name}`)
                       navigate(
-                        `/p/${props?.gender}/${el?.name?.toLowerCase()}/${slug(
-                          elPT?.name?.toLowerCase(),
+                        `/p/${props?.gender}/${productGroup?.name?.toLowerCase()}/${slug(
+                          productCategory?.name?.toLowerCase(),
                         )}`,
                       )
                     }}
                   >
-                    {elPT?.name}
+                    {productCategory?.name}
                   </Text>
                 )
               })

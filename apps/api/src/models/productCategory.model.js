@@ -21,10 +21,6 @@ export const init = (sequelize) => {
       name: {
         allowNull: false,
         type: DataTypes.STRING,
-        unique: true,
-        validate: {
-          isAlpha: true,
-        },
       },
       parentId: {
         allowNull: true,

@@ -1,62 +1,52 @@
-import { Box, Flex, HStack, Text } from '@chakra-ui/react'
+import { Box, Center, Flex, HStack, Text } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 
 export const PaginationList = (props) => {
+  // Current Page
+  const currentPage = props?.pageValue
+
+  // Render Pagination Button
+  const renderPaginationButtons = () => {
+    const totalPages = 10 // Replace with the total number of pages in your data
+    const buttonsToShow = 4
+    const halfButtonsToShow = Math.floor(buttonsToShow / 2)
+
+    const startPage = Math.max(1, currentPage - halfButtonsToShow)
+    const endPage = Math.min(totalPages, startPage + buttonsToShow - 1)
+
+    const box = []
+
+    for (let i = startPage; i <= endPage; i++) {
+      box.push(
+        <Box
+          boxShadow={'sm'}
+          cursor={'pointer'}
+          key={i}
+          bgColor={props?.boxToggle[i] ? '#ffb1cc' : 'white'}
+          p={'.5em 1em'}
+          border={props?.boxToggle[i] ? '2px solid #e3024b' : '2px solid #f2f2f2'}
+          borderRadius={'.5em'}
+          onClick={() => {
+            props?.changeBoxToggle(i)
+            navigate(`${props?.pathName}?pa=${i}`)
+          }}
+        >
+          <Text fontWeight={'bold'} fontSize={'.75em'}>
+            {i}
+          </Text>
+        </Box>,
+      )
+    }
+    return box
+  }
   //   NAVIGATE
   const navigate = useNavigate()
 
-  // PAGE NUMBERS
-  const pageNumbers = [1, 2, 3, 4, 5]
-  const lastNumbers =
-    props?.pageValue > pageNumbers[pageNumbers.length - 1]
-      ? pageNumbers[pageNumbers.length - 1] + 1
-      : pageNumbers[pageNumbers.length - 1]
-
-  // RENDERED PAGE NUMBER
-  const renderedPageNumbers = pageNumbers?.map((pageNumber, index, pageNumbers) => {
-    return (
-      <>
-        <Box
-          key={index}
-          p={'.5em 1em'}
-          bgColor={'white'}
-          borderRadius={'.5em'}
-          onClick={() => {
-            navigate(`${props?.pathName}?pa=${pageNumber}`)
-          }}
-        >
-          {props?.pageValue > lastNumbers ? pageNumber + 1 : pageNumber}
-        </Box>
-      </>
-    )
-  })
   return (
     <Flex justifyContent={'space-between'} alignItems={'center'} mt={'1em'}>
-      <Text>Showing 4 of 15 datas</Text>
+      <Box></Box>
       <Box>
-        <HStack>
-          <Box
-            p={'.5em 1em'}
-            bgColor={'white'}
-            borderRadius={'.5em'}
-            onClick={() => {
-              navigate(`${props?.pathName}?pa=${+props?.pageValue > 1 ? props?.pageValue - 1 : 1}`)
-            }}
-          >
-            Prev
-          </Box>
-          {renderedPageNumbers}
-          <Box
-            p={'.5em 1em'}
-            bgColor={'white'}
-            borderRadius={'.5em'}
-            onClick={() => {
-              navigate(`${props?.pathName}?pa=${+props?.pageValue + 1}`)
-            }}
-          >
-            Next
-          </Box>
-        </HStack>
+        <HStack>{renderPaginationButtons()}</HStack>
       </Box>
     </Flex>
   )

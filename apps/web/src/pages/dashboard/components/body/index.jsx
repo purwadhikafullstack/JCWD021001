@@ -8,6 +8,10 @@ import { EditProductCategory } from '../edit-product-category'
 import { StockManagement } from '../stock-management'
 import { OrderHistory } from '../order-history'
 import { CreateStock } from '../create-stock'
+import { StockMutation } from '../stock-mutation'
+import { FormMutation } from '../form-mutation'
+import { SalesReport } from '../sales-report'
+import { StockReport } from '../stock-report'
 
 export const Body = (props) => {
   const renderComponent = () => {
@@ -18,6 +22,12 @@ export const Body = (props) => {
         return <ProductCategory />
       case 'stock-management':
         return <StockManagement />
+      case 'stock-mutation':
+        return <StockMutation />
+      case 'sales-report':
+        return <SalesReport />
+      case 'stock-report':
+        return <StockReport />
     }
   }
   const renderComponentAgain = () => {
@@ -34,6 +44,8 @@ export const Body = (props) => {
         return <OrderHistory />
       case 'create-stock':
         return <CreateStock />
+      case 'form-mutation':
+        return <FormMutation />
     }
   }
   const create = renderComponentAgain()
@@ -41,7 +53,6 @@ export const Body = (props) => {
   return (
     <Box
       bgColor={'grey.50'}
-      minH={'100vh'}
       w={'100%'}
       p={'1em'}
       display={props?.collapseSidebar ? 'none' : 'block'}
