@@ -34,6 +34,7 @@ export const createOrderController = async (req, res) => {
       orderStatusId,
       products,
     } = req.body
+    console.log('products', products);
     const result = await createOrderService(
       userId,
       userAddressId,
@@ -50,7 +51,6 @@ export const createOrderController = async (req, res) => {
     return sendResponse(res, 500, null, err.message)
   }
 }
-
 export const updateOrderController = async (req, res) => {
   try {
     const { orderId } = req.params
@@ -192,4 +192,4 @@ export const getAllOrderByProductController = async (req, res) => {
     })
   }
 }
-//
+// 

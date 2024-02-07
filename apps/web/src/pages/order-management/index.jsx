@@ -8,13 +8,11 @@ import { getWarehouse } from './service/getWarehouse'
 
 const OrderManagement = () => {
   const [orderData, setOrderData] = useState([])
-  console.log('orderData', orderData);
   const [warehouseData, setWarehouseData] = useState([])
   const [selectOrderStatusId, setSelectOrderStatusId] = useState(() => {
     const storedTab = localStorage.getItem('status')
     return storedTab ? JSON.parse(storedTab) : [2]
   })
-  console.log('status', selectOrderStatusId);
 
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(3)
