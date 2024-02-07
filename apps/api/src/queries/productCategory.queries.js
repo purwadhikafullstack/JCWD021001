@@ -106,8 +106,33 @@ export const updateProductCategoryQuery = async (name, parentId = null, id) => {
   }
 }
 
-export const deleteProductCategoryQuery = async (id, parentId) => {
+export const deleteProductCategoryQuery = async (id, parentId, grandParentId = null) => {
   try {
+    if (grandParentId) {
+      const checkChildren = await ProductCategory.findAll({
+        where: {
+          parentId: grandParentId,
+        },
+      })
+      const childrenId = checkChildren.map((item) => item.id)
+      await ProductCategory.destroy({
+        where: {
+          parentId: childrenId,
+        },
+      })
+      await ProductCategory.destroy({
+        where: {
+          parentId: grandParentId,
+        },
+      })
+      const res = await ProductCategory.destroy({
+        where: {
+          id: grandParentId,
+        },
+      })
+      return res
+    }
+
     const check = await ProductCategory.findAll({
       where: {
         parentId: {

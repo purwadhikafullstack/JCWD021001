@@ -161,7 +161,6 @@ export const EditProductCategory = () => {
   const formik = useFormik({
     initialValues,
     enableReinitialize: true,
-    onSubmit: (values) => {},
   })
 
   return (
@@ -169,7 +168,7 @@ export const EditProductCategory = () => {
       <VStack align={'stretch'}>
         <Text fontWeight={'bold'}>Edit Product Category</Text>
         <Text fontWeight={'bold'}>{gender[0]?.name}</Text>
-        <form onSubmit={formik.handleSubmit}>
+        <form>
           <VStack align={'stretch'} spacing={'2em'}>
             {productCategory?.map((item) => (
               <Box key={item.id} boxShadow={'md'} p={'.5em'} borderRadius={'.5em'}>
@@ -206,7 +205,7 @@ export const EditProductCategory = () => {
                   color={'redPure.600'}
                   cursor={'pointer'}
                   onClick={() => {
-                    deleteProductCategory(item.id, null, toast)
+                    deleteProductCategory(item.id, null, null, toast)
                   }}
                 >
                   Delete
@@ -247,7 +246,7 @@ export const EditProductCategory = () => {
                           color={'redPure.600'}
                           cursor={'pointer'}
                           onClick={() => {
-                            deleteProductCategory(child.id, item.id, toast)
+                            deleteProductCategory(child.id, item.id, null, toast)
                           }}
                         >
                           Delete
