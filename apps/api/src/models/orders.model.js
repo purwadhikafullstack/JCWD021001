@@ -33,7 +33,7 @@ export const init = (sequelize) => {
         type: DataTypes.INTEGER,
         references: {
           model: {
-            tableName: 'order_statuses',
+            tableName: 'orderStatuses',
           },
           key: 'id',
         },

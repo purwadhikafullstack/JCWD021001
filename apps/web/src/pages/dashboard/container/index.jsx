@@ -1,12 +1,14 @@
 import { Box, Flex, Icon, Text } from '@chakra-ui/react'
-import { Navbar } from '../../../components/Navbar'
 import { Body } from '../components/body'
 import { Sidebar } from '../components/sidebar'
 import { useState } from 'react'
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import { useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { Navbar } from '../../../components/navbar'
 
 export const Dashboard = () => {
+  const user = useSelector((state) => state.AuthReducer.user)
   const { destination, createProduct } = useParams()
   const [collapseSideBar, setCollapseSideBar] = useState(true)
   const toggleSideBar = () => {

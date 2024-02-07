@@ -25,7 +25,7 @@ export const registerQuery = async (email, username) => {
 };
 
 // FIND USER
-export const findUserQuery = async ({ email = null, username = null }) => {
+export const findUserAuthQuery = async ({ email = null, username = null }) => {
     try {
       const res = await User.findOne({
         where: {

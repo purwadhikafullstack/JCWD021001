@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { API_ROUTE } from '../../../../../services/route'
+
 export const createStockJournal = async (
   productId,
   warehouseId,
@@ -7,6 +8,7 @@ export const createStockJournal = async (
   colourId,
   qty,
   isUpdate,
+  isAdding,
 ) => {
   try {
     const res = await axios.post(`${API_ROUTE}/stock-journal`, {
@@ -16,6 +18,7 @@ export const createStockJournal = async (
       colourId,
       qty,
       isUpdate,
+      isAdding,
     })
     return res
   } catch (err) {

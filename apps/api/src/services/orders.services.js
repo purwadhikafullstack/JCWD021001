@@ -112,25 +112,12 @@ export const getOrderManagementService = async (
   }
 }
 
-export const getAllOrderService = async (
-  sortBy,
-  orderBy,
-  page,
-  pageSize,
-  warehouseId,
-  startDate,
-  endDate,
-) => {
+export const getWarehouseService = async () => {
   try {
-    const res = await getAllOrderQuery(
-      sortBy,
-      orderBy,
-      page,
-      pageSize,
-      warehouseId,
-      startDate,
-      endDate,
-    )
+    const check = await findWarehouseQuery()
+    if (!check) throw new Error('Data doesnt exist')
+    const res = await getWarehouseQuery()
+    return res
   } catch (err) {
     throw err
   }
@@ -278,6 +265,30 @@ export const calculationCheckStockService = async (orderId) => {
       // warehouse,
       checkStockResults,
     }
+  } catch (err) {
+    throw err
+  }
+}
+
+export const getAllOrderService = async (
+  sortBy,
+  orderBy,
+  page,
+  pageSize,
+  warehouseId,
+  startDate,
+  endDate,
+) => {
+  try {
+    const res = await getAllOrderQuery(
+      sortBy,
+      orderBy,
+      page,
+      pageSize,
+      warehouseId,
+      startDate,
+      endDate,
+    )
   } catch (err) {
     throw err
   }
