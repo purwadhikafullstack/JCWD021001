@@ -2,6 +2,7 @@ import {
   createStockService,
   getStockByIdService,
   getStockByProductIdService,
+  getStockReportService,
   getStockService,
 } from '../services/stock.services'
 
@@ -58,6 +59,21 @@ export const getStockByProductIdController = async (req, res) => {
     return res.status(200).json({
       message: 'Get Stock Success',
       data: result,
+    })
+  } catch (err) {
+    return res.status(500).json({
+      message: err.message,
+    })
+  }
+}
+
+export const getStockReportController = async (req, res) => {
+  try {
+    const { warehouseId, page, pageSize, startDate, endDate } = req.query
+    const result = await getStockReportService(warehouseId, page, pageSize, startDate, endDate)
+    return res.status(200).json({
+      message: 'Get Stock Report Success',
+      data: result[0],
     })
   } catch (err) {
     return res.status(500).json({

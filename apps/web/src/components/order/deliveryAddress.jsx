@@ -1,7 +1,7 @@
-import { useSelector } from "react-redux";
-import { findUserAddress } from "../../pages/manage-address/services/readUserAddress";
-import { useEffect, useState } from "react";
-import { Box, Flex, Icon, Text } from "@chakra-ui/react";
+import { useSelector } from 'react-redux'
+import { findUserAddress } from '../../pages/manage-address/services/readUserAddress'
+import { useEffect, useState } from 'react'
+import { Box, Flex, Icon, Text } from '@chakra-ui/react'
 import { MapPinIcon } from '@heroicons/react/24/outline'
 import ChangeAddressModal from "./ModalChangeAddress";
 import { getNearestWarehouse, getShippingCost} from "./services/getDeliveryFee";

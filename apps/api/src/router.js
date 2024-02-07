@@ -15,6 +15,7 @@ import { productImageRouter } from './routers/productImage.router'
 import { colourRouter } from './routers/colour.router'
 import { stockJournalRouter } from './routers/stockJournal.router'
 import { mutationRouter } from './routers/mutation.router'
+import { prodToColRouter } from './routers/prodToCol.router'
 const router = Router()
 
 router.get('/', (req, res) => {
@@ -38,4 +39,5 @@ router.use('/product-image', productImageRouter)
 router.use('/colour', colourRouter)
 router.use('/stock-journal', stockJournalRouter)
 router.use('/mutation', mutationRouter)
+router.use('/prod-to-col', prodToColRouter)
 export default router

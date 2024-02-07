@@ -48,7 +48,8 @@ export const createMutationController = async (req, res) => {
 export const acceptMutationController = async (req, res) => {
   try {
     const { id } = req.params
-    const result = await acceptMutationService(id)
+    const { isAccepted } = req.body
+    const result = await acceptMutationService(id, isAccepted)
     return res.status(200).json({
       message: 'Mutation Accepted',
       data: result,

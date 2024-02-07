@@ -1,6 +1,8 @@
 import {
   createProductQuery,
   deleteProductQuery,
+  getProductById,
+  getProductByIdQuery,
   getProductByName,
   getProductQuery,
   updateProductQuery,
@@ -18,6 +20,10 @@ export const getProductService = async (
   pageSize,
 ) => {
   try {
+    if (id) {
+      const res = await getProductByIdQuery(id)
+      return res
+    }
     const res = await getProductQuery(
       name,
       gender,

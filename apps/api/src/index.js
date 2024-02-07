@@ -47,6 +47,7 @@ const globalAPIErrorHandler = (app) => {
   })
 }
 
+
 /**
  * Main function of API project
  */
