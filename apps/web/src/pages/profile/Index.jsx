@@ -1,15 +1,30 @@
-import { AbsoluteCenter, Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Button, Flex, FormControl, FormLabel, Icon, Image, Input, InputGroup, InputLeftElement, Text } from "@chakra-ui/react"
-import { HomeIcon} from '@heroicons/react/24/outline'
+import {
+  AbsoluteCenter,
+  Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Icon,
+  Image,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Text,
+} from '@chakra-ui/react'
+import { HomeIcon } from '@heroicons/react/24/outline'
 import { ChevronRightIcon } from '@chakra-ui/icons'
-import Navbar from "../../components/Navbar/Navbar"
-import UpdateUsername from "./components/username"
-import UpdateEmail from "./components/email"
-import UpdatePassword from "./components/password"
-import UploadAvatar from "./components/avatar"
-import Footer from "../../components/Footer/Footer"
+import Navbar from '../../components/Navbar/Navbar'
+import UpdateUsername from './components/username'
+import UpdateEmail from './components/email'
+import UpdatePassword from './components/password'
+import UploadAvatar from './components/avatar'
+import Footer from '../../components/Footer/Footer'
 
 function Profile() {
-   
   return (
     <Box bg={'#F1F1F1'} height={'100vh'}>
       <Navbar />

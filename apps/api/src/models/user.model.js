@@ -7,16 +7,13 @@ export default class User extends Model {
    * The `models/index` file will call this method automatically.
    */
   static associate(models) {
-    // define association here
     this.belongsTo(models.Role, { foreignKey: 'roleId' });
-    this.hasMany(models.Warehouse, { foreignKey: 'userId' });
+    this.belongsTo(models.Warehouse, { foreignKey: 'warehouseId' });
     this.hasMany(models.UserAddress, {foreignkey: 'userId'});
     this.hasMany(models.Carts, {foreignKey: 'userId'});
     this.hasMany(models.Orders, {foreignKey: 'userId'})
   }
 }
-
-// one-to-many => hasMany belongsTo
 
 export const init = (sequelize) => {
   User.init(
@@ -27,6 +24,7 @@ export const init = (sequelize) => {
       roleId: DataTypes.INTEGER,
       isVerified: DataTypes.BOOLEAN,
       avatar: DataTypes.STRING,
+      warehouseId: DataTypes.INTEGER,
     },
     {
       sequelize,

@@ -21,7 +21,7 @@ export const init = (sequelize) => {
       sequelize,
       timestamps: false,
       modelName: 'OrderStatuses',
-      tableName: 'order_statuses',
+      tableName: 'orderStatuses',
     },
   )
 }

@@ -23,7 +23,7 @@ function DeliveryAddress({
 
   const fetchData = async () => {
     try {
-      const fetchAddresses = await findUserAddress(1)
+      const fetchAddresses = await findUserAddress(user.id)
       const mainAddress = fetchAddresses.find((address) => address.isMainAddress)
       setSelectedAddress(mainAddress)
     } catch (err) {

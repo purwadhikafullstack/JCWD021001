@@ -1,4 +1,4 @@
-import { registerQuery, findUserQuery, emailVerificationQuery, verifiedUserQuery, keepLoginQuery, forgotPasswordQuery, resetPasswordQuery, checkTokenUsageQuery } from "../queries/auth.queries";
+import { registerQuery, findUserAuthQuery, emailVerificationQuery, verifiedUserQuery, keepLoginQuery, forgotPasswordQuery, resetPasswordQuery, checkTokenUsageQuery } from "../queries/auth.queries";
 import bcrypt from "bcrypt"
 import jwt, {Secret} from "jsonwebtoken";
 import handlebars from "handlebars";
@@ -11,7 +11,7 @@ export const registerService = async (email, username) => {
     try {
 
       // CHECK WHETHER OR NOT EMAIL AND USERNAME EXIST
-      const check = await findUserQuery({ email, username });
+      const check = await findUserAuthQuery({ email, username });
       if (check) throw new Error("Email or username already exist");
       
       const res = await registerQuery(email, username);
@@ -82,7 +82,7 @@ export const registerService = async (email, username) => {
 
 export const loginService = async (email, password) => {
   try {
-    const check = await findUserQuery({ email });
+    const check = await findUserAuthQuery({ email });
     if (!check) throw new Error("Email doesn't exist");
 
     const isValid = await bcrypt.compare(password, check.password);

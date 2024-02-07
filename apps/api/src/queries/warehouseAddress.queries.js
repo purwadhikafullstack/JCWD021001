@@ -55,6 +55,20 @@ export const getWarehouseQuery = async (warehouseId = null) => {
   }
 }
 
+export const findWarehousesQuery = async () => {
+  try {
+    return await Warehouse.findAll({
+      include: [
+        {
+          model: WarehouseAddress,
+        },
+      ],
+    })
+  } catch (err) {
+    throw err
+  }
+}
+
 export const getShippingCostQuery = async (origin, destination, weight, courier) => {
   try {
     const API_KEY = process.env.RAJAONGKIR_API_KEY
