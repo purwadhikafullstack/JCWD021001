@@ -42,17 +42,19 @@ import {
 } from '@heroicons/react/24/outline'
 import pure from '/logo/pure.png'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { SearchModal } from './components/search-modal'
 import { SearchMenu } from './components/search-menu'
 import { useState, useEffect } from 'react'
 import { getCart } from '../../pages/cart/services/getCart'
 import { useCart } from './services/cartContext'
 import ShoppingCartBox from './components/shopping-cart-box'
+import AvatarNavbar from './components/avatar-menu'
 
 export const Navbar = (props) => {
   const user = useSelector((state) => state.AuthReducer.user)
   const isLogin = useSelector((state) => state.AuthReducer.isLogin)
+  const location = useLocation()
   const navigate = useNavigate()
   // edit by andri
   const { cartData, cartCount } = useCart()
@@ -85,49 +87,51 @@ export const Navbar = (props) => {
           </Center>
           <Box>
             <Box display={{ base: 'block', md: 'none' }}>
-              <Menu autoSelect={false}>
-                <MenuButton
-                  bgColor={'transparent'}
-                  _active={{ bgColor: 'transparent' }}
-                  _hover={{ bgColor: 'transparent' }}
-                  w={'5em'}
-                >
-                  <Flex alignItems={'center'} justifyContent={'space-between'}>
-                    <Text fontWeight={'bold'}>Sign In</Text>
-                    <Icon as={ChevronDownIcon} />
-                  </Flex>
-                </MenuButton>
-                <MenuList mt={'1.5em'} minW={'0'} pr={'2em'}>
-                  <MenuItem as={'a'} href={'#'} fontWeight={'bold'}>
-                    Sign In
-                  </MenuItem>
-                  <MenuItem as={'a'} href={'#'} fontWeight={'bold'}>
-                    Sign Up
-                  </MenuItem>
-                </MenuList>
-              </Menu>
+              {isLogin ? (
+                <Flex w={'48px'} h={'48px'} borderRadius={'full'} ml={'24px'}>
+                  <AvatarNavbar />
+                </Flex>
+              ) : (
+                <Menu autoSelect={false}>
+                  <MenuButton
+                    bgColor={'transparent'}
+                    _active={{ bgColor: 'transparent' }}
+                    _hover={{ bgColor: 'transparent' }}
+                    w={'5em'}
+                  >
+                    <Flex alignItems={'center'} justifyContent={'space-between'}>
+                      <Text fontWeight={'bold'}>Sign In</Text>
+                      <Icon as={ChevronDownIcon} />
+                    </Flex>
+                  </MenuButton>
+                  <MenuList mt={'1.5em'} minW={'0'} zIndex={'99'}>
+                    <MenuItem
+                      fontWeight={'bold'}
+                      _hover={{ bg: 'none', color: '#CD0244' }}
+                      _active={{ bg: 'none', color: '#CD0244' }}
+                      gap={'12px'}
+                      onClick={() => navigate('/signin', { state: { from: location } })}
+                    >
+                      Sign In
+                    </MenuItem>
+                    <MenuItem
+                      fontWeight={'bold'}
+                      _hover={{ bg: 'none', color: '#CD0244' }}
+                      _active={{ bg: 'none', color: '#CD0244' }}
+                      gap={'12px'}
+                      onClick={() => navigate('/signup')}
+                    >
+                      Sign Up
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+              )}
             </Box>
 
             <Box display={{ base: 'none', md: 'block' }}>
               {isLogin ? (
                 <Flex w={'48px'} h={'48px'} borderRadius={'full'} ml={'24px'}>
-                  {user?.avatar ? (
-                    <Avatar
-                      name={user?.username}
-                      src={`${import.meta.env.VITE_APP_API_IMAGE_URL}/avatar/${user?.avatar}`}
-                      w={'48px'}
-                      h={'48px'}
-                    />
-                  ) : (
-                    <Avatar
-                      name={user?.username}
-                      bg="rgba(40, 96, 67, 1)"
-                      src={'https://bit.ly/broken-link'}
-                      w={'48px'}
-                      h={'48px'}
-                      color={'white'}
-                    />
-                  )}
+                  <AvatarNavbar />
                 </Flex>
               ) : (
                 <HStack>
@@ -150,7 +154,7 @@ export const Navbar = (props) => {
                     _hover={{
                       fontWeight: 'bold',
                     }}
-                    onClick={() => navigate('/signin')}
+                    onClick={() => navigate('/signin', { state: { from: location } })}
                   >
                     Sign In
                   </Button>
