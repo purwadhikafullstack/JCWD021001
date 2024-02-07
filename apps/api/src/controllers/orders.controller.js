@@ -50,7 +50,6 @@ export const createOrderController = async (req, res) => {
     return sendResponse(res, 500, null, err.message)
   }
 }
-
 export const updateOrderController = async (req, res) => {
   try {
     const { orderId } = req.params
@@ -192,4 +191,4 @@ export const getAllOrderByProductController = async (req, res) => {
     })
   }
 }
-//
+// 

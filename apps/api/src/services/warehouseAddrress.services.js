@@ -72,6 +72,7 @@ export const getShippingCostService = async (origin, destination, weight, courie
         console.log("ini response",response);
         return response
 
+
     } catch (err){
         throw err
     }
