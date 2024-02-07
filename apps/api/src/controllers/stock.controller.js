@@ -8,8 +8,8 @@ import {
 
 export const getStockController = async (req, res) => {
   try {
-    const { warehouseId, page, pageSize } = req.query
-    const result = await getStockService(warehouseId, page, pageSize)
+    const { warehouseId, name, page, pageSize } = req.query
+    const result = await getStockService(warehouseId, name, page, pageSize)
     return res.status(200).json({
       title: 'Get Stock Success',
       data: result,

@@ -6,7 +6,7 @@ import { Op } from 'sequelize'
 import Size from '../models/size.model'
 import ProductImage from '../models/productImage.model'
 
-export const getStockQuery = async (warehouseId, page = null, pageSize = null) => {
+export const getStockQuery = async (warehouseId, name = '', page = null, pageSize = null) => {
   try {
     const offset = (page - 1) * pageSize
     const filter = {}
@@ -15,7 +15,11 @@ export const getStockQuery = async (warehouseId, page = null, pageSize = null) =
         warehouseId: {
           [Op.eq]: warehouseId,
         },
+        '$product.name$': {
+          [Op.like]: `%${name}%`,
+        },
       }
+
     const res = await Stock.findAndCountAll({
       include: [
         {

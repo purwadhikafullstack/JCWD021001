@@ -26,6 +26,7 @@ export const SearchInput = (props) => {
         placeholder={'Search a product here'}
         onChange={(e) => {
           setInputFilter(e?.target?.value)
+          props?.setProductNameFilter(filter)
         }}
         value={filter}
         onKeyDown={handleKeyPress}

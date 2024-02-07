@@ -1,10 +1,10 @@
 import { API_ROUTE } from '../../../../../services/route'
 import axios from 'axios'
-export const getStock = async (warehouseId, page = 1, pageSize = 10) => {
+export const getStock = async (warehouseId, name = '', page = 1, pageSize = 10) => {
   try {
     console.log('warehouseId', warehouseId)
     const res = await axios.get(
-      `${API_ROUTE}/stock?warehouseId=${warehouseId}&page=${page}&pageSize=${pageSize}`,
+      `${API_ROUTE}/stock?warehouseId=${warehouseId}&name=${name}&page=${page}&pageSize=${pageSize}`,
     )
     const stock = res?.data?.data
     return stock

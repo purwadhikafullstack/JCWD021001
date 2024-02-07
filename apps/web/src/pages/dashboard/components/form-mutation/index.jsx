@@ -7,6 +7,7 @@ import {
   Heading,
   Input,
   Select,
+  Spacer,
   Table,
   TableContainer,
   Tbody,
@@ -25,6 +26,7 @@ import { getStock } from '../stock-management/services/readStock'
 import { useLocation } from 'react-router-dom'
 import { createMutation } from '../stock-mutation/services/createMutation'
 import { getWarehouses } from './services/readWarehouse'
+import { SearchInput } from '../create-stock/component/search-input'
 
 export const FormMutation = () => {
   // LOCATION
@@ -97,7 +99,7 @@ export const FormMutation = () => {
   const warehouseOptions = warehouses?.map((warehouse, index) => {
     return (
       <option key={index} id={warehouse?.id} value={warehouse?.id}>
-        {warehouse?.address}
+        {warehouse?.WarehouseAddress?.location}
       </option>
     )
   })
@@ -125,14 +127,22 @@ export const FormMutation = () => {
       )
     },
   })
+
+  // Search Input
+  const [productNameFilter, setProductNameFilter] = useState('')
   //   STOCKS
   const [stocks, setStocks] = useState([])
 
+  const handleKeyDown = (event) => {
+    // Prevent form submission on Enter key press
+    if (event.key === 'Enter') {
+      event.preventDefault()
+    }
+  }
   useEffect(() => {
-    getStock(recipientWarehouseId, pageValue, 10).then((data) => setStocks(data))
-  }, [pageValue, recipientWarehouseId, setRecipientWarehouseId])
+    getStock(recipientWarehouseId, productNameFilter, pageValue, 10).then((data) => setStocks(data))
+  }, [pageValue, productNameFilter, recipientWarehouseId, setRecipientWarehouseId])
 
-  console.log('stocks', stocks)
   const renderedTableBody = stocks?.rows?.map((stock, index) => {
     return (
       <Tr key={index} cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'}>
@@ -164,8 +174,9 @@ export const FormMutation = () => {
       </Tr>
     )
   })
-  console.log('formData', formData)
-  console.log('formik', formik.values)
+
+  console.log('productName', productNameFilter)
+
   return (
     <Box p={'1em'} bgColor={'white'} minH={'100vh'}>
       <Flex dir={'column'} justifyContent={'space-between'}>
@@ -207,7 +218,14 @@ export const FormMutation = () => {
                 <FormLabel fontWeight={'bold'} htmlFor={'productName'}>
                   Product Name
                 </FormLabel>
+                <Flex justifyContent={'space-between'} alignItems={'center'}>
+                  <Text></Text>
+                  <Box>
+                    <SearchInput setProductNameFilter={setProductNameFilter} />
+                  </Box>
+                </Flex>
                 <Input
+                  mt={'1em'}
                   placeholder={'Select product'}
                   id={'productName'}
                   name={'productName'}
@@ -217,6 +235,7 @@ export const FormMutation = () => {
                   borderColor={'transparent'}
                   focusBorderColor={'transparent'}
                   bgColor={'grey.50'}
+                  onKeyDown={handleKeyDown}
                   isReadOnly
                 />
                 {formik.errors.productName && <Text color="red">{formik.errors.productName}</Text>}
@@ -277,6 +296,7 @@ export const FormMutation = () => {
                   name={'qty'}
                   type={'number'}
                   value={formik.values.qty}
+                  onKeyDown={handleKeyDown}
                   onChange={(e) => {
                     formik.setFieldValue('qty', e.target.value)
                     setFormData((formData) => ({
