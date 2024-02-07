@@ -3,8 +3,10 @@ import { updateCart } from '../../../pages/cart/services/updateCart'
 import { deleteCart } from '../../../pages/cart/services/deleteCart'
 import _debounce from 'lodash/debounce'
 import { useNavigate } from 'react-router-dom'
-import { useCart } from '../../Navbar/services/cartContext'
 import { useToast } from "@chakra-ui/react";
+import { useCart } from '../../navbar/components/use-cart'
+import { productToStock } from '../../../pages/order/services/productToStock'
+
 
 
 const useCartState = (cartData, onCartUpdated) => {
@@ -235,4 +237,4 @@ const useCartState = (cartData, onCartUpdated) => {
   }
 }
 
-export default useCartState
+export default useCartState;

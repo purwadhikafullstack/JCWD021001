@@ -14,6 +14,8 @@ import AdminListDashboard from '../../../admin-list-dashboard'
 import UserList from '../../../user-list'
 import WarehouseList from '../../../warehouse-list'
 import { AdminRoute } from '../../../../components/Auth/ProtectedRoute'
+import { SalesReport } from '../sales-report'
+import { StockReport } from '../stock-report'
 
 export const Body = (props) => {
   const renderComponent = () => {
@@ -44,6 +46,10 @@ export const Body = (props) => {
             <WarehouseList />
           </AdminRoute>
         )
+      case 'sales-report':
+        return <SalesReport />
+      case 'stock-report':
+        return <StockReport />
     }
   }
   const renderComponentAgain = () => {
@@ -69,7 +75,6 @@ export const Body = (props) => {
   return (
     <Box
       bgColor={'grey.50'}
-      minH={'100vh'}
       w={'100%'}
       p={'1em'}
       display={props?.collapseSidebar ? 'none' : 'block'}

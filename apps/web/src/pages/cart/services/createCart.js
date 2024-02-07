@@ -1,8 +1,9 @@
 import axios from 'axios'
+import { API_ROUTE } from '../../../services/route'
 
 export const createCart = async (items) => {
   try {
-    const response = await axios.post(' http://localhost:8000/api/cart', {
+    const response = await axios.post(`${API_ROUTE}/cart`, {
       userId: items?.userId,
       productId: items?.productId,
       colourId: items?.colourId,

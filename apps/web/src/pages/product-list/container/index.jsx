@@ -84,7 +84,6 @@ export const Product = () => {
     setCollapseSideBar(!collapseSideBar)
   }
 
-  console.log('products', products)
   return (
     <Box minH={'100vh'}>
       <Navbar

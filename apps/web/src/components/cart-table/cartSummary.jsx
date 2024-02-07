@@ -1,24 +1,9 @@
-import React from 'react'
 import { Box, Text, Button } from '@chakra-ui/react'
 import toRupiah from '@develoka/angka-rupiah-js'
 import { useNavigate } from 'react-router-dom'
 // import { CreateOrder } from '../../pages/order/services/createOrder'
 
-
 const CartSummary = ({ totalQuantity, totalPrice, handleCheckout }) => {
-    const navigate = useNavigate(); 
-    // const handleCheckout = async () => {
-    //   try {
-    //     // Call the CreateOrder function to send the request
-    //     await CreateOrder();
-  
-    //     // Navigate to the '/order' page or any other page you want to redirect to after checkout
-    //     navigate('/order');
-    //   } catch (error) {
-    //     // Handle errors if needed
-    //     console.error('Error during checkout:', error);
-    //   }
-    // };
   return (
     <Box
       w={{ xl: '334px', '2xl': '430px' }}
@@ -55,5 +40,4 @@ const CartSummary = ({ totalQuantity, totalPrice, handleCheckout }) => {
     </Box>
   )
 }
-export default CartSummary;
-
+export default CartSummary

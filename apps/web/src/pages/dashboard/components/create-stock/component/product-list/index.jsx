@@ -57,11 +57,11 @@ export const ProductList = (props) => {
                 </Th>
               </Tr>
             </Thead>
-            <Tbody position={'relative'} color={'#6D6D6D'} fontWeight={'500'}>
+            <Tbody position={'relative'} fontWeight={'bold'}>
               {props?.products?.rows?.map((product, index) => {
                 return (
                   <Tr cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'} key={index}>
-                    <Td textAlign={'center'}>
+                    <Td>
                       <HStack spacing={'1.5em'}>
                         <AspectRatio h={'3em'} w={'3em'} ratio={1}>
                           <Image
@@ -75,7 +75,7 @@ export const ProductList = (props) => {
                       </HStack>
                     </Td>
                     <Td>
-                      <HStack mb={'1em'}>
+                      <HStack>
                         <Text>{product?.category?.parent?.parent?.name}</Text>
                         <Icon as={ChevronRightIcon} />
                         <Text>{product?.category?.parent?.name}</Text>
@@ -83,7 +83,7 @@ export const ProductList = (props) => {
                         <Text>{product?.category?.name}</Text>
                       </HStack>
                     </Td>
-                    <Td textAlign={'center'} alignItems={'center'}>
+                    <Td alignItems={'center'}>
                       <Button
                         _hover={{
                           bgColor: 'redPure.500',

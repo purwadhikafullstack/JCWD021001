@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react'
 import { getShippingCost } from './services/getDeliveryFee'
 import { CheckIcon } from '@heroicons/react/24/outline'
 
-function ShippingCost({ nearestWarehouse, selectedAddress }) {
-  const [shippingCost, setShippingCost] = useState(null)
+function ShippingCost({ nearestWarehouse, selectedAddress, costResult, setCostResult }) {
+  const [shippingCost, setShippingCost] = useState(null);
   const [selectedCourier, setSelectedCourier] = useState('jne')
   const [courierService, setCourierService] = useState([])
   const [selectedService, setSelectedService] = useState('')
-  const [costResult, setCostResult] = useState('')
+  // const [costResult, setCostResult] = useState('')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +28,7 @@ function ShippingCost({ nearestWarehouse, selectedAddress }) {
     }
     fetchData()
   }, [nearestWarehouse, selectedAddress, selectedCourier])
-  console.log(shippingCost)
+  console.log('ini shipping cost', shippingCost)
 
   useEffect(() => {
     const courierCosts = shippingCost?.find((result) => result.code === selectedCourier)?.costs

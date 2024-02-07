@@ -3,6 +3,7 @@ import {
   getStockByIdQuery,
   getStockByProductIdQuery,
   getStockQuery,
+  getStockReportQuery,
 } from '../queries/stock.queries'
 
 export const getStockService = async (warehouseId, page, pageSize) => {
@@ -35,7 +36,15 @@ export const getStockByIdService = async (id) => {
 export const getStockByProductIdService = async (productId, sizeId, colourId) => {
   try {
     const res = await getStockByProductIdQuery(productId, sizeId, colourId)
-    console.log('RES', res)
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
+export const getStockReportService = async (warehouseId, page, pageSize, startDate, endDate) => {
+  try {
+    const res = await getStockReportQuery(warehouseId, page, pageSize, startDate, endDate)
     return res
   } catch (err) {
     throw err

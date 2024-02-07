@@ -8,10 +8,17 @@ import { getNearestWarehouse, getShippingCost } from './services/getDeliveryFee'
 import ShippingCost from './shippingCost'
 import { useFormik } from 'formik'
 
-function DeliveryAddress() {
+function DeliveryAddress({
+  selectedAddress,
+  setSelectedAddress,
+  nearestWarehouse,
+  setNearestWarehouse,
+  costResult,
+  setCostResult,
+}) {
   // const [address, setAddress] = useState([])
-  const [selectedAddress, setSelectedAddress] = useState(null)
-  const [nearestWarehouse, setNearestWarehouse] = useState(null)
+  //   const [selectedAddress, setSelectedAddress] = useState(null)
+  //   const [nearestWarehouse, setNearestWarehouse] = useState(null)
   const user = useSelector((state) => state.AuthReducer.user)
 
   const fetchData = async () => {
@@ -119,7 +126,12 @@ function DeliveryAddress() {
         </Box>
 
         {nearestWarehouse && selectedAddress && (
-          <ShippingCost nearestWarehouse={nearestWarehouse} selectedAddress={selectedAddress} />
+          <ShippingCost
+            nearestWarehouse={nearestWarehouse}
+            selectedAddress={selectedAddress}
+            costResult={costResult}
+            setCostResult={setCostResult}
+          />
         )}
       </Box>
     </>

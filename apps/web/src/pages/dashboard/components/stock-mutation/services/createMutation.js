@@ -24,11 +24,13 @@ export const createMutation = async (
   }
 }
 
-export const approveMutation = async (mutationId) => {
+export const approveMutation = async (mutationId, isAccepted) => {
   try {
-    const res = await axios.patch(`${API_ROUTE}/mutation/${mutationId}`)
-    const isAccepted = res?.data
-    return isAccepted
+    const res = await axios.patch(`${API_ROUTE}/mutation/${mutationId}`, {
+      isAccepted,
+    })
+    const result = res?.data
+    return result
   } catch (err) {
     throw err
   }

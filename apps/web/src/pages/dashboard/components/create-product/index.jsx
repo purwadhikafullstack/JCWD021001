@@ -6,7 +6,6 @@ import {
   Button,
   FormControl,
   FormLabel,
-  FormErrorMessage,
   Textarea,
   InputGroup,
   InputLeftElement,
@@ -15,7 +14,7 @@ import {
   VStack,
   useToast,
 } from '@chakra-ui/react'
-import { Formik, Field, Form, useFormik } from 'formik'
+import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { getGender } from '../../services/readGender'
 import { getProductCategories } from '../../../product-list/services/readProductCategory'
@@ -36,28 +35,26 @@ export const CreateProduct = () => {
   }
   // EDITABLE
 
-  // VALIDATION SCHEMA
+  // Validation Schema
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
-    price: Yup.number().required('Price is required'),
+    price: Yup.number().notOneOf([0], 'Price cannot be 0').required('Price is required'),
     productCategoryId: Yup.number().required('Category is required'),
     description: Yup.string().required('Description is required'),
   })
-  // VALIDATION SCHEMA
 
-  // CATEGORY VALUE TO BE SHOWED IN INPUT
+  // Category value to shown in input
   const [gender, setGender] = useState('Men')
   const [group, setGroup] = useState('')
   const [categoryValue, setCategoryValue] = useState('')
-  // CATEGORY VALUE TO BE SHOWED IN INPUT
 
-  // CATEGORIES
+  // Set categories
   const [productCategories, setProductCategories] = useState([])
   useEffect(() => {
     getProductCategories(setProductCategories, gender)
-  }, [])
+  }, [gender])
 
-  // GENDER
+  // Set gender
   const [genders, setGenders] = useState([])
   useEffect(() => {
     getGender(setGenders)
@@ -78,9 +75,8 @@ export const CreateProduct = () => {
       </Text>
     )
   })
-  // GENDER
 
-  // GROUP
+  // Render Group
   const renderedGroup = productCategories.map((productGroup, index) => {
     return (
       <Text
@@ -98,9 +94,8 @@ export const CreateProduct = () => {
       </Text>
     )
   })
-  // GROUP
 
-  // CATEGORY
+  // Render Category
   const renderedCategory = productCategories.map((productGroup) => {
     return productGroup.category.map((productCategory, index) => {
       return (
@@ -123,8 +118,6 @@ export const CreateProduct = () => {
       )
     })
   })
-  // CATEGORY
-  // CATEGORIES
 
   // HANDLE SUBMIT
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -152,7 +145,6 @@ export const CreateProduct = () => {
   }
   // HANDLE SUBMIT
 
-  // FORMIK INITIAL VALUES
   // FORMIK INITIAL VALUES
 
   const formik = useFormik({
@@ -221,10 +213,10 @@ export const CreateProduct = () => {
               p={'1em'}
               fontWeight={'bold'}
             >
-              <Box p={'.5em'}>
+              <Box p={'0 .5em'}>
                 <VStack align={'stretch'}>{renderedGenders}</VStack>
               </Box>
-              <Box p={'.5em'} borderLeft={'2px solid lightgray'}>
+              <Box p={'0 .5em'} borderLeft={'2px solid lightgray'}>
                 <VStack align={'stretch'}>{renderedGroup}</VStack>
               </Box>
               <Box p={'0 .5em'} borderLeft={'2px solid lightgray'}>

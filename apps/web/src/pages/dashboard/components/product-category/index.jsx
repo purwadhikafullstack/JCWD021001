@@ -15,14 +15,18 @@ import {
   Thead,
   Tr,
   VStack,
+  useToast,
 } from '@chakra-ui/react'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { deleteProductCategory } from '../edit-product-category/services/deleteProductCategory'
 
 export const ProductCategory = (props) => {
   // NAVIGATE
   const navigate = useNavigate()
+
+  const toast = useToast()
   // NAVIGATE
   //   GENDER
   const [gender, setGender] = useState([])
@@ -116,7 +120,10 @@ export const ProductCategory = (props) => {
                           border={'1px solid #CD0244'}
                           bgColor={'transparent'}
                           color={'redPure.600'}
-                          onClick={() => {}}
+                          onClick={() => {
+                            // console.log(el?.id)
+                            deleteProductCategory(null, null, el?.id, toast)
+                          }}
                         >
                           Delete
                         </Button>

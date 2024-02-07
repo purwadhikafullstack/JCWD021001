@@ -1,7 +1,7 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
-export const CreatePayment = async (result, orderId) => {
+export const createPayment = async (result, orderId) => {
     try {
         const response = await axios.post("http://localhost:8000/api/payment/result",
         {

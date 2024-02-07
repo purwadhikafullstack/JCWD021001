@@ -56,7 +56,7 @@ function Home() {
 
   return (
     <>
-      <Navbar zIndex="999" position="relative" />
+      <Navbar  position="relative" />
       <Box className="container-homepage" width={'100vw'} bg={'brand.grey100'}>
         <Box className="Header" height={'712px'} position={'relative'}>
           <Swiper
@@ -67,7 +67,7 @@ function Home() {
               clickable: true,
               dynamicBullets: true,
             }}
-            navigation={true}
+            // navigation={true}
             modules={[Pagination, Navigation]}
             className="mySwiper"
             zIndex={0}

@@ -47,9 +47,10 @@ import { SearchModal } from './components/search-modal'
 import { SearchMenu } from './components/search-menu'
 import { useState, useEffect } from 'react'
 import { getCart } from '../../pages/cart/services/getCart'
-import { useCart } from './services/cartContext'
 import ShoppingCartBox from './components/shopping-cart-box'
 import AvatarNavbar from './components/avatar-menu'
+import { useCart } from './components/use-cart'
+import NotificationBox from './components/notification-box'
 
 export const Navbar = (props) => {
   const user = useSelector((state) => state.AuthReducer.user)
@@ -57,12 +58,11 @@ export const Navbar = (props) => {
   const location = useLocation()
   const navigate = useNavigate()
   // edit by andri
-  const { cartData, cartCount } = useCart()
-  console.log('cart', cartData)
+  // const { cartData, cartCount } = useCart()
 
   return (
     <Box p={'1em 2em'} bg={'white'}>
-      <Flex alignItems={'center'} justifyContent={'space-between'} overflow={'hidden'}>
+      <Flex alignItems={'center'} justifyContent={'space-between'} >
         <HStack spacing={'2em'}>
           <AspectRatio ratio={1} cursor={'pointer'} w={'3em'} onClick={() => navigate('/')}>
             <Image src={pure} alt="Pure Logo" />
@@ -77,10 +77,16 @@ export const Navbar = (props) => {
             <SearchModal />
             <HStack fontSize={'1.5em'} spacing={'.5em'} position="relative">
               <Box>
-                <ShoppingCartBox cartData={cartData} cartCount={cartCount} />
+                {/* <ShoppingCartBox cartData={cartData} cartCount={cartCount} /> */}
               </Box>
             </HStack>
-            <Icon as={BellIcon} />
+            <HStack fontSize={'1.5em'} spacing={'.5em'} position="relative">
+              <Box>
+                <NotificationBox  />
+              </Box>
+            </HStack>
+            {/* <Icon as={ShoppingCartIcon} /> */}
+            {/* <Icon as={BellIcon} /> */}
           </HStack>
           <Center height="2em">
             <Divider orientation="vertical" borderWidth={'1px'} />

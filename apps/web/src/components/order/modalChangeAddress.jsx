@@ -53,12 +53,11 @@ function ChangeAddressModal({ setSelectedAddress, selectedAddress }) {
         onClick={onOpen}
         variant={'outline'}
         border={'1px solid #8D8B8B'}
-        color={'#8D8B8B'}
         fontSize={'14px'}
         fontWeight={'700'}
         padding={'12px 16px'}
-        _hover={'none'}
-        _active={'none'}
+        // _hover={'none'}
+        // _active={'none'}
       >
         Change Address
       </Button>
