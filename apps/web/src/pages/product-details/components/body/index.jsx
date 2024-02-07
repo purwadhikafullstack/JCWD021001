@@ -5,14 +5,10 @@ import { Carousel } from '../carousel'
 import axios from 'axios'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { createCart } from '../../../cart/services/createCart' // edit by andri
-import { useCart } from '../../../../components/navbar/components/use-cart'// edit by andri
+// import { useCart } from '../../../../components/Navbar/services/cartContext' // edit by andri
 import { useToast } from '@chakra-ui/react' // edit by andri
 import { ColourBox } from '../colour-box'
 import { SizeBox } from '../size-box'
-
-
-
-
 
 export const Body = (props) => {
   // Location
@@ -89,8 +85,8 @@ export const Body = (props) => {
         position: 'top-right',
         duration: 3000,
         isClosable: true,
-      });
-      return; 
+      })
+      return
     }
     try {
       await createCart(newItem)
@@ -189,7 +185,7 @@ export const Body = (props) => {
                       <ColourBox
                         {...colour}
                         pathName={pathName}
-                        index={index}
+                        key={index}
                         changeColourToggle={changeColourToggle}
                         colourToggle={colourToggle}
                         sizeValue={sizeValue}
@@ -253,18 +249,6 @@ export const Body = (props) => {
                   isDisabled={shouldDisable}
                 >
                   Add to cart
-                </Button>
-                <Button
-                  _hover={{
-                    bgColor: stock ? 'transparent' : 'grey.50',
-                  }}
-                  w={'50%'}
-                  border={stock ? '1px solid #e3024b' : '1px solid #f2f2f2'}
-                  bgColor={stock ? 'transparent' : 'grey.50'}
-                  color={stock ? 'white' : 'grey'}
-                  isDisabled={shouldDisable}
-                >
-                  Buy Now
                 </Button>
               </HStack>
             </Flex>

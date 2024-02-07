@@ -2,9 +2,9 @@ import {
   calculationCheckStock,
   createOrderQuery,
   findOrderIdQuery,
+  getOrderQuery,
   findWarehouseQuery,
   getOrderManagementQuery,
-  getOrderQuery,
   getWarehouseQuery,
   productToStockIdQuery,
   updateOrderQuery,
@@ -131,17 +131,6 @@ export const getAllOrderService = async (
       startDate,
       endDate,
     )
-  } catch (err) {
-    throw err
-  }
-}
-
-export const getWarehouseService = async () => {
-  try {
-    const check = await findWarehouseQuery()
-    if (!check) throw new Error('Data doesnt exist')
-    const res = await getWarehouseQuery()
-    return res
   } catch (err) {
     throw err
   }

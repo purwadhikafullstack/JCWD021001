@@ -72,6 +72,9 @@ export const getProductQuery = async (
         }
       }
     }
+    filter.limit = id ? 1000 : +pageSize
+    filter.offset = (page - 1) * +pageSize
+
     const res = await Product.findAndCountAll({
       attributes: ['id', 'name', 'price'],
       include: [
@@ -88,38 +91,38 @@ export const getProductQuery = async (
                   model: ProductCategory,
                   as: 'parent',
                 },
-                {
-                  model: Size,
-                  attributes: ['id', 'name', 'productCategoryId'],
-                  as: 'size',
-                },
+                // {
+                //   model: Size,
+                //   attributes: ['id', 'name', 'productCategoryId'],
+                //   as: 'size',
+                // },
               ],
             },
-            {
-              model: Size,
-              as: 'size',
-            },
+            // {
+            //   model: Size,
+            //   as: 'size',
+            // },
           ],
         },
         {
           model: ProductImage,
           as: 'picture',
         },
-        {
-          model: Stock,
-          as: 'stocks',
-          include: [{ model: Colour, as: 'colour' }],
-        },
-        {
-          model: Colour,
-          as: 'colour',
-        },
+        // {
+        //   model: Stock,
+        //   as: 'stocks',
+        //   include: [{ model: Colour, as: 'colour' }],
+        // },
+        // {
+        //   model: Colour,
+        //   as: 'colour',
+        // },
       ],
       order: [[`${sortBy}`, `${orderBy}`]],
       ...filter,
       subQuery: false,
-      limit: id ? 1000 : +pageSize,
-      offset: offset,
+      // limit: id ? 1000 : +pageSize,
+      // offset: offset,
     })
     return res
   } catch (err) {
