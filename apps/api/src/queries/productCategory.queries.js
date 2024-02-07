@@ -106,16 +106,65 @@ export const updateProductCategoryQuery = async (name, parentId = null, id) => {
   }
 }
 
-export const deleteProductCategoryQuery = async (id) => {
+export const deleteProductCategoryQuery = async (id, parentId) => {
   try {
-    const res = await ProductCategory.destroy({
+    const check = await ProductCategory.findAll({
       where: {
-        id: {
+        parentId: {
           [Op.eq]: id,
         },
       },
     })
-    return res
+    const checkParent = await ProductCategory.findAll({
+      where: {
+        parentId: {
+          [Op.eq]: parentId,
+        },
+      },
+    })
+    const checkLastChild = await ProductCategory.findAll({
+      where: {
+        id: {
+          [Op.eq]: id,
+        },
+        parentId: {
+          [Op.eq]: parentId,
+        },
+      },
+    })
+    if (checkLastChild.length === 1) {
+      if (checkParent.length <= 1) throw new Error('You cant delete the last category')
+      const res = ProductCategory.destroy({
+        where: {
+          id: { [Op.eq]: id },
+        },
+      })
+      return res
+    }
+    if (check) {
+      await ProductCategory.destroy({
+        where: {
+          parentId: {
+            [Op.eq]: id,
+          },
+        },
+      })
+      const parent = await ProductCategory.destroy({
+        where: {
+          id: {
+            [Op.eq]: id,
+          },
+        },
+      })
+      return parent
+    } else {
+      if (check.length <= 1) throw new Error('You cant delete the last category')
+      ProductCategory.destroy({
+        where: {
+          id: { [Op.eq]: id },
+        },
+      })
+    }
   } catch (err) {
     throw err
   }

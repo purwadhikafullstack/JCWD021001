@@ -4,6 +4,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useFormik } from 'formik'
 import { API_ROUTE } from '../../../../services/route'
+import { deleteProductCategory } from './services/deleteProductCategory'
 
 export const EditProductCategory = () => {
   // USE PARAMS
@@ -63,7 +64,7 @@ export const EditProductCategory = () => {
   // CREATE PRODUCT CATEGORY
   // NEW PARENT
   const [newChildren, setNewChildren] = useState(null)
-  // NEW PARENT
+
   const createProductCategory = async (name, parentId) => {
     try {
       const res = await axios.post(`http://localhost:8000/api/product-category`, {
@@ -82,11 +83,12 @@ export const EditProductCategory = () => {
       })
     }
   }
-  // CREATE PRODUCT CATEGORY
 
   // INPUT VALUE
   const [input, setInput] = useState([{}])
+
   const [fixInput, setFixInput] = useState('')
+
   const onFocusInput = (id, text) => {
     const test = {
       id,
@@ -142,6 +144,7 @@ export const EditProductCategory = () => {
       ],
     }
   })
+
   const flattenData = [].concat(...prodCatData)
   const data = [...flattenData]
   const initialValues = {}
@@ -196,6 +199,18 @@ export const EditProductCategory = () => {
                 >
                   Save
                 </Text>
+                <Text
+                  w={'5em'}
+                  fontSize={'.75em'}
+                  fontWeight={'bold'}
+                  color={'redPure.600'}
+                  cursor={'pointer'}
+                  onClick={() => {
+                    deleteProductCategory(item.id, null, toast)
+                  }}
+                >
+                  Delete
+                </Text>
                 <Text fontWeight={'bold'} mb={'.5em'}>
                   Category
                 </Text>
@@ -224,6 +239,18 @@ export const EditProductCategory = () => {
                           }}
                         >
                           Save
+                        </Text>
+                        <Text
+                          w={'5em'}
+                          fontSize={'.75em'}
+                          fontWeight={'bold'}
+                          color={'redPure.600'}
+                          cursor={'pointer'}
+                          onClick={() => {
+                            deleteProductCategory(child.id, item.id, toast)
+                          }}
+                        >
+                          Delete
                         </Text>
                       </div>
                     ))}

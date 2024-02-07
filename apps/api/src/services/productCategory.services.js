@@ -42,9 +42,9 @@ export const updateProductCategoryService = async (name, parentId, id) => {
   }
 }
 
-export const deleteProductCategoryService = async (id) => {
+export const deleteProductCategoryService = async (id, parentId) => {
   try {
-    const res = await deleteProductCategoryQuery(id)
+    const res = await deleteProductCategoryQuery(id, parentId)
     return res
   } catch (err) {
     throw err

@@ -66,9 +66,6 @@ export const ProductList = () => {
         title: `${res?.data?.title}`,
         status: 'success',
         placement: 'bottom',
-        top: '0',
-        bottom: 'auto',
-        position: 'fixed',
       })
     } catch (err) {
       toast({

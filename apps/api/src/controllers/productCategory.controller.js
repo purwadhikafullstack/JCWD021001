@@ -71,7 +71,8 @@ export const updateProductCategoryController = async (req, res) => {
 export const deleteProductCategoryController = async (req, res) => {
   try {
     const { id } = req.params
-    const result = await deleteProductCategoryService(id)
+    const { parentId } = req.body
+    const result = await deleteProductCategoryService(id, parentId)
     return res.status(200).json({
       title: 'Delete Product CategorySuccess',
       data: result,
