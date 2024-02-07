@@ -14,4 +14,4 @@ warehouseAddressRouter.get('/', getWarehousesController)
 //POST
 warehouseAddressRouter.post('/shipping-cost', getShippingCostController)
 
-export { warehouseAddressRouter }
+export {warehouseAddressRouter}

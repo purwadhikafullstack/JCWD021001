@@ -22,11 +22,12 @@ import Payment from './pages/payments'
 import { Dashboard } from './pages/dashboard/container'
 import OrderManagement from './pages/order-management'
 import { AuthenticatedRouteOrder } from './pages/order/authenticatedRouteOrder'
-import DeliveryAddress from './components/order/deliveryAddress'
+import { CartProvider } from './components/navbar/services/cartContext'
+import WarehouseList from './pages/warehouse-list'
+import CreateWarehouse from './pages/warehouse-list/components/create-warehouse'
+import EditWarehousePage from './pages/warehouse-list/components/edit-warehouses'
 import OrderDetails from './pages/order-details'
 import OrderManagementDetails from './pages/order-management-details'
-import AdminList from './pages/admin-list'
-import { CartProvider } from './components/navbar/components/use-cart'
 
 function App() {
   return (
@@ -76,9 +77,18 @@ function App() {
             <Route path="/product/:id" element={<ProductDetails />} />
             <Route path="/dashboard/:destination?/:createProduct?" element={<Dashboard />} />
             <Route path="/dashboard/:destination?/:createProduct?/:epid" element={<Dashboard />} />
-            <Route path="/manage-address" element={<ManageAddress />} />
-            <Route path="/delivery-address" element={<DeliveryAddress />} />
-            <Route path='/admin-list' element={<AdminList/>}/>
+            <Route
+              path="/manage-address"
+              element={
+                <LoggedInRoute>
+                  <ManageAddress />
+                </LoggedInRoute>
+              }
+            />
+
+            <Route path="/warehouse-list" element={<WarehouseList />} />
+            <Route path="/warehouse-list/create-warehouse" element={<CreateWarehouse />} />
+            <Route path="/edit-warehouse" element={<EditWarehousePage />} />
           </Routes>
         </CartProvider>
       </Auth>

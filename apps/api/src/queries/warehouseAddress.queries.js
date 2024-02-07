@@ -55,6 +55,20 @@ export const getWarehouseQuery = async (warehouseId = null) => {
   }
 }
 
+export const findWarehousesQuery = async () => {
+  try {
+    return await Warehouse.findAll({
+      include: [
+        {
+          model: WarehouseAddress,
+        },
+      ],
+    })
+  } catch (err) {
+    throw err
+  }
+}
+
 export const getShippingCostQuery = async (origin, destination, weight, courier) => {
   try {
     console.log('halo', origin, destination, weight, courier);

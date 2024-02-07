@@ -10,6 +10,10 @@ import { OrderHistory } from '../order-history'
 import { CreateStock } from '../create-stock'
 import { StockMutation } from '../stock-mutation'
 import { FormMutation } from '../form-mutation'
+import AdminListDashboard from '../../../admin-list-dashboard'
+import UserList from '../../../user-list'
+import WarehouseList from '../../../warehouse-list'
+import { AdminRoute } from '../../../../components/Auth/ProtectedRoute'
 import { SalesReport } from '../sales-report'
 import { StockReport } from '../stock-report'
 
@@ -24,6 +28,24 @@ export const Body = (props) => {
         return <StockManagement />
       case 'stock-mutation':
         return <StockMutation />
+      case 'admin-list':
+        return (
+          <AdminRoute>
+            <AdminListDashboard />
+          </AdminRoute>
+        )
+      case 'user-list':
+        return (
+          <AdminRoute>
+            <UserList />
+          </AdminRoute>
+        )
+      case 'warehouse-list':
+        return (
+          <AdminRoute>
+            <WarehouseList />
+          </AdminRoute>
+        )
       case 'sales-report':
         return <SalesReport />
       case 'stock-report':
