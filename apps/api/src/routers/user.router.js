@@ -7,7 +7,9 @@ import {
   findAdminController,
   findUserController,
   updateUserController,
-  deleteUserController
+  deleteUserController,
+  createUserController,
+  findUserListController
 } from '../controllers/user.controller'
 import { uploadAvatarFile } from '../middleware/multer.middleware'
 import { checkRoleSuperadmin, checkRoleAdmin, verifyToken } from '../middleware/auth.middleware'
@@ -17,6 +19,10 @@ const userRouter = Router()
 //GET
 userRouter.get('/', verifyToken, checkRoleSuperadmin, findAdminController)
 userRouter.get('/user', verifyToken, checkRoleSuperadmin, findUserController)
+userRouter.get('/user-list', verifyToken, checkRoleSuperadmin, findUserListController)
+
+//POST
+userRouter.post('/', verifyToken, checkRoleSuperadmin, createUserController)
 
 //PATCH
 userRouter.patch('/:id', verifyToken, checkRoleSuperadmin, updateUserController)

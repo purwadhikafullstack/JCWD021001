@@ -37,6 +37,41 @@ export const Sidebar = (props) => {
           <Text>Dashboard</Text>
         </HStack>
         <VStack align={'stretch'} spacing={'1.5em'}>
+          <SidebarButton label={'User Management'} icon={Squares2X2Icon} />
+          <Box p={'0 1.3em'} borderLeft={'2px solid lightgray'}>
+            <VStack align={'stretch'} spacing={'1.5em'}>
+              <Text
+                onClick={() => {
+                  navigate('/dashboard/admin-list')
+                }}
+                cursor={'pointer'}
+              >
+                Admin List
+              </Text>
+              <Text
+                onClick={() => {
+                  navigate('/dashboard/user-list')
+                }}
+                cursor={'pointer'}
+              >
+                User List
+              </Text>
+            </VStack>
+          </Box>
+          <SidebarButton label={'Warehouse Management'} icon={Squares2X2Icon} />
+          <Box p={'0 1.3em'} borderLeft={'2px solid lightgray'}>
+            <VStack align={'stretch'} spacing={'1.5em'}>
+              <Text
+                onClick={() => {
+                  navigate('/dashboard/warehouse-list')
+                }}
+                cursor={'pointer'}
+              >
+                Warehouse List
+              </Text>
+            </VStack>
+          </Box>
+          <SidebarButton label={'Product'} icon={Squares2X2Icon} />
           <SidebarButton
             label={'Product'}
             icon={Squares2X2Icon}
