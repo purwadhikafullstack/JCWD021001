@@ -56,8 +56,8 @@ function ChangeAddressModal({ setSelectedAddress, selectedAddress }) {
         fontSize={'14px'}
         fontWeight={'700'}
         padding={'12px 16px'}
-        _hover={'none'}
-        _active={'none'}
+        // _hover={'none'}
+        // _active={'none'}
       >
         Change Address
       </Button>
@@ -129,8 +129,8 @@ function ChangeAddressModal({ setSelectedAddress, selectedAddress }) {
               color={'brand.lightred'}
               variant={'outline'}
               borderColor={'brand.lightred'}
-              _hover={{ borderColor: '#f50f5a', color: '#f50f5a' }}
-              _active={{ opacity: '70%' }}
+              // _hover={{ borderColor: '#f50f5a', color: '#f50f5a' }}
+              // _active={{ opacity: '70%' }}
               mr={3}
               onClick={onClose}
             >
@@ -143,8 +143,8 @@ function ChangeAddressModal({ setSelectedAddress, selectedAddress }) {
               padding={'12px 16px'}
               bgColor={'brand.lightred'}
               color={'white'}
-              _hover={{ bg: '#f50f5a' }}
-              _active={{ opacity: '70%' }}
+              // _hover={{ bg: '#f50f5a' }}
+              // _active={{ opacity: '70%' }}
               onClick={(e) => handleSubmit(e.target.value)}
             >
               Save

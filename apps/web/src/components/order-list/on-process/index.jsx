@@ -1,5 +1,6 @@
 import React from 'react'
 import { Box, Text, Button, Collapse } from '@chakra-ui/react'
+import toRupiah from '@develoka/angka-rupiah-js'
 
 const OnProcess = ({
   onProcessOrders,
@@ -51,7 +52,7 @@ const OnProcess = ({
                 borderRadius={'8px'}
               >
                 <Text color={'#CD0244'} fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
-                  On Processs
+                  {order?.OrderStatus?.name}
                 </Text>
               </Box>
             </Box>
@@ -91,7 +92,8 @@ const OnProcess = ({
                       fontSize={'14px'}
                       color={'#838383'}
                     >
-                      S, Dark Blue
+                      {order?.OrderProducts[0]?.stocks?.size?.name},{' '}
+                      {order?.OrderProducts[0]?.stocks?.colour?.name}
                     </Text>
                     <Text
                       fontFamily={'body'}
@@ -99,7 +101,10 @@ const OnProcess = ({
                       fontSize={'14px'}
                       color={'#838383'}
                     >
-                      {order?.OrderProducts[0]?.quantity} item x Rp {order?.OrderProducts[0]?.price}
+                      {order?.OrderProducts[0]?.quantity} item x{' '}
+                      {toRupiah(+order?.OrderProducts[0]?.stocks?.product?.price, {
+                        floatingPoint: 0,
+                      })}
                     </Text>
                     {order.OrderProducts.length > 1 && (
                       <Box>
@@ -142,7 +147,8 @@ const OnProcess = ({
                             fontSize={'14px'}
                             color={'#838383'}
                           >
-                            {product?.quantity} item x Rp {product?.stocks?.product?.price}
+                            {product?.quantity} item x{' '}
+                            {toRupiah(+product?.stocks?.product?.price, { floatingPoint: 0 })}
                           </Text>
                         </Box>
                       </Box>
@@ -160,22 +166,10 @@ const OnProcess = ({
                   Total Price
                 </Text>
                 <Text fontFamily={'body'} fontWeight={'700'} fontSize={'16px'} color={'#CD0244'}>
-                  Rp {order?.totalPrice}
+                  {toRupiah(+order?.Payment?.grossAmount, { floatingPoint: 0 })}
                 </Text>
               </Box>
             </Box>
-            {/* <Box w={'full'} display={'flex'} justifyContent={'flex-end'} gap={'16px'}>
-              <Button bgColor={'white'} color={'#CD0244'} border={'1px solid #CD0244'}>
-                Cancel Order
-              </Button>
-              <Button
-                bgColor={'#CD0244'}
-                color={'white'}
-                onClick={() => handlePayNowClick(order.id)}
-              >
-                Pay Now
-              </Button>
-            </Box> */}
           </Box>
         </Box>
       ))}
@@ -183,4 +177,4 @@ const OnProcess = ({
   )
 }
 
-export default OnProcess;
+export default OnProcess

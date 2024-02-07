@@ -1,5 +1,6 @@
 import React from 'react'
 import { Box, Text, Button, Collapse } from '@chakra-ui/react'
+import toRupiah from '@develoka/angka-rupiah-js'
 
 const WaitingPayment = ({
   waitingPaymentOrders,
@@ -52,7 +53,7 @@ const WaitingPayment = ({
                 borderRadius={'8px'}
               >
                 <Text color={'#CD0244'} fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
-                  Waiting Payment
+                  {order?.OrderStatus?.name}
                 </Text>
               </Box>
             </Box>
@@ -92,7 +93,8 @@ const WaitingPayment = ({
                       fontSize={'14px'}
                       color={'#838383'}
                     >
-                      S, Dark Blue
+                      {order?.OrderProducts[0]?.stocks?.size?.name},{' '}
+                      {order?.OrderProducts[0]?.stocks?.colour?.name}
                     </Text>
                     <Text
                       fontFamily={'body'}
@@ -100,7 +102,8 @@ const WaitingPayment = ({
                       fontSize={'14px'}
                       color={'#838383'}
                     >
-                      {order?.OrderProducts[0]?.quantity} item x Rp {order?.OrderProducts[0]?.price}
+                      {order?.OrderProducts[0]?.quantity} item x{' '}
+                      {toRupiah(+order?.OrderProducts[0]?.price, { floatingPoint: 0 })}
                     </Text>
                     {order.OrderProducts.length > 1 && (
                       <Box>
@@ -143,7 +146,8 @@ const WaitingPayment = ({
                             fontSize={'14px'}
                             color={'#838383'}
                           >
-                            {product?.quantity} item x Rp {product?.stocks?.product?.price}
+                            {product?.quantity} item x{' '}
+                            {toRupiah(+product?.stocks?.product?.price, { floatingPoint: 0 })}
                           </Text>
                         </Box>
                       </Box>
@@ -161,7 +165,7 @@ const WaitingPayment = ({
                   Total Price
                 </Text>
                 <Text fontFamily={'body'} fontWeight={'700'} fontSize={'16px'} color={'#CD0244'}>
-                  Rp {order?.totalPrice}
+                  {toRupiah(+order?.totalPrice, { floatingPoint: 0 })}
                 </Text>
               </Box>
             </Box>

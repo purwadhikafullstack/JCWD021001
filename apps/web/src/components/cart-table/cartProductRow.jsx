@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { Box, Text, Button, Icon, Checkbox } from '@chakra-ui/react'
 import { Table, Thead, Tbody, Tr, Td, TableContainer } from '@chakra-ui/react'
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline'

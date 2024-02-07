@@ -28,7 +28,6 @@ import {
 } from '@heroicons/react/24/outline'
 import { useNavigate } from 'react-router-dom'
 
-
 const NotificationBox = () => {
   const navigate = useNavigate()
   return (
@@ -66,7 +65,16 @@ const NotificationBox = () => {
         </PopoverHeader>
         <PopoverBody padding={'18px'}>
           <Box display={'flex'} alignItems={'center'} gap={'14px'}>
-            <Box display={'flex'} flexDirection={'column'} alignItems={'center'} gap={'6px'}>
+            <Box
+              display={'flex'}
+              flexDirection={'column'}
+              alignItems={'center'}
+              gap={'6px'}
+              cursor={'pointer'}
+              onClick={() =>
+                navigate('/order-list', { state: { refresh: true, activeTab: 0, status: [1] } })
+              }
+            >
               <Box
                 w={'44px'}
                 h={'44px'}
@@ -84,7 +92,16 @@ const NotificationBox = () => {
                 Payment
               </Text>
             </Box>
-            <Box display={'flex'} flexDirection={'column'} alignItems={'center'} gap={'6px'}>
+            <Box
+              display={'flex'}
+              flexDirection={'column'}
+              alignItems={'center'}
+              gap={'6px'}
+              cursor={'pointer'}
+              onClick={() =>
+                navigate('/order-list', { state: { refresh: true, activeTab: 1, status: [2, 3] } })
+              }
+            >
               <Box
                 w={'44px'}
                 h={'44px'}
@@ -102,7 +119,7 @@ const NotificationBox = () => {
                 Process
               </Text>
             </Box>
-            <Box display={'flex'} flexDirection={'column'}  alignItems={'center'} gap={'6px'}>
+            <Box display={'flex'} flexDirection={'column'} alignItems={'center'} gap={'6px'}>
               <Box
                 w={'44px'}
                 h={'44px'}
@@ -168,7 +185,9 @@ const NotificationBox = () => {
           fontSize={'12px'}
           color={'#CD0244'}
           cursor={'pointer'}
-          onClick={() => navigate('/order-list')}
+          onClick={() =>
+            navigate('/order-list', { state: { refresh: true, activeTab: 0, status: [1] } })
+          }
         >
           Show All Notifications
         </PopoverFooter>

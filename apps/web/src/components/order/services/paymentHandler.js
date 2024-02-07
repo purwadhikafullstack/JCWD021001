@@ -3,27 +3,35 @@ import { createOrder } from '../../../pages/order/services/createOrder'
 
 export const paymentHandler = async (
   order,
+  stockOrder,
   selectedAddress,
+  nearestWarehouse,
+  costResult,
   totalPrice,
   totalQuantity,
   navigate,
 ) => {
   try {
-    const dataOrder = {
-      userId: order?.User?.id,
-      userAddressId: selectedAddress?.id || 1,
-      warehouseId: 1,
-      totalPrice: parseFloat(totalPrice),
-      totalQuantity: totalQuantity,
-      shippingCost: 20000,
-      orderStatusId: 1,
-      products: order.CartProducts.map((product) => ({
-        stockId: 1,
+    const mappedProducts = order.CartProducts.map((product, index) => {
+      const stockId = stockOrder[index]?.id;
+
+      return {
+        stockId: stockId,
         productId: product?.product?.id,
         quantity: product?.quantity,
         price: parseFloat(product?.price),
         priceProduct: product?.product?.price,
-      })),
+      }
+    })
+    const dataOrder = {
+      userId: order?.User?.id,
+      userAddressId: selectedAddress?.id,
+      warehouseId: nearestWarehouse?.id,
+      totalPrice: parseFloat(totalPrice),
+      totalQuantity: totalQuantity,
+      shippingCost: costResult,
+      orderStatusId: 1,
+      products: mappedProducts,
     }
 
     const result = await createOrder(dataOrder)
@@ -44,15 +52,16 @@ export const paymentHandler = async (
           onSuccess: function (result) {
             /* You may add your own implementation here */
             // alert('payment success!')
-            console.log(result)
-            // CreatePayment(result, orderId)
-            // navigate('/order-list', { state: { refresh: true, activeTab: 1 } })
+            // console.log(result)
+            createPayment(result, orderId)
+            navigate('/order-list', { state: { refresh: true, activeTab: 1, status: [2, 3] } })
           },
           onPending: function (result) {
             /* You may add your own implementation here */
+
+            createPayment(result, orderId)
             alert('wating your payment!')
-            CreatePayment(result, orderId)
-            navigate('/order-list', { state: { refresh: true, activeTab: 0 } })
+            navigate('/order-list', { state: { refresh: true, activeTab: 0, status: [1] } })
           },
           onError: function (result) {
             /* You may add your own implementation here */
@@ -73,4 +82,3 @@ export const paymentHandler = async (
     console.error('Error creating order:', error)
   }
 }
-
