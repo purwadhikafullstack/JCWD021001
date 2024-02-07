@@ -4,7 +4,7 @@ import axios from 'axios'
 export const getOrders = async (pageValue, warehouseId, startDate, endDate) => {
   try {
     const res = await axios.get(
-      `${API_ROUTE}/order?sortBy=orderDate&orderBy=DESC&page=${pageValue}&pageSize=10&warehouseId=${warehouseId}&startDate=${startDate}&endDate=${endDate}`,
+      `${API_ROUTE}/order/sales/all?sortBy=orderDate&orderBy=DESC&page=${pageValue}&pageSize=10&warehouseId=${warehouseId}&startDate=${startDate}&endDate=${endDate}`,
     )
     const orders = res?.data?.data
     return orders

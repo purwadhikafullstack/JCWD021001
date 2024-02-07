@@ -1,11 +1,23 @@
-import { Box, Flex, HStack, Heading, Text, VStack, useToast } from '@chakra-ui/react'
+import {
+  Box,
+  Flex,
+  HStack,
+  Heading,
+  Text,
+  VStack,
+  useStepContext,
+  useToast,
+} from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { getOrders, getOrdersByCategory } from './services/readOrders'
-import toRupiah from '@develoka/angka-rupiah-js'
-import { SalesTable } from './component/sales-table'
 import { ReportTable } from './component/table'
 import { getMonthDates } from './services/utils'
+import { MonthSelect } from './component/month-select'
+import {
+  getAbbreviatedMonth,
+  getCurrentYear,
+  getFirstDateOfMonthByAbbreviation,
+} from './component/month-select/utils/services'
 
 export const SalesReport = () => {
   // LOCATION
@@ -14,8 +26,6 @@ export const SalesReport = () => {
 
   // WAREHOUSE ID
   const [warehouseId, setWarehouseId] = useState(5)
-  const [requesterWarehouseId, setRequesterWarehouseId] = useState(0)
-  const [recipientWarehouseId, setRecipientWarehouseId] = useState(0)
 
   // QUERY PARAMS
   const pageValue = queryParams.get('pa')
@@ -42,15 +52,17 @@ export const SalesReport = () => {
       }))
   }
 
-  const today = new Date('2024-01-01')
+  const [month, setMonth] = useState(
+    getFirstDateOfMonthByAbbreviation(monthValue, getCurrentYear()),
+  )
 
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
 
   useEffect(() => {
-    setStartDate(getMonthDates(today).startDate)
-    setEndDate(getMonthDates(today).endDate)
-  }, [categoryValue])
+    setStartDate(getMonthDates(new Date(month)).startDate)
+    setEndDate(getMonthDates(new Date(month)).endDate)
+  }, [categoryValue, month])
 
   return (
     <Box p={'1em'} h={'100%'} w={'100%'}>
@@ -60,6 +72,13 @@ export const SalesReport = () => {
             <Heading as={'h1'} fontSize={'1.5em'}>
               Sales Report
             </Heading>
+            <MonthSelect
+              monthValue={monthValue}
+              setMonth={setMonth}
+              pathName={pathName}
+              pageValue={pageValue}
+              categoryValue={categoryValue}
+            />
           </Flex>
           <HStack fontWeight={'bold'} spacing={'1.5em'}>
             <Text
@@ -69,7 +88,7 @@ export const SalesReport = () => {
               cursor={'pointer'}
               onClick={(e) => {
                 changeTextToggle(e.target.id)
-                navigate(`${pathName}?pa=${pageValue}&cat=all&mo=jan`)
+                navigate(`${pathName}?pa=${pageValue}&cat=all&mo=${monthValue}`)
               }}
             >
               All
@@ -81,7 +100,7 @@ export const SalesReport = () => {
               cursor={'pointer'}
               onClick={(e) => {
                 changeTextToggle(e.target.id)
-                navigate(`${pathName}?pa=${pageValue}&cat=cat&mo=jan`)
+                navigate(`${pathName}?pa=${pageValue}&cat=cat&mo=${monthValue}`)
               }}
             >
               Category
@@ -93,7 +112,7 @@ export const SalesReport = () => {
               cursor={'pointer'}
               onClick={(e) => {
                 changeTextToggle(e.target.id)
-                navigate(`${pathName}?pa=${pageValue}&cat=pro&mo=jan`)
+                navigate(`${pathName}?pa=${pageValue}&cat=pro&mo=${monthValue}`)
               }}
             >
               Product

@@ -16,14 +16,13 @@ import { useEffect, useState } from 'react'
 import { getOrders } from '../../services/readOrders'
 
 export const SalesTable = (props) => {
-  console.log('props-sales', props)
   const [data, setData] = useState([])
 
   useEffect(() => {
     getOrders(props?.pageValue, props?.warehouseId, props?.startDate, props?.endDate).then((data) =>
       setData(data),
     )
-  }, [])
+  }, [props?.startDate])
 
   const renderedTableBody = data?.map((order, index) => {
     const timestamp = order?.orderDate

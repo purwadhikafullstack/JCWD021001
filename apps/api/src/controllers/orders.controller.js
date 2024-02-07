@@ -1,6 +1,9 @@
 import {
   calculationCheckStockService,
   createOrderService,
+  getAllOrderByCategoryService,
+  getAllOrderByProductService,
+  getAllOrderService,
   getOrderManagementService,
   getOrderService,
   getWarehouseService,
@@ -34,7 +37,7 @@ export const createOrderController = async (req, res) => {
       orderStatusId,
       products,
     } = req.body
-    console.log('products', products);
+    console.log('products', products)
     const result = await createOrderService(
       userId,
       userAddressId,
@@ -192,4 +195,4 @@ export const getAllOrderByProductController = async (req, res) => {
     })
   }
 }
-// 
+//

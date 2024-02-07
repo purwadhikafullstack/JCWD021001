@@ -10,7 +10,6 @@ import {
   getAllOrderByCategoryController, // by putu
   getAllOrderByProductController, // by putu
   getAllOrderController, // by putu
-  
 } from '../controllers/orders.controller'
 const orderRouter = Router()
 
@@ -23,7 +22,7 @@ orderRouter.get('/:userId', getOrderController)
 orderRouter.get('/stock/:orderId', calculationCheckStockController)
 
 // by putu
-// orderRouter.get('/', getAllOrderController)
+orderRouter.get('/sales/all', getAllOrderController)
 orderRouter.get('/sales/category', getAllOrderByCategoryController)
 orderRouter.get('/sales/product', getAllOrderByProductController)
 
