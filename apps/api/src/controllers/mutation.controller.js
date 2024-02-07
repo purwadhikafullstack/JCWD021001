@@ -27,6 +27,7 @@ export const getMutationController = async (req, res) => {
 export const createMutationController = async (req, res) => {
   try {
     const { requesterWarehouseId, recipientWarehouseId, qty, isAccepted, stockId } = req.body
+    console.log('sisi', requesterWarehouseId, recipientWarehouseId, qty, isAccepted, stockId);
     const result = await createMutationService(
       requesterWarehouseId,
       recipientWarehouseId,

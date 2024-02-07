@@ -71,6 +71,7 @@ export const findWarehousesQuery = async () => {
 
 export const getShippingCostQuery = async (origin, destination, weight, courier) => {
   try {
+    console.log('halo', origin, destination, weight, courier)
     const API_KEY = process.env.RAJAONGKIR_API_KEY
     const BASE_URL = process.env.RAJAONGKIR_BASE_URL
     const response = await axios.post(

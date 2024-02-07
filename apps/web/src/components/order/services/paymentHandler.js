@@ -33,6 +33,7 @@ export const paymentHandler = async (
       orderStatusId: 1,
       products: mappedProducts,
     }
+    console.log('data', dataOrder);
 
     const result = await createOrder(dataOrder)
     // console.log('asdasda', result);

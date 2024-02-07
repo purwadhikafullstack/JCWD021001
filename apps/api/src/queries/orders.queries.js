@@ -24,6 +24,7 @@ export const createOrderQuery = async (
   shippingCost,
   orderStatusId,
   orderNumber,
+  products,
 ) => {
   try {
     const order = await Orders.create({
@@ -279,7 +280,7 @@ export const getWarehouseQuery = async () => {
 
 export const productToStockIdQuery = async (products, nearestWarehouse) => {
   try {
-    console.log('products', products)
+    // console.log('products', products);
     let whereCondition = {}
 
     if (products && products.length > 0) {
@@ -309,7 +310,7 @@ export const productToStockIdQuery = async (products, nearestWarehouse) => {
       },
     })
 
-    console.log('hasil res', res)
+    // console.log('hasil res', res);
     return res
   } catch (err) {
     throw err
