@@ -1,3 +1,4 @@
+import { Sequelize, Op } from 'sequelize'
 import { literal } from 'sequelize'
 import Orders from '../models/orders.model'
 import OrderProducts from '../models/orderProducts.model'
@@ -8,12 +9,11 @@ import User from '../models/user.model'
 import Warehouse from '../models/warehouse.model'
 import Stock from '../models/stock.model'
 import UserAddress from '../models/userAddress.model'
-import WarehouseAddress from '../models/warehouseAddress.model'
-import ProductCategory from '../models/productCategory.model'
-import { Op, Sequelize } from 'sequelize'
 import Size from '../models/size.model'
 import Colour from '../models/colour.model'
 import OrderStatuses from '../models/orderStatuses.model'
+import WarehouseAddress from '../models/warehouseAddress.model'
+import ProductCategory from '../models/productCategory.model'
 
 export const createOrderQuery = async (
   userId,
@@ -116,17 +116,17 @@ export const getOrderQuery = async ({
     }
 
     if (orderStatusId) {
-      whereClause.orderStatusId = orderStatusId
+      whereClause.orderStatusId = {
+        [Op.in]: orderStatusId,
+      }
     }
 
-    const limit = parseInt(pageSize, 10) || 10 // Default page size is 10
-    const offset = (parseInt(page, 10) - 1) * limit
+    const limit = parseInt(pageSize, 10) || 10
+    let offset = (parseInt(page, 10) - 1) * limit
 
-    const totalFilteredOrders = await Orders.count({
-      where: Object.keys(whereClause).length > 0 ? whereClause : { userId: userId },
-    })
-
-    const totalPages = Math.ceil(totalFilteredOrders / limit)
+    if (orderNumber) {
+      offset = 0
+    }
 
     const orders = await Orders.findAndCountAll({
       include: [
@@ -152,24 +152,35 @@ export const getOrderQuery = async ({
       where: Object.keys(whereClause).length > 0 ? whereClause : { userId: userId },
       limit: limit,
       offset: offset,
+      order: [['orderDate', 'DESC']],
+      distinct: true,
     })
+
+    const totalPages = Math.ceil(orders.count / limit)
 
     return {
       orders: orders.rows,
       pagination: {
         currentPage: parseInt(page, 10),
         totalPages: totalPages,
-        totalItems: totalFilteredOrders,
+        totalItems: orders.count,
         pageSize: limit,
       },
+      offset: offset,
     }
-    // return orders.rows
   } catch (err) {
     throw err
   }
 }
 
-export const getOrderManagementQuery = async ({ orderNumber, orderDate, warehouseId }) => {
+export const getOrderManagementQuery = async ({
+  orderNumber,
+  orderDate,
+  warehouseId,
+  orderStatusId,
+  page,
+  pageSize,
+}) => {
   try {
     const whereClause = {}
 
@@ -179,18 +190,30 @@ export const getOrderManagementQuery = async ({ orderNumber, orderDate, warehous
 
     if (orderDate) {
       const formattedInputDate = new Date(orderDate)
-
       whereClause.orderDate = {
         [Op.gte]: formattedInputDate,
         [Op.lt]: new Date(formattedInputDate.getTime() + 24 * 60 * 60 * 1000),
       }
     }
 
-    if (warehouseId) {
-      whereClause['$warehouse.id$'] = warehouseId
+    if (orderStatusId) {
+      whereClause.orderStatusId = {
+        [Op.in]: orderStatusId,
+      }
     }
 
-    const orders = await Orders.findAll({
+    if (warehouseId) {
+      whereClause.warehouseId = warehouseId
+    }
+
+    const limit = parseInt(pageSize, 10) || 10
+    let offset = (parseInt(page, 10) - 1) * limit
+
+    if (orderNumber || warehouseId) {
+      offset = 0
+    }
+
+    const orders = await Orders.findAndCountAll({
       include: [
         { model: User },
         { model: UserAddress },
@@ -213,9 +236,24 @@ export const getOrderManagementQuery = async ({ orderNumber, orderDate, warehous
         },
       ],
       where: Object.keys(whereClause).length > 0 ? whereClause : undefined,
+      limit: limit,
+      offset: offset,
+      order: [['orderDate', 'DESC']],
+      distinct: true,
     })
 
-    return orders
+    const totalPages = Math.ceil(orders.count / limit)
+
+    return {
+      orders: orders.rows,
+      pagination: {
+        currentPage: parseInt(page, 10),
+        totalPages: totalPages,
+        totalItems: orders.count,
+        pageSize: limit,
+      },
+      offset: offset,
+    }
   } catch (err) {
     throw err
   }
@@ -239,94 +277,77 @@ export const getWarehouseQuery = async () => {
   }
 }
 
-export const getAllOrderQuery = async (
-  sortBy = 'orderDate',
-  orderBy = 'DESC',
-  page = 1,
-  pageSize = 10,
-  warehouseId = null,
-  startDate = null,
-  endDate = null,
-) => {
+export const productToStockIdQuery = async (products, nearestWarehouse) => {
+  
   try {
-    const offset = (page - 1) * pageSize
-    let filteredAttributes = [
-      'id',
-      'warehouseId',
-      'totalPrice',
-      'totalQuantity',
-      'orderDate',
-      'orderStatusId',
-      [
-        Sequelize.literal(
-          `(SELECT SUM(totalPrice) FROM Orders WHERE orderDate BETWEEN '${startDate}' AND '${endDate}')`,
-        ),
-        'totalPriceSum',
-      ],
-    ]
-    const filter = {}
-    filter.where = {
-      warehouseId: {
-        [Op.eq]: warehouseId,
-      },
-      orderDate: {
-        [Op.lte]: new Date(endDate),
-        [Op.gte]: new Date(startDate),
-      },
+    console.log('products', products);
+    let whereCondition = {}
+    
+    if (products && products.length > 0) {
+      const productIdArray = products.map((item) => item.productId)
+      const colourIdArray = products.map((item) => item.colourId)
+      const sizeIdArray = products.map((item) => item.sizeId)
+
+      whereCondition = {
+        ...whereCondition,
+        productId: { [Sequelize.Op.in]: productIdArray },
+        colourId: { [Sequelize.Op.in]: colourIdArray },
+        sizeId: { [Sequelize.Op.in]: sizeIdArray },
+      }
     }
 
-    const res = await Orders.findAll({
-      attributes: filteredAttributes,
+    let warehouseCondition = {}
+    if (nearestWarehouse) {
+      // Disini tambahkan logika untuk menemukan warehouse terdekat
+      warehouseCondition = {
+        warehouseId: nearestWarehouse, // Contoh sederhana, asumsikan nearestWarehouse adalah warehouseId
+      }
+    }
+    const res = await Stock.findAll({
+      where: {
+        ...whereCondition,
+        ...warehouseCondition,
+      },
+    })
+
+
+    console.log('hasil res', res);
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
+export const calculationCheckStock = async (orderId) => {
+  try {
+    const orders = await Orders.findOne({
       include: [
-        {
-          model: Warehouse,
-          attributes: ['name'],
-          as: 'warehouse',
-          include: [{ model: WarehouseAddress, attributes: ['location'], as: 'addresses' }],
-        },
+        { model: User },
+        { model: UserAddress },
+        { model: Warehouse, as: 'warehouse' },
+        { model: Payments },
+        { model: OrderStatuses },
         {
           model: OrderProducts,
-          attributes: ['price', 'quantity'],
           include: [
             {
               model: Stock,
               as: 'stocks',
-              attributes: ['productId'],
               include: [
-                {
-                  model: Product,
-                  as: 'product',
-                  attributes: ['name', 'price', 'productCategoryId'],
-                  include: [
-                    {
-                      model: ProductCategory,
-                      as: 'category',
-                      include: [
-                        {
-                          model: ProductCategory,
-                          as: 'parent',
-                          include: [{ model: ProductCategory, as: 'parent' }],
-                        },
-                      ],
-                    },
-                  ],
-                },
+                { model: Product, as: 'product' },
+                { model: Size, as: 'size' },
+                { model: Colour, as: 'colour' },
               ],
             },
           ],
         },
-        {
-          model: OrderStatuses,
-          as: 'status',
-          attributes: ['name'],
-        },
       ],
-      ...filter,
-      order: [[`${sortBy}`, `${orderBy}`]],
-      limit: +pageSize,
-      offset: offset,
+      where: { id: orderId },
     })
-    return res
+    const warehouse = await Warehouse.findAll({
+      include: [{ model: WarehouseAddress }, { model: Stock, as: 'stock' }],
+    })
+    return { orders: orders, warehouse: warehouse }
   } catch (err) {
     throw err
   }
@@ -348,34 +369,6 @@ export const getAllOrderByCategoryQuery = async (warehouseId, startDate, endDate
       WHERE orders.orderDate >= '${startDate}' AND orders.orderDate <= '${endDate}'
       AND orders.warehouseId = ${warehouseId}
       GROUP BY parent_category.id;`)
-    return res
-  } catch (err) {
-    throw err
-  }
-}
-
-export const getAllOrderByProductQuery = async (
-  page,
-  pageSize,
-  warehouseId,
-  startDate,
-  endDate,
-) => {
-  try {
-    const offset = (page - 1) * pageSize
-    const res = await OrderProducts.sequelize.query(`SELECT p.id, p.name, 
-  SUM(op.price * op.quantity) as total, 
-  SUM(op.quantity) as sold
-FROM orders as o
-JOIN orderProducts as op ON o.id = op.orderId
-JOIN stocks as st ON op.stockId = st.id
-JOIN products as p ON st.productId = p.id
-WHERE o.orderDate >= '${startDate}' 
-  AND o.orderDate <= '${endDate}' 
-  AND o.warehouseId = ${Number(warehouseId)}
-GROUP BY p.id
-LIMIT ${pageSize} OFFSET ${offset};
-`)
     return res
   } catch (err) {
     throw err
