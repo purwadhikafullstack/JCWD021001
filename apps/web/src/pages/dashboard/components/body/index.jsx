@@ -55,19 +55,19 @@ export const Body = (props) => {
   const renderComponentAgain = () => {
     switch (props?.createProduct) {
       case 'create-product':
-        return <CreateProduct />
+        return <CreateProduct isSuperAdmin={props?.isSuperAdmin} />
       case 'edit-product':
-        return <EditProduct />
+        return <EditProduct isSuperAdmin={props?.isSuperAdmin} />
       case 'create-product-category':
-        return <CreateProductCategoryGender />
+        return <CreateProductCategoryGender isSuperAdmin={props?.isSuperAdmin} />
       case 'edit-product-category':
-        return <EditProductCategory />
+        return <EditProductCategory isSuperAdmin={props?.isSuperAdmin} />
       case 'order-history':
-        return <OrderHistory />
+        return <OrderHistory isSuperAdmin={props?.isSuperAdmin} />
       case 'create-stock':
-        return <CreateStock />
+        return <CreateStock isSuperAdmin={props?.isSuperAdmin} />
       case 'form-mutation':
-        return <FormMutation />
+        return <FormMutation isSuperAdmin={props?.isSuperAdmin} />
     }
   }
   const create = renderComponentAgain()

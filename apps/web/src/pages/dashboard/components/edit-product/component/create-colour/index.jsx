@@ -1,13 +1,4 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Select,
-  Text,
-  VStack,
-  useToast,
-} from '@chakra-ui/react'
+import { Box, Button, FormControl, FormLabel, Select, VStack, useToast } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { getColours } from '../../../create-stock/services/readColour'
 import { useFormik } from 'formik'

@@ -37,14 +37,10 @@ export const ProductList = (props) => {
   // PATHNAME
   const pathName = location.pathname
 
-  // NAVIGATE
-  const navigate = useNavigate()
-
-  // TOAST
-  const toast = useToast()
-
+  // Trigger
   const [trigger, setTrigger] = useState(true)
   // PRODUCTS
+
   const [products, setProducts] = useState([])
   useEffect(() => {
     getProduct('', '', '', '', setProducts, 'name', 'ASC', pageValue, 10)
@@ -55,10 +51,12 @@ export const ProductList = (props) => {
 
   // Handle Toggle
   const changeBoxToggle = (id) => {
-    setBoxToggle((set) => ({
-      [id]: !set[id],
-      [!id]: set[id],
-    }))
+    if (pageValue != id) {
+      setBoxToggle((set) => ({
+        [id]: !set[id],
+        [!id]: set[id],
+      }))
+    }
   }
 
   return (
