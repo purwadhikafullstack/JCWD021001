@@ -15,8 +15,9 @@ import {
 import { useEffect, useState } from 'react'
 import { getStockJournals } from './services/readStockJournal'
 import { useLocation, useParams } from 'react-router-dom'
+import { PaginationList } from '../product-list/components/pagination-list'
 
-export const OrderHistory = () => {
+export const OrderHistory = (props) => {
   // LOCATION
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
@@ -24,17 +25,20 @@ export const OrderHistory = () => {
   // QUERY PARAMS
   const pageValue = queryParams.get('pa')
 
+  // PATHNAME
+  const pathName = location.pathname
+
   // STOCK JOURNALS
   const [stockJournals, setStockJournals] = useState([])
 
   // WAREHOUSE ID
-  const [warehouseId, setWarehouseId] = useState(4)
+  const [warehouseId, setWarehouseId] = useState(props?.user?.warehouseId)
 
   // EPID
   const { epid } = useParams()
   useEffect(() => {
     getStockJournals(warehouseId, epid, pageValue, 10).then((data) => setStockJournals(data))
-  }, [])
+  }, [pageValue])
 
   // RENDERED TABLE BODY
   const renderedTableBody = stockJournals?.rows?.map((stockJournal, index) => {
@@ -58,6 +62,19 @@ export const OrderHistory = () => {
       </Tr>
     )
   })
+
+  // Toggle Box Colour
+  const [boxToggle, setBoxToggle] = useState({ [pageValue]: true })
+
+  // Handle Toggle
+  const changeBoxToggle = (id) => {
+    if (pageValue != id) {
+      setBoxToggle((set) => ({
+        [id]: !set[id],
+        [!id]: set[id],
+      }))
+    }
+  }
   return (
     <Box p={'1em'} h={'100%'} w={'100%'}>
       <Flex flexDir={'column'} justifyContent={'space-between'} h={'100%'}>
@@ -119,6 +136,13 @@ export const OrderHistory = () => {
             </TableContainer>
           </Box>
         </VStack>
+        <PaginationList
+          boxToggle={boxToggle}
+          changeBoxToggle={changeBoxToggle}
+          location={location}
+          pathName={pathName}
+          pageValue={pageValue}
+        />
       </Flex>
     </Box>
   )

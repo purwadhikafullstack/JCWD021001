@@ -166,34 +166,36 @@ export const EditInput = (props) => {
         </InputGroup>
         {props?.formik.errors.price && <Text color="red">{props?.formik.errors.price}</Text>}
       </FormControl>
-      <HStack alignSelf={'flex-end'}>
-        <Button
-          _hover={{
-            bgColor: 'redPure.500',
-          }}
-          w={'5em'}
-          bgColor={'redPure.500'}
-          color={'white'}
-          isLoading={false}
-          onClick={() => {
-            props?.handleEditClick()
-          }}
-        >
-          {!props?.editable ? 'Edit' : 'Cancel'}
-        </Button>
-        <Button
-          type="submit"
-          _hover={{
-            bgColor: 'redPure.500',
-          }}
-          w={'5em'}
-          bgColor={'redPure.500'}
-          color={'white'}
-          isLoading={false}
-        >
-          Submit
-        </Button>
-      </HStack>
+      {props?.isSuperAdmin && (
+        <HStack alignSelf={'flex-end'}>
+          <Button
+            _hover={{
+              bgColor: 'redPure.500',
+            }}
+            w={'5em'}
+            bgColor={'redPure.500'}
+            color={'white'}
+            isLoading={false}
+            onClick={() => {
+              props?.handleEditClick()
+            }}
+          >
+            {!props?.editable ? 'Edit' : 'Cancel'}
+          </Button>
+          <Button
+            type="submit"
+            _hover={{
+              bgColor: 'redPure.500',
+            }}
+            w={'5em'}
+            bgColor={'redPure.500'}
+            color={'white'}
+            isLoading={false}
+          >
+            Submit
+          </Button>
+        </HStack>
+      )}
     </VStack>
   )
 }

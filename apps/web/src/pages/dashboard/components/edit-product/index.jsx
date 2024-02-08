@@ -136,19 +136,13 @@ export const EditProduct = (props) => {
     validationSchema: validationSchema,
     onSubmit: handleSubmit,
   })
+  //   PRODUCT NAME FILTER
+  const [productNameFilter, setProductNameFilter] = useState('')
 
-  console.log(
-    'DATA',
-    formik.values.name,
-    Number(formik.values.price),
-    formik.values.description,
-    Number(formik.values.productCategoryId),
-    product?.id,
-  )
   return (
     <Box p={'1em'} bgColor={'white'}>
       <Text fontWeight={'bold'} mb={'2em'}>
-        Edit Product
+        <Text as={'span'}>{props?.isSuperAdmin ? 'Edit' : 'View'}</Text> Product
       </Text>
       <form onSubmit={formik.handleSubmit}>
         <EditInput

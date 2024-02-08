@@ -31,6 +31,7 @@ export const Dashboard = () => {
           />
         </Box>
         <Body
+          user={user}
           isSuperAdmin={isSuperAdmin}
           destination={destination}
           createProduct={createProduct}

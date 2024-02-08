@@ -1,31 +1,33 @@
 import {
   AspectRatio,
   Box,
-  Button,
   Flex,
   HStack,
   Heading,
+  Icon,
   Image,
   Spacer,
   Table,
   TableContainer,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
   VStack,
-  useToast,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { getProduct } from '../../../product-list/services/readProduct'
-import axios from 'axios'
 import toRupiah from '@develoka/angka-rupiah-js'
 import { CreateButton } from './components/create-button'
 import { PaginationList } from './components/pagination-list'
 import { EditButton } from './components/edit-button'
 import { DeleteButton } from './components/delete-button'
+import { ViewButton } from './components/view-button'
+import { SearchInput } from '../create-stock/component/search-input'
+import { ChevronRightIcon } from '@heroicons/react/24/outline'
 export const ProductList = (props) => {
   // LOCATION
   const location = useLocation()
@@ -40,11 +42,13 @@ export const ProductList = (props) => {
   // Trigger
   const [trigger, setTrigger] = useState(true)
   // PRODUCTS
+  //   PRODUCT NAME FILTER
+  const [productNameFilter, setProductNameFilter] = useState('')
 
   const [products, setProducts] = useState([])
   useEffect(() => {
-    getProduct('', '', '', '', setProducts, 'name', 'ASC', pageValue, 10)
-  }, [pageValue, trigger])
+    getProduct(productNameFilter, '', '', '', setProducts, 'name', 'ASC', pageValue, 10)
+  }, [pageValue, trigger, productNameFilter])
 
   // Toggle Box Colour
   const [boxToggle, setBoxToggle] = useState({ [pageValue]: true })
@@ -58,6 +62,7 @@ export const ProductList = (props) => {
       }))
     }
   }
+  console.log(boxToggle)
 
   return (
     <Box p={'1em'} w={'100%'} h={'100%'}>
@@ -67,6 +72,13 @@ export const ProductList = (props) => {
             <Heading as={'h1'} fontSize={'1.5em'} fontWeight={'bold'}>
               Product List
             </Heading>
+            <Box>
+              <SearchInput
+                setProductNameFilter={setProductNameFilter}
+                pageValue={pageValue}
+                changeBoxToggle={changeBoxToggle}
+              />
+            </Box>
             {props.isSuperAdmin && (
               <CreateButton navigate={'/dashboard/product-list/create-product'} />
             )}
@@ -98,7 +110,9 @@ export const ProductList = (props) => {
                     <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
                       Products
                     </Th>
-                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}></Th>
+                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
+                      Name
+                    </Th>
                     <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
                       Price
                     </Th>
@@ -120,11 +134,25 @@ export const ProductList = (props) => {
                               objectFit={'cover'}
                             />
                           </AspectRatio>
+                          <HStack mt={'.5em'} fontSize={'.75em'} spacing={'.1em'}>
+                            <Text>{el?.category?.parent?.parent?.name}</Text>
+                            <Icon as={ChevronRightIcon} />
+                            <Text>{el?.category?.parent?.name}</Text>
+                            <Icon as={ChevronRightIcon} />
+                            <Text>{el?.category?.name}</Text>
+                          </HStack>
                         </Td>
-                        <Td>{el?.name}</Td>
+                        <Td>
+                          <Text>{el?.name}</Text>
+                        </Td>
                         <Td>{toRupiah(el.price)}</Td>
                         <Td alignItems={'center'}>
                           <HStack>
+                            {props?.user?.warehouseId && (
+                              <ViewButton
+                                navigate={`/dashboard/product-list/view-product/${el.id}`}
+                              />
+                            )}
                             {props?.isSuperAdmin && (
                               <EditButton
                                 navigate={`/dashboard/product-list/edit-product/${el.id}`}

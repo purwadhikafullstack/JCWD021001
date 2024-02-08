@@ -19,13 +19,13 @@ import { getStock } from './services/readStock'
 import { TableBody } from './component/table-body'
 import { PaginationList } from '../product-list/components/pagination-list'
 
-export const StockManagement = () => {
+export const StockManagement = (props) => {
   // LOCATION
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
 
   // WAREHOUSE ID
-  const [warehouseId, setWarehouseId] = useState(4)
+  const [warehouseId, setWarehouseId] = useState(props?.user?.warehouseId)
 
   // QUERY PARAMS
   const pageValue = queryParams.get('pa')
@@ -42,7 +42,8 @@ export const StockManagement = () => {
   // STOCKS
   const [stocks, setStocks] = useState([])
   useEffect(() => {
-    getStock(warehouseId, pageValue).then((data) => setStocks(data))
+    setWarehouseId(props?.user?.warehouseId)
+    getStock(warehouseId, '', pageValue, 10).then((data) => setStocks(data))
   }, [warehouseId, pageValue])
 
   // Toggle Box Colour
