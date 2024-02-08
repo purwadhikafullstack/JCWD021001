@@ -26,7 +26,7 @@ import * as Yup from 'yup'
 import { CreateColour } from './component/create-colour'
 import { API_ROUTE } from '../../../../services/route'
 
-export const EditProduct = () => {
+export const EditProduct = (props) => {
   // Validation Schema
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
@@ -214,7 +214,6 @@ export const EditProduct = () => {
     onSubmit: handleSubmit,
   })
 
-  console.log('product', product?.colour)
   const colours = product?.colour?.map((colour, index) => {
     return (
       <Box
@@ -316,23 +315,25 @@ export const EditProduct = () => {
                           el?.imageUrl
                         }`}
                       />
-                      <Button
-                        _hover={{
-                          bgColor: 'transparent',
-                        }}
-                        fontSize={'.75em'}
-                        alignSelf={'flex-start'}
-                        w={'3em'}
-                        h={'2em'}
-                        border={'1px solid #e3024b'}
-                        bgColor={'transparent'}
-                        color={'redPure.500'}
-                        onClick={() => {
-                          deleteProductImage(el?.id, '')
-                        }}
-                      >
-                        Delete
-                      </Button>
+                      {props?.isSuperAdmin && (
+                        <Button
+                          _hover={{
+                            bgColor: 'transparent',
+                          }}
+                          fontSize={'.75em'}
+                          alignSelf={'flex-start'}
+                          w={'3em'}
+                          h={'2em'}
+                          border={'1px solid #e3024b'}
+                          bgColor={'transparent'}
+                          color={'redPure.500'}
+                          onClick={() => {
+                            deleteProductImage(el?.id, '')
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      )}
                     </VStack>
                   </Box>
                 )

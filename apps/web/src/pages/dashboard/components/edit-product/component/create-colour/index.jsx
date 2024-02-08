@@ -50,9 +50,6 @@ export const CreateColour = (props) => {
     onSubmit: handleSubmit,
   })
 
-  console.log('colours', colours)
-  console.log('formik', formik.values)
-  console.log('productId', props?.productId)
   return (
     <Box>
       <form>

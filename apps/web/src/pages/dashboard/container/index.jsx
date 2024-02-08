@@ -14,6 +14,10 @@ export const Dashboard = () => {
   const toggleSideBar = () => {
     setCollapseSideBar(!collapseSideBar)
   }
+
+  // Super Admin checking
+  const isSuperAdmin = user?.roleId === 1
+
   return (
     <Box maxW={'100vw'} overflow={{ xl: 'hidden', base: 'hidden' }}>
       <Navbar />
@@ -23,9 +27,11 @@ export const Dashboard = () => {
             collapseSideBar={collapseSideBar}
             setCollapseSideBar={setCollapseSideBar}
             toggleSideBar={toggleSideBar}
+            isSuperAdmin={isSuperAdmin}
           />
         </Box>
         <Body
+          isSuperAdmin={isSuperAdmin}
           destination={destination}
           createProduct={createProduct}
           collapseSideBar={collapseSideBar} // responsive

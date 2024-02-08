@@ -21,13 +21,13 @@ export const Body = (props) => {
   const renderComponent = () => {
     switch (props?.destination) {
       case 'product-list':
-        return <ProductList />
+        return <ProductList isSuperAdmin={props?.isSuperAdmin} />
       case 'product-category':
-        return <ProductCategory />
+        return <ProductCategory isSuperAdmin={props?.isSuperAdmin} />
       case 'stock-management':
-        return <StockManagement />
+        return <StockManagement isSuperAdmin={props?.isSuperAdmin} />
       case 'stock-mutation':
-        return <StockMutation />
+        return <StockMutation isSuperAdmin={props?.isSuperAdmin} />
       case 'admin-list':
         return (
           <AdminRoute>

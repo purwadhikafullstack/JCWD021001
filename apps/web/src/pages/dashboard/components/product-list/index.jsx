@@ -11,7 +11,6 @@ import {
   TableContainer,
   Tbody,
   Td,
-  Text,
   Th,
   Thead,
   Tr,
@@ -22,9 +21,12 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { getProduct } from '../../../product-list/services/readProduct'
 import axios from 'axios'
-import { PaginationList } from './components/pagination-list'
 import toRupiah from '@develoka/angka-rupiah-js'
-export const ProductList = () => {
+import { CreateButton } from './components/create-button'
+import { PaginationList } from './components/pagination-list'
+import { EditButton } from './components/edit-button'
+import { DeleteButton } from './components/delete-button'
+export const ProductList = (props) => {
   // LOCATION
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
@@ -41,39 +43,12 @@ export const ProductList = () => {
   // TOAST
   const toast = useToast()
 
+  const [trigger, setTrigger] = useState(true)
   // PRODUCTS
   const [products, setProducts] = useState([])
   useEffect(() => {
     getProduct('', '', '', '', setProducts, 'name', 'ASC', pageValue, 10)
-  }, [pageValue])
-
-  // DELETE PRODUCT IMAGES
-  const deleteProductImage = async (id, productId) => {
-    try {
-      await axios.delete(`http://localhost:8000/api/product-image`, { data: { id, productId } })
-    } catch (err) {
-      throw err
-    }
-  }
-
-  // DELETE PRODUCTS
-  const deleteProduct = async (id, productId) => {
-    try {
-      await deleteProductImage('', productId)
-      const res = await axios.delete(`http://localhost:8000/api/product/${id}`)
-      setProducts((products) => products?.rows?.filter((product) => product.id !== id))
-      toast({
-        title: `${res?.data?.title}`,
-        status: 'success',
-        placement: 'bottom',
-      })
-    } catch (err) {
-      toast({
-        title: `${err?.message}`,
-        status: 'error',
-      })
-    }
-  }
+  }, [pageValue, trigger])
 
   // Toggle Box Colour
   const [boxToggle, setBoxToggle] = useState({ [pageValue]: true })
@@ -94,20 +69,9 @@ export const ProductList = () => {
             <Heading as={'h1'} fontSize={'1.5em'} fontWeight={'bold'}>
               Product List
             </Heading>
-            <Button
-              _hover={{
-                bgColor: 'redPure.600',
-              }}
-              h={'3em'}
-              w={'10em'}
-              bgColor={'redPure.600'}
-              color={'white'}
-              onClick={() => {
-                navigate('/dashboard/product-list/create-product')
-              }}
-            >
-              Create Product
-            </Button>
+            {props.isSuperAdmin && (
+              <CreateButton navigate={'/dashboard/product-list/create-product'} />
+            )}
           </Flex>
           <Box
             boxShadow={'md'}
@@ -163,37 +127,19 @@ export const ProductList = () => {
                         <Td>{toRupiah(el.price)}</Td>
                         <Td alignItems={'center'}>
                           <HStack>
-                            <Button
-                              _hover={{
-                                bgColor: 'redPure.600',
-                              }}
-                              fontSize={'.8em'}
-                              h={'2.5em'}
-                              w={'5em'}
-                              bgColor={'redPure.600'}
-                              color={'white'}
-                              onClick={() => {
-                                navigate(`/dashboard/product-list/edit-product/${el.id}`)
-                              }}
-                            >
-                              Edit
-                            </Button>
-                            <Button
-                              _hover={{
-                                bgColor: 'transparent',
-                              }}
-                              fontSize={'.8em'}
-                              h={'2.5em'}
-                              w={'5em'}
-                              border={'1px solid #CD0244'}
-                              bgColor={'transparent'}
-                              color={'redPure.600'}
-                              onClick={() => {
-                                deleteProduct(el?.id, el?.id)
-                              }}
-                            >
-                              Delete
-                            </Button>
+                            {props?.isSuperAdmin && (
+                              <EditButton
+                                navigate={`/dashboard/product-list/edit-product/${el.id}`}
+                              />
+                            )}
+                            {props?.isSuperAdmin && (
+                              <DeleteButton
+                                id={el?.id}
+                                productId={el?.id}
+                                trigger={trigger}
+                                setTrigger={setTrigger}
+                              />
+                            )}
                           </HStack>
                         </Td>
                       </Tr>
