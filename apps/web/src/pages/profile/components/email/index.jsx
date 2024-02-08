@@ -53,23 +53,25 @@ function UpdateEmail() {
 
   return (
     <>
-      <Button
+      <Flex
         w={'100%'}
         display="flex"
         justifyContent="space-between"
+        _hover={{ color: 'brand.lightred', bg: 'none' }}
         alignItems="center"
         bg={'transparent'}
+        paddingLeft={'20px'}
         fontWeight={'500'}
+        cursor={'pointer'}
+        fontSize={{ base: '12px', md: '16px' }}
         onClick={onOpen}
       >
         <Flex alignItems={'center'} gap={'5'}>
           {user?.email}
           {user?.isVerified ? (
             <Flex alignItems={'center'} gap={'4px'}>
-              <Icon as={CheckBadgeIcon} color={'blue'} boxSize={'16px'} />
-              <Text fontSize={'14px'} color={'brand.lightred'}>
-                Verified
-              </Text>
+              <Icon as={CheckBadgeIcon} color={'blue'} boxSize={{ base: '12px', md: '16px' }} />
+              <Text color={'brand.lightred'}>Verified</Text>
             </Flex>
           ) : (
             <Text fontSize={'14px'} color={'brand.lightred'}>
@@ -80,15 +82,15 @@ function UpdateEmail() {
         <span>
           <Icon as={ChevronRightIcon} />
         </span>
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={onClose} size={{base: 'xs', md: 'md'}}>
           <ModalOverlay />
           <form onSubmit={formik.handleSubmit}>
             <ModalContent>
-              <ModalHeader>Edit Email</ModalHeader>
+              <ModalHeader fontSize={{base: '14px', md: '24px'}}>Edit Email</ModalHeader>
               <ModalCloseButton />
               <ModalBody pb={6}>
                 <FormControl isInvalid={!!(formik.touched.email && formik.errors.email)}>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel fontSize={{base: '12px', md: '16px'}}>Email</FormLabel>
                   <Input
                     name="email"
                     // placeholder='Enter email'
@@ -104,15 +106,36 @@ function UpdateEmail() {
               </ModalBody>
 
               <ModalFooter>
-                <Button colorScheme="blue" mr={3} type="submit">
+                <Button
+                  bg={'brand.lightred'}
+                  fontSize={{ base: '12px', md: '16px' }}
+                  size={{ base: 'sm', md: 'md' }}
+                  color={'white'}
+                  _hover={{ bg: '#f62252' }}
+                  _active={{ bg: '#f95278' }}
+                  mr={3}
+                  type="submit"
+                >
                   Save
                 </Button>
-                <Button onClick={onClose}>Cancel</Button>
+                <Button
+                  onClick={onClose}
+                  variant={'outline'}
+                  borderColor={'brand.lightred'}
+                  bg={'white'}
+                  color={'brand.lightred'}
+                  fontSize={{ base: '12px', md: '16px' }}
+                  size={{ base: 'sm', md: 'md' }}
+                  _hover={{ borderColor: '#f62252', color: '#f62252' }}
+                  _active={{ borderColor: '#f95278', color: '#f95278' }}
+                >
+                  Cancel
+                </Button>
               </ModalFooter>
             </ModalContent>
           </form>
         </Modal>
-      </Button>
+      </Flex>
     </>
   )
 }

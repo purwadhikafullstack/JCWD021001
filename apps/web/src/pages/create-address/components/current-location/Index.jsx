@@ -95,7 +95,7 @@ function FormCurrentLocation({ address, lat, lng }) {
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
-        <Grid width={'100%'} gap={'68px'} gridTemplateColumns={'1fr 1fr'}>
+        <Grid width={'100%'} gap={{base: '24px', md: '68px'}} gridTemplateColumns={{base: '1fr', md: '1fr 1fr', }}>
           <Box>
             <Text fontSize={'16px'} fontWeight={'700'} color={'brand.grey350'} mb={'8px'}>
               Full Name
@@ -106,7 +106,7 @@ function FormCurrentLocation({ address, lat, lng }) {
               _placeholder={{ color: 'brand.grey350' }}
               bg={'brand.grey100'}
               variant={'filled'}
-              mb={'32px'}
+              mb={{base: '0', md:'32px'}}
               value={formik.values.fullName}
               onChange={formik.handleChange}
             />
@@ -130,7 +130,7 @@ function FormCurrentLocation({ address, lat, lng }) {
         <Text fontSize={'16px'} fontWeight={'700'} color={'brand.grey350'} mb={'24px'}>
           ADDRESS
         </Text>
-        <Grid width={'100%'} gap={'68px'} gridTemplateColumns={'1fr 1fr'}>
+        <Grid width={'100%'} gap={{base: '24px', md: '68px'}} gridTemplateColumns={{base: '1fr', md: '1fr 1fr', }}>
           <Box>
             <Text fontSize={'16px'} fontWeight={'700'} color={'brand.grey350'} mb={'8px'}>
               Province
@@ -180,7 +180,7 @@ function FormCurrentLocation({ address, lat, lng }) {
               _placeholder={{ color: 'brand.grey350' }}
               bg={'brand.grey100'}
               variant={'filled'}
-              mb={'24px'}
+              mb={{base: '', md:'24px'}}
               name="postalCode"
               value={formik.values.postalCode}
               onChange={formik.handleChange}
@@ -217,7 +217,7 @@ function FormCurrentLocation({ address, lat, lng }) {
             Cancel
           </Button>
           <Button
-            type="sumbit"
+            type="submit"
             width={'168px'}
             padding={'12px 16px'}
             bgColor={'brand.lightred'}

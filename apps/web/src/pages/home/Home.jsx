@@ -55,9 +55,9 @@ function Home() {
   console.log('rendered product', renderedProducts);
 
   return (
-    <>
+    <Box width={'100vw'} overflow={'hidden'}>
       <Navbar  position="relative" />
-      <Box className="container-homepage" width={'100vw'} bg={'brand.grey100'}>
+      <Box className="container-homepage"  bg={'brand.grey100'} >
         <Box className="Header" height={'712px'} position={'relative'}>
           <Swiper
             slidesPerView={1}
@@ -67,7 +67,7 @@ function Home() {
               clickable: true,
               dynamicBullets: true,
             }}
-            // navigation={true}
+            navigation={true}
             modules={[Pagination, Navigation]}
             className="mySwiper"
             zIndex={0}
@@ -126,7 +126,7 @@ function Home() {
           <Footer />
         </Box>
       </Box>
-    </>
+    </Box>
   )
 }
 

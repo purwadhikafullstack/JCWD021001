@@ -9,7 +9,7 @@ function FormInitialWarehouse() {
   return (
     <>
       {/* <form onSubmit={formik.handleSubmit}> */}
-        <Grid width={'100%'} gap={'68px'} gridTemplateColumns={'1fr 1fr'}>
+        <Grid width={'100%'} gap={{base: '24px', md: '68px'}} gridTemplateColumns={{base: '1fr', md: '1fr 1fr', }}>
           <Box>
             <Text fontSize={'16px'} fontWeight={'700'} color={'brand.grey350'} mb={'8px'}>
               Warehouse Name

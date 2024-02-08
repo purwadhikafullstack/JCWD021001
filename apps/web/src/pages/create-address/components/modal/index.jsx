@@ -14,11 +14,11 @@ function ModalMapAddressEntry() {
     <>
       {/* Remove the button that manually opens the modal, as it's not needed */}
       
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} size={{base: 'xs', md: 'md'}}>
         <ModalOverlay />
         <ModalContent>
           <ModalBody mt={'24px'}>
-            <Text fontWeight={'700'} textAlign={'center'}>
+            <Text fontWeight={'700'} fontSize={{base: '14px', md: '16px'}} textAlign={'center'}>
                 Select Your Address Using the Map or Automatically Fill with Your Current Location
             </Text>
           </ModalBody>

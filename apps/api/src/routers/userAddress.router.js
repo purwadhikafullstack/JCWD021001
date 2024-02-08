@@ -12,6 +12,7 @@ import {
   deleteUserAddressController,
   findSearchableCityController,
   findSearchableProvinceController,
+  findMainAddressController,
 } from '../controllers/userAddress.controller'
 const userAddressRouter = Router()
 
@@ -24,6 +25,7 @@ userAddressRouter.get('/city', findCityOpenCageBasedController)
 userAddressRouter.get('/address-city', findOpencageAndCityController)
 userAddressRouter.get('/', findSearchableCityController)
 userAddressRouter.get('/province-list', findSearchableProvinceController)
+userAddressRouter.get('/main-address/:id', findMainAddressController)
 
 
 //POST

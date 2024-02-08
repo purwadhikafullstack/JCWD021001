@@ -90,9 +90,9 @@ function FormEditAddress({
         variant={'outline'}
         border={'1px solid #8D8B8B'}
         color={'#8D8B8B'}
-        fontSize={'14px'}
+        fontSize={{base: '12px',md: '14px'}}
         fontWeight={'700'}
-        padding={'12px 16px'}
+        padding={{base: '10px 14px', md:'12px 16px'}}
         _hover={'none'}
         _active={'none'}
       >

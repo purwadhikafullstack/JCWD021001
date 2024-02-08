@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Icon, Text } from '@chakra-ui/react'
+import { Box, Button, Flex, Heading, Icon, Text } from '@chakra-ui/react'
 // import CreateUser from './components/modal-create'
 import { BreadCrumbs } from './components/breadcrumbs'
 import { Navbar } from '../../components/navbar'
@@ -63,9 +63,9 @@ function WarehouseList() {
         <Box className="top-dashboard" mt={'36px'} mb={'24px'}>
           <Box display={{ base: 'block', md: 'none' }}>
             <Flex justifyContent={'space-between'} align={'center'} mb={'10px'}>
-              <Text fontSize={{ base: '16px', md: '24px' }} fontWeight={'700'}>
+              <Heading fontSize={{ base: '16px', md: '24px' }} fontWeight={'700'}>
                 Warehouse List
-              </Text>
+              </Heading>
               <Button
                 bg={'brand.lightred'}
                 color={'white'}

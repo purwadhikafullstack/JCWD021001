@@ -10,7 +10,8 @@ import {
   removeMainAddressQuery,
   deleteUserAddressQuery,
   findSearchableCityQuery,
-  findSearchableProvinceQuery
+  findSearchableProvinceQuery,
+  findMainAddressQuery
 } from '../queries/userAddress.queries'
 
 export const findUserAddressService = async (id) => {
@@ -75,6 +76,14 @@ export const findSearchableProvinceService = async (name) => {
     } catch (err){
         throw err
     }
+}
+
+export const findMainAddressService = async (id) => {
+  try{
+    return await findMainAddressQuery(id)
+  } catch (err){
+    throw err
+  }
 }
 
 export const createUserAddressService = async (

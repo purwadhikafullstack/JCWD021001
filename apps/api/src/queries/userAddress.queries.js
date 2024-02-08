@@ -108,6 +108,29 @@ export const findSearchableProvinceQuery = async (name) => {
     }
 }
 
+//FIND MAIN ADDRESS
+export const findMainAddressQuery = async (id) => {
+    try {
+        return await UserAddress.findOne({
+            where: { userId: id, isMainAddress: true },
+            include: [
+                {
+                    model: City,
+                    attributes: ['name'], 
+                    include: [
+                        {
+                            model: Province,
+                            attributes: ['name', 'id'] 
+                        }
+                    ]
+                }
+            ]
+        })
+    } catch (err){
+        throw err
+    }
+}
+
 // POST 
 export const createUserAddressQuery = async (id, specificAddress, cityId, fullName, phoneNumber, postalCode, latitude, longitude) => {
     try{
