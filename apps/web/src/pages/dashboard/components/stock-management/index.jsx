@@ -129,7 +129,11 @@ export const StockManagement = (props) => {
                 bgColor={'redPure.600'}
                 color={'white'}
                 onClick={() => {
-                  navigate('/dashboard/stock-management/create-stock')
+                  navigate(
+                    `/dashboard/stock-management/create-stock${
+                      warehouseValue ? `?wa=${warehouseValue}` : ''
+                    }`,
+                  )
                 }}
               >
                 Create Stock

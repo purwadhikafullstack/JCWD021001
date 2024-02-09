@@ -1,4 +1,4 @@
-import { Box, Center, Flex, HStack, Text } from '@chakra-ui/react'
+import { Box, Flex, HStack, Text } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 
 export const PaginationList = (props) => {
@@ -31,7 +31,7 @@ export const PaginationList = (props) => {
             navigate(
               `${props?.pathName}?pa=${i}${
                 props?.warehouseValue ? `&wa=${props?.warehouseValue}` : ''
-              }`,
+              }${props?.filterValue ? `&sta=${props?.filterValue}` : ''}`,
             )
           }}
         >

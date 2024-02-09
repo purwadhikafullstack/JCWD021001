@@ -28,7 +28,7 @@ import { createMutation } from '../stock-mutation/services/createMutation'
 import { getWarehouses } from './services/readWarehouse'
 import { SearchInput } from '../create-stock/component/search-input'
 
-export const FormMutation = () => {
+export const FormMutation = (props) => {
   // LOCATION
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
@@ -40,7 +40,7 @@ export const FormMutation = () => {
   const pathName = location.pathname
 
   //   WAREHOUSE ID
-  const [warehouseId, setWarehouseId] = useState(4)
+  const [warehouseId, setWarehouseId] = useState(props?.user?.warehouseId)
 
   //   CONST RECIPIENT WAREHOUSE ID
   const [recipientWarehouseId, setRecipientWarehouseId] = useState(null)
@@ -52,6 +52,7 @@ export const FormMutation = () => {
   const [warehouses, setWarehouses] = useState([])
 
   useEffect(() => {
+    setWarehouseId(props?.user?.warehouseId)
     getWarehouses(warehouseId).then((data) => {
       setWarehouses(data)
     })
@@ -117,7 +118,7 @@ export const FormMutation = () => {
       productName: yup.string().required('Please select the product'),
       qty: yup.number().required('Input quantity'),
     }),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       handleCreateMutation(
         formData?.requesterWarehouseId,
         formData?.recipientWarehouseId,
@@ -127,7 +128,6 @@ export const FormMutation = () => {
       )
     },
   })
-
   // Search Input
   const [productNameFilter, setProductNameFilter] = useState('')
   //   STOCKS
@@ -217,9 +217,10 @@ export const FormMutation = () => {
                   Product Name
                 </FormLabel>
                 <Flex justifyContent={'space-between'} alignItems={'center'}>
-                  <Text></Text>
                   <Box>
-                    <SearchInput setProductNameFilter={setProductNameFilter} />
+                    <FormControl>
+                      <SearchInput setProductNameFilter={setProductNameFilter} />
+                    </FormControl>
                   </Box>
                 </Flex>
                 <Input

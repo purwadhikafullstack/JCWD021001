@@ -18,14 +18,15 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { getMutations } from './services/readMutation'
 import { approveMutation } from './services/createMutation'
+import { PaginationList } from '../product-list/components/pagination-list'
 
-export const StockMutation = () => {
+export const StockMutation = (props) => {
   // LOCATION
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
 
   // WAREHOUSE ID
-  const [warehouseId, setWarehouseId] = useState(4)
+  const [warehouseId, setWarehouseId] = useState(props?.user?.warehouseId)
   const [requesterWarehouseId, setRequesterWarehouseId] = useState(0)
   const [recipientWarehouseId, setRecipientWarehouseId] = useState(0)
 
@@ -35,10 +36,10 @@ export const StockMutation = () => {
 
   // HANDLE REQUEST APPROVAL
   const handleRequestApproval = (filterValue) => {
-    if (filterValue === 'app') {
+    if (filterValue === 'req') {
       setRequesterWarehouseId(warehouseId)
       setRecipientWarehouseId('')
-    } else {
+    } else if (filterValue === 'app') {
       setRequesterWarehouseId('')
       setRecipientWarehouseId(warehouseId)
     }
@@ -66,13 +67,6 @@ export const StockMutation = () => {
     }
   }
 
-  useEffect(() => {
-    getMutations(requesterWarehouseId, recipientWarehouseId, pageValue, 10).then((data) => {
-      setMutations(data)
-    })
-    handleJuragan(recipientWarehouseId, warehouseId)
-  }, [pageValue, filterValue])
-
   // HANDLE APPROVE
   const handleApprove = async (mutationId, isAccepted) => {
     try {
@@ -91,12 +85,39 @@ export const StockMutation = () => {
   }
 
   // TABLE BODY
+  // Toggle Box Colour
+  const [boxToggle, setBoxToggle] = useState({ [pageValue]: true })
+
+  // Handle Toggle
+  const changeBoxToggle = (id) => {
+    if (pageValue == 1) {
+      setBoxToggle({ [pageValue]: true })
+    } else {
+      setBoxToggle((set) => ({
+        [id]: true,
+        [!id]: false,
+      }))
+    }
+  }
+
+  console.log('boxToggle', boxToggle)
+  useEffect(() => {
+    changeBoxToggle(pageValue)
+    handleJuragan(recipientWarehouseId, warehouseId)
+    handleRequestApproval(filterValue)
+    setWarehouseId(props?.user?.warehouseId)
+    if (warehouseId) {
+      getMutations(requesterWarehouseId, recipientWarehouseId, pageValue, 10).then((data) => {
+        setMutations(data)
+      })
+    }
+  }, [pageValue, filterValue, requesterWarehouseId, recipientWarehouseId, warehouseId])
   const renderedTableBody = mutations?.rows?.map((mutation, index) => {
     return (
       <Tr key={index} cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'}>
         <Td>{mutation?.id}</Td>
-        <Td>{mutation?.requester?.address}</Td>
-        <Td>{mutation?.recipient?.address}</Td>
+        <Td>{mutation?.requester?.name}</Td>
+        <Td>{mutation?.recipient?.name}</Td>
         <Td>{mutation?.stock?.product?.name}</Td>
         <Td>{mutation?.qty}</Td>
         <Td>
@@ -281,6 +302,14 @@ export const StockMutation = () => {
             </TableContainer>
           </Box>
         </VStack>
+        <PaginationList
+          boxToggle={boxToggle}
+          changeBoxToggle={changeBoxToggle}
+          location={location}
+          pathName={pathName}
+          pageValue={pageValue}
+          filterValue={filterValue}
+        />
       </Flex>
     </Box>
   )

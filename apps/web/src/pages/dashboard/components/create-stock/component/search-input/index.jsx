@@ -21,6 +21,7 @@ export const SearchInput = (props) => {
   return (
     <InputGroup>
       <Input
+        id={'exclude'}
         w={'20em'}
         variant={'outline'}
         focusBorderColor={'lightgray'}
