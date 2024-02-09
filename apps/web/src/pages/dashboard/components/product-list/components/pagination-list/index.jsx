@@ -28,7 +28,11 @@ export const PaginationList = (props) => {
           borderRadius={'.5em'}
           onClick={() => {
             props?.changeBoxToggle(i)
-            navigate(`${props?.pathName}?pa=${i}`)
+            navigate(
+              `${props?.pathName}?pa=${i}${
+                props?.warehouseValue ? `&wa=${props?.warehouseValue}` : ''
+              }`,
+            )
           }}
         >
           <Text fontWeight={'bold'} fontSize={'.75em'}>

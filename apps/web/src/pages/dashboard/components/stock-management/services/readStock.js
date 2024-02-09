@@ -2,9 +2,14 @@ import { API_ROUTE } from '../../../../../services/route'
 import axios from 'axios'
 export const getStock = async (warehouseId, name = '', page = 1, pageSize = 10) => {
   try {
-    console.log('warehouseId', warehouseId)
+    const token = localStorage.getItem('token')
     const res = await axios.get(
       `${API_ROUTE}/stock?warehouseId=${warehouseId}&name=${name}&page=${page}&pageSize=${pageSize}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
     )
     const stock = res?.data?.data
     return stock

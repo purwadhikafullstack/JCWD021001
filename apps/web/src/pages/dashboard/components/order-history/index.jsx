@@ -24,6 +24,7 @@ export const OrderHistory = (props) => {
 
   // QUERY PARAMS
   const pageValue = queryParams.get('pa')
+  const warehouseValue = queryParams.get('wa')
 
   // PATHNAME
   const pathName = location.pathname
@@ -34,11 +35,19 @@ export const OrderHistory = (props) => {
   // WAREHOUSE ID
   const [warehouseId, setWarehouseId] = useState(props?.user?.warehouseId)
 
+  const [trigger, setTrigger] = useState(false)
+
   // EPID
   const { epid } = useParams()
   useEffect(() => {
-    getStockJournals(warehouseId, epid, pageValue, 10).then((data) => setStockJournals(data))
-  }, [pageValue])
+    if (props?.isSuperAdmin) {
+      getStockJournals(warehouseValue, epid, pageValue, 10).then((data) => setStockJournals(data))
+    }
+    if (!props?.isSuperAdmin) {
+      setWarehouseId(props?.user?.warehouseId)
+      getStockJournals(warehouseId, epid, pageValue, 10).then((data) => setStockJournals(data))
+    }
+  }, [pageValue, trigger])
 
   // RENDERED TABLE BODY
   const renderedTableBody = stockJournals?.rows?.map((stockJournal, index) => {
@@ -129,7 +138,12 @@ export const OrderHistory = (props) => {
                     </Th>
                   </Tr>
                 </Thead>
-                <Tbody position={'relative'} fontWeight={'bold'}>
+                <Tbody
+                  position={'relative'}
+                  fontWeight={'bold'}
+                  setTrigger={setTrigger}
+                  trigger={trigger}
+                >
                   {renderedTableBody}
                 </Tbody>
               </Table>
@@ -137,6 +151,7 @@ export const OrderHistory = (props) => {
           </Box>
         </VStack>
         <PaginationList
+          warehouseValue={warehouseValue}
           boxToggle={boxToggle}
           changeBoxToggle={changeBoxToggle}
           location={location}

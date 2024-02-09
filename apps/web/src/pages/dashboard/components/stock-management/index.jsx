@@ -32,7 +32,8 @@ export const StockManagement = (props) => {
 
   // QUERY PARAMS
   const pageValue = queryParams.get('pa')
-
+  const warehouseValue = queryParams.get('wa')
+  console.log('warehosueValue', warehouseValue)
   // PATHNAME
   const pathName = location.pathname
 
@@ -41,17 +42,19 @@ export const StockManagement = (props) => {
 
   // TOAST
   const toast = useToast()
+  const [trigger, setTrigger] = useState(false)
 
   // STOCKS
   const [stocks, setStocks] = useState([])
   useEffect(() => {
     if (props?.isSuperAdmin) {
-      getStock(warehouseId, '', pageValue, 10).then((data) => setStocks(data))
+      getStock(warehouseValue, '', pageValue, 10).then((data) => setStocks(data))
     }
     if (!props?.isSuperAdmin) {
       setWarehouseId(props?.user?.warehouseId)
+      getStock(warehouseId, '', pageValue, 10).then((data) => setStocks(data))
     }
-  }, [warehouseId, pageValue])
+  }, [warehouseId, pageValue, warehouseValue, trigger])
 
   // Toggle Box Colour
   const [boxToggle, setBoxToggle] = useState({ 1: true })
@@ -76,14 +79,16 @@ export const StockManagement = (props) => {
   // Warehouse options
   const warehouseOptions = warehouses?.map((warehouse, index) => {
     return (
-      <option key={index} id={warehouse?.id} value={warehouse?.id}>
+      <option
+        key={index}
+        id={warehouse?.id}
+        value={warehouse?.id}
+        selected={warehouse?.id === +warehouseValue}
+      >
         {warehouse?.WarehouseAddress?.location}
       </option>
     )
   })
-
-  console.log('stock', stocks)
-  console.log('stock-management', warehouses)
 
   return (
     <Box p={'1em'} h={'100%'} w={'100%'}>
@@ -103,7 +108,14 @@ export const StockManagement = (props) => {
                   borderColor={'transparent'}
                   focusBorderColor={'transparent'}
                   bgColor={'grey.50'}
-                  onChange={(e) => setWarehouseId(e?.target?.value)}
+                  onChange={async (e) => {
+                    setWarehouseId(e?.target?.value)
+                    {
+                      e?.target?.value
+                        ? navigate(`${pathName}?pa=1&wa=${e?.target?.value}`)
+                        : navigate(`${pathName}?pa=1`)
+                    }
+                  }}
                 >
                   {warehouseOptions}
                 </Select>
@@ -167,7 +179,14 @@ export const StockManagement = (props) => {
                   </Tr>
                 </Thead>
                 <Tbody position={'relative'} fontWeight={'bold'}>
-                  <TableBody stocks={stocks} warehouseId={warehouseId} pathName={pathName} />
+                  <TableBody
+                    stocks={stocks}
+                    pathName={pathName}
+                    warehouseId={warehouseId}
+                    warehouseValue={warehouseValue}
+                    setTrigger={setTrigger}
+                    trigger={trigger}
+                  />
                 </Tbody>
               </Table>
             </TableContainer>

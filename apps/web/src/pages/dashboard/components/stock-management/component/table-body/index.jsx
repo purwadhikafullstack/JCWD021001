@@ -135,7 +135,11 @@ export const TableBody = (props) => {
                     bgColor={'redPure.600'}
                     color={'white'}
                     onClick={() => {
-                      navigate(`${props?.pathName}/order-history/${stock?.id}?pa=1`)
+                      navigate(
+                        `${props?.pathName}/order-history/${stock?.id}?pa=1${
+                          props?.warehouseValue ? `&wa=${props?.warehouseValue}` : ''
+                        }`,
+                      )
                     }}
                   >
                     History
@@ -152,16 +156,19 @@ export const TableBody = (props) => {
                   bgColor={'transparent'}
                   color={'redPure.600'}
                   onClick={() => {
-                    isEditable
-                      ? handleSaveClick(
-                          stock?.productId,
-                          props?.warehouseId,
-                          stock?.sizeId,
-                          stock?.colourId,
-                          value,
-                          true,
-                        )
-                      : console.log('DELETE')
+                    if (isEditable) {
+                      handleSaveClick(
+                        stock?.productId,
+                        props?.warehouseValue ? props?.warehouseValue : props?.warehouseId,
+                        stock?.sizeId,
+                        stock?.colourId,
+                        value,
+                        true,
+                      )
+                      props?.setTrigger(!props?.trigger)
+                    } else {
+                      console.log('DELETE')
+                    }
                   }}
                 >
                   {isEditable ? 'Save' : 'Delete'}
