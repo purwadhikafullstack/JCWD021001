@@ -136,8 +136,6 @@ export const EditProduct = (props) => {
     validationSchema: validationSchema,
     onSubmit: handleSubmit,
   })
-  //   PRODUCT NAME FILTER
-  const [productNameFilter, setProductNameFilter] = useState('')
 
   return (
     <Box p={'1em'} bgColor={'white'}>

@@ -1,90 +1,31 @@
-import { Box, Button, Input, Text, VStack, useToast, HStack } from '@chakra-ui/react'
+import { Box, Text, VStack, useToast, HStack } from '@chakra-ui/react'
 import { useParams } from 'react-router-dom'
-import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useFormik } from 'formik'
-import { API_ROUTE } from '../../../../services/route'
-import { deleteProductCategory } from './services/deleteProductCategory'
+import { getGender, getProductCategory } from './services/getProductCategory'
+import { SaveText } from './component/save-text'
+import { DeleteText } from './component/delete-text'
+import { SaveChildren } from './component/save-text-children'
+import { DeleteChildren } from './component/delete-children'
+import {
+  CategoryNameInput,
+  GroupNameInput,
+  NewGroupInput,
+  NewProductInput,
+} from './component/input'
+import { AddNewGroupButton, HandleAddSubmitButton, HandleEditButton } from './component/button'
 
 export const EditProductCategory = () => {
-  // USE PARAMS
-  const { epid } = useParams()
-  // USE PARAMS
+  const { epid } = useParams() //params
 
-  // TOAST
-  const toast = useToast()
-  // TOAST
+  const toast = useToast() //toast
 
-  // GET GENDER DETAILS
-  const [gender, setGender] = useState([])
-  const getGender = async (name) => {
-    try {
-      const res = await axios.get(`${API_ROUTE}/product-category/gender?name=${name}`)
-      setGender(res?.data?.data)
-    } catch (err) {
-      throw err
-    }
-  }
+  const [gender, setGender] = useState([]) //gender details
 
-  // GET GENDER DETAILS
+  const [productCategory, setProductCategory] = useState([]) //Product Category
 
-  // GET PRODUCT CATEGORY
-  const [productCategory, setProductCategory] = useState([])
-  const getProductCategory = async (setProductCategory, gender) => {
-    try {
-      const res = await axios.get(`${API_ROUTE}/product-category?gender=${gender}`)
-      setProductCategory(res?.data?.data)
-    } catch (err) {
-      throw err
-    }
-  }
-
-  // GET PRODUCT CATEGORY
-
-  // HANDLE EDIT
-  const editProductCategory = async (id, name) => {
-    try {
-      const res = await axios.patch(`${API_ROUTE}/product-category/${id}`, {
-        name,
-      })
-      toast({
-        title: `${res?.data?.title}`,
-        status: 'success',
-        placement: 'bottom',
-      })
-    } catch (err) {
-      toast({
-        title: `${err?.message}`,
-        status: 'error',
-      })
-    }
-  }
-  // HANDLE EDIT
-
-  // CREATE PRODUCT CATEGORY
-  // NEW PARENT
   const [newChildren, setNewChildren] = useState(null)
 
-  const createProductCategory = async (name, parentId) => {
-    try {
-      const res = await axios.post(`http://localhost:8000/api/product-category`, {
-        name,
-        parentId,
-      })
-      toast({
-        title: `${res?.data?.title}`,
-        status: 'success',
-      })
-      return res
-    } catch (err) {
-      toast({
-        title: `${err?.message}`,
-        status: 'error',
-      })
-    }
-  }
-
-  // INPUT VALUE
   const [input, setInput] = useState([{}])
 
   const [fixInput, setFixInput] = useState('')
@@ -117,7 +58,7 @@ export const EditProductCategory = () => {
   }
 
   useEffect(() => {
-    getGender(epid)
+    getGender(epid, setGender)
     getProductCategory(setProductCategory, epid)
   }, [epid])
 
@@ -175,41 +116,9 @@ export const EditProductCategory = () => {
                 <Text fontWeight={'bold'} mb={'.5em'}>
                   Group
                 </Text>
-                <Input
-                  mb={'.3em'}
-                  type="text"
-                  id={`name_${item.id}`}
-                  name={`name_${item.id}`}
-                  onChange={formik.handleChange}
-                  value={formik.values[`name_${item.id}`]}
-                  borderColor={'transparent'}
-                  focusBorderColor={'transparent'}
-                  bgColor={'grey.50'}
-                />
-                <Text
-                  w={'5em'}
-                  fontSize={'.75em'}
-                  fontWeight={'bold'}
-                  color={'redPure.600'}
-                  cursor={'pointer'}
-                  onClick={() => {
-                    editProductCategory(item.id, formik.values[`name_${item.id}`])
-                  }}
-                >
-                  Save
-                </Text>
-                <Text
-                  w={'5em'}
-                  fontSize={'.75em'}
-                  fontWeight={'bold'}
-                  color={'redPure.600'}
-                  cursor={'pointer'}
-                  onClick={() => {
-                    deleteProductCategory(item.id, null, null, toast)
-                  }}
-                >
-                  Delete
-                </Text>
+                <GroupNameInput id={item.id} formik={formik} />
+                <SaveText formik={formik} toast={toast} id={item.id} />
+                <DeleteText id={item?.id} toast={toast} />
                 <Text fontWeight={'bold'} mb={'.5em'}>
                   Category
                 </Text>
@@ -217,92 +126,34 @@ export const EditProductCategory = () => {
                   {item.category &&
                     item.category.map((child) => (
                       <div key={child.id}>
-                        <Input
-                          type="text"
-                          id={`childName_${child.id}`}
-                          name={`childName_${child.id}`}
-                          onChange={formik.handleChange}
-                          value={formik.values[`childName_${child.id}`]}
-                          borderColor={'transparent'}
-                          focusBorderColor={'transparent'}
-                          bgColor={'grey.50'}
-                        />
-                        <Text
-                          w={'5em'}
-                          fontSize={'.75em'}
-                          fontWeight={'bold'}
-                          color={'redPure.600'}
-                          cursor={'pointer'}
-                          onClick={() => {
-                            editProductCategory(child.id, formik.values[`childName_${child.id}`])
-                          }}
-                        >
-                          Save
-                        </Text>
-                        <Text
-                          w={'5em'}
-                          fontSize={'.75em'}
-                          fontWeight={'bold'}
-                          color={'redPure.600'}
-                          cursor={'pointer'}
-                          onClick={() => {
-                            deleteProductCategory(child.id, item.id, null, toast)
-                          }}
-                        >
-                          Delete
-                        </Text>
+                        <CategoryNameInput id={child?.id} formik={formik} />
+                        <SaveChildren id={child?.id} toast={toast} formik={formik} />
+                        <DeleteChildren id={child?.id} itemId={item?.id} toast={toast} />
                       </div>
                     ))}
                 </VStack>
                 {editable[item?.id] && (
-                  <Input
-                    mt={'.5em'}
-                    id={`${item.id}`}
-                    placeholder={'Input new product categories'}
-                    borderColor={'transparent'}
-                    focusBorderColor={'transparent'}
-                    bgColor={'grey.50'}
-                    value={findById(item?.id)}
-                    onFocus={(e) => onFocusInput(item?.id, e.target.value)}
-                    onBlur={() => {
-                      setInput([{}])
-                    }}
-                    onChange={(e) => {
-                      handleInput(item?.id, e.target.value)
-                    }}
+                  <NewProductInput
+                    id={item?.id}
+                    findById={findById}
+                    onFocusInput={onFocusInput}
+                    setInput={setInput}
+                    handleInput={handleInput}
                   />
                 )}
                 <HStack my={'.5em'}>
-                  <Button
-                    _hover={{
-                      bgColor: 'redPure.600',
-                    }}
-                    fontSize={'.8em'}
-                    h={'2.5em'}
-                    w={'5em'}
-                    bgColor={'redPure.600'}
-                    color={'white'}
-                    onClick={() => handleEditClick(item.id)}
-                  >
-                    {editable[item?.id] ? 'Cancel' : 'Add'}
-                  </Button>
+                  <HandleEditButton
+                    handleEditClick={handleEditClick}
+                    editable={editable}
+                    id={item?.id}
+                  />
                   {editable[item?.id] && (
-                    <Button
-                      _hover={{
-                        bgColor: 'redPure.600',
-                      }}
-                      fontSize={'.8em'}
-                      h={'2.5em'}
-                      w={'5em'}
-                      bgColor={'redPure.600'}
-                      color={'white'}
-                      onClick={async () => {
-                        await createProductCategory(fixInput, item?.id)
-                        setFixInput('')
-                      }}
-                    >
-                      Submit
-                    </Button>
+                    <HandleAddSubmitButton
+                      setFixInput={setFixInput}
+                      id={item?.id}
+                      toast={toast}
+                      fixInput={fixInput}
+                    />
                   )}
                 </HStack>
               </Box>
@@ -313,69 +164,24 @@ export const EditProductCategory = () => {
           New Group
         </Text>
         {editable[gender[0]?.id] && (
-          <>
-            <Input
-              id={`${gender[0]?.id}`}
-              placeholder={'Input new product group'}
-              borderColor={'transparent'}
-              focusBorderColor={'transparent'}
-              bgColor={'grey.50'}
-              value={findById(gender[0]?.id)}
-              onFocus={(e) => onFocusInput(gender[0]?.id, e.target.value)}
-              onBlur={() => {
-                setInput([{}])
-              }}
-              onChange={(e) => {
-                handleInput(gender[0]?.id, e.target.value)
-              }}
-            />
-            <Text fontWeight={'bold'}>New Category</Text>
-            <Input
-              id={`${gender[0]?.id}`}
-              placeholder={'Input the categories of the group'}
-              borderColor={'transparent'}
-              focusBorderColor={'transparent'}
-              bgColor={'grey.50'}
-              onChange={(e) => {
-                setNewChildren(e.target.value)
-              }}
-            />
-          </>
+          <NewGroupInput
+            genderId={gender[0]?.id}
+            findById={findById}
+            onFocusInput={onFocusInput}
+            setInput={setInput}
+            handleInput={handleInput}
+            setNewChildren={setNewChildren}
+          />
         )}
-        <HStack>
-          <Button
-            _hover={{
-              bgColor: 'redPure.600',
-            }}
-            fontSize={'.8em'}
-            h={'2.5em'}
-            w={editable[gender[0]?.id] ? '5em' : '10em'}
-            bgColor={'redPure.600'}
-            color={'white'}
-            onClick={() => handleEditClick(gender[0]?.id)}
-          >
-            {editable[gender[0]?.id] ? 'Cancel' : 'Add New Group'}
-          </Button>
-          {editable[gender[0]?.id] && (
-            <Button
-              _hover={{
-                bgColor: 'redPure.600',
-              }}
-              fontSize={'.8em'}
-              h={'2.5em'}
-              w={'5em'}
-              bgColor={'redPure.600'}
-              color={'white'}
-              onClick={async (e) => {
-                const res = await createProductCategory(fixInput, gender[0]?.id)
-                createProductCategory(newChildren, res?.data?.data?.id)
-                setFixInput('')
-              }}
-            >
-              Submit
-            </Button>
-          )}
-        </HStack>
+        <AddNewGroupButton
+          handleEditClick={handleEditClick}
+          editable={editable}
+          genderId={gender[0]?.id}
+          setFixInput={setFixInput}
+          fixInput={fixInput}
+          newChildren={newChildren}
+          toast={toast}
+        />
       </VStack>
     </Box>
   )

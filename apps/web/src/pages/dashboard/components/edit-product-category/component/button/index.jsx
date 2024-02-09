@@ -1,0 +1,80 @@
+import { Button, HStack } from '@chakra-ui/react'
+import { createProductCategory } from '../../services/createProductCategory'
+
+export const HandleEditButton = (props) => {
+  return (
+    <Button
+      _hover={{
+        bgColor: 'redPure.600',
+      }}
+      fontSize={'.8em'}
+      h={'2.5em'}
+      w={'5em'}
+      bgColor={'redPure.600'}
+      color={'white'}
+      onClick={() => props?.handleEditClick(props.id)}
+    >
+      {props?.editable[props?.id] ? 'Cancel' : 'Add'}
+    </Button>
+  )
+}
+
+export const HandleAddSubmitButton = (props) => {
+  return (
+    <Button
+      _hover={{
+        bgColor: 'redPure.600',
+      }}
+      fontSize={'.8em'}
+      h={'2.5em'}
+      w={'5em'}
+      bgColor={'redPure.600'}
+      color={'white'}
+      onClick={async () => {
+        await createProductCategory(props?.fixInput, props?.id, props?.toast)
+        props?.setFixInput('')
+      }}
+    >
+      Submit
+    </Button>
+  )
+}
+
+export const AddNewGroupButton = (props) => {
+  return (
+    <HStack>
+      <Button
+        _hover={{
+          bgColor: 'redPure.600',
+        }}
+        fontSize={'.8em'}
+        h={'2.5em'}
+        w={props?.editable[props?.genderId] ? '5em' : '10em'}
+        bgColor={'redPure.600'}
+        color={'white'}
+        onClick={() => props?.handleEditClick(props?.genderId)}
+      >
+        {props?.editable[props?.genderId] ? 'Cancel' : 'Add New Group'}
+      </Button>
+      {props?.editable[props?.genderId] && (
+        <Button
+          _hover={{
+            bgColor: 'redPure.600',
+          }}
+          fontSize={'.8em'}
+          h={'2.5em'}
+          w={'5em'}
+          bgColor={'redPure.600'}
+          color={'white'}
+          onClick={async () => {
+            const res = await createProductCategory(props?.fixInput, props?.genderId, props?.toast)
+            createProductCategory(props?.newChildren, res?.data?.data?.id, props?.toast)
+            props?.setFixInput('')
+          }}
+        >
+          Submit
+        </Button>
+      )}
+    </HStack>
+  )
+}
