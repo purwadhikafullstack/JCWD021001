@@ -5,12 +5,17 @@ import {
   getProductController,
   updateProductController,
 } from '../controllers/product.controller'
+import {
+  checkRoleSuperAdminAdmin,
+  checkRoleSuperadmin,
+  verifyToken,
+} from '../middleware/auth.middleware'
 const productRouter = Router()
 
-productRouter.get('/', getProductController)
-productRouter.get('/details/:id', getProductController)
-productRouter.post('/create', createProductController)
-productRouter.patch('/:id', updateProductController)
-productRouter.delete('/:id', deleteProductController)
+productRouter.get('/', verifyToken, checkRoleSuperAdminAdmin, getProductController)
+productRouter.get('/details/:id', verifyToken, checkRoleSuperAdminAdmin, getProductController)
+productRouter.post('/create', verifyToken, checkRoleSuperadmin, createProductController)
+productRouter.patch('/:id', verifyToken, checkRoleSuperadmin, updateProductController)
+productRouter.delete('/:id', verifyToken, checkRoleSuperadmin, deleteProductController)
 
 export { productRouter }

@@ -10,9 +10,14 @@ export const deleteProductImage = async (id, productId) => {
 }
 
 export const deleteProduct = async (id, productId, toast) => {
+  const token = localStorage.getItem('token')
   try {
     await deleteProductImage('', productId)
-    const res = await axios.delete(`${API_ROUTE}/product/${id}`)
+    const res = await axios.delete(`${API_ROUTE}/product/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     toast({
       title: `${res?.data?.message}`,
       status: 'success',

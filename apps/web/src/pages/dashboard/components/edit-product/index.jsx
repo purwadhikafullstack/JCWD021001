@@ -9,6 +9,7 @@ import axios from 'axios'
 import * as Yup from 'yup'
 import { API_ROUTE } from '../../../../services/route'
 import { EditInput } from './component/input'
+import { updateProduct } from '../../services/updateProduct'
 
 export const EditProduct = (props) => {
   // Validation Schema
@@ -37,29 +38,6 @@ export const EditProduct = (props) => {
     }))
   }
 
-  // UPDATE PRODUCT
-  const updateProduct = async (name, price, description, productCategoryId, id) => {
-    try {
-      const res = await axios.patch(`${API_ROUTE}/product/${id}`, {
-        name,
-        price,
-        description,
-        productCategoryId,
-        id,
-      })
-      toast({
-        title: `${res?.data?.message}`,
-        status: 'success',
-        placement: 'bottom',
-      })
-    } catch (err) {
-      toast({
-        title: `${err?.message}`,
-        status: 'error',
-      })
-    }
-  }
-
   // Category value to shown in input
   const [gender, setGender] = useState('')
   const [group, setGroup] = useState('')
@@ -85,6 +63,7 @@ export const EditProduct = (props) => {
       values.description,
       Number(values.productCategoryId),
       product?.id,
+      toast,
     )
     resetForm()
     setSubmitting(false)
