@@ -63,6 +63,7 @@ export const Body = (props) => {
       case 'create-product-category':
         return <CreateProductCategoryGender user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'edit-product-category':
+      case 'view-product-category':
         return <EditProductCategory user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'order-history':
         return <OrderHistory user={props?.user} isSuperAdmin={props?.isSuperAdmin} />

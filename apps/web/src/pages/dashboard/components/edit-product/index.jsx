@@ -1,19 +1,4 @@
-import {
-  Box,
-  Text,
-  Input,
-  Button,
-  FormControl,
-  FormLabel,
-  Textarea,
-  InputGroup,
-  InputLeftElement,
-  HStack,
-  Grid,
-  VStack,
-  useToast,
-  Image,
-} from '@chakra-ui/react'
+import { Box, Text, useToast } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { useFormik } from 'formik'
 import { useParams } from 'react-router-dom'
@@ -21,13 +6,8 @@ import { getProductDetails } from '../../../product-details/services/readProduct
 import { getProductCategories } from '../../../product-list/services/readProductCategory'
 import { getGender } from '../../services/readGender'
 import axios from 'axios'
-import { ImageUpload } from '../image-upload'
 import * as Yup from 'yup'
-import { CreateColour } from './component/create-colour'
 import { API_ROUTE } from '../../../../services/route'
-import { DeleteButtonProdImage } from './component/delete-button'
-import { Colours } from './component/colours'
-import { RenderedCategory, RenderedGender, RenderedGroup } from './component/gender'
 import { EditInput } from './component/input'
 
 export const EditProduct = (props) => {

@@ -12,6 +12,7 @@ export const GroupNameInput = (props) => {
       borderColor={'transparent'}
       focusBorderColor={'transparent'}
       bgColor={'grey.50'}
+      isReadOnly={!props?.editableCategory}
     />
   )
 }
@@ -27,6 +28,7 @@ export const CategoryNameInput = (props) => {
       borderColor={'transparent'}
       focusBorderColor={'transparent'}
       bgColor={'grey.50'}
+      isReadOnly={!props?.editableCategory}
     />
   )
 }

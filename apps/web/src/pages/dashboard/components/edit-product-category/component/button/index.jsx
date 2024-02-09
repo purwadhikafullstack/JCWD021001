@@ -1,5 +1,6 @@
 import { Button, HStack } from '@chakra-ui/react'
 import { createProductCategory } from '../../services/createProductCategory'
+import { useNavigate } from 'react-router-dom'
 
 export const HandleEditButton = (props) => {
   return (
@@ -76,5 +77,47 @@ export const AddNewGroupButton = (props) => {
         </Button>
       )}
     </HStack>
+  )
+}
+
+export const EditableButton = (props) => {
+  return (
+    <>
+      <Button
+        _hover={{
+          bgColor: 'redPure.600',
+        }}
+        w={'5em'}
+        bgColor={'redPure.600'}
+        color={'white'}
+        isLoading={false}
+        onClick={() => {
+          props?.handleEditClickCategory()
+        }}
+      >
+        {!props?.editableCategory ? 'Edit' : 'Cancel'}
+      </Button>
+    </>
+  )
+}
+
+export const ViewButton = (props) => {
+  const navigate = useNavigate()
+  return (
+    <Button
+      _hover={{
+        bgColor: 'redPure.600',
+      }}
+      fontSize={'.8em'}
+      h={'2.5em'}
+      w={'5em'}
+      bgColor={'redPure.600'}
+      color={'white'}
+      onClick={() => {
+        navigate(`/dashboard/product-category/view-product-category/${props?.name.toLowerCase()}`)
+      }}
+    >
+      View
+    </Button>
   )
 }

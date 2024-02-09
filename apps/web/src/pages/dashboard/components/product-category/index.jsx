@@ -24,6 +24,7 @@ import { deleteProductCategory } from '../edit-product-category/services/deleteP
 import { API_ROUTE } from '../../../../services/route'
 import { EditButton } from './component/edit-button'
 import { DeleteButton } from './component/delete-button'
+import { ViewButton } from '../edit-product-category/component/button'
 
 export const ProductCategory = (props) => {
   // Navigate
@@ -102,6 +103,7 @@ export const ProductCategory = (props) => {
                       <HStack>
                         {props?.isSuperAdmin && <EditButton name={el?.name} navigate={navigate} />}
                         {props?.isSuperAdmin && <DeleteButton id={el?.id} toast={toast} />}
+                        {props?.user?.warehouseId && <ViewButton name={el?.name} />}
                       </HStack>
                     </Td>
                   </Tr>

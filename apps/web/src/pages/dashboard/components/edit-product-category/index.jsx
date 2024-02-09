@@ -13,9 +13,14 @@ import {
   NewGroupInput,
   NewProductInput,
 } from './component/input'
-import { AddNewGroupButton, HandleAddSubmitButton, HandleEditButton } from './component/button'
+import {
+  AddNewGroupButton,
+  EditableButton,
+  HandleAddSubmitButton,
+  HandleEditButton,
+} from './component/button'
 
-export const EditProductCategory = () => {
+export const EditProductCategory = (props) => {
   const { epid } = useParams() //params
 
   const toast = useToast() //toast
@@ -71,6 +76,12 @@ export const EditProductCategory = () => {
     }))
   }
 
+  // EDITABLE
+  const [editableCategory, setEditableCategory] = useState(false)
+  const handleEditClickCategory = () => {
+    setEditableCategory(!editableCategory)
+  }
+
   const prodCatData = productCategory?.map((productGroup, index) => {
     return {
       name: productGroup?.name,
@@ -116,9 +127,13 @@ export const EditProductCategory = () => {
                 <Text fontWeight={'bold'} mb={'.5em'}>
                   Group
                 </Text>
-                <GroupNameInput id={item.id} formik={formik} />
-                <SaveText formik={formik} toast={toast} id={item.id} />
-                <DeleteText id={item?.id} toast={toast} />
+                <GroupNameInput id={item.id} formik={formik} editableCategory={editableCategory} />
+                {props?.isSuperAdmin && (
+                  <>
+                    <SaveText formik={formik} toast={toast} id={item.id} />
+                    <DeleteText id={item?.id} toast={toast} />
+                  </>
+                )}
                 <Text fontWeight={'bold'} mb={'.5em'}>
                   Category
                 </Text>
@@ -126,13 +141,21 @@ export const EditProductCategory = () => {
                   {item.category &&
                     item.category.map((child) => (
                       <div key={child.id}>
-                        <CategoryNameInput id={child?.id} formik={formik} />
-                        <SaveChildren id={child?.id} toast={toast} formik={formik} />
-                        <DeleteChildren id={child?.id} itemId={item?.id} toast={toast} />
+                        <CategoryNameInput
+                          id={child?.id}
+                          formik={formik}
+                          editableCategory={editableCategory}
+                        />
+                        {props?.isSuperAdmin && (
+                          <>
+                            <SaveChildren id={child?.id} toast={toast} formik={formik} />
+                            <DeleteChildren id={child?.id} itemId={item?.id} toast={toast} />
+                          </>
+                        )}
                       </div>
                     ))}
                 </VStack>
-                {editable[item?.id] && (
+                {editable[item?.id] && props?.superAdmin && (
                   <NewProductInput
                     id={item?.id}
                     findById={findById}
@@ -142,12 +165,15 @@ export const EditProductCategory = () => {
                   />
                 )}
                 <HStack my={'.5em'}>
-                  <HandleEditButton
-                    handleEditClick={handleEditClick}
-                    editable={editable}
-                    id={item?.id}
-                  />
-                  {editable[item?.id] && (
+                  {props?.isSuperAdmin && (
+                    <HandleEditButton
+                      handleEditClick={handleEditClick}
+                      editable={editable}
+                      id={item?.id}
+                    />
+                  )}
+
+                  {editable[item?.id] && props?.superAdmin && (
                     <HandleAddSubmitButton
                       setFixInput={setFixInput}
                       id={item?.id}
@@ -160,28 +186,36 @@ export const EditProductCategory = () => {
             ))}
           </VStack>
         </form>
-        <Text fontWeight={'bold'} display={editable[gender[0]?.id] ? 'block' : 'none'}>
-          New Group
-        </Text>
-        {editable[gender[0]?.id] && (
-          <NewGroupInput
-            genderId={gender[0]?.id}
-            findById={findById}
-            onFocusInput={onFocusInput}
-            setInput={setInput}
-            handleInput={handleInput}
-            setNewChildren={setNewChildren}
-          />
+        {props?.isSuperAdmin && (
+          <>
+            <Text fontWeight={'bold'} display={editable[gender[0]?.id] ? 'block' : 'none'}>
+              New Group
+            </Text>
+            {editable[gender[0]?.id] && (
+              <NewGroupInput
+                genderId={gender[0]?.id}
+                findById={findById}
+                onFocusInput={onFocusInput}
+                setInput={setInput}
+                handleInput={handleInput}
+                setNewChildren={setNewChildren}
+              />
+            )}
+            <AddNewGroupButton
+              handleEditClick={handleEditClick}
+              editable={editable}
+              genderId={gender[0]?.id}
+              setFixInput={setFixInput}
+              fixInput={fixInput}
+              newChildren={newChildren}
+              toast={toast}
+            />
+            <EditableButton
+              handleEditClickCategory={handleEditClickCategory}
+              editableCategory={editableCategory}
+            />
+          </>
         )}
-        <AddNewGroupButton
-          handleEditClick={handleEditClick}
-          editable={editable}
-          genderId={gender[0]?.id}
-          setFixInput={setFixInput}
-          fixInput={fixInput}
-          newChildren={newChildren}
-          toast={toast}
-        />
       </VStack>
     </Box>
   )
