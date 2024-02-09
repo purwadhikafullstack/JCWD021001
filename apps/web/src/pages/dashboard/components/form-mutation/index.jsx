@@ -175,8 +175,6 @@ export const FormMutation = () => {
     )
   })
 
-  console.log('productName', productNameFilter)
-
   return (
     <Box p={'1em'} bgColor={'white'} minH={'100vh'}>
       <Flex dir={'column'} justifyContent={'space-between'}>

@@ -41,13 +41,14 @@ export const ProductList = (props) => {
 
   // Trigger
   const [trigger, setTrigger] = useState(true)
-  // PRODUCTS
+
   //   PRODUCT NAME FILTER
   const [productNameFilter, setProductNameFilter] = useState('')
 
   const [products, setProducts] = useState([])
   useEffect(() => {
     getProduct(productNameFilter, '', '', '', setProducts, 'name', 'ASC', pageValue, 10)
+    changeBoxToggle(pageValue)
   }, [pageValue, trigger, productNameFilter])
 
   // Toggle Box Colour
@@ -61,6 +62,9 @@ export const ProductList = (props) => {
         [!id]: set[id],
       }))
     }
+    if (pageValue == 1) {
+      setBoxToggle({ [pageValue]: true })
+    }
   }
   console.log(boxToggle)
 
@@ -72,16 +76,18 @@ export const ProductList = (props) => {
             <Heading as={'h1'} fontSize={'1.5em'} fontWeight={'bold'}>
               Product List
             </Heading>
-            <Box>
-              <SearchInput
-                setProductNameFilter={setProductNameFilter}
-                pageValue={pageValue}
-                changeBoxToggle={changeBoxToggle}
-              />
-            </Box>
-            {props.isSuperAdmin && (
-              <CreateButton navigate={'/dashboard/product-list/create-product'} />
-            )}
+            <HStack>
+              <Box>
+                <SearchInput
+                  setProductNameFilter={setProductNameFilter}
+                  pageValue={pageValue}
+                  changeBoxToggle={changeBoxToggle}
+                />
+              </Box>
+              {props.isSuperAdmin && (
+                <CreateButton navigate={'/dashboard/product-list/create-product'} />
+              )}
+            </HStack>
           </Flex>
           <Box
             boxShadow={'md'}
