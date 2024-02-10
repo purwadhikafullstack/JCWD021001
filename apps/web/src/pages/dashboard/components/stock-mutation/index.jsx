@@ -19,6 +19,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { getMutations } from './services/readMutation'
 import { approveMutation } from './services/createMutation'
 import { PaginationList } from '../product-list/components/pagination-list'
+import { ApproveButton } from './component/approve-button'
+import { RejectButton } from './component/reject-button'
 
 export const StockMutation = (props) => {
   // LOCATION
@@ -72,7 +74,7 @@ export const StockMutation = (props) => {
     try {
       const res = await approveMutation(mutationId, isAccepted)
       toast({
-        title: `${res?.data?.title}`,
+        title: `${res?.data?.message}`,
         status: 'success',
         placement: 'bottom',
       })
@@ -99,8 +101,8 @@ export const StockMutation = (props) => {
       }))
     }
   }
+  const [trigger, setTrigger] = useState(false)
 
-  console.log('boxToggle', boxToggle)
   useEffect(() => {
     changeBoxToggle(pageValue)
     handleJuragan(recipientWarehouseId, warehouseId)
@@ -111,7 +113,7 @@ export const StockMutation = (props) => {
         setMutations(data)
       })
     }
-  }, [pageValue, filterValue, requesterWarehouseId, recipientWarehouseId, warehouseId])
+  }, [pageValue, filterValue, requesterWarehouseId, recipientWarehouseId, warehouseId, trigger])
   const renderedTableBody = mutations?.rows?.map((mutation, index) => {
     return (
       <Tr key={index} cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'}>
@@ -136,55 +138,33 @@ export const StockMutation = (props) => {
               {isJuragan
                 ? +mutation?.isAccepted === 1
                   ? 'Accepted'
-                  : +mutation?.isAccepted === 0 && mutation?.isAccepted !== null
+                  : mutation?.isAccepted === 0 && mutation?.isAccepted !== null
                     ? 'Rejected'
                     : mutation?.isAccepted === null
                       ? 'Waiting'
-                      : ''
+                      : 'Rejected'
                 : +mutation?.isAccepted === 1
-                  ? 'History'
-                  : +mutation?.isAccepted === 0
-                    ? 'Rejected'
-                    : 'Waiting'}
+                  ? 'Accepted'
+                  : mutation?.isAccepted === null
+                    ? 'Waiting'
+                    : 'Rejected'}
             </Button>
-            <Button
-              visibility={
-                filterValue == 'app' && mutation?.isAccepted === null ? 'visible' : 'hidden'
-              }
-              _hover={{
-                bgColor: 'transparent',
-              }}
-              fontSize={'.8em'}
-              h={'2.5em'}
-              w={'5em'}
-              border={'1px solid #CD0244'}
-              bgColor={'transparent'}
-              color={'redPure.600'}
-              onClick={() => {
-                isJuragan ? handleApprove(mutation?.id, 1) : null
-              }}
-            >
-              {isJuragan ? 'Approve' : ''}
-            </Button>
-            <Button
-              visibility={
-                filterValue == 'app' && mutation?.isAccepted === null ? 'visible' : 'hidden'
-              }
-              _hover={{
-                bgColor: 'transparent',
-              }}
-              fontSize={'.8em'}
-              h={'2.5em'}
-              w={'5em'}
-              border={'1px solid #CD0244'}
-              bgColor={'transparent'}
-              color={'redPure.600'}
-              onClick={() => {
-                isJuragan ? handleApprove(mutation?.id, 0) : null
-              }}
-            >
-              {isJuragan ? 'Reject' : ''}
-            </Button>
+            <ApproveButton
+              filterValue={filterValue}
+              mutation={mutation}
+              isJuragan={isJuragan}
+              handleApprove={handleApprove}
+              trigger={trigger}
+              setTrigger={setTrigger}
+            />
+            <RejectButton
+              filterValue={filterValue}
+              mutation={mutation}
+              isJuragan={isJuragan}
+              handleApprove={handleApprove}
+              trigger={trigger}
+              setTrigger={setTrigger}
+            />
           </HStack>
         </Td>
       </Tr>
