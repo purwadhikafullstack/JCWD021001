@@ -41,7 +41,6 @@ export const StockManagement = (props) => {
   const navigate = useNavigate()
 
   // TOAST
-  const toast = useToast()
   const [trigger, setTrigger] = useState(false)
 
   // STOCKS

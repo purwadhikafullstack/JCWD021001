@@ -7,7 +7,11 @@ import {
   getStockController,
   getStockReportController,
 } from '../controllers/stock.controller'
-import { checkRoleSuperAdminAdmin, verifyToken } from '../middleware/auth.middleware'
+import {
+  checkRoleSuperAdminAdmin,
+  checkRoleSuperadmin,
+  verifyToken,
+} from '../middleware/auth.middleware'
 
 const stockRouter = Router()
 
@@ -21,6 +25,6 @@ stockRouter.get(
   checkRoleSuperAdminAdmin,
   getStockReportController,
 )
-stockRouter.delete(`/:id`, deleteStockController)
+stockRouter.delete(`/:id`, verifyToken, checkRoleSuperAdminAdmin, deleteStockController)
 
 export { stockRouter }

@@ -3,6 +3,7 @@ import toRupiah from '@develoka/angka-rupiah-js'
 import { useState, useRef } from 'react'
 import { createStockJournal } from '../../services/createStocks'
 import { useNavigate } from 'react-router-dom'
+import { DeleteButton } from '../delete-button'
 export const TableBody = (props) => {
   // NAVIGATE
   const navigate = useNavigate()
@@ -145,34 +146,18 @@ export const TableBody = (props) => {
                     History
                   </Button>
                 )}
-                <Button
-                  _hover={{
-                    bgColor: 'transparent',
-                  }}
-                  fontSize={'.8em'}
-                  h={'2.5em'}
-                  w={'5em'}
-                  border={'1px solid #CD0244'}
-                  bgColor={'transparent'}
-                  color={'redPure.600'}
-                  onClick={() => {
-                    if (isEditable) {
-                      handleSaveClick(
-                        stock?.productId,
-                        props?.warehouseValue ? props?.warehouseValue : props?.warehouseId,
-                        stock?.sizeId,
-                        stock?.colourId,
-                        value,
-                        true,
-                      )
-                      props?.setTrigger(!props?.trigger)
-                    } else {
-                      console.log('DELETE')
-                    }
-                  }}
-                >
-                  {isEditable ? 'Save' : 'Delete'}
-                </Button>
+                <DeleteButton
+                  productId={stock?.productId}
+                  warehouse={props?.warehouseValue ? props?.warehouseValue : props?.warehouseId}
+                  sizeId={stock?.sizeId}
+                  colourId={stock?.colourId}
+                  value={value}
+                  setTrigger={props?.setTrigger}
+                  isEditable={isEditable}
+                  handleSaveClick={handleSaveClick}
+                  trigger={props?.trigger}
+                  stockId={stock?.id}
+                />
               </HStack>
             </Td>
           </Tr>
