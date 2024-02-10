@@ -3,6 +3,7 @@ import {
   Flex,
   HStack,
   Heading,
+  Select,
   Text,
   VStack,
   useStepContext,
@@ -18,14 +19,17 @@ import {
   getCurrentYear,
   getFirstDateOfMonthByAbbreviation,
 } from './component/month-select/utils/services'
+import { getWarehouses } from '../form-mutation/services/readWarehouse'
 
-export const SalesReport = () => {
+export const SalesReport = (props) => {
   // LOCATION
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
 
   // WAREHOUSE ID
-  const [warehouseId, setWarehouseId] = useState(5)
+  const [warehouseId, setWarehouseId] = useState(props?.user?.warehouseId)
+
+  const warehouseValue = queryParams.get('war')
 
   // QUERY PARAMS
   const pageValue = queryParams.get('pa')
@@ -64,6 +68,29 @@ export const SalesReport = () => {
     setEndDate(getMonthDates(new Date(month)).endDate)
   }, [categoryValue, month])
 
+  // Warehouse lists
+  const [warehouses, setWarehouses] = useState([])
+
+  useEffect(() => {
+    getWarehouses('').then((data) => {
+      setWarehouses(data)
+    })
+  }, [])
+
+  // Warehouse options
+  const warehouseOptions = warehouses?.map((warehouse, index) => {
+    return (
+      <option
+        key={index}
+        id={warehouse?.id}
+        value={warehouse?.id}
+        selected={warehouse?.id === +warehouseValue}
+      >
+        {warehouse?.WarehouseAddress?.location}
+      </option>
+    )
+  })
+
   return (
     <Box p={'1em'} h={'100%'} w={'100%'}>
       <Flex flexDir={'column'} justifyContent={'space-between'} h={'100%'}>
@@ -72,13 +99,40 @@ export const SalesReport = () => {
             <Heading as={'h1'} fontSize={'1.5em'}>
               Sales Report
             </Heading>
-            <MonthSelect
-              monthValue={monthValue}
-              setMonth={setMonth}
-              pathName={pathName}
-              pageValue={pageValue}
-              categoryValue={categoryValue}
-            />
+            <HStack>
+              {props?.isSuperAdmin && (
+                <Select
+                  w={'10em'}
+                  placeholder={'Select warehouse'}
+                  id={'recipientWarehouseAddress'}
+                  name={'recipientWarehouseAddress'}
+                  type={'text'}
+                  borderColor={'transparent'}
+                  focusBorderColor={'transparent'}
+                  bgColor={'grey.50'}
+                  onChange={async (e) => {
+                    setWarehouseId(e?.target?.value)
+                    {
+                      e?.target?.value
+                        ? navigate(
+                            `${pathName}?pa=1&cat=${categoryValue}&mo=${monthValue}&war=${e?.target?.value}`,
+                          )
+                        : navigate(`${pathName}?pa=1`)
+                    }
+                  }}
+                >
+                  {warehouseOptions}
+                </Select>
+              )}
+              <MonthSelect
+                warehouseValue={warehouseValue}
+                monthValue={monthValue}
+                setMonth={setMonth}
+                pathName={pathName}
+                pageValue={pageValue}
+                categoryValue={categoryValue}
+              />
+            </HStack>
           </Flex>
           <HStack fontWeight={'bold'} spacing={'1.5em'}>
             <Text
@@ -88,7 +142,9 @@ export const SalesReport = () => {
               cursor={'pointer'}
               onClick={(e) => {
                 changeTextToggle(e.target.id)
-                navigate(`${pathName}?pa=${pageValue}&cat=all&mo=${monthValue}`)
+                navigate(
+                  `${pathName}?pa=${pageValue}&cat=all&mo=${monthValue}&war=${warehouseValue}`,
+                )
               }}
             >
               All
@@ -100,7 +156,9 @@ export const SalesReport = () => {
               cursor={'pointer'}
               onClick={(e) => {
                 changeTextToggle(e.target.id)
-                navigate(`${pathName}?pa=${pageValue}&cat=cat&mo=${monthValue}`)
+                navigate(
+                  `${pathName}?pa=${pageValue}&cat=cat&mo=${monthValue}&war=${warehouseValue}`,
+                )
               }}
             >
               Category
@@ -112,14 +170,19 @@ export const SalesReport = () => {
               cursor={'pointer'}
               onClick={(e) => {
                 changeTextToggle(e.target.id)
-                navigate(`${pathName}?pa=${pageValue}&cat=pro&mo=${monthValue}`)
+                navigate(
+                  `${pathName}?pa=${pageValue}&cat=pro&mo=${monthValue}&war=${warehouseValue}`,
+                )
               }}
             >
               Product
             </Text>
           </HStack>
           <ReportTable
+            user={props?.user}
+            isSuperAdmin={props?.isSuperAdmin}
             categoryValue={categoryValue}
+            warehouseValue={warehouseValue}
             warehouseId={warehouseId}
             pageValue={pageValue}
             startDate={startDate}

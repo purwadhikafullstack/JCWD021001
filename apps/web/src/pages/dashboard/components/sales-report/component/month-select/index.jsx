@@ -26,7 +26,7 @@ export const MonthSelect = (props) => {
           navigate(
             `${props?.pathName}?pa=${props?.pageValue}&cat=${props?.categoryValue}&mo=${
               getAbbreviatedMonth(e.target.value).monthAbbreviation
-            }`,
+            }&war=${props?.warehouseValue}`,
           )
         }}
       >
