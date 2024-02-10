@@ -12,8 +12,8 @@ import {
 } from '../middleware/auth.middleware'
 const productRouter = Router()
 
-productRouter.get('/', verifyToken, checkRoleSuperAdminAdmin, getProductController)
-productRouter.get('/details/:id', verifyToken, checkRoleSuperAdminAdmin, getProductController)
+productRouter.get('/', verifyToken, getProductController)
+productRouter.get('/details/:id', verifyToken, getProductController)
 productRouter.post('/create', verifyToken, checkRoleSuperadmin, createProductController)
 productRouter.patch('/:id', verifyToken, checkRoleSuperadmin, updateProductController)
 productRouter.delete('/:id', verifyToken, checkRoleSuperadmin, deleteProductController)

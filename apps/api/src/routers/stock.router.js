@@ -15,10 +15,10 @@ import {
 
 const stockRouter = Router()
 
-stockRouter.get('/', verifyToken, checkRoleSuperAdminAdmin, getStockController)
+stockRouter.get('/', verifyToken, getStockController)
 stockRouter.post('/', verifyToken, checkRoleSuperAdminAdmin, createStockController)
 stockRouter.get('/:id', verifyToken, checkRoleSuperAdminAdmin, getStockByIdController)
-stockRouter.get('/stock/qty', verifyToken, checkRoleSuperAdminAdmin, getStockByProductIdController)
+stockRouter.get('/stock/qty', verifyToken, getStockByProductIdController)
 stockRouter.get(
   '/stock/report/month',
   verifyToken,

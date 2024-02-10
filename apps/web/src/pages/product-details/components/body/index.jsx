@@ -44,8 +44,14 @@ export const Body = (props) => {
 
   const getStock = async (productId, sizeId, colourId, setStock) => {
     try {
+      const token = localStorage.getItem('token')
       const res = await axios.get(
         `http://localhost:8000/api/stock/stock/qty?productId=${productId}&sizeId=${sizeId}&colourId=${colourId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
       )
       setStock(res?.data?.data)
     } catch (err) {
