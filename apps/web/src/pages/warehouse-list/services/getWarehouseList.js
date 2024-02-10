@@ -12,7 +12,7 @@ export const getWarehouseList = async (
   sortOrder = 'ASC') => {
     
     try {
-        const response = await axios.get(`http://localhost:8000/api/warehouse/list?name=${name}&provinceId=${provinceId}&page=${page}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`, 
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/warehouse/list?name=${name}&provinceId=${provinceId}&page=${page}&pageSize=${pageSize}&sortField=${sortField}&sortOrder=${sortOrder}`, 
         {
             headers: {
               Authorization: `Bearer ${token}`
@@ -26,7 +26,7 @@ export const getWarehouseList = async (
 
 export const getProvince = async (name) => {
   try{
-    const response = await axios.get(`http://localhost:8000/api/user-address/province-list?name=${name}`)
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/user-address/province-list?name=${name}`)
     return response?.data?.data
     
   } catch (err){
@@ -36,7 +36,12 @@ export const getProvince = async (name) => {
 
 export const getWarehouseAdmin = async (warehouseId) => {
   try {
-    const response  = await axios.get(`http://localhost:8000/api/warehouse/admin/${warehouseId}`)
+    const response  = await axios.get(`${import.meta.env.VITE_API_URL}/warehouse/admin/${warehouseId}`, 
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
     return response?.data?.data
   } catch (err){
     console.log(err);
@@ -45,7 +50,7 @@ export const getWarehouseAdmin = async (warehouseId) => {
 
 export const getUnasignedAdmin = async () => {
     try {
-        const response = await axios.get(`http://localhost:8000/api/warehouse/unassigned-admin`, 
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/warehouse/unassigned-admin`, 
         {
             headers: {
               Authorization: `Bearer ${token}`
@@ -60,7 +65,7 @@ export const getUnasignedAdmin = async () => {
 
 export const findOpenCageAndCity = async (latitude, longitude) => {
   try{
-      const response = await axios.get(`http://localhost:8000/api/user-address/address-city?latitude=${latitude}&longitude=${longitude}`)
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/user-address/address-city?latitude=${latitude}&longitude=${longitude}`)
       const address = response.data
       console.log(address)
       return address
@@ -71,9 +76,9 @@ export const findOpenCageAndCity = async (latitude, longitude) => {
 
 export const getProvinceWarehouse = async () => {
   try {
-      const response = await axios.get("http://localhost:8000/api/user-address/province",);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/user-address/province`,);
       const province = response?.data?.data
-
+      
       return province
 
   } catch (err){
@@ -83,7 +88,7 @@ export const getProvinceWarehouse = async () => {
 
 export const getCity = async (id) => {
   try{
-      const response = await axios.get(`http://localhost:8000/api/user-address/city/${id}`)
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/user-address/city/${id}`)
       const city = response?.data?.data
       return city
   } catch (err){

@@ -20,36 +20,37 @@ import {
 } from '@chakra-ui/react'
 import { useFormik } from 'formik'
 import axios from 'axios'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import { CheckBadgeIcon } from '@heroicons/react/24/solid'
+import { EmailScheme } from '../../services/validation'
+import { updateEmail } from '../../services/updateProfile'
+import { setUser } from '../../../../redux/reducer/authReducer'
 
 function UpdateEmail() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const user = useSelector((state) => state.AuthReducer.user)
-  const editCashier = async (email) => {
-    try {
-      await axios.patch(`http://localhost:8000/api/user/update-email/${user.id}`, {
-        email,
-      })
-
-      onClose()
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  const dispatch = useDispatch()
 
   const formik = useFormik({
     initialValues: {
       email: user.email,
     },
+    validationSchema: EmailScheme,
 
-    onSubmit: (values) => {
-      editCashier(values.email)
+    onSubmit: async (values) => {
+      try {
+        const data = await updateEmail(user.id, values.email)
+        if (data) {
+          dispatch(setUser(data))
+        }
+        onClose()
+      } catch (err){
+        console.log(err);
+      }
+      
     },
   })
-
-  console.log('ini user login', user)
 
   return (
     <>

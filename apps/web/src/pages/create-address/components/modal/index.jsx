@@ -4,22 +4,19 @@ import React, { useEffect } from 'react';
 
 function ModalMapAddressEntry() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  // useEffect hook to open the modal when the component mounts
   useEffect(() => {
     onOpen();
-  }, [onOpen]); // Dependency array ensures this only runs once when the component mounts
+  }, [onOpen]); 
 
   return (
     <>
-      {/* Remove the button that manually opens the modal, as it's not needed */}
       
       <Modal isOpen={isOpen} onClose={onClose} size={{base: 'xs', md: 'md'}}>
         <ModalOverlay />
         <ModalContent>
           <ModalBody mt={'24px'}>
-            <Text fontWeight={'700'} fontSize={{base: '14px', md: '16px'}} textAlign={'center'}>
-                Select Your Address Using the Map or Automatically Fill with Your Current Location
+            <Text  fontSize={{base: '14px', md: '16px'}} textAlign={'center'}>
+                Select your address using the Map or automatically fill with Your Current Location
             </Text>
           </ModalBody>
           <ModalFooter display={'flex'} justifyContent={'center'}>

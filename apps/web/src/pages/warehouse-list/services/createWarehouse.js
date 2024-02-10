@@ -4,7 +4,7 @@ export const createWarehouse = async (location, cityId, postalCode, latitude, lo
   const token = localStorage.getItem('token')
   try {
     const response = await axios.post(
-      'http://localhost:8000/api/warehouse/',
+      `${import.meta.env.VITE_API_URL}/warehouse/`,
       {
         location,
         cityId,

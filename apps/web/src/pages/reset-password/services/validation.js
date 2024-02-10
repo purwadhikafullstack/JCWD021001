@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-export const PasswordSchema = Yup.object().shape({
+export const passwordSchema = Yup.object().shape({
 	password: Yup.string()
 		.required("Please Enter your password")
 		.test(

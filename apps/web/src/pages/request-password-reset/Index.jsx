@@ -17,13 +17,14 @@ import {
 import model from '../../assets/images/signup-model.jpeg'
 import { EnvelopeIcon } from '@heroicons/react/24/outline'
 import { useFormik } from 'formik'
-import { createRequest } from './services/CreateRequestResetPassword'
 import logo from '../../assets/images/logo.png'
 import { useState } from 'react'
 import { SuccessModal } from './services/PopUpModal'
 import { ErrorModal } from './services/PopUpModal'
 import { BeatLoader } from 'react-spinners'
-import { EmailScheme } from './services/Validation'
+import { emailSchema } from './services/validation'
+import { createRequestReset } from './services/createRequestResetPassword'
+
 function RequestPasswordReset() {
   const {
     isOpen: isSuccessModalOpen,
@@ -47,10 +48,10 @@ function RequestPasswordReset() {
     initialValues: {
       email: '',
     },
-    validationSchema: EmailScheme,
+    validationSchema: emailSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
-        await createRequest(values.email, setLoading, openSuccessModal, openErrorModal)
+        await createRequestReset(values.email, setLoading, openSuccessModal, openErrorModal)
       } catch {
         console.log('gagal error')
       }
@@ -109,7 +110,7 @@ function RequestPasswordReset() {
             </Text>
             <form onSubmit={formik.handleSubmit}>
               <FormControl
-                isInvalid={formik.touched.username && formik.errors.username}
+                isInvalid={!!(formik.touched.username && formik.errors.username)}
                 marginBottom={'32px'}
               >
                 <InputGroup marginBottom={'8px'}>
@@ -163,7 +164,7 @@ function RequestPasswordReset() {
                       color={'#ffffff'}
                       loading={loading}
                       cssOverride={override}
-                      size={{base: 7, md: 10}}
+                      size={{ base: 7, md: 10 }}
                       aria-label="spiner"
                       data-testid="loader"
                     />

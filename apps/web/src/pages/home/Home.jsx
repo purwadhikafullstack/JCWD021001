@@ -70,7 +70,6 @@ function Home() {
             navigation={true}
             modules={[Pagination, Navigation]}
             className="mySwiper"
-            zIndex={0}
           >
             <SwiperSlide>
               <Image src={swiper1} objectFit={'cover'} height={'712px'} width={'100%'} />

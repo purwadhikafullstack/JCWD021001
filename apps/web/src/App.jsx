@@ -86,7 +86,6 @@ function App() {
               }
             />
 
-            <Route path="/warehouse-list" element={<WarehouseList />} />
             <Route path="/warehouse-list/create-warehouse" element={<CreateWarehouse />} />
             <Route path="/edit-warehouse" element={<EditWarehousePage />} />
           </Routes>

@@ -1,15 +1,18 @@
 import { AbsoluteCenter, Box, Button, Flex, Icon, Input, InputGroup, Image, Avatar } from '@chakra-ui/react'
 import axios from 'axios'
 import { useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { PhotoIcon } from '@heroicons/react/24/solid'
+import { setUser } from '../../../../redux/reducer/authReducer'
+import toast from 'react-hot-toast'
+
 
 function UploadAvatar() {
   const user = useSelector((state) => state.AuthReducer.user)
   const [fieldImage, setFieldImage] = useState(null)
   const [imagePreview, setImagePreview] = useState(null)
   const inputRef = useRef(null)
-
+  const dispatch = useDispatch()
   const token = localStorage.getItem('token')
   const handleImageClick = (event) => {
     event.stopPropagation()
@@ -28,7 +31,6 @@ function UploadAvatar() {
     try {
       let formData = new FormData()
       formData.append('avatar', fieldImage)
-
       const { data } = await axios.patch(
         `${import.meta.env.VITE_API_URL}user/upload-avatar/${user.id}`,
         formData,
@@ -38,9 +40,10 @@ function UploadAvatar() {
           },
         },
       )
-      alert(data?.message)
+      dispatch(setUser(data?.data));
+      toast.success(data?.message)
     } catch (err) {
-      console.log(err)
+      toast.error(err?.response?.data?.message)
     }
   }
 
@@ -65,16 +68,6 @@ function UploadAvatar() {
                 objectFit={'cover'}
                 objectPosition={'center'}
               />
-              <Box
-                position={'absolute'}
-                top={0}
-                left={0}
-                right={0}
-                bottom={0}
-                onClick={(event) => handleImageClick(event)}
-                cursor={'pointer'}
-                zIndex={'1'}
-              />
             </>
           ) : (
             <>
@@ -94,9 +87,10 @@ function UploadAvatar() {
               name={user?.username}
               bg="rgba(40, 96, 67, 1)"
               src={'https://bit.ly/broken-link'}
-              w={'48px'}
-              h={'48px'}
+              w={'100%'}
+              h={'100%'}
               color={'white'}
+              fontSize={'30px'}
             />
               )}
               </>
@@ -144,6 +138,9 @@ function UploadAvatar() {
           onClick={() => {
             setFieldImage(null)
             setImagePreview(null)
+            if (inputRef.current) {
+              inputRef.current.value = '';
+            }
           }}
         >
           Remove

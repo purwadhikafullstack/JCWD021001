@@ -1,8 +1,8 @@
 import {
   Box,
   Button,
-  Flex,
-  Grid,
+  FormControl,
+  FormErrorMessage,
   Input,
   Modal,
   ModalBody,
@@ -20,7 +20,7 @@ import { getCity, getProvince } from '../../../create-address/services/readUserA
 import { useEffect, useState } from 'react'
 import { useFormik } from 'formik'
 import { updateUserAddress } from '../../services/updateUserAddress'
-import { updateMainAddress } from '../../services/updateUserAddress'
+import { addressSchema } from '../../services/validation'
 
 function FormEditAddress({
   id,
@@ -62,6 +62,7 @@ function FormEditAddress({
       phoneNumber: phoneNumber || '',
       postalCode: postalCode || '',
     },
+    validationSchema: addressSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
         console.log('Formik Submission Values:', values)
@@ -74,6 +75,7 @@ function FormEditAddress({
           values.postalCode,
         )
         onAddressUpdated()
+        onClose()
       } catch (err) {
         console.log(err.message)
       }
@@ -90,9 +92,9 @@ function FormEditAddress({
         variant={'outline'}
         border={'1px solid #8D8B8B'}
         color={'#8D8B8B'}
-        fontSize={{base: '12px',md: '14px'}}
+        fontSize={{ base: '12px', md: '14px' }}
         fontWeight={'700'}
-        padding={{base: '10px 14px', md:'12px 16px'}}
+        padding={{ base: '10px 14px', md: '12px 16px' }}
         _hover={'none'}
         _active={'none'}
       >
@@ -114,31 +116,47 @@ function FormEditAddress({
                   <Text fontSize={'16px'} fontWeight={'700'} color={'brand.grey350'} mb={'8px'}>
                     Full Name
                   </Text>
-                  <Input
-                    name="fullName"
-                    placeholder="Type your full name here"
-                    _placeholder={{ color: 'brand.grey350' }}
-                    bg={'brand.grey100'}
-                    variant={'filled'}
-                    mb={'32px'}
-                    value={formik.values.fullName}
-                    onChange={formik.handleChange}
-                  />
+                  <FormControl
+                    isInvalid={formik.touched.fullName && formik.errors.fullName}
+                    mb={{ base: '0', md: '32px' }}
+                  >
+                    <Input
+                      name="fullName"
+                      placeholder="Type your full name here"
+                      _placeholder={{ color: 'brand.grey350' }}
+                      bg={'brand.grey100'}
+                      variant={'filled'}
+                      mb={'32px'}
+                      value={formik.values.fullName}
+                      onChange={formik.handleChange}
+                    />
+                    {formik.touched.fullName && formik.errors.fullName && (
+                      <FormErrorMessage>{formik.errors.fullName}</FormErrorMessage>
+                    )}
+                  </FormControl>
                 </Box>
                 <Box>
                   <Text fontSize={'16px'} fontWeight={'700'} color={'brand.grey350'} mb={'8px'}>
                     Mobile Phone
                   </Text>
-                  <Input
-                    placeholder="Type your mobile phone number here"
-                    _placeholder={{ color: 'brand.grey350' }}
-                    bg={'brand.grey100'}
-                    variant={'filled'}
-                    mb={'24px'}
-                    name="phoneNumber"
-                    value={formik.values.phoneNumber}
-                    onChange={formik.handleChange}
-                  />
+                  <FormControl
+                    isInvalid={formik.touched.phoneNumber && formik.errors.phoneNumber}
+                    marginBottom={'24px'}
+                  >
+                    <Input
+                      placeholder="Type your mobile phone number here"
+                      _placeholder={{ color: 'brand.grey350' }}
+                      bg={'brand.grey100'}
+                      variant={'filled'}
+                      mb={'24px'}
+                      name="phoneNumber"
+                      value={formik.values.phoneNumber}
+                      onChange={formik.handleChange}
+                    />
+                    {formik.touched.phoneNumber && formik.errors.phoneNumber && (
+                      <FormErrorMessage>{formik.errors.phoneNumber}</FormErrorMessage>
+                    )}
+                  </FormControl>
                 </Box>
               </Box>
               <Text fontSize={'16px'} fontWeight={'700'} color={'brand.grey350'} mb={'24px'}>
@@ -167,56 +185,78 @@ function FormEditAddress({
                   <Text fontSize={'16px'} fontWeight={'700'} color={'brand.grey350'} mb={'8px'}>
                     City
                   </Text>
-                  <Select
-                    value={selectedCity}
-                    placeholder="Select a City"
-                    bg={'brand.grey100'}
-                    variant={'filled'}
-                    mb={'24px'}
-                    name="cityId"
-                    onChange={(e) => {
-                      setSelectedCity(e.target.value)
-                      formik.handleChange(e)
-                    }}
+                  <FormControl
+                    isInvalid={formik.touched.cityId && formik.errors.cityId}
+                    marginBottom={'24px'}
                   >
-                    {citylist?.map((city) => (
-                      <option key={city.id} value={city.id}>
-                        {city.name}
-                      </option>
-                    ))}
-                  </Select>
+                    <Select
+                      value={selectedCity}
+                      placeholder="Select a City"
+                      bg={'brand.grey100'}
+                      variant={'filled'}
+                      mb={'24px'}
+                      name="cityId"
+                      onChange={(e) => {
+                        setSelectedCity(e.target.value)
+                        formik.handleChange(e)
+                      }}
+                    >
+                      {citylist?.map((city) => (
+                        <option key={city.id} value={city.id}>
+                          {city.name}
+                        </option>
+                      ))}
+                    </Select>
+                    {formik.touched.cityId && formik.errors.cityId && (
+                      <FormErrorMessage>{formik.errors.cityId}</FormErrorMessage>
+                    )}
+                  </FormControl>
                   <Text fontSize={'16px'} fontWeight={'700'} color={'brand.grey350'} mb={'8px'}>
                     Postal Code
                   </Text>
-                  <Input
-                    placeholder="Type a postal code"
-                    _placeholder={{ color: 'brand.grey350' }}
-                    bg={'brand.grey100'}
-                    variant={'filled'}
-                    mb={'24px'}
-                    name="postalCode"
-                    value={formik.values.postalCode}
-                    onChange={formik.handleChange}
-                  />
+                  <FormControl
+                    isInvalid={formik.touched.postalCode && formik.errors.postalCode}
+                    mb={{ base: '', md: '24px' }}
+                  >
+                    <Input
+                      placeholder="Type a postal code"
+                      _placeholder={{ color: 'brand.grey350' }}
+                      bg={'brand.grey100'}
+                      variant={'filled'}
+                      mb={'24px'}
+                      name="postalCode"
+                      value={formik.values.postalCode}
+                      onChange={formik.handleChange}
+                    />
+                    {formik.touched.postalCode && formik.errors.postalCode && (
+                      <FormErrorMessage>{formik.errors.postalCode}</FormErrorMessage>
+                    )}
+                  </FormControl>
                 </Box>
                 <Box>
                   <Text fontSize={'16px'} fontWeight={'700'} color={'brand.grey350'} mb={'8px'}>
                     Address (Ex : Street, Residence, number of house)
                   </Text>
-                  <Textarea
-                    placeholder="Type your address"
-                    name="specificAddress"
-                    _placeholder={{ color: 'brand.grey350' }}
-                    bg={'brand.grey100'}
-                    variant={'filled'}
-                    h={'210px'}
-                    value={formik.values.specificAddress}
-                    onChange={formik.handleChange}
-                  />
+                  <FormControl
+                    isInvalid={formik.touched.specificAddress && formik.errors.specificAddress}
+                  >
+                    <Textarea
+                      placeholder="Type your address"
+                      name="specificAddress"
+                      _placeholder={{ color: 'brand.grey350' }}
+                      bg={'brand.grey100'}
+                      variant={'filled'}
+                      h={'210px'}
+                      value={formik.values.specificAddress}
+                      onChange={formik.handleChange}
+                    />
+                    {formik.touched.specificAddress && formik.errors.specificAddress && (
+                      <FormErrorMessage>{formik.errors.specificAddress}</FormErrorMessage>
+                    )}
+                  </FormControl>
                 </Box>
               </Box>
             </ModalBody>
-
             <ModalFooter>
               <Button
                 width={'168px'}
@@ -234,14 +274,13 @@ function FormEditAddress({
               </Button>
 
               <Button
-                type="sumbit"
+                type="submit"
                 width={'168px'}
                 padding={'12px 16px'}
                 bgColor={'brand.lightred'}
                 color={'white'}
                 _hover={{ bg: '#f50f5a' }}
                 _active={{ opacity: '70%' }}
-                onClick={onClose}
               >
                 Save
               </Button>

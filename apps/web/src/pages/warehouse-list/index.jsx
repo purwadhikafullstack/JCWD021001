@@ -58,10 +58,10 @@ function WarehouseList() {
   const navigate = useNavigate()
 
   return (
-    <Box bg={'#F1F1F1'} height={'100%'}>
+    <Box bg={'#F1F1F1'} height={'100%'} maxW={{base: '100vw', md: '65vw', lg: '100vw'}}>
       <Box padding={{base: '0px 10px', md:'0px 30px'}} marginBottom={'150px'}>
         <Box className="top-dashboard" mt={'36px'} mb={'24px'}>
-          <Box display={{ base: 'block', md: 'none' }}>
+          <Box display={{ base: 'block', lg: 'none' }}>
             <Flex justifyContent={'space-between'} align={'center'} mb={'10px'}>
               <Heading fontSize={{ base: '16px', md: '24px' }} fontWeight={'700'}>
                 Warehouse List
@@ -101,7 +101,7 @@ function WarehouseList() {
             
           </Box>
 
-          <Box display={{ base: 'none', md: 'block' }}>
+          <Box display={{ base: 'none', lg: 'block' }}>
             <Flex justifyContent={'space-between'}>
               <Flex>
                 <Text fontSize={'24px'} fontWeight={'700'}>

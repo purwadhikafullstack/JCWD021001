@@ -26,6 +26,7 @@ import { useSelector } from 'react-redux'
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
 import { useState } from 'react'
+import { PasswordScheme } from '../../services/validation'
 
 function UpdatePassword() {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -48,6 +49,7 @@ function UpdatePassword() {
     initialValues: {
       username: '',
     },
+    validationSchema: PasswordScheme,
 
     onSubmit: (values) => {
       editPassword(values.password)

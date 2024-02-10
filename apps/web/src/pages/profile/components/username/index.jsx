@@ -20,31 +20,32 @@ import {
 } from '@chakra-ui/react'
 import { useFormik } from 'formik'
 import axios from 'axios'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { ChevronRightIcon } from '@chakra-ui/icons'
+import { updateUsername } from '../../services/updateProfile'
+import { setUser } from '../../../../redux/reducer/authReducer'
+import { UsernameScheme } from '../../services/validation'
+import toast from 'react-hot-toast'
 
 function UpdateUsername() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const user = useSelector((state) => state.AuthReducer.user)
-  const editCashier = async (username) => {
-    try {
-      await axios.patch(`http://localhost:8000/api/user/update-username/${user.id}`, {
-        username,
-      })
-
-      onClose()
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
+  const dispatch = useDispatch()
   const formik = useFormik({
     initialValues: {
       username: user.username,
     },
-
-    onSubmit: (values) => {
-      editCashier(values.username)
+    validationSchema: UsernameScheme,
+    onSubmit: async (values) => {
+      try {
+        const data = await updateUsername(user.id, values.username)
+        if (data) {
+          dispatch(setUser(data))
+        }
+        onClose()
+      } catch (err) {
+        toast.error(err?.response?.data?.message)
+      }
     },
   })
 

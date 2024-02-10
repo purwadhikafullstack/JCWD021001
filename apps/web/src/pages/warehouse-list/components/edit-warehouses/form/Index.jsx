@@ -63,7 +63,7 @@ function FormCreateWarehouse({ warehouse, address, lat, lng }) {
           lng,
           values.name,
         )
-        navigate('/warehouse-list', { state: { warehouseCreated: true } })
+        navigate('/dashboard/warehouse-list', { state: { warehouseCreated: true } })
       } catch (err) {
         console.log(err.message)
       }
@@ -189,7 +189,7 @@ function FormCreateWarehouse({ warehouse, address, lat, lng }) {
             borderColor={'brand.lightred'}
             _hover={{ borderColor: '#f50f5a', color: '#f50f5a' }}
             _active={{ opacity: '70%' }}
-            onClick={() => navigate('/manage-address')}
+            onClick={() => navigate('/dashbouar/warehouse-list')}
           >
             Cancel
           </Button>

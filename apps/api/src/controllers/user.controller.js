@@ -13,60 +13,67 @@ import {
 
 export const updateUsernameController = async (req, res) => {
   try {
-    const { id } = req.params
-    const { username } = req.body
-    await updateUsernameService(id, username)
+    const { id } = req.params;
+    const { username } = req.body;
+    const updatedUser = await updateUsernameService(id, username); 
     return res.status(200).json({
       message: 'Success',
-    })
+      data: updatedUser, 
+    });
   } catch (err) {
     return res.status(500).json({
       message: err.message,
-    })
+    });
   }
-}
+};
+
 export const updateEmailController = async (req, res) => {
   try {
-    const { id } = req.params
-    const { email } = req.body
-    await updateEmailService(id, email)
+    const { id } = req.params;
+    const { email } = req.body;
+    const updatedUser = await updateEmailService(id, email); 
     return res.status(200).json({
       message: 'Success',
-    })
+      data: updatedUser, 
+    });
   } catch (err) {
     return res.status(500).json({
       message: err.message,
-    })
+    });
   }
-}
+};
+
 export const updatePasswordController = async (req, res) => {
   try {
-    const { id } = req.params
-    const { password } = req.body
-    await updatePasswordService(id, password)
+    const { id } = req.params;
+    const { password } = req.body;
+    const updatedUser = await updatePasswordService(id, password); 
     return res.status(200).json({
       message: 'Success',
-    })
+      data: updatedUser, 
+    });
   } catch (err) {
     return res.status(500).json({
       message: err.message,
-    })
+    });
   }
-}
+};
 
 export const uploadAvatarFileController = async (req, res) => {
   try {
-    const { id } = req.params
-    await uploadAvatarFileService(id, req.file?.filename)
+    const { id } = req.params;
+    const updatedUser = await uploadAvatarFileService(id, req.file?.filename); // Capture the updated user data from the service
     return res.status(200).json({
-      message: 'success',
-    })
+      message: 'Success',
+      data: updatedUser, 
+    });
   } catch (err) {
     return res.status(500).json({
       message: err.message,
-    })
+    });
   }
-}
+};
+
 
 export const findAdminController = async (req, res) => {
   try {

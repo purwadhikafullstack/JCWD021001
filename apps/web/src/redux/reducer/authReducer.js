@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const initialState = {
   user: {
@@ -42,13 +42,16 @@ export const AuthReducer = createSlice({
     keepLoginSuccess: (state) => {
       state.isLogin = true;
     },
+    updateAvatar: (state, action) => {
+      state.user.avatar = action.payload;
+    },
   },
 });
 
 export const login = (email, password) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post("http://localhost:8000/api/auth/login", {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}auth/login`, {
         email,
         password,
       });
@@ -58,7 +61,8 @@ export const login = (email, password) => {
       dispatch(setUser(res?.data?.data?.user));
       dispatch(loginSuccess());
     } catch (err) {
-      alert(err?.response?.data);
+      toast.error(err?.response?.data)
+      throw err
     }
   };
 };
@@ -69,7 +73,7 @@ export const keepLogin = () => {
       const token = localStorage.getItem("token");
 
       if (token) {
-        const res = await axios.get("http://localhost:8000/api/auth/keep-login", {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}auth/keep-login`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -80,12 +84,12 @@ export const keepLogin = () => {
       }
     } catch (err) {
       localStorage.removeItem("token");
-      alert(err?.response?.data);
+      toast.error(err?.response?.data);
     }
   };
 };
 
-export const { loginSuccess, logoutSuccess, setUser, keepLoginSuccess } =
+export const { loginSuccess, logoutSuccess, setUser, keepLoginSuccess, updateAvatar} =
   AuthReducer.actions;
 
 export default AuthReducer.reducer;

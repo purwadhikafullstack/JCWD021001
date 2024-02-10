@@ -2,12 +2,12 @@ import { Box, Button, Flex, Input, Select, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import FormCreateWarehouse from "./form/Index";
 // import FormWarehouse from "./form-disabled/Index";
-import { BreadCrumbs } from "../breadcrumbs";
 import { findOpenCageAndCity } from "../../services/getWarehouseList";
 import MapWarehouse from "./map";
 import ModalNotif from "./modal";
 import FormInitialWarehouse from "./form-disabled/Index";
 import { useLocation, useParams } from "react-router-dom";
+import { BreadCrumbsEditWarehouse } from "./breadcrumbs";
 
 function EditWarehousePage(){
 
@@ -75,9 +75,9 @@ function EditWarehousePage(){
                 marginTop={'24px'}
                 marginBottom={'40px'}>
                     <Text fontSize={'24px'}
-                    fontWeight={'700'}>Create Warehouse</Text>
+                    fontWeight={'700'}>Edit Warehouse</Text>
                     <Flex>
-                        <BreadCrumbs/>
+                        <BreadCrumbsEditWarehouse/>
                     </Flex>
                 </Flex>
                 <Box width={'100%'}
