@@ -174,10 +174,12 @@ export const StockMutation = (props) => {
   const [textToggle, setTextToggle] = useState({ Request: true })
   // Handle Toggle
   const changeTextToggle = (id) => {
-    setTextToggle((set) => ({
-      [id]: !set[id],
-      [!id]: set[id],
-    }))
+    if (filterValue !== id) {
+      setTextToggle((set) => ({
+        [id]: true,
+        [!id]: false,
+      }))
+    }
   }
 
   return (
