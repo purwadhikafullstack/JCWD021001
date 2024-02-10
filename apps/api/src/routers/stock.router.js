@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import {
   createStockController,
+  deleteStockController,
   getStockByIdController,
   getStockByProductIdController,
   getStockController,
@@ -20,5 +21,6 @@ stockRouter.get(
   checkRoleSuperAdminAdmin,
   getStockReportController,
 )
+stockRouter.delete(`/:id`, deleteStockController)
 
 export { stockRouter }

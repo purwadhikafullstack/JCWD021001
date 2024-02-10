@@ -1,5 +1,6 @@
 import {
   createStockQuery,
+  deleteStockQuery,
   getStockByIdQuery,
   getStockByProductIdQuery,
   getStockQuery,
@@ -36,6 +37,15 @@ export const getStockByIdService = async (id) => {
 export const getStockByProductIdService = async (productId, sizeId, colourId) => {
   try {
     const res = await getStockByProductIdQuery(productId, sizeId, colourId)
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
+export const deleteStockService = async (id) => {
+  try {
+    const res = await deleteStockQuery(id)
     return res
   } catch (err) {
     throw err
