@@ -9,14 +9,22 @@ export const createMutation = async (
   stockId,
 ) => {
   try {
-    const res = await axios.post(`${API_ROUTE}/mutation`, {
-      requesterWarehouseId,
-      recipientWarehouseId,
-      qty,
-      isAccepted,
-      stockId,
-    })
-    console.log('response-create-mutation', res)
+    const token = localStorage.getItem('token')
+    const res = await axios.post(
+      `${API_ROUTE}/mutation`,
+      {
+        requesterWarehouseId,
+        recipientWarehouseId,
+        qty,
+        isAccepted,
+        stockId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
     const mutation = res?.data
     return mutation
   } catch (err) {
@@ -26,9 +34,18 @@ export const createMutation = async (
 
 export const approveMutation = async (mutationId, isAccepted) => {
   try {
-    const res = await axios.patch(`${API_ROUTE}/mutation/${mutationId}`, {
-      isAccepted,
-    })
+    const token = localStorage.getItem('token')
+    const res = await axios.patch(
+      `${API_ROUTE}/mutation/${mutationId}`,
+      {
+        isAccepted,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
     const result = res?.data
     return result
   } catch (err) {
