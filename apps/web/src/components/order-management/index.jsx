@@ -52,6 +52,7 @@ const OrderManagementBody = ({
     isOpen,
     onClose,
     handleSendButton,
+    handleCanceltOnProcess,
   } = useOrderManagementState({
     orderData,
     onOrderNumberSubmit,
@@ -61,8 +62,8 @@ const OrderManagementBody = ({
 
   return (
     <Box display={'flex'}>
-      <Box w={{ base: 'none', xl: '15vw' }} minH={'100vh'} bgColor={'white'}></Box>
-      <Box w={{ base: 'full', xl: '85vw' }} minH={'100vh'} padding={'24px'}>
+      {/* <Box w={{ base: 'none', xl: '15vw' }} minH={'100vh'} bgColor={'white'}></Box> */}
+      <Box w={'100%'} minH={'100vh'} padding={'24px'}>
         <Box display={'flex'} flexDirection={'column'} gap={'16px'}>
           <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
             <Text fontFamily={'heading'} fontWeight={'700'} fontSize={'22px'}>
@@ -157,6 +158,7 @@ const OrderManagementBody = ({
                   expandedProducts={expandedProducts}
                   handleToggleProducts={handleToggleProducts}
                   handleSendButton={handleSendButton}
+                  handleCanceltOnProcess={handleCanceltOnProcess}
                   // handleAcceptButton={handleAcceptButton}
                   // handleRejectButton={handleRejectButton}
                 />
@@ -165,6 +167,7 @@ const OrderManagementBody = ({
                   expandedProducts={expandedProducts}
                   handleToggleProducts={handleToggleProducts}
                   handleSendButton={handleSendButton}
+                  handleCanceltOnProcess={handleCanceltOnProcess}
                   // handleAcceptButton={handleAcceptButton}
                   // handleRejectButton={handleRejectButton}
                 />

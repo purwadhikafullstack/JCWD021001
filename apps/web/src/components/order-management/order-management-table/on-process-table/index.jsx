@@ -21,6 +21,7 @@ const OnProcessTable = ({
   expandedProducts,
   handleToggleProducts,
   handleSendButton,
+  handleCanceltOnProcess
   // handleAcceptButton,
   // handleRejectButton,
 }) => {
@@ -204,7 +205,7 @@ const OnProcessTable = ({
                       size={'sm'}
                       border={'1px solid #CD0244'}
                       color={'#CD0244'}
-                      // onClick={() => handleRejectButton(items?.id)}
+                      onClick={() => handleCanceltOnProcess(items?.id)}
                     >
                       Cancel
                     </Button>

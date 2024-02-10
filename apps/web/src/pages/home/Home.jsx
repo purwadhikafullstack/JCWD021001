@@ -4,7 +4,7 @@ import { PlusIcon } from '@heroicons/react/24/outline'
 import { StarIcon } from '@heroicons/react/24/solid'
 import CategoryList from './components/category-list'
 // import './Home.css';
-import { Navbar } from '../../components/navbar'
+import { Navbar } from '../../components/Navbar'
 import Footer from '../../components/Footer/Footer'
 import { Box, Flex, Text, Image, Stack, Button, Icon, Grid } from '@chakra-ui/react'
 import swiper1 from '../../assets/images/homepage-images/swiper-1.jpeg'

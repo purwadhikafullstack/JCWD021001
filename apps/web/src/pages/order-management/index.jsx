@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Box, Text, Button, ButtonGroup, Icon } from '@chakra-ui/react'
-import { Navbar } from '../../components/navbar'
+import { Navbar } from '../../components/Navbar'
 import OrderManagementBody from '../../components/order-management'
 import { getOrderManagement } from './service/getOrderManagement'
 import { getWarehouse } from './service/getWarehouse'
-
 
 const OrderManagement = () => {
   const [orderData, setOrderData] = useState([])
@@ -73,7 +72,6 @@ const OrderManagement = () => {
   }
   return (
     <>
-      <Navbar />
       <Box bgColor={'brand.grey100'} maxW={'100vw'} minH={'100vh'}>
         <OrderManagementBody
           orderData={orderData}

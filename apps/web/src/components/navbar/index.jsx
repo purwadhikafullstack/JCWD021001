@@ -49,8 +49,10 @@ import { useState, useEffect } from 'react'
 import { getCart } from '../../pages/cart/services/getCart'
 import ShoppingCartBox from './components/shopping-cart-box'
 import AvatarNavbar from './components/avatar-menu'
-import { useCart } from './components/use-cart'
+import { useCart } from '../cart-table/service/cartContext'
 import NotificationBox from './components/notification-box'
+
+
 
 export const Navbar = (props) => {
   const user = useSelector((state) => state.AuthReducer.user)
@@ -58,7 +60,7 @@ export const Navbar = (props) => {
   const location = useLocation()
   const navigate = useNavigate()
   // edit by andri
-  // const { cartData, cartCount } = useCart()
+  const { cartData, cartCount } = useCart()
 
   return (
     <Box p={'1em 2em'} bg={'white'} position={'static'}>
@@ -77,7 +79,7 @@ export const Navbar = (props) => {
             <SearchModal />
             <HStack fontSize={'1.5em'} spacing={'.5em'} position="relative">
               <Box>
-                {/* <ShoppingCartBox cartData={cartData} cartCount={cartCount} /> */}
+                <ShoppingCartBox cartData={cartData} cartCount={cartCount} />
               </Box>
             </HStack>
             <HStack fontSize={'1.5em'} spacing={'.5em'} position="relative">

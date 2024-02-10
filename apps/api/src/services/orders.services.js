@@ -158,12 +158,12 @@ export const calculationCheckStockService = async (orderId) => {
     for (const orderProduct of orders.OrderProducts) {
       const { quantity, stocks } = orderProduct
       const { productId } = stocks
-      console.log('stocks', stocks.id);
 
       const selectedWarehouse = warehouse.find((wh) => wh.id === orders.warehouseId)
 
       if (selectedWarehouse) {
         const selectedStock = selectedWarehouse.stock.find((stock) => stock.productId === productId)
+        console.log('stock', selectedStock);
 
         if (selectedStock) {
           const availableQuantity = selectedStock.qty
@@ -210,7 +210,6 @@ export const calculationCheckStockService = async (orderId) => {
               )
 
               if (nextNearestWarehouseStock) {
-                console.log('halo', nextNearestWarehouseStock.qty)
                 nearestWarehouse = nextNearestWarehouse.warehouse
                 nearestWarehouseQuantity =
                   nextNearestWarehouseStock.qty > nearestWarehouseQuantity
@@ -266,8 +265,8 @@ export const calculationCheckStockService = async (orderId) => {
     }
 
     return {
-      orders,
-      warehouse,
+      // orders,
+      // warehouse,
       checkStockResults,
     }
   } catch (err) {

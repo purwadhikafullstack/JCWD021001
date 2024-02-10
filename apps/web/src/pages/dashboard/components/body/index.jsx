@@ -16,6 +16,7 @@ import WarehouseList from '../../../warehouse-list'
 import { AdminRoute } from '../../../../components/Auth/ProtectedRoute'
 import { SalesReport } from '../sales-report'
 import { StockReport } from '../stock-report'
+import OrderManagement from '../../../order-management'
 
 export const Body = (props) => {
   const renderComponent = () => {
@@ -50,6 +51,8 @@ export const Body = (props) => {
         return <SalesReport />
       case 'stock-report':
         return <StockReport />
+      case 'order-management':
+        return <OrderManagement />
     }
   }
   const renderComponentAgain = () => {

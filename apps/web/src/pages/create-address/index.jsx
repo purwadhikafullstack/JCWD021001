@@ -5,7 +5,7 @@ import FormCreateAddress from "./components/form/Index";
 import { useEffect, useState } from "react";
 import FormCurrentLocation from "./components/current-location/Index";
 import Map from "./components/map";
-import { Navbar } from "../../components/navbar";
+import { Navbar } from "../../components/Navbar";
 import { findOpenCageAndCity } from "./services/readUserAddress";
 import ModalMapAddressEntry from "./components/modal";
 

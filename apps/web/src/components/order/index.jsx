@@ -16,8 +16,8 @@ const OrderBody = ({ orderData, totalPrice, totalQuantity }) => {
   const [nearestWarehouse, setNearestWarehouse] = useState(null)
   const [costResult, setCostResult] = useState('')
   const navigate = useNavigate()
-  console.log('orderStock', stockOrder)
-
+  // console.log('orderStock', stockOrder)
+  console.log('address', selectedAddress)
   // handle payment
   const handlePaymentClick = (orderItem) => {
     paymentHandler(

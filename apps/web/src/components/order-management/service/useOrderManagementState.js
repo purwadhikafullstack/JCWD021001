@@ -18,7 +18,7 @@ const useOrderManagementState = ({
   const [selectedWarehouse, setSelectedWarehouse] = useState('')
   const [checkStock, setCheckStock] = useState([])
   const { isOpen, onOpen, onClose } = useDisclosure()
-  console.log('check Stock', checkStock);
+  console.log('orderData', orderData)
 
   const toast = useToast()
   const navigate = useNavigate()
@@ -32,182 +32,198 @@ const useOrderManagementState = ({
     }))
   }
 
-  // stock journal
-  // const handleAcceptButton = async (orderId) => {
-  //   try {
-  //     // Find the corresponding order based on orderId
-  //     const clickedItem = orderData.find((order) => order.id === orderId)
+  //cancel
+  const handleCanceltOnProcess = async (orderId) => {
+    let transactionSuccess = false // Flag to track transaction status
 
-  //     if (clickedItem) {
-  //       // Map OrderProducts to an array of parameters
-  //       const orderProducts = clickedItem.OrderProducts.map((product) => ({
-  //         productId: product?.stocks?.product?.id,
-  //         warehouseId: clickedItem?.warehouse?.id,
-  //         sizeId: product?.stocks?.size?.id,
-  //         colourId: product?.stocks?.colour?.id,
-  //         qty: product?.quantity,
-  //         isUpdate: false,
-  //       }))
+    try {
+      // Begin transaction
 
-  //       // Loop through orderProducts and call createStockJournal for each
-  //       for (const productParams of orderProducts) {
-  //         try {
-  //           // Call createStockJournal for each OrderProduct
-  //           const res = await createStockJournal(
-  //             productParams.productId,
-  //             productParams.warehouseId,
-  //             productParams.sizeId,
-  //             productParams.colourId,
-  //             productParams.qty,
-  //             productParams.isUpdate,
-  //           )
+      // Find the corresponding order based on orderId
+      const clickedItem = orderData.find((order) => order.id === orderId)
 
-  //           // Handle success for each OrderProduct
-  //           toast({
-  //             title: `${res?.data?.message}`,
-  //             status: 'success',
-  //             placement: 'bottom',
-  //           })
-  //         } catch (error) {
-  //           // Handle error for each OrderProduct
-  //           toast({
-  //             title: `${error?.message}`,
-  //             status: 'error',
-  //           })
-  //         }
-  //       }
+      if (!clickedItem) {
+        throw new Error('Order not found')
+      }
 
-  //       try {
-  //         const newUpdateOrder = {
-  //           orderId: clickedItem?.id,
-  //           orderStatusId: 3,
-  //         }
-  //         // Update the order status after processing OrderProducts
-  //         const updateOrderRes = await updateOrder(newUpdateOrder)
-  //         // Handle success for updateOrder
-  //         toast({
-  //           title: `${updateOrderRes?.data?.message}`,
-  //           status: 'success',
-  //           placement: 'bottom',
-  //         })
-  //       } catch (updateOrderError) {
-  //         // Handle error for updateOrder
-  //         toast({
-  //           title: `${updateOrderError?.message}`,
-  //           status: 'error',
-  //         })
-  //       }
-  //     }
-  //   } catch (err) {
-  //     // Handle error for finding the order
-  //     toast({
-  //       title: `${err?.message}`,
-  //       status: 'error',
-  //     })
-  //   }
-  // }
+      // Map OrderProducts to an array of parameters
+      const orderProducts = clickedItem.OrderProducts.map((product) => ({
+        productId: product?.stocks?.product?.id,
+        warehouseId: clickedItem?.warehouse?.id,
+        sizeId: product?.stocks?.size?.id,
+        colourId: product?.stocks?.colour?.id,
+        qty: product?.quantity,
+        isUpdate: false,
+        isAdding: 1,
+      }))
 
-  
+      // Loop through orderProducts and call createStockJournal for each
+      for (const productParams of orderProducts) {
+        try {
+          // Call createStockJournal for each OrderProduct
+          const res = await createStockJournal(
+            productParams.productId,
+            productParams.warehouseId,
+            productParams.sizeId,
+            productParams.colourId,
+            productParams.qty,
+            productParams.isUpdate,
+            productParams.isAdding,
+          )
+          // Handle success for each OrderProduct
+        } catch (error) {
+          // Rollback changes on error
+          throw new Error('Failed to create stock journal')
+        }
+      }
+
+      // Update the order status after processing OrderProducts
+      const newUpdateOrder = {
+        orderId: clickedItem?.id,
+        orderStatusId: 6,
+      }
+
+      const updateOrderRes = await updateOrder(newUpdateOrder)
+      // Commit transaction
+      transactionSuccess = true
+
+      // Handle success for updateOrder
+      // Only display the success toast if all operations were successful
+      toast({
+        title: 'Success',
+        status: 'success',
+        placement: 'bottom',
+      })
+    } catch (error) {
+      // Rollback changes on error
+      if (!transactionSuccess) {
+        toast({
+          title: `${error?.message}`,
+          status: 'error',
+        })
+      }
+      // Handle specific error cases
+      if (error.message === 'Failed to create stock journal') {
+        toast({
+          title: 'Failed to create stock journal',
+          status: 'error',
+        })
+      } else if (error.message === 'Order not found') {
+        toast({
+          title: 'Order not found',
+          status: 'error',
+        })
+      }
+    }
+  }
+
   const handleAcceptButton = async (orderId) => {
+    let allOperationsSuccessful = true // Flag to track whether all operations were successful
+
     try {
       // Find the corresponding order based on orderId
       const clickedItem = orderData.find((order) => order.id === orderId)
-  
-      if (clickedItem) {
-        // Map OrderProducts to an array of parameters
-        const orderProducts = clickedItem.OrderProducts.map((product) => ({
-          productId: product?.stocks?.product?.id,
-          warehouseId: clickedItem?.warehouse?.id,
-          sizeId: product?.stocks?.size?.id,
-          colourId: product?.stocks?.colour?.id,
-          qty: product?.quantity,
-          isUpdate: false,
-        }))
 
-        console.log('orderProducts', orderProducts);
-  
-        // Loop through orderProducts and handle based on checkStock status
-        for (const productParams of orderProducts) {
-          const matchingStock = checkStock.find(
-            (stock) => stock.productId === productParams.productId
-          )
+      if (!clickedItem) {
+        throw new Error('Order not found')
+      }
 
-          console.log('matching', matchingStock);
-  
-          if (matchingStock) {
-            if (matchingStock.status === "Insufficient Stock") {
-              // Create mutation
-              try {
-                const res = await createMutation(
-                  matchingStock.selectedWarehouse.id, // requesterWarehouseId
-                  matchingStock.nearestWarehouse.id, // recipientWarehouseId
-                  matchingStock.needSelectedWarehouseQuantity, // qty
-                  1, // isAccepted
-                  matchingStock.stockId // stockId
-                )
-  
-                // Handle success for createMutation
-                toast({
-                  title: `${res?.message}`,
-                  status: 'success',
-                  placement: 'bottom',
-                })
-              } catch (mutationError) {
-                // Handle error for createMutation
-                toast({
-                  title: `${mutationError?.message}`,
-                  status: 'error',
-                })
-              }
-            } else if (matchingStock.status === "Available") {
-              // Create stock journal
-              try {
-                const res = await createStockJournal(
-                  productParams.productId,
-                  productParams.warehouseId,
-                  productParams.sizeId,
-                  productParams.colourId,
-                  productParams.qty,
-                  productParams.isUpdate,
-                )
-  
-                // Handle success for createStockJournal
-                toast({
-                  title: `${res?.message}`,
-                  status: 'success',
-                  placement: 'bottom',
-                })
-              } catch (error) {
-                // Handle error for createStockJournal
-                toast({
-                  title: `${error?.message}`,
-                  status: 'error',
-                })
-              }
+      // Map OrderProducts to an array of parameters
+      const orderProducts = clickedItem.OrderProducts.map((product) => ({
+        productId: product?.stocks?.product?.id,
+        warehouseId: clickedItem?.warehouse?.id,
+        sizeId: product?.stocks?.size?.id,
+        colourId: product?.stocks?.colour?.id,
+        qty: product?.quantity,
+        isUpdate: false,
+      }))
+
+      // Loop through orderProducts and handle based on checkStock status
+      for (const productParams of orderProducts) {
+        const matchingStock = checkStock.find(
+          (stock) => stock.productId === productParams.productId,
+        )
+
+        if (matchingStock) {
+          if (matchingStock.status === 'Insufficient Stock') {
+            // Create mutation
+            try {
+              const res = await createMutation(
+                matchingStock.selectedWarehouse.id, // requesterWarehouseId
+                matchingStock.nearestWarehouse.id, // recipientWarehouseId
+                matchingStock.needSelectedWarehouseQuantity, // qty
+                1, // isAccepted
+                matchingStock.stockId, // stockId
+              )
+
+              // // Handle success for createMutation
+              // toast({
+              //   title: `${res?.data?.message}`,
+              //   status: 'success',
+              //   placement: 'bottom',
+              // })
+            } catch (mutationError) {
+              // Handle error for createMutation
+              toast({
+                title: `${mutationError?.message}`,
+                status: 'error',
+              })
+              allOperationsSuccessful = false // Set flag to false if mutation fails
+            }
+          } else if (matchingStock.status === 'Available') {
+            // Create stock journal
+            try {
+              const res = await createStockJournal(
+                productParams.productId,
+                productParams.warehouseId,
+                productParams.sizeId,
+                productParams.colourId,
+                productParams.qty,
+                productParams.isUpdate,
+              )
+
+              // // Handle success for createStockJournal
+              // toast({
+              //   title: `${res?.message}`,
+              //   status: 'success',
+              //   placement: 'bottom',
+              // })
+            } catch (error) {
+              // Handle error for createStockJournal
+              toast({
+                title: `${error?.message}`,
+                status: 'error',
+              })
+              allOperationsSuccessful = false // Set flag to false if stock journal creation fails
             }
           }
         }
-  
-        // try {
-        //   const newUpdateOrder = {
-        //     orderId: clickedItem?.id,
-        //     orderStatusId: 3,
-        //   }
-        //   // Update the order status after processing OrderProducts
-        //   const updateOrderRes = await updateOrder(newUpdateOrder)
-        //   // Handle success for updateOrder
-        //   toast({
-        //     title: `${updateOrderRes?.data?.message}`,
-        //     status: 'success',
-        //     placement: 'bottom',
-        //   })
-        // } catch (updateOrderError) {
-        //   // Handle error for updateOrder
-        //   toast({
-        //     title: `${updateOrderError?.message}`,
-        //     status: 'error',
-        //   })
-        // }
+      }
+
+      if (allOperationsSuccessful) {
+        // Update the order status after processing OrderProducts
+        const newUpdateOrder = {
+          orderId: clickedItem?.id,
+          orderStatusId: 3,
+        }
+
+        try {
+          // Update the order status
+          const updateOrderRes = await updateOrder(newUpdateOrder)
+
+          // Handle success for updateOrder
+          toast({
+            title: `${updateOrderRes?.data?.message}`,
+            status: 'success',
+            placement: 'bottom',
+          })
+        } catch (updateOrderError) {
+          // Handle error for updateOrder
+          toast({
+            title: `${updateOrderError?.message}`,
+            status: 'error',
+          })
+        }
       }
     } catch (err) {
       // Handle error for finding the order
@@ -217,7 +233,6 @@ const useOrderManagementState = ({
       })
     }
   }
-  
 
   // reject
   const handleRejectButton = async (orderId) => {
@@ -290,8 +305,8 @@ const useOrderManagementState = ({
     }
   }
 
-   // Customer Confirm
-   const handleSendButton = async (orderId) => {
+  // Customer Confirm
+  const handleSendButton = async (orderId) => {
     try {
       // Find the corresponding order based on orderId
       const clickedItem = orderData.find((order) => order.id === orderId)
@@ -319,8 +334,6 @@ const useOrderManagementState = ({
     }
   }
 
-
-
   return {
     expandedProducts,
     orderNumber,
@@ -342,6 +355,7 @@ const useOrderManagementState = ({
     isOpen,
     onClose,
     handleSendButton,
+    handleCanceltOnProcess,
   }
 }
 
