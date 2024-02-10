@@ -53,8 +53,8 @@ export const TableBody = (props) => {
   }
 
   //   HANDLE SAVE CLICK
-  const handleSaveClick = (productId, warehouseId, sizeId, colourId, qty, isUpdate) => {
-    handleCreateStockJournal(productId, warehouseId, sizeId, colourId, qty, isUpdate)
+  const handleSaveClick = async (productId, warehouseId, sizeId, colourId, qty, isUpdate) => {
+    await handleCreateStockJournal(productId, warehouseId, sizeId, colourId, qty, isUpdate)
     setEditableStock(null)
   }
 
