@@ -55,15 +55,13 @@ export const createOrderService = async (
   }
 }
 
-
 export const updateOrderStatus = async () => {
   try {
-    console.log('Cron job is running at 17:05')
     const orderStatusId = 4
     const orders = await findOrderStatusQuery(orderStatusId)
     const now = moment().tz('Asia/Jakarta') // Ambil waktu saat ini dengan zona waktu yang sesuai
 
-    orders.forEach(async (order) => {
+    for (const order of orders) { // Menggunakan for...of loop agar dapat menunggu setiap operasi async selesai
       const expectedDeliveryDate = moment(order?.expectedDeliveryDate).tz('Asia/Jakarta')
       const differenceInDays = now.diff(expectedDeliveryDate, 'days')
       // const differenceInMinutes = now.diff(expectedDeliveryDate, 'minutes')
@@ -72,11 +70,12 @@ export const updateOrderStatus = async () => {
         const newOrderStatusId = 5
         await updateOrderQuery(order.id, newOrderStatusId)
       }
-    })
+    }
   } catch (err) {
     throw new Error('Failed to update order status: ' + err.message)
   }
 }
+
 schedule.scheduleJob('00 00 * * *', updateOrderStatus)
 
 export const updateOrderService = async (orderId, orderStatusId) => {
