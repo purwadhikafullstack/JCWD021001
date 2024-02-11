@@ -24,7 +24,7 @@ export const createOrderQuery = async (
   shippingCost,
   orderStatusId,
   orderNumber,
-  products
+  products,
 ) => {
   try {
     const order = await Orders.create({
@@ -282,7 +282,7 @@ export const productToStockIdQuery = async (products, nearestWarehouse) => {
   try {
     // console.log('products', products);
     let whereCondition = {}
-    
+
     if (products && products.length > 0) {
       const productIdArray = products.map((item) => item.productId)
       const colourIdArray = products.map((item) => item.colourId)
@@ -309,7 +309,6 @@ export const productToStockIdQuery = async (products, nearestWarehouse) => {
         ...warehouseCondition,
       },
     })
-
 
     // console.log('hasil res', res);
     return res
@@ -353,6 +352,94 @@ export const calculationCheckStock = async (orderId) => {
   }
 }
 
+export const getAllOrderQuery = async (
+  sortBy = 'orderDate',
+  orderBy = 'DESC',
+  page = 1,
+  pageSize = 10,
+  warehouseId = null,
+  startDate = null,
+  endDate = null,
+) => {
+  try {
+    const offset = (page - 1) * pageSize
+    let filteredAttributes = [
+      'id',
+      'warehouseId',
+      'totalPrice',
+      'totalQuantity',
+      'orderDate',
+      'orderStatusId',
+      [
+        Sequelize.literal(
+          `(SELECT SUM(totalPrice) FROM Orders WHERE orderDate BETWEEN '${startDate}' AND '${endDate}')`,
+        ),
+        'totalPriceSum',
+      ],
+    ]
+    const filter = {}
+    filter.where = {
+      warehouseId: {
+        [Op.eq]: warehouseId,
+      },
+      orderDate: {
+        [Op.lte]: new Date(endDate),
+        [Op.gte]: new Date(startDate),
+      },
+    }
+
+    const res = await Orders.findAll({
+      attributes: filteredAttributes,
+      include: [
+        {
+          model: Warehouse,
+          attributes: ['name'],
+          as: 'warehouse',
+          include: [{ model: WarehouseAddress, attributes: ['location'] }],
+        },
+        {
+          model: OrderProducts,
+          attributes: ['price', 'quantity'],
+          include: [
+            {
+              model: Stock,
+              as: 'stocks',
+              attributes: ['productId'],
+              include: [
+                {
+                  model: Product,
+                  as: 'product',
+                  attributes: ['name', 'price', 'productCategoryId'],
+                  include: [
+                    {
+                      model: ProductCategory,
+                      as: 'category',
+                      include: [
+                        {
+                          model: ProductCategory,
+                          as: 'parent',
+                          include: [{ model: ProductCategory, as: 'parent' }],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      ...filter,
+      order: [[`${sortBy}`, `${orderBy}`]],
+      limit: +pageSize,
+      offset: offset,
+    })
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
 export const getAllOrderByCategoryQuery = async (warehouseId, startDate, endDate) => {
   try {
     const res = await OrderProducts.sequelize
@@ -369,6 +456,34 @@ export const getAllOrderByCategoryQuery = async (warehouseId, startDate, endDate
       WHERE orders.orderDate >= '${startDate}' AND orders.orderDate <= '${endDate}'
       AND orders.warehouseId = ${warehouseId}
       GROUP BY parent_category.id;`)
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
+export const getAllOrderByProductQuery = async (
+  page,
+  pageSize,
+  warehouseId,
+  startDate,
+  endDate,
+) => {
+  try {
+    const offset = (page - 1) * pageSize
+    const res = await OrderProducts.sequelize.query(`SELECT p.id, p.name, 
+  SUM(op.price) as total, 
+  SUM(op.quantity) as sold
+FROM orders as o
+JOIN orderProducts as op ON o.id = op.orderId
+JOIN stocks as st ON op.stockId = st.id
+JOIN products as p ON st.productId = p.id
+WHERE o.orderDate >= '${startDate}' 
+  AND o.orderDate <= '${endDate}' 
+  AND o.warehouseId = ${Number(warehouseId)}
+GROUP BY p.id
+LIMIT ${pageSize} OFFSET ${offset};
+`)
     return res
   } catch (err) {
     throw err

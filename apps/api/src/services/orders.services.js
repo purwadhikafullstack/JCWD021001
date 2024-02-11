@@ -158,7 +158,7 @@ export const calculationCheckStockService = async (orderId) => {
     for (const orderProduct of orders.OrderProducts) {
       const { quantity, stocks } = orderProduct
       const { productId } = stocks
-      console.log('stocks', stocks.id);
+      console.log('stocks', stocks.id)
 
       const selectedWarehouse = warehouse.find((wh) => wh.id === orders.warehouseId)
 
@@ -294,6 +294,7 @@ export const getAllOrderService = async (
       startDate,
       endDate,
     )
+    return res
   } catch (err) {
     throw err
   }

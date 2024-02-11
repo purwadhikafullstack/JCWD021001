@@ -31,12 +31,12 @@ export const createStockJournalController = async (req, res) => {
     )
 
     return res.status(200).json({
-      title: 'Create Stock Journal Service Success',
+      message: 'Success',
       data: result,
     })
   } catch (err) {
     return res.status(500).json({
-      title: err.message,
+      message: err.message,
     })
   }
 }
@@ -44,8 +44,15 @@ export const createStockJournalController = async (req, res) => {
 export const getStockJournalController = async (req, res) => {
   try {
     const { warehouseId, stockId } = req.params
-    const { page, pageSize } = req.query
-    const result = await getStockJournalService(warehouseId, stockId, page, pageSize)
+    const { page, pageSize, startDate, endDate } = req.query
+    const result = await getStockJournalService(
+      warehouseId,
+      stockId,
+      startDate,
+      endDate,
+      page,
+      pageSize,
+    )
     return res.status(200).json({
       message: 'Get Stock Success',
       data: result,

@@ -73,6 +73,7 @@ export const init = (sequelize) => {
           },
           key: 'id',
         },
+        onDelete: 'cascade',
       },
       isAccepted: {
         allowNull: true,
@@ -88,6 +89,7 @@ export const init = (sequelize) => {
           },
           key: 'id',
         },
+        onDelete: 'cascade',
       },
       stockId: {
         allowNull: true,

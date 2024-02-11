@@ -1,9 +1,15 @@
 USE PURE;
-select * from productsToColours;
+
+select * from orders;
+
+select * from mutations;
+
+select * from productCategories;
+
 select * from productCategories;
 
 
-select * from stocks;
+select * from stockJournals;
 select * from specificAddresses;
 
 select * from mutations;
@@ -19,14 +25,17 @@ select * from orderProducts;
 
 select * from stocks;
 
+select * from orders;
+select * from orderProducts;
+
 select p.id, p.name, 
-sum(op.price * op.quantity) as total, 
+sum(op.price) as total, 
 sum(op.quantity) as sold
 FROM orders as o
 JOIN orderProducts as op ON o.id = op.orderId
 JOIN stocks as st ON op.stockId = st.id
 JOIN products as p ON st.productId = p.id
-WHERE o.orderDate >= '2024-01-30 00:00:00' 
+WHERE o.orderDate >= '2024-01-01 00:00:00' 
 AND o.orderDate <= '2024-01-30 00:00:00' 
 AND o.warehouseId = 5
 GROUP BY p.id;
@@ -57,7 +66,7 @@ FROM  orders
 JOIN orderProducts ON orders.id = orderProducts.orderId
 JOIN stocks ON orderProducts.stockId = stocks.id
 JOIN products ON stocks.productId = products.id
-WHERE orders.orderDate >= '2024-01-30 00:00:00' AND orders.orderDate <= '2024-01-30 00:00:00'
+WHERE orders.orderDate >= '2024-01-01 00:00:00' AND orders.orderDate <= '2024-01-30 00:00:00'
 GROUP BY products.name;
 
 -- BY CATEGORIES

@@ -1,4 +1,4 @@
-import { Box, Center, Flex, HStack, Text } from '@chakra-ui/react'
+import { Box, Flex, HStack, Text } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 
 export const PaginationList = (props) => {
@@ -28,7 +28,13 @@ export const PaginationList = (props) => {
           borderRadius={'.5em'}
           onClick={() => {
             props?.changeBoxToggle(i)
-            navigate(`${props?.pathName}?pa=${i}`)
+            navigate(
+              `${props?.pathName}?pa=${i}${
+                props?.warehouseValue ? `&wa=${props?.warehouseValue}` : ''
+              }${props?.monthValue ? `&mo=${props?.monthValue}` : ''}${
+                props?.filterValue ? `&sta=${props?.filterValue}` : ''
+              }${props?.warValue ? `&war=${props?.warValue}` : ''}`,
+            )
           }}
         >
           <Text fontWeight={'bold'} fontSize={'.75em'}>

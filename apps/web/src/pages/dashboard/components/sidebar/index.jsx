@@ -71,7 +71,6 @@ export const Sidebar = (props) => {
               </Text>
             </VStack>
           </Box>
-          <SidebarButton label={'Product'} icon={Squares2X2Icon} />
           <SidebarButton
             label={'Product'}
             icon={Squares2X2Icon}
@@ -109,14 +108,16 @@ export const Sidebar = (props) => {
               >
                 Stock Management
               </Text>
-              <Text
-                onClick={() => {
-                  navigate('/dashboard/stock-mutation?pa=1&sta=req')
-                }}
-                cursor={'pointer'}
-              >
-                Stock Mutation
-              </Text>
+              {!props?.isSuperAdmin && (
+                <Text
+                  onClick={() => {
+                    navigate('/dashboard/stock-mutation?pa=1&sta=req')
+                  }}
+                  cursor={'pointer'}
+                >
+                  Stock Mutation
+                </Text>
+              )}
             </VStack>
           </Box>
           <SidebarButton label={'Report'} icon={Squares2X2Icon} />

@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { Navbar } from '../../../components/navbar'
+import { Navbar } from '../../../components/Navbar'
 
 export const Dashboard = () => {
   const user = useSelector((state) => state.AuthReducer.user)
@@ -14,6 +14,10 @@ export const Dashboard = () => {
   const toggleSideBar = () => {
     setCollapseSideBar(!collapseSideBar)
   }
+
+  // Super Admin Checking
+  const isSuperAdmin = useSelector((state) => state.AuthReducer.isSuperAdmin)
+
   return (
     <Box maxW={'100vw'} overflow={{ xl: 'hidden', base: 'hidden' }}>
       <Navbar />
@@ -23,9 +27,12 @@ export const Dashboard = () => {
             collapseSideBar={collapseSideBar}
             setCollapseSideBar={setCollapseSideBar}
             toggleSideBar={toggleSideBar}
+            isSuperAdmin={isSuperAdmin}
           />
         </Box>
         <Body
+          user={user}
+          isSuperAdmin={isSuperAdmin}
           destination={destination}
           createProduct={createProduct}
           collapseSideBar={collapseSideBar} // responsive
