@@ -19,6 +19,8 @@ import {
   HandleAddSubmitButton,
   HandleEditButton,
 } from './component/button'
+import { GrandParentInput } from './component/grandparent-input'
+import { SaveGrandParentText } from './component/save-grandparent-text'
 
 export const EditProductCategory = (props) => {
   const { epid } = useParams() //params
@@ -100,7 +102,9 @@ export const EditProductCategory = (props) => {
 
   const flattenData = [].concat(...prodCatData)
   const data = [...flattenData]
-  const initialValues = {}
+  const initialValues = {
+    [gender[0]?.id]: gender[0]?.name,
+  }
   data.forEach((item) => {
     initialValues[`name_${item.id}`] = item.name
     if (item.category) {
@@ -116,6 +120,8 @@ export const EditProductCategory = (props) => {
     enableReinitialize: true,
   })
 
+  console.log('formik', formik?.initialValues)
+
   return (
     <Box bgColor={'white'} p={'1em'} w={'100%'} h={'100%'}>
       <VStack align={'stretch'}>
@@ -125,6 +131,16 @@ export const EditProductCategory = (props) => {
           <VStack align={'stretch'} spacing={'2em'}>
             {productCategory?.map((item) => (
               <Box key={item.id} boxShadow={'md'} p={'.5em'} borderRadius={'.5em'}>
+                <GrandParentInput
+                  id={gender[0]?.id}
+                  formik={formik}
+                  editableCategory={editableCategory}
+                />
+                {props?.isSuperAdmin && (
+                  <>
+                    <SaveGrandParentText formik={formik} toast={toast} id={gender[0]?.id} />
+                  </>
+                )}
                 <Text fontWeight={'bold'} mb={'.5em'}>
                   Group
                 </Text>
