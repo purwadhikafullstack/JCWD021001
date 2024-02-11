@@ -186,11 +186,14 @@ export const getProductByIdQuery = async (id) => {
   }
 }
 
-export const getProductByName = async ({ name = null }) => {
+export const getProductByName = async ({ name = null, productCategoryId = null }) => {
   try {
     const res = await Product.findOne({
       where: {
-        name: name,
+        [Op.and]: {
+          name: name,
+          productCategoryId: productCategoryId,
+        },
       },
     })
     return res
