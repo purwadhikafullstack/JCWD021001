@@ -7,10 +7,10 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { createCart } from '../../../cart/services/createCart' // edit by andri
 import { useToast } from '@chakra-ui/react' // edit by andri
 import { useCart } from '../../../../components/cart-table/service/cartContext' // edit by andri
+import toast from 'react-hot-toast'
 import { ColourBox } from '../colour-box'
 import { SizeBox } from '../size-box'
-
-
+import { useSelector } from 'react-redux'
 
 export const Body = (props) => {
   // Location
@@ -69,33 +69,36 @@ export const Body = (props) => {
   const shouldDisable = !stock ? true : false
 
   // edit by andri
+  const user = useSelector((state) => state.AuthReducer.user)
   const { cartData, fetchCartCount } = useCart()
   const toast = useToast()
   const handleAddToCart = async () => {
     const newItem = {
-      userId: 1,
+      userId: user?.id,
       productId: props?.product?.id,
       colourId: colourValue,
       sizeId: sizeValue,
       price: props?.product?.price,
       quantity: 1,
     }
-
-    const isProductInCart = cartData.some((cartItem) =>
-      cartItem.CartProducts.some((product) => product.product.id === newItem.productId),
-    )
-
-    if (isProductInCart) {
-      toast({
-        title: 'Product Already in Cart',
-        description: 'This product is already in your cart.',
-        status: 'warning',
-        position: 'top-right',
-        duration: 3000,
-        isClosable: true,
-      });
-      return; 
+  
+    const existingCart = cartData.find((cartItem) => cartItem.userId === user?.id)
+    if (existingCart && existingCart.CartProducts) {
+      const isProductInCart = existingCart.CartProducts.some((product) => product.product.id === newItem.productId)
+  
+      if (isProductInCart) {
+        toast({
+          title: 'Product Already in Cart',
+          description: 'This product is already in your cart.',
+          status: 'warning',
+          position: 'top-right',
+          duration: 3000,
+          isClosable: true,
+        })
+        return
+      }
     }
+  
     try {
       await createCart(newItem)
       toast({
@@ -106,7 +109,7 @@ export const Body = (props) => {
         duration: 3000,
         isClosable: true,
       })
-
+  
       await fetchCartCount()
     } catch (err) {
       toast({

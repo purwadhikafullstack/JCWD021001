@@ -20,33 +20,15 @@ import {
   Avatar,
   AspectRatio,
 } from '@chakra-ui/react'
-// edit by andri
 import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverAnchor,
-} from '@chakra-ui/react'
-//
-import {
-  MagnifyingGlassIcon,
-  ShoppingCartIcon,
-  BellIcon,
   XMarkIcon,
   ChevronDownIcon,
 } from '@heroicons/react/24/outline'
 import pure from '/logo/pure.png'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { SearchModal } from './components/search-modal'
 import { SearchMenu } from './components/search-menu'
-import { useState, useEffect } from 'react'
-import { getCart } from '../../pages/cart/services/getCart'
 import ShoppingCartBox from './components/shopping-cart-box'
 import AvatarNavbar from './components/avatar-menu'
 import { useCart } from '../cart-table/service/cartContext'

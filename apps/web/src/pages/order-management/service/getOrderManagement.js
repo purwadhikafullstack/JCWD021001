@@ -10,7 +10,11 @@ export const getOrderManagement = async (
   pageSize,
 ) => {
   try {
-    const response = await axios.get(`${API_ROUTE}/order/management`, {
+    const token = localStorage.getItem('token')
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       params: {
         orderNumber: orderNumber,
         orderDate: orderDate,
@@ -19,7 +23,8 @@ export const getOrderManagement = async (
         page: page,
         pageSize: pageSize,
       },
-    })
+    };
+    const response = await axios.get(`${API_ROUTE}order/management`, config)
     return response.data.data
   } catch (err) {
     alert('Error occurred')

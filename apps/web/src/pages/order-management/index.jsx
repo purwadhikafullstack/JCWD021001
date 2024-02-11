@@ -4,6 +4,7 @@ import { Navbar } from '../../components/Navbar'
 import OrderManagementBody from '../../components/order-management'
 import { getOrderManagement } from './service/getOrderManagement'
 import { getWarehouse } from './service/getWarehouse'
+import { useSelector } from 'react-redux'
 
 const OrderManagement = () => {
   const [orderData, setOrderData] = useState([])
@@ -17,6 +18,8 @@ const OrderManagement = () => {
   const [pageSize, setPageSize] = useState(3)
   const [pagination, setPagination] = useState([])
   const orderDateRef = useRef('')
+
+  const user = useSelector((state) => state.AuthReducer.user)
 
   const refreshOrder = async (orderNumber, warehouseId) => {
     try {
@@ -80,6 +83,7 @@ const OrderManagement = () => {
     <>
       <Box bgColor={'brand.grey100'} maxW={'100vw'} minH={'100vh'}>
         <OrderManagementBody
+          user={user}
           orderData={orderData}
           warehouseData={warehouseData}
           onOrderNumberSubmit={handleOrderNumberSubmit}

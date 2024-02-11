@@ -10,18 +10,23 @@ import {
   getAllOrderByCategoryController, // by putu
   getAllOrderByProductController, // by putu
   getAllOrderController, // by putu
-  
 } from '../controllers/orders.controller'
-import { checkRoleSuperAdminAdmin, verifyToken } from '../middleware/auth.middleware'
+import { checkRoleSuperAdminAdmin, checkRoleUser, verifyToken } from '../middleware/auth.middleware'
+
 const orderRouter = Router()
 
-orderRouter.post('/', createOrderController)
-orderRouter.patch('/:orderId', updateOrderController)
-orderRouter.get('/management', getOrderManagementController)
-orderRouter.get('/warehouse', getWarehouseController)
-orderRouter.get('/stock', productToStockIdController)
-orderRouter.get('/:userId', getOrderController)
-orderRouter.get('/stock/:orderId', calculationCheckStockController)
+orderRouter.post('/', verifyToken, checkRoleUser, createOrderController)
+orderRouter.patch('/:orderId', verifyToken, updateOrderController)
+orderRouter.get('/management', verifyToken, checkRoleSuperAdminAdmin, getOrderManagementController)
+orderRouter.get('/warehouse', verifyToken, checkRoleSuperAdminAdmin, getWarehouseController)
+orderRouter.get('/stock', verifyToken, checkRoleUser, productToStockIdController)
+orderRouter.get('/:userId', verifyToken, checkRoleUser, getOrderController)
+orderRouter.get(
+  '/stock/:orderId',
+  verifyToken,
+  checkRoleSuperAdminAdmin,
+  calculationCheckStockController,
+)
 
 // by putu
 orderRouter.get('/sales/all', verifyToken, checkRoleSuperAdminAdmin, getAllOrderController)

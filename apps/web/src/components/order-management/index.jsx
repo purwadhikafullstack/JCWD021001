@@ -22,6 +22,7 @@ import OrderCancelled from './order-card/order-cancelled'
 import ModalCheck from './modal-check'
 
 const OrderManagementBody = ({
+  user,
   orderData,
   warehouseData,
   onOrderNumberSubmit,
@@ -61,7 +62,7 @@ const OrderManagementBody = ({
     onOrderNumberSubmit,
     onOrderDateSubmit,
     onWarehouseSubmit,
-    onTabClick
+    onTabClick,
   })
   return (
     <Box display={'flex'}>
@@ -79,20 +80,27 @@ const OrderManagementBody = ({
                 handleOrderNumberKeyPress={handleOrderNumberKeyPress}
                 handleOrderNumberSubmit={handleOrderNumberSubmit}
               />
-              <Box bgColor={'white'} w={'250px'} padding={'4px 12px 4px 8px'} borderRadius={'8px'}>
-                <Select
-                  placeholder="Warehouse Name"
-                  border={'none'}
-                  value={selectedWarehouse}
-                  onChange={handleSelectWarehouseChange}
+              {user.roleId !== 2 && (
+                <Box
+                  bgColor={'white'}
+                  w={'250px'}
+                  padding={'4px 12px 4px 8px'}
+                  borderRadius={'8px'}
                 >
-                  {warehouseData.map((warehouse) => (
-                    <option key={warehouse.id} value={warehouse.id}>
-                      {warehouse.name}
-                    </option>
-                  ))}
-                </Select>
-              </Box>
+                  <Select
+                    placeholder="Warehouse Name"
+                    border={'none'}
+                    value={selectedWarehouse}
+                    onChange={handleSelectWarehouseChange}
+                  >
+                    {warehouseData.map((warehouse) => (
+                      <option key={warehouse.id} value={warehouse.id}>
+                        {warehouse.name}
+                      </option>
+                    ))}
+                  </Select>
+                </Box>
+              )}
               <DateFilter orderDate={orderDate} handleOrderDateChange={handleOrderDateChange} />
             </Box>
           </Box>

@@ -1,21 +1,22 @@
 // CartContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { getCart } from '../../../pages/cart/services/getCart';
+import { useSelector } from 'react-redux';
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cartCount, setCartCount] = useState(0);
   const [cartData, setCartData] = useState([])
+  const user = useSelector((state) => state.AuthReducer.user)
 
   const fetchCartCount = async () => {
     try {
-      const cartData = await getCart();
+      const resCart = await getCart(user?.id);
       setCartCount(
-        cartData.reduce((acc, cart) => acc + (cart.CartProducts ? cart.CartProducts.length : 0), 0),
+        resCart.reduce((acc, cart) => acc + (cart.CartProducts ? cart.CartProducts.length : 0), 0),
       );
-      setCartData(cartData)
-      // console.log(cartData);
+      setCartData(resCart)
     } catch (err) {
       console.error('Error fetching cart count:', err);
     }
@@ -23,7 +24,7 @@ export const CartProvider = ({ children }) => {
 
   useEffect(() => {
     fetchCartCount();
-  }, []);
+  }, [user?.id]);
 
   const values = {
     cartData,

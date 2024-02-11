@@ -68,15 +68,18 @@ export const createOrderQuery = async (
 
 export const findOrderIdQuery = async ({ orderId, userId }) => {
   try {
+    
     if (orderId) {
       const res = await Orders.findOne({
         where: { id: orderId },
       })
       return res
     } else if (userId) {
+      console.log('user', userId);
       const res = await Orders.findOne({
         where: { userId: userId },
       })
+      console.log('res', res);
       return res
     }
   } catch (err) {

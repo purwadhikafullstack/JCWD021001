@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 export const verifyToken = (req, res, next) => {
   try {
     let token = req.headers.authorization
+    console.log('token', token);
 
     if (!token) return res.status(500).send('Access denied')
 
@@ -50,6 +51,18 @@ export const checkRoleAdmin = (req, res, next) => {
 export const checkRoleSuperAdminAdmin = (req, res, next) => {
   try {
     if (req.user.roleId == 1 || req.user.roleId == 2) {
+      next()
+    } else {
+      return res.status(500).send('Unauthorized')
+    }
+  } catch (err) {
+    return res.status(500).send('Unauthorized')
+  }
+}
+
+export const checkRoleUser = (req, res, next) => {
+  try {
+    if (req.user.roleId == 3) {
       next()
     } else {
       return res.status(500).send('Unauthorized')

@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import { getCart } from '../cart/services/getCart'
 import { useLocation } from 'react-router-dom'
 import { Navbar } from '../../components/Navbar'
+import { useSelector } from 'react-redux'
 
 const Order = () => {
   const [orderData, setOrderData] = useState([])
@@ -15,11 +16,13 @@ const Order = () => {
   const totalPrice = location.state ? location.state.totalPrice : null
   const totalQuantity = location.state ? location.state.totalQuantity : null
 
+  const user = useSelector((state) => state.AuthReducer.user)
+
   useEffect(() => {
     localStorage.removeItem('hasVisitedCart')
     const fetchOrderData = async () => {
       try {
-        const data = await getCart(stockData) // Assuming getCart fetches order data
+        const data = await getCart(user?.id, stockData) // Assuming getCart fetches order data
         setOrderData(data)
       } catch (error) {
         console.error('Error fetching order data:', error)

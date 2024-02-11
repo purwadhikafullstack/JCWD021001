@@ -3,9 +3,19 @@ import { API_ROUTE } from '../../../services/route'
 
 export const updateCart = async (cartProductId, quantity, onCartUpdated) => {
   try {
-    const response = await axios.patch(`${API_ROUTE}/cart/${cartProductId}`, {
-      quantity: quantity,
-    })
+    const token = localStorage.getItem('token')
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+    const response = await axios.patch(
+      `${API_ROUTE}cart/${cartProductId}`,
+      {
+        quantity: quantity,
+      },
+      config,
+    )
     if (onCartUpdated) {
       onCartUpdated()
     }
@@ -13,5 +23,3 @@ export const updateCart = async (cartProductId, quantity, onCartUpdated) => {
     console.error('Error updating cart:', err)
   }
 }
-
- 

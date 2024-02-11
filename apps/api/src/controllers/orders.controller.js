@@ -68,9 +68,11 @@ export const updateOrderController = async (req, res) => {
 export const getOrderController = async (req, res) => {
   try {
     const { userId } = req.params
+    console.log('userId', userId);
+    let newUserId = parseInt(userId);
     const { orderNumber, orderDate, orderStatusId, page, pageSize } = req.query
     const result = await getOrderService(
-      userId,
+      newUserId,
       orderNumber,
       orderDate,
       orderStatusId,

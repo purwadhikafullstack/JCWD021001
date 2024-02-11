@@ -98,8 +98,8 @@ export const getOrderService = async (
   pageSize,
 ) => {
   try {
-    const check = await findOrderIdQuery({ userId })
-    if (!check) throw new Error('Data doesnt exist')
+    // const check = await findOrderIdQuery({ userId })
+    // if (!check) throw new Error('Data doesnt exist')
     const res = await getOrderQuery({
       userId,
       orderNumber,
@@ -141,8 +141,8 @@ export const getOrderManagementService = async (
 
 export const getWarehouseService = async () => {
   try {
-    const check = await findWarehouseQuery()
-    if (!check) throw new Error('Data doesnt exist')
+    // const check = await findWarehouseQuery()
+    // if (!check) throw new Error('Data doesnt exist')
     const res = await getWarehouseQuery()
     return res
   } catch (err) {

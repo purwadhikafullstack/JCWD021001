@@ -1,4 +1,4 @@
-import { Sequelize } from 'sequelize'
+import { Model, Sequelize } from 'sequelize'
 import CartProducts from '../models/cartProducts.model'
 import Carts from '../models/carts.model'
 import Product from '../models/product.model'
@@ -7,19 +7,29 @@ import Stock from '../models/stock.model'
 import Colour from '../models/colour.model'
 import Size from '../models/size.model'
 
-export const findCartStockQuery = async (productId) => {
+export const findCartStockQuery = async (userId, productId) => {
   try {
-    const res = await CartProducts.findOne({
-      include: [
-        { model: Product, as: 'product' },
-        { model: Colour, as: 'colour' },
-        { model: Size, as: 'size' },
-      ],
-      where: { productId: productId },
-    })
-    return res
+    // console.log('ddd', userId, process);
+    const cart = await Carts.findOne({
+      include: [{ model: CartProducts }],
+      where: { userId: userId },
+    });
+
+    if (cart) {
+      const cartProduct = cart.CartProducts.find(
+        (cartProduct) => cartProduct.productId === productId
+      );
+
+      if (cartProduct) {
+        return cartProduct; // If the product already exists in the cart, return it
+      } else {
+        return null; // If the product does not exist in the cart, return null
+      }
+    } else {
+      return null; // If the cart does not exist, return null
+    }
   } catch (err) {
-    throw err
+    throw err;
   }
 }
 

@@ -4,6 +4,7 @@ import { Navbar } from '../../components/Navbar'
 import OrderListBody from '../../components/order-list'
 import { getOrder } from '../order/services/getOrder'
 import { useLocation } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const OrderList = () => {
   const [orderData, setOrderData] = useState([])
@@ -20,9 +21,12 @@ const OrderList = () => {
   const [pageSize, setPageSize] = useState(3)
   const [pagination, setPagination] = useState([])
 
+  const user = useSelector((state) => state.AuthReducer.user)
+
   const refreshOrder = async (orderNumber) => {
     try {
       const data = await getOrder(
+        user?.id,
         orderNumber,
         orderDateRef.current,
         selectOrderStatusId,
@@ -59,7 +63,7 @@ const OrderList = () => {
 
   useEffect(() => {
     refreshOrder()
-  }, [page, pageSize, selectOrderStatusId])
+  }, [page, pageSize, selectOrderStatusId, user?.id])
   useEffect(() => {
     const shouldRefresh = location.state?.refresh
     if (shouldRefresh) {
