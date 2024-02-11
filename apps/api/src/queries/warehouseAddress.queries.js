@@ -59,3 +59,25 @@ export const getShippingCostQuery = async (origin, destination, weight, courier)
         throw error;
     }
 }
+
+export const getWarehouseQuery = async (warehouseId = null) => {
+  try {
+    const filter = {}
+    if (warehouseId)
+      filter.where = {
+        id: {
+          [Op.not]: warehouseId,
+        },
+      }
+    return await Warehouse.findAll({
+      include: [
+        {
+          model: WarehouseAddress,
+        },
+      ],
+      ...filter,
+    })
+  } catch (err) {
+    throw err
+  }
+}
