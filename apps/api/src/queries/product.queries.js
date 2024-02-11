@@ -6,6 +6,9 @@ import ProductImage from '../models/productImage.model'
 import Stock from '../models/stock.model'
 import Colour from '../models/colour.model'
 import ProductToColour from '../models/productToColour.model'
+import StockJournal from '../models/stockJournal.model'
+import CartProducts from '../models/cartProducts.model'
+import Mutation from '../models/mutation.model'
 
 export const getProductQuery = async (
   name = null,
@@ -243,6 +246,52 @@ export const updateProductQuery = async (name, price, description, productCatego
 
 export const deleteProductQuery = async (id) => {
   try {
+    const willDeleteStock = await Stock.findAll({
+      where: {
+        productId: id,
+      },
+    })
+    const willDeleteStockJournal = await StockJournal.findAll({
+      where: {
+        productId: id,
+      },
+    })
+    const idsToDeleteStock = willDeleteStock.map((record) => record.id)
+    const idsToDeleteStockJournal = willDeleteStockJournal.map((record) => record.id)
+
+    await Mutation.destroy({
+      where: {
+        [Op.or]: [
+          {
+            stockId: idsToDeleteStock,
+          },
+          { stockJournalIdRecipient: idsToDeleteStockJournal },
+          {
+            stockJournalIdRequester: idsToDeleteStockJournal,
+          },
+        ],
+      },
+    })
+
+    await StockJournal.destroy({
+      where: { productId: id },
+    })
+
+    await Stock.destroy({
+      where: { productId: id },
+    })
+
+    await ProductImage.destroy({
+      where: { productId: id },
+    })
+    await CartProducts.destroy({
+      where: { productId: id },
+    })
+    await ProductToColour.destroy({
+      where: {
+        productId: id,
+      },
+    })
     const res = await Product.destroy({
       where: {
         id: {
