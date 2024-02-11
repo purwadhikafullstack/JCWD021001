@@ -12,13 +12,13 @@ const avatarStorage = multer.diskStorage({
 })
 
 const fileFilter = (req, file, cb) => {
-  const fileType = file.mimetype.split('/')[1];
+  const fileType = file.mimetype.split('/')[1]
   if (fileType === 'png' || fileType === 'jpg' || fileType === 'jpeg' || fileType === 'gif') {
-    cb(null, true);
+    cb(null, true)
   } else {
-    cb(new Error('File type not allowed'), false);
+    cb(new Error('File type not allowed'), false)
   }
-};
+}
 
 const limits = {
   fileSize: 1024 * 1024,
@@ -44,7 +44,7 @@ const productImageStorage = multer.diskStorage({
 const uploadProductImageFile = multer({
   storage: productImageStorage,
   fileFilter,
-  productLimits,
+  limits: productLimits,
 }).single('imageUrl')
 
 module.exports = {
