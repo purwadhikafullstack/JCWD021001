@@ -1,7 +1,7 @@
 import { Box, Flex, Text } from '@chakra-ui/react'
 import CreateUser from './components/modal-create'
 import { BreadCrumbs } from './components/breadcrumbs'
-import { Navbar } from '../../components/Navbar'
+import { Navbar } from '../../components/navbar'
 import { useEffect, useState } from 'react'
 import Pagination from './components/pagination'
 import Footer from '../../components/Footer/Footer'
@@ -51,7 +51,7 @@ function UserList() {
   return (
     <Box bg={'#F1F1F1'} height={'100%'}>
       {/* <Navbar /> */}
-      <Box padding={{ base: '0px 10px', md: '0px 30px' }} marginBottom={'150px'}>
+      <Box padding={{base: '0px 10px', md:'0px 30px'}} marginBottom={'150px'}>
         <Box className="top-dashboard" mt={'36px'} mb={'24px'}>
           <Box display={{ base: 'block', md: 'none' }}>
             <Flex justifyContent={'space-between'} align={'center'} mb={'10px'}>
@@ -68,7 +68,7 @@ function UserList() {
               <FilterUser setCityId={setCityId} setIsVerified={setIsVerified} />
             </Flex>
           </Box>
-
+          
           <Box display={{ base: 'none', md: 'block' }}>
             <Flex justifyContent={'space-between'}>
               <Flex>

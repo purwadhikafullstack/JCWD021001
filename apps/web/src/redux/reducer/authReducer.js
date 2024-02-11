@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit'
-import axios from 'axios'
-import toast from 'react-hot-toast'
+import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const initialState = {
   user: {
@@ -9,7 +9,7 @@ const initialState = {
     email: '',
     roleId: null,
     isVerified: null,
-    avatar: '',
+    avatar: "",
     warehouseId: null,
   },
   isLogin: false,
@@ -21,7 +21,7 @@ export const AuthReducer = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      const { id, username, email, roleId, isVerified, avatar, warehouseId } = action.payload
+      const { id, username, email, roleId, isVerified, avatar, warehouseId } = action.payload;
 
       state.user = {
         id,
@@ -82,8 +82,8 @@ export const keepLogin = () => {
         dispatch(keepLoginSuccess())
       }
     } catch (err) {
-      localStorage.removeItem('token')
-      toast.error(err?.response?.data)
+      localStorage.removeItem("token");
+      toast.error(err?.response?.data);
     }
   }
 }
