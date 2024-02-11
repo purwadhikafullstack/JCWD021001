@@ -1,7 +1,9 @@
 import {
   Box,
   Flex,
+  HStack,
   Heading,
+  Select,
   Table,
   TableContainer,
   Tbody,
@@ -15,8 +17,15 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { getMonthDates } from '../sales-report/services/utils'
 import { getStockReports } from '../stock-management/services/readStock'
+import { HistoryButton } from './components/history-button'
+import { MonthSelect } from '../sales-report/component/month-select'
+import {
+  getCurrentYear,
+  getFirstDateOfMonthByAbbreviation,
+} from '../sales-report/component/month-select/utils/services'
+import { getWarehouses } from '../form-mutation/services/readWarehouse'
 
-export const StockReport = () => {
+export const StockReport = (props) => {
   // LOCATION
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
@@ -24,31 +33,64 @@ export const StockReport = () => {
   // QUERY PARAMS
   const pageValue = queryParams.get('pa')
   const monthValue = queryParams.get('mo')
-
+  const warValue = queryParams.get('war')
   // PATHNAME
   const pathName = location.pathname
 
   // NAVIGATE
   const navigate = useNavigate()
 
-  const today = new Date('2024-02-01')
+  const [month, setMonth] = useState(
+    getFirstDateOfMonthByAbbreviation(monthValue, getCurrentYear()),
+  )
 
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
 
   const [stockReports, setStockReports] = useState([])
 
-  const [warehouseId, setWarehouseId] = useState(4)
+  const [warehouseId, setWarehouseId] = useState(props?.user?.warehouseId)
 
   useEffect(() => {
-    setStartDate(getMonthDates(today).startDate)
-    setEndDate(getMonthDates(today).endDate)
-    getStockReports(pageValue, 10, warehouseId, startDate, endDate).then((data) => {
-      setStockReports(data)
+    if (props?.isSuperAdmin) {
+      setStartDate(getMonthDates(new Date(month)).startDate)
+      setEndDate(getMonthDates(new Date(month)).endDate)
+      getStockReports(pageValue, 10, warValue, startDate, endDate).then((data) => {
+        setStockReports(data)
+      })
+    }
+    if (!props?.isSuperAdmin) {
+      setWarehouseId(props?.user?.warehouseId)
+      setStartDate(getMonthDates(new Date(month)).startDate)
+      setEndDate(getMonthDates(new Date(month)).endDate)
+      getStockReports(pageValue, 10, warehouseId, startDate, endDate).then((data) => {
+        setStockReports(data)
+      })
+    }
+  }, [warehouseId, startDate, endDate, month, warValue])
+
+  // Warehouse lists
+  const [warehouses, setWarehouses] = useState([])
+
+  useEffect(() => {
+    getWarehouses('').then((data) => {
+      setWarehouses(data)
     })
   }, [])
 
-  console.log('stock-reports', stockReports)
+  // Warehouse options
+  const warehouseOptions = warehouses?.map((warehouse, index) => {
+    return (
+      <option
+        key={index}
+        id={warehouse?.id}
+        value={warehouse?.id}
+        selected={warehouse?.id === +warValue}
+      >
+        {warehouse?.WarehouseAddress?.location}
+      </option>
+    )
+  })
 
   const renderedTableBody = stockReports?.map((stockReport, index) => {
     return (
@@ -57,7 +99,14 @@ export const StockReport = () => {
         <Td>{stockReport?.addition}</Td>
         <Td>{stockReport?.reduction}</Td>
         <Td>{stockReport?.qty}</Td>
-        <Td>History</Td>
+        <Td>
+          <HistoryButton
+            pathName={pathName}
+            stockId={stockReport?.id}
+            monthValue={monthValue}
+            warValue={warValue}
+          />
+        </Td>
       </Tr>
     )
   })
@@ -69,6 +118,37 @@ export const StockReport = () => {
             <Heading as={'h1'} fontSize={'1.5em'}>
               Stock Report
             </Heading>
+            <HStack>
+              {props?.isSuperAdmin && (
+                <Select
+                  placeholder={'Select warehouse'}
+                  id={'recipientWarehouseAddress'}
+                  name={'recipientWarehouseAddress'}
+                  type={'text'}
+                  borderColor={'transparent'}
+                  focusBorderColor={'transparent'}
+                  bgColor={'grey.50'}
+                  onChange={async (e) => {
+                    setWarehouseId(e?.target?.value)
+                    {
+                      e?.target?.value
+                        ? navigate(`${pathName}?pa=1&mo=${monthValue}&war=${e?.target?.value}`)
+                        : navigate(`${pathName}?pa=1`)
+                    }
+                  }}
+                >
+                  {warehouseOptions}
+                </Select>
+              )}
+              <MonthSelect
+                isSuperAdmin={props?.isSuperAdmin}
+                warValue={warValue}
+                monthValue={monthValue}
+                setMonth={setMonth}
+                pathName={pathName}
+                pageValue={pageValue}
+              />
+            </HStack>
           </Flex>
           <Box
             h={'70vh'}

@@ -32,7 +32,14 @@ export const createStockJournalQuery = async (
   }
 }
 
-export const getStockJournalQuery = async (warehouseId, stockId, page = null, pageSize = null) => {
+export const getStockJournalQuery = async (
+  warehouseId,
+  stockId,
+  startDate,
+  endDate,
+  page = null,
+  pageSize = null,
+) => {
   try {
     const offset = (page - 1) * pageSize
     const res = await StockJournal.findAndCountAll({
@@ -44,6 +51,7 @@ export const getStockJournalQuery = async (warehouseId, stockId, page = null, pa
           {
             stockId: stockId,
           },
+          { createdAt: { [Op.gte]: new Date(startDate), [Op.lte]: new Date(endDate) } },
         ],
       },
       include: [

@@ -7,8 +7,6 @@ import {
   Text,
   Tbody,
   Box,
-  Icon,
-  Button,
   Avatar,
   Flex,
 } from '@chakra-ui/react'

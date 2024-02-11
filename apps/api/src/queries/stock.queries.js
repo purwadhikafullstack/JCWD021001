@@ -5,8 +5,11 @@ import Colour from '../models/colour.model'
 import { Op } from 'sequelize'
 import Size from '../models/size.model'
 import ProductImage from '../models/productImage.model'
+import StockJournal from '../models/stockJournal.model'
+import Mutation from '../models/mutation.model'
+import OrderProducts from '../models/orderProducts.model'
 
-export const getStockQuery = async (warehouseId, page = null, pageSize = null) => {
+export const getStockQuery = async (warehouseId, name = '', page = null, pageSize = null) => {
   try {
     const offset = (page - 1) * pageSize
     const filter = {}
@@ -15,7 +18,11 @@ export const getStockQuery = async (warehouseId, page = null, pageSize = null) =
         warehouseId: {
           [Op.eq]: warehouseId,
         },
+        '$product.name$': {
+          [Op.like]: `%${name}%`,
+        },
       }
+
     const res = await Stock.findAndCountAll({
       include: [
         {
@@ -127,6 +134,49 @@ export const getStockByProductIdQuery = async (productId, sizeId, colourId) => {
             },
           },
         ],
+      },
+    })
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
+export const deleteStockQuery = async (id) => {
+  try {
+    const willDelete = await StockJournal.findAll({
+      where: {
+        stockId: id,
+      },
+    })
+    const idsToDelete = willDelete.map((record) => record.id)
+    await Mutation.destroy({
+      where: {
+        [Op.or]: [
+          { stockJournalIdRecipient: idsToDelete },
+          {
+            stockJournalIdRequester: idsToDelete,
+          },
+          {
+            stockId: id,
+          },
+        ],
+      },
+    })
+    await StockJournal.destroy({
+      where: {
+        stockId: id,
+      },
+    })
+    await OrderProducts.destroy({
+      where: {
+        stockId: id,
+      },
+    })
+
+    const res = await Stock.destroy({
+      where: {
+        id: id,
       },
     })
     return res

@@ -1,4 +1,5 @@
-import { Op, literal } from 'sequelize'
+import { Sequelize, Op } from 'sequelize'
+import { literal } from 'sequelize'
 import Orders from '../models/orders.model'
 import OrderProducts from '../models/orderProducts.model'
 import Payments from '../models/payments.model'
@@ -8,7 +9,6 @@ import User from '../models/user.model'
 import Warehouse from '../models/warehouse.model'
 import Stock from '../models/stock.model'
 import UserAddress from '../models/userAddress.model'
-import { Sequelize } from 'sequelize'
 import Size from '../models/size.model'
 import Colour from '../models/colour.model'
 import OrderStatuses from '../models/orderStatuses.model'
@@ -24,6 +24,7 @@ export const createOrderQuery = async (
   shippingCost,
   orderStatusId,
   orderNumber,
+  products,
 ) => {
   try {
     const order = await Orders.create({
@@ -279,7 +280,7 @@ export const getWarehouseQuery = async () => {
 
 export const productToStockIdQuery = async (products, nearestWarehouse) => {
   try {
-    console.log('products', products)
+    // console.log('products', products);
     let whereCondition = {}
 
     if (products && products.length > 0) {
@@ -309,7 +310,7 @@ export const productToStockIdQuery = async (products, nearestWarehouse) => {
       },
     })
 
-    console.log('hasil res', res)
+    // console.log('hasil res', res);
     return res
   } catch (err) {
     throw err
@@ -394,7 +395,7 @@ export const getAllOrderQuery = async (
           model: Warehouse,
           attributes: ['name'],
           as: 'warehouse',
-          include: [{ model: WarehouseAddress, attributes: ['location'], as: 'addresses' }],
+          include: [{ model: WarehouseAddress, attributes: ['location'] }],
         },
         {
           model: OrderProducts,
@@ -426,11 +427,6 @@ export const getAllOrderQuery = async (
               ],
             },
           ],
-        },
-        {
-          model: OrderStatuses,
-          as: 'status',
-          attributes: ['name'],
         },
       ],
       ...filter,
@@ -476,7 +472,7 @@ export const getAllOrderByProductQuery = async (
   try {
     const offset = (page - 1) * pageSize
     const res = await OrderProducts.sequelize.query(`SELECT p.id, p.name, 
-  SUM(op.price * op.quantity) as total, 
+  SUM(op.price) as total, 
   SUM(op.quantity) as sold
 FROM orders as o
 JOIN orderProducts as op ON o.id = op.orderId

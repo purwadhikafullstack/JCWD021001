@@ -122,9 +122,9 @@ export const findUnassignedAdminQuery = async () => {
 
 //PATCH
 
-export const editWarehouseQuery = async (id, name) => {
+export const editWarehouseQuery = async (id, location, cityId, postalCode, latitude, longitude, name) => {
   try {
-    await Warehouse.update({ name }, { where: { id: id } })
+    await Warehouse.update({ id, location, cityId, postalCode, latitude, longitude, name }, { where: { id: id } })
   } catch (err) {
     throw err
   }

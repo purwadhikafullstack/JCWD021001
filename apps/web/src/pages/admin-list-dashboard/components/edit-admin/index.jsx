@@ -19,6 +19,7 @@ import { editAdmin } from '../../services/editAdmin'
 import { useFormik } from 'formik'
 import { useState } from 'react'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
+import { editUserSchema } from '../../services/validations'
 
 function EditAdmin({ id, username, email, roleId, onAdminUpdated }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -30,6 +31,7 @@ function EditAdmin({ id, username, email, roleId, onAdminUpdated }) {
       password: '',
       roleId: roleId || '',
     },
+    validationSchema: editUserSchema,
     onSubmit: async (values) => {
       try {
         console.log('Formik Submission Values:', values)

@@ -1,22 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
-
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const initialState = {
   user: {
     id: null,
-    username: "",
-    email: "",
+    username: '',
+    email: '',
     roleId: null,
     isVerified: null,
     avatar: "",
     warehouseId: null,
   },
   isLogin: false,
-};
+  isSuperAdmin: false,
+}
 
 export const AuthReducer = createSlice({
-  name: "AuthReducer",
+  name: 'AuthReducer',
   initialState,
   reducers: {
     setUser: (state, action) => {
@@ -30,62 +31,63 @@ export const AuthReducer = createSlice({
         isVerified,
         avatar,
         warehouseId,
-      };
+      }
+      state.isSuperAdmin = roleId === 1
     },
     loginSuccess: (state, action) => {
-      state.isLogin = true;
+      state.isLogin = true
     },
     logoutSuccess: (state, action) => {
-      state.isLogin = false;
-      localStorage.removeItem("token");
+      state.isLogin = false
+      localStorage.removeItem('token')
     },
     keepLoginSuccess: (state) => {
-      state.isLogin = true;
+      state.isLogin = true
     },
   },
-});
+})
 
 export const login = (email, password) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post("http://localhost:8000/api/auth/login", {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}auth/login`, {
         email,
         password,
-      });
-      localStorage.setItem("token", res?.data?.data?.token);
-      console.log(res.data?.data?.token);
-      console.log(res.data?.data);
-      dispatch(setUser(res?.data?.data?.user));
-      dispatch(loginSuccess());
+      })
+      localStorage.setItem('token', res?.data?.data?.token)
+      console.log(res.data?.data?.token)
+      console.log(res.data?.data)
+      dispatch(setUser(res?.data?.data?.user))
+      dispatch(loginSuccess())
     } catch (err) {
-      alert(err?.response?.data);
+      toast.error(err?.response?.data)
+      throw err
     }
-  };
-};
+  }
+}
 
 export const keepLogin = () => {
   return async (dispatch) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token')
 
       if (token) {
-        const res = await axios.get("http://localhost:8000/api/auth/keep-login", {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}auth/keep-login`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
+        })
 
-        dispatch(setUser(res?.data?.data));
-        dispatch(keepLoginSuccess());
+        dispatch(setUser(res?.data?.data))
+        dispatch(keepLoginSuccess())
       }
     } catch (err) {
       localStorage.removeItem("token");
-      alert(err?.response?.data);
+      toast.error(err?.response?.data);
     }
-  };
-};
+  }
+}
 
-export const { loginSuccess, logoutSuccess, setUser, keepLoginSuccess } =
-  AuthReducer.actions;
+export const { loginSuccess, logoutSuccess, setUser, keepLoginSuccess } = AuthReducer.actions
 
-export default AuthReducer.reducer;
+export default AuthReducer.reducer

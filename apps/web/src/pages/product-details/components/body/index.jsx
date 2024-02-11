@@ -5,7 +5,7 @@ import { Carousel } from '../carousel'
 import axios from 'axios'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { createCart } from '../../../cart/services/createCart' // edit by andri
-// import { useCart } from '../../../../components/Navbar/services/cartContext' // edit by andri
+import { useCart } from '../../../../components/Navbar/components/use-cart' // edit by andri
 import { useToast } from '@chakra-ui/react' // edit by andri
 import { ColourBox } from '../colour-box'
 import { SizeBox } from '../size-box'
@@ -44,8 +44,14 @@ export const Body = (props) => {
 
   const getStock = async (productId, sizeId, colourId, setStock) => {
     try {
+      const token = localStorage.getItem('token')
       const res = await axios.get(
         `http://localhost:8000/api/stock/stock/qty?productId=${productId}&sizeId=${sizeId}&colourId=${colourId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
       )
       setStock(res?.data?.data)
     } catch (err) {

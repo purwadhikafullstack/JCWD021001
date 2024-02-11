@@ -21,18 +21,28 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { deleteProductCategory } from '../edit-product-category/services/deleteProductCategory'
+import { API_ROUTE } from '../../../../services/route'
+import { EditButton } from './component/edit-button'
+import { DeleteButton } from './component/delete-button'
+import { ViewButton } from '../edit-product-category/component/button'
 
 export const ProductCategory = (props) => {
-  // NAVIGATE
+  // Navigate
   const navigate = useNavigate()
 
+  // Toast
   const toast = useToast()
-  // NAVIGATE
+
   //   GENDER
   const [gender, setGender] = useState([])
   const getGender = async () => {
+    const token = localStorage.getItem('token')
     try {
-      const res = await axios.get(`http://localhost:8000/api/product-category/gender`)
+      const res = await axios.get(`${API_ROUTE}/product-category/gender`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       setGender(res?.data?.data)
     } catch (err) {
       throw err
@@ -41,7 +51,8 @@ export const ProductCategory = (props) => {
   useEffect(() => {
     getGender()
   }, [])
-  //   GENDER
+
+  console.log('product-category', props)
   return (
     <Box p={'1em'}>
       <VStack align={' stretch'}>
@@ -49,20 +60,22 @@ export const ProductCategory = (props) => {
           <Heading as={'h1'} fontSize={'1.5em'}>
             Product Category
           </Heading>
-          <Button
-            h={'3em'}
-            w={'10em'}
-            _hover={{
-              bgColor: 'redPure.600',
-            }}
-            bgColor={'redPure.600'}
-            color={'white'}
-            onClick={() => {
-              navigate('/dashboard/product-list/create-product-category')
-            }}
-          >
-            Create Category
-          </Button>
+          {props?.isSuperAdmin && (
+            <Button
+              h={'3em'}
+              w={'10em'}
+              _hover={{
+                bgColor: 'redPure.600',
+              }}
+              bgColor={'redPure.600'}
+              color={'white'}
+              onClick={() => {
+                navigate('/dashboard/product-list/create-product-category')
+              }}
+            >
+              Create Category
+            </Button>
+          )}
         </Flex>
         <TableContainer w={'100%'}>
           <Table
@@ -93,40 +106,9 @@ export const ProductCategory = (props) => {
                     </Td>
                     <Td alignItems={'center'}>
                       <HStack>
-                        <Button
-                          _hover={{
-                            bgColor: 'redPure.600',
-                          }}
-                          fontSize={'.8em'}
-                          h={'2.5em'}
-                          w={'5em'}
-                          bgColor={'redPure.600'}
-                          color={'white'}
-                          onClick={() => {
-                            navigate(
-                              `/dashboard/product-category/edit-product-category/${el?.name?.toLowerCase()}`,
-                            )
-                          }}
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          _hover={{
-                            bgColor: 'transparent',
-                          }}
-                          fontSize={'.8em'}
-                          h={'2.5em'}
-                          w={'5em'}
-                          border={'1px solid #CD0244'}
-                          bgColor={'transparent'}
-                          color={'redPure.600'}
-                          onClick={() => {
-                            // console.log(el?.id)
-                            deleteProductCategory(null, null, el?.id, toast)
-                          }}
-                        >
-                          Delete
-                        </Button>
+                        {props?.isSuperAdmin && <EditButton name={el?.name} navigate={navigate} />}
+                        {props?.isSuperAdmin && <DeleteButton id={el?.id} toast={toast} />}
+                        {props?.user?.warehouseId && <ViewButton name={el?.name} />}
                       </HStack>
                     </Td>
                   </Tr>

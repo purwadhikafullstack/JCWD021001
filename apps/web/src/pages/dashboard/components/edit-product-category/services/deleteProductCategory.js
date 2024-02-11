@@ -1,17 +1,18 @@
 import axios from 'axios'
 import { API_ROUTE } from '../../../../../services/route'
-import { useToast } from '@chakra-ui/react'
 
 export const deleteProductCategory = async (id, parentId, grandParentId = null, toast) => {
+  const token = localStorage.getItem('token')
   try {
     const res = await axios.delete(`${API_ROUTE}/product-category/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       data: {
         parentId: parentId,
         grandParentId: grandParentId,
       },
     })
-    console.log(id, parentId)
-    console.log('res', res)
     toast({
       title: `${res?.data?.title}`,
       status: 'success',

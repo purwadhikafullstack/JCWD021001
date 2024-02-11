@@ -2,7 +2,9 @@ import {
   Box,
   Button,
   Flex,
+  HStack,
   Heading,
+  Select,
   Table,
   TableContainer,
   Tbody,
@@ -18,17 +20,19 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { getStock } from './services/readStock'
 import { TableBody } from './component/table-body'
 import { PaginationList } from '../product-list/components/pagination-list'
+import { getWarehouses } from '../form-mutation/services/readWarehouse'
 
-export const StockManagement = () => {
+export const StockManagement = (props) => {
   // LOCATION
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
 
   // WAREHOUSE ID
-  const [warehouseId, setWarehouseId] = useState(4)
+  const [warehouseId, setWarehouseId] = useState(null)
 
   // QUERY PARAMS
   const pageValue = queryParams.get('pa')
+  const warehouseValue = queryParams.get('wa') //warehouse value
 
   // PATHNAME
   const pathName = location.pathname
@@ -37,13 +41,19 @@ export const StockManagement = () => {
   const navigate = useNavigate()
 
   // TOAST
-  const toast = useToast()
+  const [trigger, setTrigger] = useState(false)
 
   // STOCKS
   const [stocks, setStocks] = useState([])
   useEffect(() => {
-    getStock(warehouseId, pageValue).then((data) => setStocks(data))
-  }, [warehouseId, pageValue])
+    if (props?.isSuperAdmin) {
+      getStock(warehouseValue, '', pageValue, 10).then((data) => setStocks(data))
+    }
+    if (!props?.isSuperAdmin) {
+      setWarehouseId(props?.user?.warehouseId)
+      getStock(warehouseId, '', pageValue, 10).then((data) => setStocks(data))
+    }
+  }, [warehouseId, pageValue, warehouseValue, trigger])
 
   // Toggle Box Colour
   const [boxToggle, setBoxToggle] = useState({ 1: true })
@@ -55,6 +65,30 @@ export const StockManagement = () => {
       [!id]: set[id],
     }))
   }
+
+  // Warehouse lists
+  const [warehouses, setWarehouses] = useState([])
+
+  useEffect(() => {
+    getWarehouses('').then((data) => {
+      setWarehouses(data)
+    })
+  }, [])
+
+  // Warehouse options
+  const warehouseOptions = warehouses?.map((warehouse, index) => {
+    return (
+      <option
+        key={index}
+        id={warehouse?.id}
+        value={warehouse?.id}
+        selected={warehouse?.id === +warehouseValue}
+      >
+        {warehouse?.WarehouseAddress?.location}
+      </option>
+    )
+  })
+
   return (
     <Box p={'1em'} h={'100%'} w={'100%'}>
       <Flex flexDir={'column'} justifyContent={'space-between'} h={'100%'}>
@@ -63,20 +97,47 @@ export const StockManagement = () => {
             <Heading as={'h1'} fontSize={'1.5em'} fontWeight={'bold'}>
               Stock Management
             </Heading>
-            <Button
-              _hover={{
-                bgColor: 'redPure.600',
-              }}
-              h={'3em'}
-              w={'10em'}
-              bgColor={'redPure.600'}
-              color={'white'}
-              onClick={() => {
-                navigate('/dashboard/stock-management/create-stock')
-              }}
-            >
-              Create Stock
-            </Button>
+            <HStack>
+              {props?.isSuperAdmin && (
+                <Select
+                  placeholder={'Select warehouse'}
+                  id={'recipientWarehouseAddress'}
+                  name={'recipientWarehouseAddress'}
+                  type={'text'}
+                  borderColor={'transparent'}
+                  focusBorderColor={'transparent'}
+                  bgColor={'grey.50'}
+                  onChange={async (e) => {
+                    setWarehouseId(e?.target?.value)
+                    {
+                      e?.target?.value
+                        ? navigate(`${pathName}?pa=1&wa=${e?.target?.value}`)
+                        : navigate(`${pathName}?pa=1`)
+                    }
+                  }}
+                >
+                  {warehouseOptions}
+                </Select>
+              )}
+              <Button
+                _hover={{
+                  bgColor: 'redPure.600',
+                }}
+                h={'3em'}
+                w={'10em'}
+                bgColor={'redPure.600'}
+                color={'white'}
+                onClick={() => {
+                  navigate(
+                    `/dashboard/stock-management/create-stock${
+                      warehouseValue ? `?wa=${warehouseValue}` : ''
+                    }`,
+                  )
+                }}
+              >
+                Create Stock
+              </Button>
+            </HStack>
           </Flex>
           <Box
             h={'70vh'}
@@ -121,7 +182,14 @@ export const StockManagement = () => {
                   </Tr>
                 </Thead>
                 <Tbody position={'relative'} fontWeight={'bold'}>
-                  <TableBody stocks={stocks} warehouseId={warehouseId} pathName={pathName} />
+                  <TableBody
+                    stocks={stocks}
+                    pathName={pathName}
+                    warehouseId={warehouseId}
+                    warehouseValue={warehouseValue}
+                    setTrigger={setTrigger}
+                    trigger={trigger}
+                  />
                 </Tbody>
               </Table>
             </TableContainer>

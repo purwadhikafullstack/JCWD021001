@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 /** @type {import('sequelize-cli').Migration} */
 export async function up(queryInterface, Sequelize) {
   await queryInterface.createTable('orderProducts', {
@@ -30,7 +30,7 @@ export async function up(queryInterface, Sequelize) {
     },
     price: {
       allowNull: false,
-      type: Sequelize.DECIMAL(10, 0),
+      type: Sequelize.DECIMAL(10,0),
     },
     quantity: {
       allowNull: false,
@@ -39,8 +39,8 @@ export async function up(queryInterface, Sequelize) {
         min: 0,
       },
     },
-  })
+  });
 }
 export async function down(queryInterface, Sequelize) {
-  await queryInterface.dropTable('orderProducts')
+  await queryInterface.dropTable('orderProducts');
 }

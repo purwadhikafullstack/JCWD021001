@@ -10,7 +10,7 @@ import Profile from './pages/profile/Index'
 // import { useSelector } from 'react-redux';
 import { Box } from '@chakra-ui/react'
 import { Product } from './pages/product-list/container'
-import { LoggedInRoute } from './components/Auth/ProtectedRoute'
+import { LoggedInRoute, LoggedOutRoute } from './components/Auth/ProtectedRoute'
 import CreateAddress from './pages/create-address'
 import ManageAddress from './pages/manage-address'
 import Cart from './pages/cart'
@@ -23,7 +23,6 @@ import { Dashboard } from './pages/dashboard/container'
 import OrderManagement from './pages/order-management'
 import { AuthenticatedRouteOrder } from './pages/order/authenticatedRouteOrder'
 import { CartProvider } from './components/navbar/services/cartContext'
-import WarehouseList from './pages/warehouse-list'
 import CreateWarehouse from './pages/warehouse-list/components/create-warehouse'
 import EditWarehousePage from './pages/warehouse-list/components/edit-warehouses'
 import OrderDetails from './pages/order-details'
@@ -36,9 +35,23 @@ function App() {
         <CartProvider>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/signup" element={<Signup />} />
+            <Route
+              path="/signup"
+              element={
+                <LoggedOutRoute>
+                  <Signup />
+                </LoggedOutRoute>
+              }
+            />
             <Route path="/auth/email-verification" element={<Verification />} />
-            <Route path="/signin" element={<Signin />} />
+            <Route
+              path="/signin"
+              element={
+                <LoggedOutRoute>
+                  <Signin />
+                </LoggedOutRoute>
+              }
+            />
             <Route path="/password-reset-request" element={<RequestPasswordReset />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route
@@ -86,7 +99,6 @@ function App() {
               }
             />
 
-            <Route path="/warehouse-list" element={<WarehouseList />} />
             <Route path="/warehouse-list/create-warehouse" element={<CreateWarehouse />} />
             <Route path="/edit-warehouse" element={<EditWarehousePage />} />
           </Routes>

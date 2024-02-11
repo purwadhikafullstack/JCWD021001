@@ -14,6 +14,10 @@ export const Dashboard = () => {
   const toggleSideBar = () => {
     setCollapseSideBar(!collapseSideBar)
   }
+
+  // Super Admin Checking
+  const isSuperAdmin = useSelector((state) => state.AuthReducer.isSuperAdmin)
+
   return (
     <Box maxW={'100vw'} overflow={{ xl: 'hidden', base: 'hidden' }}>
       <Navbar />
@@ -23,9 +27,12 @@ export const Dashboard = () => {
             collapseSideBar={collapseSideBar}
             setCollapseSideBar={setCollapseSideBar}
             toggleSideBar={toggleSideBar}
+            isSuperAdmin={isSuperAdmin}
           />
         </Box>
         <Body
+          user={user}
+          isSuperAdmin={isSuperAdmin}
           destination={destination}
           createProduct={createProduct}
           collapseSideBar={collapseSideBar} // responsive
