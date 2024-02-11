@@ -36,8 +36,17 @@ export const CreateProductCategoryGender = (props) => {
 
   //   CREATE PRODUCT CATEGORY
   const createProductCategory = async (name) => {
+    const token = localStorage.getItem('token')
     try {
-      const res = await axios.post(`http://localhost:8000/api/product-category`, { name })
+      const res = await axios.post(
+        `http://localhost:8000/api/product-category`,
+        { name },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
       toast({
         title: `${res?.data?.title}`,
         status: 'success',

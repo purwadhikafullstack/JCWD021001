@@ -27,7 +27,7 @@ export const init = (sequelize) => {
         },
       },
       productCategoryId: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         references: {
           model: {

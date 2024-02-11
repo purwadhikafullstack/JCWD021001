@@ -4,7 +4,7 @@ import { API_ROUTE } from '../../../../../services/route'
 export const deleteProductCategory = async (id, parentId, grandParentId = null, toast) => {
   const token = localStorage.getItem('token')
   try {
-    const res = await axios.delete(`${API_ROUTE}/product-category/${id}`, {
+    const res = await axios.delete(`${API_ROUTE}product-category/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

@@ -1,6 +1,7 @@
-import { Op } from 'sequelize'
+import { Op, where } from 'sequelize'
 import ProductCategory from '../models/productCategory.model'
 import Size from '../models/size.model'
+import Product from '../models/product.model'
 
 export const getProductCategoryQuery = async (gender) => {
   const filter = {}
@@ -135,6 +136,27 @@ export const deleteProductCategoryQuery = async (id, parentId, grandParentId = n
         },
       })
       const childrenId = checkChildren.map((item) => item.id)
+      const group = await ProductCategory.findAll({
+        where: { parentId: childrenId },
+      })
+      // return group
+      const groupId = group.map((item) => item.id)
+
+      const products = await Product.findAll({
+        where: {
+          productCategoryId: groupId,
+        },
+      })
+      if (products.length > 0) {
+        // Iterate through each product and update
+        for (const product of products) {
+          await product.update({
+            productCategoryId: null, // Assuming you want to set productCategoryId to null
+          })
+        }
+      } else {
+        console.error('Records not found')
+      }
       await ProductCategory.destroy({
         where: {
           parentId: childrenId,
@@ -177,8 +199,10 @@ export const deleteProductCategoryQuery = async (id, parentId, grandParentId = n
         },
       },
     })
+
     if (checkLastChild.length === 1) {
       if (checkParent.length <= 1) throw new Error('You cant delete the last category')
+
       const res = ProductCategory.destroy({
         where: {
           id: { [Op.eq]: id },
@@ -187,6 +211,17 @@ export const deleteProductCategoryQuery = async (id, parentId, grandParentId = n
       return res
     }
     if (check) {
+      const sizes = await Size.findAll({
+        where: {
+          productCategoryId: id,
+        },
+      })
+      const sizeId = sizes.map((item) => item.id)
+      await Size.destroy({
+        where: {
+          id: sizeId,
+        },
+      })
       await ProductCategory.destroy({
         where: {
           parentId: {
