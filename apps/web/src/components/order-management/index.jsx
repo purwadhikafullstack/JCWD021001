@@ -53,13 +53,16 @@ const OrderManagementBody = ({
     onClose,
     handleSendButton,
     handleCanceltOnProcess,
+    handleTabChange,
+    activeTab,
+    handleTabClick,
   } = useOrderManagementState({
     orderData,
     onOrderNumberSubmit,
     onOrderDateSubmit,
     onWarehouseSubmit,
+    onTabClick
   })
-
   return (
     <Box display={'flex'}>
       {/* <Box w={{ base: 'none', xl: '15vw' }} minH={'100vh'} bgColor={'white'}></Box> */}
@@ -122,10 +125,10 @@ const OrderManagementBody = ({
             isTabListVisible={isTabListVisible}
             handleToggleTabList={handleToggleTabList}
           />
-          <Tabs>
+          <Tabs index={activeTab} onChange={handleTabChange}>
             <CustomTabList
               isTabListVisible={isTabListVisible}
-              onTabClick={onTabClick}
+              handleTabClick={handleTabClick}
               isMobile={isMobile}
             />
             <TabPanels>
@@ -135,8 +138,8 @@ const OrderManagementBody = ({
                   newOrder={orderData}
                   expandedProducts={expandedProducts}
                   handleToggleProducts={handleToggleProducts}
-                  handleAcceptButton={handleAcceptButton}
                   handleRejectButton={handleRejectButton}
+                  handleCheckStock={handleCheckStock}
                 />
                 <NewOrderTable
                   orderData={orderData}
@@ -159,8 +162,6 @@ const OrderManagementBody = ({
                   handleToggleProducts={handleToggleProducts}
                   handleSendButton={handleSendButton}
                   handleCanceltOnProcess={handleCanceltOnProcess}
-                  // handleAcceptButton={handleAcceptButton}
-                  // handleRejectButton={handleRejectButton}
                 />
                 <OnProcessTable
                   orderData={orderData}
@@ -168,8 +169,6 @@ const OrderManagementBody = ({
                   handleToggleProducts={handleToggleProducts}
                   handleSendButton={handleSendButton}
                   handleCanceltOnProcess={handleCanceltOnProcess}
-                  // handleAcceptButton={handleAcceptButton}
-                  // handleRejectButton={handleRejectButton}
                 />
                 <Pagination
                   currentPage={pagination?.currentPage}
@@ -242,7 +241,12 @@ const OrderManagementBody = ({
               </TabPanel>
             </TabPanels>
           </Tabs>
-          <ModalCheck checkStock={checkStock} isOpen={isOpen} onClose={onClose} handleAcceptButton={handleAcceptButton}/>
+          <ModalCheck
+            checkStock={checkStock}
+            isOpen={isOpen}
+            onClose={onClose}
+            handleAcceptButton={handleAcceptButton}
+          />
         </Box>
       </Box>
     </Box>

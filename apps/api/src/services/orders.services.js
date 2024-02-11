@@ -8,11 +8,14 @@ import {
   getWarehouseQuery,
   productToStockIdQuery,
   updateOrderQuery,
+  findOrderStatusQuery,
   getAllOrderByCategoryQuery, // by putu
   getAllOrderByProductQuery, // by putu
   getAllOrderQuery, // by putu
   getSpesificStockQuery, // by putu
 } from '../queries/orders.queries'
+import schedule from 'node-schedule'
+import moment from 'moment'
 
 const calcTotalPrice = (products) => {
   return products.reduce((total, product) => {
@@ -51,6 +54,31 @@ export const createOrderService = async (
     throw err
   }
 }
+
+
+export const updateOrderStatus = async () => {
+  try {
+    console.log('Cron job is running at 17:05')
+    const orderStatusId = 4
+    const orders = await findOrderStatusQuery(orderStatusId)
+    const now = moment().tz('Asia/Jakarta') // Ambil waktu saat ini dengan zona waktu yang sesuai
+
+    orders.forEach(async (order) => {
+      const expectedDeliveryDate = moment(order?.expectedDeliveryDate).tz('Asia/Jakarta')
+      const differenceInDays = now.diff(expectedDeliveryDate, 'days')
+      // const differenceInMinutes = now.diff(expectedDeliveryDate, 'minutes')
+
+      if (differenceInDays >= 1) {
+        const newOrderStatusId = 5
+        await updateOrderQuery(order.id, newOrderStatusId)
+      }
+    })
+  } catch (err) {
+    throw new Error('Failed to update order status: ' + err.message)
+  }
+}
+schedule.scheduleJob('00 00 * * *', updateOrderStatus)
+
 export const updateOrderService = async (orderId, orderStatusId) => {
   try {
     const check = await findOrderIdQuery({ orderId })
@@ -163,7 +191,7 @@ export const calculationCheckStockService = async (orderId) => {
 
       if (selectedWarehouse) {
         const selectedStock = selectedWarehouse.stock.find((stock) => stock.productId === productId)
-        console.log('stock', selectedStock);
+        console.log('stock', selectedStock)
 
         if (selectedStock) {
           const availableQuantity = selectedStock.qty

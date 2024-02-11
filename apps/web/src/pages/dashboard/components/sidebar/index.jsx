@@ -119,12 +119,12 @@ export const Sidebar = (props) => {
               </Text>
             </VStack>
           </Box>
-          <SidebarButton label={'Order Management'} icon={Squares2X2Icon} />
+          <SidebarButton label={'Order'} icon={Squares2X2Icon} />
           <Box p={'0 1.3em'} borderLeft={'2px solid lightgray'}>
             <VStack align={'stretch'} spacing={'1.5em'}>
               <Text
                 onClick={() => {
-                  navigate('/dashboard/order-management')
+                  navigate('/dashboard/order-management', { state: { refresh: true, activeTab: 0, status: [2] } })
                 }}
                 cursor={'pointer'}
               >

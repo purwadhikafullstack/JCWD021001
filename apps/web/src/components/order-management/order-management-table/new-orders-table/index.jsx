@@ -195,7 +195,6 @@ const NewOrderTable = ({
                       size={'sm'}
                       bgColor={'#CD0244'}
                       color={'white'}
-                      // onClick={() => handleAcceptButton(items?.id)}
                       onClick={() => handleCheckStock(items?.id)}
                     >
                       Check Stock

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useBreakpointValue, useDisclosure } from '@chakra-ui/react'
 import { useToast } from '@chakra-ui/react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { createStockJournal } from '../../../pages/dashboard/components/stock-management/services/createStocks'
 import { updateOrder } from '../../../pages/order/services/updateOrder'
 import { getCheckStock } from '../../../pages/order-management/service/getCheckStock'
@@ -12,18 +12,34 @@ const useOrderManagementState = ({
   onOrderNumberSubmit,
   onOrderDateSubmit,
   onWarehouseSubmit,
+  onTabClick
 }) => {
+  const toast = useToast()
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const [orderNumber, setOrderNumber] = useState('')
   const [orderDate, setOrderDate] = useState('')
   const [selectedWarehouse, setSelectedWarehouse] = useState('')
   const [checkStock, setCheckStock] = useState([])
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  console.log('orderData', orderData)
-
-  const toast = useToast()
-  const navigate = useNavigate()
-
   const [expandedProducts, setExpandedProducts] = useState({})
+  const [activeTab, setActiveTab] = useState(() => {
+    const storedTab = localStorage.getItem('activeTabOrder')
+    return location.state?.activeTab || 0
+  })
+
+  const handleTabChange = (index) => {
+    setActiveTab(index)
+    navigate('.', { state: { activeTab: index } })
+  }
+
+  const handleTabClick = (orderStatusId, ...additionalParams) => {
+    // Konversi orderStatusId ke integer sebelum mengirimkannya
+    const parsedOrderStatusId = parseInt(orderStatusId, 10)
+    localStorage.setItem('status', JSON.stringify([parsedOrderStatusId, ...additionalParams]))
+    onTabClick(parsedOrderStatusId, ...additionalParams)
+  }
 
   const handleToggleProducts = (orderId) => {
     setExpandedProducts((prev) => ({
@@ -94,6 +110,10 @@ const useOrderManagementState = ({
         status: 'success',
         placement: 'bottom',
       })
+      setTimeout(() => {
+        handleTabChange(4);
+        handleTabClick(6);
+      }, 2000);
     } catch (error) {
       // Rollback changes on error
       if (!transactionSuccess) {
@@ -217,6 +237,10 @@ const useOrderManagementState = ({
             status: 'success',
             placement: 'bottom',
           })
+          setTimeout(() => {
+            handleTabChange(1);
+            handleTabClick(3);
+          }, 2000);
         } catch (updateOrderError) {
           // Handle error for updateOrder
           toast({
@@ -250,6 +274,10 @@ const useOrderManagementState = ({
         status: 'success',
         placement: 'bottom',
       })
+      setTimeout(() => {
+        handleTabChange(4);
+        handleTabClick(6);
+      }, 2000);
     } catch (updateOrderError) {
       // Handle error for updateOrder
       toast({
@@ -318,12 +346,17 @@ const useOrderManagementState = ({
         }
         // Update the order status after processing OrderProducts
         const updateOrderRes = await updateOrder(newUpdateOrder)
+        console.log('update', updateOrderRes);
         // Handle success for updateOrder
         toast({
           title: `${updateOrderRes?.data?.message}`,
           status: 'success',
           placement: 'bottom',
         })
+        setTimeout(() => {
+          handleTabChange(2);
+          handleTabClick(4);
+        }, 2000);
       }
     } catch (err) {
       // Handle error for finding the order
@@ -356,6 +389,9 @@ const useOrderManagementState = ({
     onClose,
     handleSendButton,
     handleCanceltOnProcess,
+    handleTabChange,
+    activeTab,
+    handleTabClick,
   }
 }
 

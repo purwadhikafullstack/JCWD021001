@@ -1,5 +1,6 @@
 import { createPayment } from '../../../pages/order/services/createPayment'
 import { createOrder } from '../../../pages/order/services/createOrder'
+import { deleteCart } from '../../../pages/cart/services/deleteCart'
 
 export const paymentHandler = async (
   order,
@@ -33,10 +34,9 @@ export const paymentHandler = async (
       orderStatusId: 1,
       products: mappedProducts,
     }
-    console.log('data', dataOrder);
 
     const result = await createOrder(dataOrder)
-    // console.log('asdasda', result);
+    await deleteCart(order.CartProducts.map(product => product.id))
     const midtransToken = result?.midtransToken
     const orderId = result?.order?.id
 

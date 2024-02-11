@@ -106,7 +106,7 @@ const OnProcess = ({
                         floatingPoint: 0,
                       })}
                     </Text>
-                    {order.OrderProducts.length > 1 && (
+                    {order?.OrderProducts?.length > 1 && (
                       <Box>
                         <Text
                           fontFamily={'body'}
@@ -124,9 +124,9 @@ const OnProcess = ({
                     )}
                   </Box>
                 </Box>
-                <Collapse in={expandedProducts[order.id]}>
+                <Collapse in={expandedProducts[order?.id]}>
                   <Box display={'flex'} flexDirection={'column'} gap={'16px'}>
-                    {order.OrderProducts.slice(1).map((product, index) => (
+                    {order?.OrderProducts?.slice(1).map((product, index) => (
                       <Box display={'flex'} gap={'16px'} key={index}>
                         <Box bgColor={'brand.grey100'} w={'112px'} h={'112px'}></Box>
                         <Box display={'flex'} flexDirection={'column'} gap={'6px'}>

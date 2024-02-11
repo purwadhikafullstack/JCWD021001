@@ -16,8 +16,6 @@ const OrderBody = ({ orderData, totalPrice, totalQuantity }) => {
   const [nearestWarehouse, setNearestWarehouse] = useState(null)
   const [costResult, setCostResult] = useState('')
   const navigate = useNavigate()
-  // console.log('orderStock', stockOrder)
-  console.log('address', selectedAddress)
   // handle payment
   const handlePaymentClick = (orderItem) => {
     paymentHandler(
@@ -32,26 +30,15 @@ const OrderBody = ({ orderData, totalPrice, totalQuantity }) => {
     )
   }
 
-  // useEffect(() => {
-  //   const fetchStockOrder = async () => {
-  //     try {
-  //       const stockResult = await productToStock(stockData, nearestWarehouse?.id)
-  //       setStockOrder(stockResult)
-  //     } catch (error) {
-  //       console.error('Error fetching stock data:', error)
-  //     }
-  //   }
-
-  //   fetchStockOrder()
-  // }, [stockData, nearestWarehouse])
   useEffect(() => {
     fetchStockOrder(orderData, nearestWarehouse, setStockOrder) // Call fetchStockOrder from stockService
   }, [orderData, nearestWarehouse])
 
   return (
     <Box>
-      {orderData.map((orderItem) => (
-        <Box key={orderItem.id}>
+      {orderData?.map((orderItem) => (
+        <Box key={orderItem?.id}>
+          {console.log('orderItem', orderItem)}
           <Box padding={{ base: '24px 24px 280px 24px', xl: '24px' }}>
             {/* header */}
             <Box display={'flex'} flexDirection={'column'} gap={'6px'} mb={'16px'}>

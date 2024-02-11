@@ -22,8 +22,6 @@ const OnProcessTable = ({
   handleToggleProducts,
   handleSendButton,
   handleCanceltOnProcess
-  // handleAcceptButton,
-  // handleRejectButton,
 }) => {
   const navigate = useNavigate()
   return (

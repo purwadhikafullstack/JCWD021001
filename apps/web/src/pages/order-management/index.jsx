@@ -9,9 +9,10 @@ const OrderManagement = () => {
   const [orderData, setOrderData] = useState([])
   const [warehouseData, setWarehouseData] = useState([])
   const [selectOrderStatusId, setSelectOrderStatusId] = useState(() => {
-    const storedTab = localStorage.getItem('status')
-    return storedTab ? JSON.parse(storedTab) : [2]
+    const storedTab = localStorage.getItem('statusOrder')
+    return location.state?.status || (storedTab ? JSON.parse(storedTab) : [2])
   })
+
 
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(3)
@@ -48,6 +49,12 @@ const OrderManagement = () => {
     refreshOrder()
     refreshWarehouse()
   }, [page, pageSize, selectOrderStatusId])
+  useEffect(() => {
+    const shouldRefresh = location.state?.refresh
+    if (shouldRefresh) {
+      refreshOrder()
+    }
+  }, [location.state?.refresh]) // Add orderData as a dependency to re-run the effect when orderData changes
 
   const handleOrderNumberSubmit = (orderNumber) => {
     refreshOrder(orderNumber)
