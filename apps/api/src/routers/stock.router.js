@@ -18,7 +18,7 @@ const stockRouter = Router()
 stockRouter.get('/', verifyToken, getStockController)
 stockRouter.post('/', verifyToken, checkRoleSuperAdminAdmin, createStockController)
 stockRouter.get('/:id', verifyToken, checkRoleSuperAdminAdmin, getStockByIdController)
-stockRouter.get('/stock/qty', verifyToken, getStockByProductIdController)
+stockRouter.get('/stock/qty', getStockByProductIdController)
 stockRouter.get(
   '/stock/report/month',
   verifyToken,

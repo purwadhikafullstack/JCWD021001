@@ -32,7 +32,7 @@ export const StockManagement = (props) => {
 
   // QUERY PARAMS
   const pageValue = queryParams.get('pa')
-  const warehouseValue = queryParams.get('wa')
+  const warehouseValue = queryParams.get('wa') //warehouse value
 
   // PATHNAME
   const pathName = location.pathname
