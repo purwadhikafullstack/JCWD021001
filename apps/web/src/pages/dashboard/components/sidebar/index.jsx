@@ -71,7 +71,6 @@ export const Sidebar = (props) => {
               </Text>
             </VStack>
           </Box>
-          <SidebarButton label={'Product'} icon={Squares2X2Icon} />
           <SidebarButton
             label={'Product'}
             icon={Squares2X2Icon}
