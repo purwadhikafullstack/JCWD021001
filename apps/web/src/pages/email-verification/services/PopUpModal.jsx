@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom'
 export const SuccessModal = ({ isOpen, onClose }) => {
   const navigate = useNavigate()  
   const handleCloseClick = () => {
-    navigate('/signin')
+    navigate('/')
     onClose()
     }
   return (
