@@ -2,9 +2,9 @@ import { Box, Button, Flex, Heading, Icon, Input, Select, Text } from '@chakra-u
 import { BreadCrumbs } from './components/breadcrumbs'
 import Footer from '../../components/Footer/Footer'
 import { PlusIcon } from '@heroicons/react/24/outline'
-import AddressList from './components/address-list'
-import { useNavigate } from 'react-router-dom'
-import { Navbar } from '../../components/navbar'
+import AddressList from "./components/address-list";
+import { useNavigate } from "react-router-dom";
+import { Navbar } from "../../components/Navbar";
 
 function ManageAddress() {
   const navigate = useNavigate()

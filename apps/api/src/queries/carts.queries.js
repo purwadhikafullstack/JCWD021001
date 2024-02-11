@@ -140,21 +140,6 @@ export const findCartUserQuery = async (userId) => {
   }
 }
 
-// export const getCartQuery = async (userId) => {
-//   try {
-//     const res = await Carts.findAll({
-//       include: [
-//         { model: User },
-//         { model: CartProducts, include: [{ model: Stock, as: 'stocks', include: [{ model: Product, as: 'product' }] }] },
-//       ],
-//       where: { userId: userId },
-//     })
-//     return res
-//   } catch (err) {
-//     throw err
-//   }
-// }
-
 export const getCartQuery = async (userId, stockIds) => {
   try {
     let whereCondition = { userId: userId }

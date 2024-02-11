@@ -16,6 +16,7 @@ import WarehouseList from '../../../warehouse-list'
 import { AdminRoute } from '../../../../components/Auth/ProtectedRoute'
 import { SalesReport } from '../sales-report'
 import { StockReport } from '../stock-report'
+import OrderManagement from '../../../order-management'
 
 export const Body = (props) => {
   console.log('props', props?.user)
@@ -51,6 +52,9 @@ export const Body = (props) => {
         return <SalesReport user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'stock-report':
         return <StockReport user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+      case 'order-management':
+        return <OrderManagement />
+        
     }
   }
   const renderComponentAgain = () => {

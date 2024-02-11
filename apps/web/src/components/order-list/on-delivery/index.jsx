@@ -103,7 +103,9 @@ const OnDelivery = ({
                       color={'#838383'}
                     >
                       {order?.OrderProducts[0]?.quantity} item x{' '}
-                      {toRupiah(+order?.OrderProducts[0]?.stocks?.product?.price, { floatingPoint: 0 })}
+                      {toRupiah(+order?.OrderProducts[0]?.stocks?.product?.price, {
+                        floatingPoint: 0,
+                      })}
                     </Text>
                     {order.OrderProducts.length > 1 && (
                       <Box>
@@ -165,7 +167,7 @@ const OnDelivery = ({
                   Total Price
                 </Text>
                 <Text fontFamily={'body'} fontWeight={'700'} fontSize={'16px'} color={'#CD0244'}>
-                  {toRupiah(+order?.totalPrice, { floatingPoint: 0 })}
+                  {toRupiah(+order?.Payment?.grossAmount, { floatingPoint: 0 })}
                 </Text>
               </Box>
             </Box>

@@ -13,7 +13,6 @@ export const fetchStockOrder = async (orderData, nearestWarehouse, setStockOrder
         });
         return acc;
       }, []);
-      console.log('hasil', products);
     const stockResult = await productToStock(products, nearestWarehouse?.id)
     setStockOrder(stockResult)
   } catch (error) {

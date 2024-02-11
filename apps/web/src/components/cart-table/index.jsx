@@ -17,6 +17,7 @@ const LaptopCartTable = ({ cartData, onCartUpdated }) => {
     totalPrice,
     totalQuantity,
     handleCheckout,
+    stockData
   } = useCartState(cartData, onCartUpdated)
 
   return (
@@ -36,6 +37,7 @@ const LaptopCartTable = ({ cartData, onCartUpdated }) => {
               handleCheckboxChange={handleCheckboxChange}
               handleSelectAllChange={handleSelectAllChange}
               productData={productData}
+              stockData={stockData}
             />
             <CartSummary
               totalQuantity={totalQuantity}

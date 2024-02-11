@@ -14,6 +14,7 @@ import Colour from '../models/colour.model'
 import OrderStatuses from '../models/orderStatuses.model'
 import WarehouseAddress from '../models/warehouseAddress.model'
 import ProductCategory from '../models/productCategory.model'
+import moment from 'moment'
 
 export const createOrderQuery = async (
   userId,
@@ -67,7 +68,6 @@ export const createOrderQuery = async (
 
 export const findOrderIdQuery = async ({ orderId, userId }) => {
   try {
-    console.log('userId', userId)
     if (orderId) {
       const res = await Orders.findOne({
         where: { id: orderId },
@@ -84,9 +84,28 @@ export const findOrderIdQuery = async ({ orderId, userId }) => {
   }
 }
 
+export const findOrderStatusQuery = async (orderStatusId) => {
+  try {
+    const res = Orders.findAll({ where: { orderStatusId: orderStatusId } })
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
 export const updateOrderQuery = async (orderId, orderStatusId) => {
   try {
-    const res = await Orders.update({ orderStatusId: orderStatusId }, { where: { id: orderId } })
+    let expectedDeliveryDate = null
+    let res = null
+    if (orderStatusId === 4) {
+      expectedDeliveryDate = moment().tz('Asia/Jakarta').add(1, 'day').toDate()
+      await Orders.update(
+        { orderStatusId: orderStatusId, expectedDeliveryDate: expectedDeliveryDate },
+        { where: { id: orderId } },
+      )
+    } else {
+      await Orders.update({ orderStatusId: orderStatusId }, { where: { id: orderId } })
+    }
     return res
   } catch (err) {
     throw err

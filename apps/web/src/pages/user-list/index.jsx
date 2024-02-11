@@ -1,7 +1,7 @@
 import { Box, Flex, Text } from '@chakra-ui/react'
 import CreateUser from './components/modal-create'
 import { BreadCrumbs } from './components/breadcrumbs'
-import { Navbar } from '../../components/navbar'
+import { Navbar } from '../../components/Navbar'
 import { useEffect, useState } from 'react'
 import Pagination from './components/pagination'
 import Footer from '../../components/Footer/Footer'

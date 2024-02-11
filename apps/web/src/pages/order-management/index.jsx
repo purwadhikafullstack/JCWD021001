@@ -1,17 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Box, Text, Button, ButtonGroup, Icon } from '@chakra-ui/react'
-import { Navbar } from '../../components/navbar'
+import { Navbar } from '../../components/Navbar'
 import OrderManagementBody from '../../components/order-management'
 import { getOrderManagement } from './service/getOrderManagement'
 import { getWarehouse } from './service/getWarehouse'
-
 
 const OrderManagement = () => {
   const [orderData, setOrderData] = useState([])
   const [warehouseData, setWarehouseData] = useState([])
   const [selectOrderStatusId, setSelectOrderStatusId] = useState(() => {
-    const storedTab = localStorage.getItem('status')
-    return storedTab ? JSON.parse(storedTab) : [2]
+    const storedTab = localStorage.getItem('statusOrder')
+    return location.state?.status || (storedTab ? JSON.parse(storedTab) : [2])
   })
 
   const [page, setPage] = useState(1)
@@ -49,6 +48,12 @@ const OrderManagement = () => {
     refreshOrder()
     refreshWarehouse()
   }, [page, pageSize, selectOrderStatusId])
+  useEffect(() => {
+    const shouldRefresh = location.state?.refresh
+    if (shouldRefresh) {
+      refreshOrder()
+    }
+  }, [location.state?.refresh]) // Add orderData as a dependency to re-run the effect when orderData changes
 
   const handleOrderNumberSubmit = (orderNumber) => {
     refreshOrder(orderNumber)
@@ -73,7 +78,6 @@ const OrderManagement = () => {
   }
   return (
     <>
-      <Navbar />
       <Box bgColor={'brand.grey100'} maxW={'100vw'} minH={'100vh'}>
         <OrderManagementBody
           orderData={orderData}

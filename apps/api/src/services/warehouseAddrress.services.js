@@ -1,4 +1,4 @@
-import { findWarehouseProvinceQuery, findWarehousesQuery, getShippingCostQuery } from "../queries/warehouseAddress.queries";
+import { findWarehouseProvinceQuery, findWarehousesQuery, getShippingCostQuery, getWarehouseQuery } from "../queries/warehouseAddress.queries";
 
 //GET
 export const findWarehouseAddressService = async (provinceId, userLat, userLong) => {
@@ -76,4 +76,13 @@ export const getShippingCostService = async (origin, destination, weight, courie
     } catch (err){
         throw err
     }
+}
+
+export const getWarehousesService = async (warehouseId) => {
+  try {
+    const res = await getWarehouseQuery(warehouseId)
+    return res
+  } catch (err) {
+    throw err
+  }
 }
