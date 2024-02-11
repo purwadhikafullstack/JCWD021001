@@ -84,7 +84,7 @@ export const CreateStock = (props) => {
     try {
       const res = await createStockJournal(productId, warehouseId, sizeId, colourId, qty, isUpdate)
       toast({
-        title: `${res?.data?.title}`,
+        title: `${res?.data?.message}`,
         status: 'success',
         placement: 'bottom',
       })

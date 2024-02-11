@@ -20,6 +20,7 @@ import {
   getFirstDateOfMonthByAbbreviation,
 } from './component/month-select/utils/services'
 import { getWarehouses } from '../form-mutation/services/readWarehouse'
+import { PaginationList } from '../product-list/components/pagination-list'
 
 export const SalesReport = (props) => {
   // LOCATION
@@ -90,6 +91,19 @@ export const SalesReport = (props) => {
       </option>
     )
   })
+
+  // Toggle Box Colour
+  const [boxToggle, setBoxToggle] = useState({ 1: true })
+
+  // Handle Toggle
+  const changeBoxToggle = (id) => {
+    if (pageValue != id) {
+      setBoxToggle((set) => ({
+        [id]: !set[id],
+        [!id]: set[id],
+      }))
+    }
+  }
 
   return (
     <Box p={'1em'} h={'100%'} w={'100%'}>
@@ -196,6 +210,16 @@ export const SalesReport = (props) => {
             endDate={endDate}
           />
         </VStack>
+        <PaginationList
+          boxToggle={boxToggle}
+          changeBoxToggle={changeBoxToggle}
+          location={location}
+          pathName={pathName}
+          pageValue={pageValue}
+          warValue={warehouseValue}
+          monthValue={monthValue}
+          categoryValue={categoryValue}
+        />
       </Flex>
     </Box>
   )

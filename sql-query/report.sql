@@ -1,8 +1,45 @@
-USE PURE;
 
+USE PURE;
+select * from orders;
+select * from productCategories;
+select * from sizes;
+
+SELECT 
+    SUM(totalPrice) AS TotalSales,
+    SUM(totalQuantity) AS TotalQuantity
+FROM 
+    orders
+WHERE 
+    orderDate >= '2024-02-01 00:00:00' AND orderDate <= '2024-02-28 00:00:00';
+    
+    
+select * from stockJournals;
+select * from cities;
+select * from warehouseAddresses;
+select * from warehouses;
+select * from users;
+select * from userAddresses;
+select * from mutations;
+select * from sizes;
+select * from productsToColours;
+
+SELECT 
+    MONTH(orderDate) AS Month,
+    YEAR(orderDate) AS Year,
+    SUM(totalPrice) AS MonthlyTotalSales,
+    SUM(totalQuantity) AS MonthlyTotalQuantity
+FROM 
+   orders
+GROUP BY 
+    YEAR(orderDate), MONTH(orderDate)
+ORDER BY 
+    Year, Month;
+    
 select * from orders;
 
-select * from mutations;
+select * from payments;
+
+select * from stocks;
 
 select * from productCategories;
 
@@ -12,7 +49,7 @@ select * from productCategories;
 select * from stockJournals;
 select * from specificAddresses;
 
-select * from mutations;
+select * from stockJournals where stockId=21;
 
 select * from stocks;
 
@@ -25,6 +62,7 @@ select * from orderProducts;
 
 select * from stocks;
 
+select * from stocks;
 select * from orders;
 select * from orderProducts;
 

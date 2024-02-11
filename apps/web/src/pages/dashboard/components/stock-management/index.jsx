@@ -199,6 +199,7 @@ export const StockManagement = (props) => {
         </VStack>
         <PaginationList
           boxToggle={boxToggle}
+          warehouseValue={warehouseValue}
           changeBoxToggle={changeBoxToggle}
           location={location}
           pathName={pathName}

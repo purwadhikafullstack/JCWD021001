@@ -31,24 +31,13 @@ export const SalesTable = (props) => {
         (data) => setData(data),
       )
     }
-  }, [props?.startDate, props?.warehouseValue, props?.user?.warehouseId])
+  }, [props?.startDate, props?.warehouseValue, props?.user?.warehouseId, props?.pageValue])
 
-  const renderedTableBody = data?.map((order, index) => {
-    const timestamp = order?.orderDate
-    const dateObject = new Date(timestamp)
-    const formattedDate = new Intl.DateTimeFormat('en-GB', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      timeZone: 'UTC',
-    })?.format(dateObject)
+  const renderedTableBody = data[0]?.map((order, index) => {
     return (
       <Tr key={index} cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'}>
-        <Td>{formattedDate}</Td>
-        <Td>{toRupiah(order?.totalPrice)}</Td>
+        <Td>{toRupiah(order?.TotalSales || 0)}</Td>
+        <Td>{order?.TotalQuantity}</Td>
         <Td>
           <HStack>
             <Button
@@ -106,10 +95,10 @@ export const SalesTable = (props) => {
           <Thead bg={'redPure.600'} position={'relative'}>
             <Tr>
               <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
-                Date
+                Total Sales
               </Th>
               <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
-                Total Sales
+                Item Sold
               </Th>
               <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
                 Actions

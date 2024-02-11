@@ -24,6 +24,7 @@ import {
   getFirstDateOfMonthByAbbreviation,
 } from '../sales-report/component/month-select/utils/services'
 import { getWarehouses } from '../form-mutation/services/readWarehouse'
+import { PaginationList } from '../product-list/components/pagination-list'
 
 export const StockReport = (props) => {
   // LOCATION
@@ -67,7 +68,7 @@ export const StockReport = (props) => {
         setStockReports(data)
       })
     }
-  }, [warehouseId, startDate, endDate, month, warValue])
+  }, [warehouseId, startDate, endDate, month, warValue, pageValue])
 
   // Warehouse lists
   const [warehouses, setWarehouses] = useState([])
@@ -110,6 +111,19 @@ export const StockReport = (props) => {
       </Tr>
     )
   })
+
+  // Toggle Box Colour
+  const [boxToggle, setBoxToggle] = useState({ 1: true })
+
+  // Handle Toggle
+  const changeBoxToggle = (id) => {
+    if (pageValue != id) {
+      setBoxToggle((set) => ({
+        [id]: !set[id],
+        [!id]: set[id],
+      }))
+    }
+  }
   return (
     <Box p={'1em'} h={'100%'} w={'100%'}>
       <Flex flexDir={'column'} justifyContent={'space-between'} h={'100%'}>
@@ -196,6 +210,15 @@ export const StockReport = (props) => {
             </TableContainer>
           </Box>
         </VStack>
+        <PaginationList
+          boxToggle={boxToggle}
+          changeBoxToggle={changeBoxToggle}
+          location={location}
+          pathName={pathName}
+          pageValue={pageValue}
+          warValue={warValue}
+          monthValue={monthValue}
+        />
       </Flex>
     </Box>
   )
