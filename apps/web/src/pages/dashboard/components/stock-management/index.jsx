@@ -60,10 +60,12 @@ export const StockManagement = (props) => {
 
   // Handle Toggle
   const changeBoxToggle = (id) => {
-    setBoxToggle((set) => ({
-      [id]: !set[id],
-      [!id]: set[id],
-    }))
+    if (pageValue != id) {
+      setBoxToggle((set) => ({
+        [id]: !set[id],
+        [!id]: set[id],
+      }))
+    }
   }
 
   // Warehouse lists

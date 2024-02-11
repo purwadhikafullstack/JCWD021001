@@ -57,7 +57,6 @@ export const ProductList = (props) => {
       }))
     }
   }
-  console.log(boxToggle)
 
   const [products, setProducts] = useState([])
   useEffect(() => {
