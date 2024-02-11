@@ -42,6 +42,7 @@ export const EditProductCategory = (props) => {
     }
     setInput([test, ...input])
   }
+
   const handleInput = async (id, text) => {
     setInput(
       input.map((el) => {
@@ -65,7 +66,7 @@ export const EditProductCategory = (props) => {
   useEffect(() => {
     getGender(epid, setGender)
     getProductCategory(setProductCategory, epid)
-  }, [epid])
+  }, [])
 
   const [editable, setEditable] = useState({})
 
@@ -155,7 +156,8 @@ export const EditProductCategory = (props) => {
                       </div>
                     ))}
                 </VStack>
-                {editable[item?.id] && props?.superAdmin && (
+                {console.log('editable-item-id', editable[item?.id])}
+                {editable[item?.id] && props?.isSuperAdmin && (
                   <NewProductInput
                     id={item?.id}
                     findById={findById}
@@ -173,7 +175,7 @@ export const EditProductCategory = (props) => {
                     />
                   )}
 
-                  {editable[item?.id] && props?.superAdmin && (
+                  {editable[item?.id] && props?.isSuperAdmin && (
                     <HandleAddSubmitButton
                       setFixInput={setFixInput}
                       id={item?.id}

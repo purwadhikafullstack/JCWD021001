@@ -74,6 +74,7 @@ export const AddNewGroupButton = (props) => {
                 props?.genderId,
                 props?.toast,
               )
+              if (!res) throw new Error('error')
               createProductCategory(props?.newChildren, res?.data?.data?.id, props?.toast)
               props?.setFixInput('')
             } catch (err) {

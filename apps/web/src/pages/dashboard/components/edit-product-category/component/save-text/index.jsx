@@ -2,7 +2,6 @@ import { Text } from '@chakra-ui/react'
 import { editProductCategory } from '../../services/editProductCategory'
 
 export const SaveText = (props) => {
-  console.log('save-text', props?.formik.values)
   return (
     <Text
       w={'5em'}

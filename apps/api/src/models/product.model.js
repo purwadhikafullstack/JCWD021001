@@ -55,7 +55,7 @@ export const init = (sequelize) => {
         defaultValue: new Date(Date.now()),
       },
       productCategoryId: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         references: {
           model: {
