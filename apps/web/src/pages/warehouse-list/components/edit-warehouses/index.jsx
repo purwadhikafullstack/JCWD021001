@@ -2,12 +2,14 @@ import { Box, Button, Flex, Input, Select, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import FormCreateWarehouse from "./form/Index";
 // import FormWarehouse from "./form-disabled/Index";
-import { BreadCrumbs } from "../breadcrumbs";
 import { findOpenCageAndCity } from "../../services/getWarehouseList";
 import MapWarehouse from "./map";
 import ModalNotif from "./modal";
 import FormInitialWarehouse from "./form-disabled/Index";
 import { useLocation, useParams } from "react-router-dom";
+import { BreadCrumbsEditWarehouse } from "./breadcrumbs";
+import Footer from "../../../../components/Footer/Footer";
+import { Navbar } from "../../../../components/navbar";
 
 function EditWarehousePage(){
 
@@ -52,20 +54,11 @@ function EditWarehousePage(){
         fetchAddress();
       }, [latitude, longitude]);
 
-    // const handleClick = async () => {
-    //     try {
-    //         setFormCurrentLocation(true)
-    //         setSelectedAddress('')
-    //         setMarker(true)
-    //     } catch (error) {
-    //         console.error("Error fetching address:", error);
-    //     }
-    // };
 
     return (
         <Box bg={'#F1F1F1'}
         height={'100%'}>
-            {/* <Navbar/> */}
+            <Navbar/>
             <Box padding={'0px 100px'}
              marginBottom={'150px'}>
                 <ModalNotif/>
@@ -75,9 +68,9 @@ function EditWarehousePage(){
                 marginTop={'24px'}
                 marginBottom={'40px'}>
                     <Text fontSize={'24px'}
-                    fontWeight={'700'}>Create Warehouse</Text>
+                    fontWeight={'700'}>Edit Warehouse</Text>
                     <Flex>
-                        <BreadCrumbs/>
+                        <BreadCrumbsEditWarehouse/>
                     </Flex>
                 </Flex>
                 <Box width={'100%'}
@@ -88,24 +81,6 @@ function EditWarehousePage(){
                     fontWeight={'700'}>
                         Address
                     </Text>
-                    {/* <Button color='brand.lightred' 
-                    borderColor={'brand.lightred'} 
-                    variant={'outline'} 
-                    padding={'9px 11px'}
-                    mt={'32px'}
-                    mb={'40px'}
-                    _hover={{
-                        opacity: '80%'
-                    }}
-                    _active={{
-                        opacity: '50%'
-                    }}
-                    onClick={handleClick}
-                    >
-                        <Text>
-                        Use your current location
-                        </Text>
-                    </Button> */}
                     <Box 
                     className="map"
                     width={'100%'}
@@ -137,7 +112,7 @@ function EditWarehousePage(){
                         <FormInitialWarehouse/>} */}
                 </Box>
             </Box>
-            {/* <Footer/> */}
+            <Footer/>
         </Box>
     )
 }

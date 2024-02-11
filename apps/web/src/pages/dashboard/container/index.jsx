@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { Navbar } from '../../../components/Navbar'
+import { Navbar } from '../../../components/navbar'
 
 export const Dashboard = () => {
   const user = useSelector((state) => state.AuthReducer.user)

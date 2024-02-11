@@ -14,12 +14,12 @@ function ModalNotif() {
     <>
       {/* Remove the button that manually opens the modal, as it's not needed */}
       
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} size={{base: 'xs', md: 'md'}}>
         <ModalOverlay />
         <ModalContent>
           <ModalBody mt={'24px'}>
-            <Text fontWeight={'700'} textAlign={'center'}>
-                Select Your Address Using the Map or Automatically Fill with Your Current Location
+            <Text fontWeight={'700'} textAlign={'center'} fontSize={{base: '12px', md: '16px'}}>
+                Select Warehouse Address Using the Map or Automatically Fill with Your Current Location
             </Text>
           </ModalBody>
           <ModalFooter display={'flex'} justifyContent={'center'}>

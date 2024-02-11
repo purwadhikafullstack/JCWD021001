@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit'
-
-import axios from 'axios'
+import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const initialState = {
   user: {
@@ -9,7 +9,7 @@ const initialState = {
     email: '',
     roleId: null,
     isVerified: null,
-    avatar: '',
+    avatar: "",
     warehouseId: null,
   },
   isLogin: false,
@@ -21,7 +21,7 @@ export const AuthReducer = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      const { id, username, email, roleId, isVerified, avatar, warehouseId } = action.payload
+      const { id, username, email, roleId, isVerified, avatar, warehouseId } = action.payload;
 
       state.user = {
         id,
@@ -50,7 +50,7 @@ export const AuthReducer = createSlice({
 export const login = (email, password) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post('http://localhost:8000/api/auth/login', {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}auth/login`, {
         email,
         password,
       })
@@ -60,7 +60,8 @@ export const login = (email, password) => {
       dispatch(setUser(res?.data?.data?.user))
       dispatch(loginSuccess())
     } catch (err) {
-      alert(err?.response?.data)
+      toast.error(err?.response?.data)
+      throw err
     }
   }
 }
@@ -71,7 +72,7 @@ export const keepLogin = () => {
       const token = localStorage.getItem('token')
 
       if (token) {
-        const res = await axios.get('http://localhost:8000/api/auth/keep-login', {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}auth/keep-login`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -81,8 +82,8 @@ export const keepLogin = () => {
         dispatch(keepLoginSuccess())
       }
     } catch (err) {
-      localStorage.removeItem('token')
-      alert(err?.response?.data)
+      localStorage.removeItem("token");
+      toast.error(err?.response?.data);
     }
   }
 }

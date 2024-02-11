@@ -9,7 +9,7 @@ const token = getQueryParam('token')
 export const verification = async (password, setLoading, openSuccessModal, openErrorModal) => {
     try {
         setLoading(true);
-        await axios.put(`http://localhost:8000/api/auth/email-verification?token=${encodeURIComponent(token)}`,
+        await axios.put(`${import.meta.env.VITE_API_URL}auth/email-verification?token=${encodeURIComponent(token)}`,
         {
             password,
         });

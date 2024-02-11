@@ -1,3 +1,5 @@
+import UserAddress from '../models/userAddress.model'
+import { Op } from 'sequelize';
 import {
   findUserAddressQuery,
   createUserAddressQuery,
@@ -10,7 +12,8 @@ import {
   removeMainAddressQuery,
   deleteUserAddressQuery,
   findSearchableCityQuery,
-  findSearchableProvinceQuery
+  findSearchableProvinceQuery,
+  findMainAddressQuery
 } from '../queries/userAddress.queries'
 
 export const findUserAddressService = async (id) => {
@@ -77,6 +80,14 @@ export const findSearchableProvinceService = async (name) => {
     }
 }
 
+export const findMainAddressService = async (id) => {
+  try{
+    return await findMainAddressQuery(id)
+  } catch (err){
+    throw err
+  }
+}
+
 export const createUserAddressService = async (
   id,
   specificAddress,
@@ -88,6 +99,13 @@ export const createUserAddressService = async (
   longitude,
 ) => {
   try {
+    const mainAddress = await findMainAddressQuery(id);
+    let isMainAddress = false;
+
+    if (!mainAddress) {
+      isMainAddress = true;
+    }
+
     const res = await createUserAddressQuery(
       id,
       specificAddress,
@@ -97,6 +115,7 @@ export const createUserAddressService = async (
       postalCode,
       latitude,
       longitude,
+      isMainAddress,
     )
     return res
   } catch (err) {
@@ -128,10 +147,40 @@ export const updateMainAddressService = async (id, userId) => {
   }
 }
 
-export const deleteUserAddressService = async (id) => {
+
+export const deleteUserAddressService = async (id, userId) => {
   try {
-    await deleteUserAddressQuery(id)
+    const addressToDelete = await UserAddress.findByPk(id);
+    const addressesCount = await UserAddress.count({
+      where: { userId: userId },
+    });
+
+    if (addressToDelete && addressesCount <= 1) {
+      await deleteUserAddressQuery(id);
+      return; 
+    }
+
+    if (addressToDelete && addressToDelete.isMainAddress) {
+      await deleteUserAddressQuery(id);
+      if (addressesCount > 1) {
+        const anotherAddress = await UserAddress.findOne({
+          where: {
+            userId: userId,
+            id: { [Op.ne]: id }, 
+          },
+          order: [['createdAt', 'ASC']], 
+        });
+
+        if (anotherAddress) {
+          anotherAddress.isMainAddress = true;
+          await anotherAddress.save();
+        }
+      }
+    } else {
+      await deleteUserAddressQuery(id);
+    }
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
+

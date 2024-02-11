@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Grid, Input, Select, Text, Textarea } from '@chakra-ui/react'
+import { Box, Button, Flex, FormControl, FormErrorMessage, Grid, Input, Select, Text, Textarea } from '@chakra-ui/react'
 
 import { useEffect, useState } from 'react'
 import { useFormik } from 'formik'
@@ -6,6 +6,8 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { createWarehouse } from '../../../services/createWarehouse'
 import { getCity, getProvinceWarehouse } from '../../../services/getWarehouseList'
+import { warehouseSchema } from '../../../services/validations'
+import { editWarehouse } from '../../../services/editWarehouse'
 
 function FormCreateWarehouse({ warehouse, address, lat, lng }) {
   const [selectedCity, setSelectedCity] = useState('')
@@ -52,10 +54,12 @@ function FormCreateWarehouse({ warehouse, address, lat, lng }) {
       postalCode: '',
       name: warehouse.name,
     },
+    validationSchema: warehouseSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
         console.log('Formik Submission Values:', values)
-        await createWarehouse(
+        await editWarehouse(
+          warehouse.id,
           values.location,
           values.cityId,
           values.postalCode,
@@ -63,7 +67,7 @@ function FormCreateWarehouse({ warehouse, address, lat, lng }) {
           lng,
           values.name,
         )
-        navigate('/warehouse-list', { state: { warehouseCreated: true } })
+        navigate('/dashboard/warehouse-list', { state: { warehouse: true } })
       } catch (err) {
         console.log(err.message)
       }
@@ -97,20 +101,30 @@ function FormCreateWarehouse({ warehouse, address, lat, lng }) {
             <Text fontSize={'16px'} fontWeight={'700'} color={'brand.grey350'} mb={'8px'}>
               Warehouse Name
             </Text>
+            <FormControl
+              isInvalid={!!(formik.touched.name && formik.errors.name)}
+              marginBottom={'24px'}
+            >
             <Input
               name="name"
               placeholder="Type warehouse name here"
               _placeholder={{ color: 'brand.grey350' }}
               bg={'brand.grey100'}
               variant={'filled'}
-              mb={'32px'}
               value={formik.values.name}
               onChange={formik.handleChange}
             />
-          
+            {formik.touched.name && formik.errors.name && (
+                <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
+              )}
+          </FormControl>
           <Text fontSize={'16px'} fontWeight={'700'} color={'brand.grey350'} mb={'8px'}>
               Warehouse Location
             </Text>
+            <FormControl
+              isInvalid={!!(formik.touched.location && formik.errors.location)}
+              marginBottom={'24px'}
+            >
             <Textarea
               placeholder="Type warehouse location"
               name="location"
@@ -121,8 +135,12 @@ function FormCreateWarehouse({ warehouse, address, lat, lng }) {
               value={formik.values.location}
               onChange={formik.handleChange}
             />
+            {formik.touched.location && formik.errors.location && (
+                <FormErrorMessage>{formik.errors.location}</FormErrorMessage>
+              )}
+            </FormControl>
           </Box>
-        
+
           <Box>
             <Text fontSize={'16px'} fontWeight={'700'} color={'brand.grey350'} mb={'8px'}>
               Province
@@ -145,13 +163,16 @@ function FormCreateWarehouse({ warehouse, address, lat, lng }) {
             <Text fontSize={'16px'} fontWeight={'700'} color={'brand.grey350'} mb={'8px'}>
               City
             </Text>
+            <FormControl
+              isInvalid={!!(formik.touched.cityId && formik.errors.cityId)}
+              marginBottom={'24px'}
+            >
             <Select
               value={selectedCity}
               placeholder="Select a City"
               bg={'brand.grey100'}
               color={'brand.grey350'}
               variant={'filled'}
-              mb={'24px'}
               name="cityId"
               onChange={(e) => {
                 setSelectedCity(e.target.value)
@@ -164,19 +185,30 @@ function FormCreateWarehouse({ warehouse, address, lat, lng }) {
                 </option>
               ))}
             </Select>
+            {formik.touched.cityId && formik.errors.cityId && (
+                <FormErrorMessage>{formik.errors.cityId}</FormErrorMessage>
+              )}
+            </FormControl>
             <Text fontSize={'16px'} fontWeight={'700'} color={'brand.grey350'} mb={'8px'}>
               Postal Code
             </Text>
+            <FormControl
+              isInvalid={!!(formik.touched.cityId && formik.errors.cityId)}
+              marginBottom={'24px'}
+            >
             <Input
               placeholder="Type a postal code"
               _placeholder={{ color: 'brand.grey350' }}
               bg={'brand.grey100'}
               variant={'filled'}
-              mb={'24px'}
               name="postalCode"
               value={formik.values.postalCode}
               onChange={formik.handleChange}
             />
+            {formik.touched.postalCode && formik.errors.postalCode && (
+                <FormErrorMessage>{formik.errors.postalCode}</FormErrorMessage>
+              )}
+            </FormControl>
           </Box>
         </Grid>
         <Flex justifyContent={'flex-end'} mt={'40px'} gap={'16px'}>
@@ -189,12 +221,12 @@ function FormCreateWarehouse({ warehouse, address, lat, lng }) {
             borderColor={'brand.lightred'}
             _hover={{ borderColor: '#f50f5a', color: '#f50f5a' }}
             _active={{ opacity: '70%' }}
-            onClick={() => navigate('/manage-address')}
+            onClick={() => navigate('/dashboard/warehouse-list')}
           >
             Cancel
           </Button>
           <Button
-            type="sumbit"
+            type="submit"
             width={'168px'}
             padding={'12px 16px'}
             bgColor={'brand.lightred'}
@@ -202,7 +234,7 @@ function FormCreateWarehouse({ warehouse, address, lat, lng }) {
             _hover={{ bg: '#f50f5a' }}
             _active={{ opacity: '70%' }}
           >
-            Save
+            Create
           </Button>
         </Flex>
       </form>

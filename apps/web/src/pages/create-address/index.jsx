@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Input, Select, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Input, Select, Text } from "@chakra-ui/react";
 import { BreadCrumbs } from "./components/breadcrumbs";
 import Footer from "../../components/Footer/Footer";
 import FormCreateAddress from "./components/form/Index";
@@ -56,9 +56,10 @@ function CreateAddress(){
 
     return (
         <Box bg={'#F1F1F1'}
-        height={'100%'}>
+        height={'100%'}
+        maxW={'100vw'}>
             <Navbar/>
-            <Box padding={'0px 100px'}
+            <Box padding={{base: '0px 10px', md:'0px 100px'}}
              marginBottom={'150px'}>
                 <ModalMapAddressEntry/>
                 <Flex className="create-address-top"
@@ -66,8 +67,8 @@ function CreateAddress(){
                 gap={'16px'}
                 marginTop={'24px'}
                 marginBottom={'40px'}>
-                    <Text fontSize={'24px'}
-                    fontWeight={'700'}>Create Address</Text>
+                    <Heading fontSize={{base: '16px', md:'24px'}}
+                    fontWeight={'700'}>Create Address</Heading>
                     <Flex>
                         <BreadCrumbs/>
                     </Flex>
@@ -76,7 +77,7 @@ function CreateAddress(){
                 bg={'white'} 
                 padding={'24px'}
                 mb={'40px'}>
-                    <Text fontSize={'24px'}
+                    <Text fontSize={{base: '16px', md:'24px'}}
                     fontWeight={'700'}>
                         Address
                     </Text>
@@ -94,7 +95,7 @@ function CreateAddress(){
                     }}
                     onClick={handleClick}
                     >
-                        <Text>
+                        <Text fontSize={{base: '13px', md: '16px'}}>
                         Use your current location
                         </Text>
                     </Button>

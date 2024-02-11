@@ -44,18 +44,20 @@ function AddressList() {
           padding={'24px'}
           mt={'24px'}
           mb={'24px'}
+          flexDir={{base: 'column', md: 'row'}}
+          gap={{base: '20px', md: ''}}
         >
           <Flex width={'100%'} flexWrap={'wrap'} flexDir={'column'}>
             <Flex gap={'24px'} alignItems={'center'} mb={'24px'}>
-              <Text fontSize={'16px'} fontWeight={'700'} color={'black'}>
+              <Text fontSize={{base: '14px', md:'16px'}} fontWeight={'700'} color={'black'}>
                 {address.fullName}
               </Text>
               {address.isMainAddress ? (
                 <Box
-                  padding={'10px'}
+                  padding={{base: '8px', md: '10px'}}
                   bg={'#FFE9F0'}
                   borderRadius={'8px'}
-                  fontSize={'16px'}
+                  fontSize={{base: '14px', md: '16px'}}
                   fontWeight={'700'}
                   color={'brand.lightred'}
                 >
@@ -65,10 +67,10 @@ function AddressList() {
                 <></>
               )}
             </Flex>
-            <Text fontSize={'14px'} fontWeight={'400'} mb={'16px'}>
+            <Text fontSize={{base: '12px', md: '14px'}} fontWeight={'400'} mb={'16px'}>
               {address.phoneNumber}
             </Text>
-            <Text fontSize={'14px'} fontWeight={'600'} color={'brand.grey350'}>
+            <Text fontSize={{base: '12px', md: '14px'}} fontWeight={'600'} color={'brand.grey350'}>
               {address.specificAddress ?? ''}, {address.City.name}, {address.City.Province.name}{' '}
               {address.postalCode ?? ''}
             </Text>
@@ -93,7 +95,7 @@ function AddressList() {
                   variant={'outline'}
                   border={'1px solid #8D8B8B'}
                   color={'#8D8B8B'}
-                  fontSize={'14px'}
+                  fontSize={{base: '12px', md:'14px'}}
                   fontWeight={'700'}
                   padding={'12px 16px'}
                   _hover={'none'}

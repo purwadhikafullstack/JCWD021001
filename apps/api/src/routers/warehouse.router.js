@@ -9,22 +9,25 @@ import {
   findWarehouseController,
   findWarehouseListController,
 } from '../controllers/warehouse.controller'
+
+import { checkRoleSuperadmin, checkRoleAdmin, verifyToken } from '../middleware/auth.middleware'
+
 const warehouseRouter = Router()
 
 //GET
-warehouseRouter.get('/', findWarehouseController)
-warehouseRouter.get('/list', findWarehouseListController)
-warehouseRouter.get('/admin/:id', findWarehouseAdminController)
-warehouseRouter.get('/unassigned-admin', findUnassignedAdminController)
+warehouseRouter.get('/' , verifyToken, checkRoleSuperadmin, findWarehouseController)
+warehouseRouter.get('/list', verifyToken, checkRoleSuperadmin, findWarehouseListController)
+warehouseRouter.get('/admin/:id', verifyToken, checkRoleSuperadmin, findWarehouseAdminController)
+warehouseRouter.get('/unassigned-admin', verifyToken, checkRoleSuperadmin, findUnassignedAdminController)
 
 //PATCH
-warehouseRouter.patch('/:id', editWarehouseController)
-warehouseRouter.patch('/assign/:id', assignAdminWarehouseController)
+warehouseRouter.patch('/:id', verifyToken, checkRoleSuperadmin, editWarehouseController)
+warehouseRouter.patch('/assign/:id', verifyToken, checkRoleSuperadmin, assignAdminWarehouseController)
 
 //DELETE
-warehouseRouter.delete('/:id', deleteWarehouseController)
+warehouseRouter.delete('/:id', verifyToken, checkRoleSuperadmin,  deleteWarehouseController)
 
 //POST
-warehouseRouter.post('/', createWarehouseController)
+warehouseRouter.post('/', verifyToken, checkRoleSuperadmin, createWarehouseController)
 
 export { warehouseRouter }

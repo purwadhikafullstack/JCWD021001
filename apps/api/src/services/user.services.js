@@ -23,39 +23,46 @@ import bcrypt from 'bcrypt'
 
 export const updateUsernameService = async (id, username) => {
   try {
-    const check = await findUsernameQuery(username)
-    if (check) throw new Error('Username already exist')
-    await updateUsernameQuery(id, username)
+    const check = await findUsernameQuery(username);
+    if (check) throw new Error('Username already exists');
+    const updatedUser = await updateUsernameQuery(id, username); 
+    return updatedUser; 
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
+
 export const updateEmailService = async (id, email) => {
   try {
-    const check = await findEmailQuery(email)
-    if (check) throw new Error('Email already exist')
-    await updateEmailQuery(id, email)
+    const check = await findEmailQuery(email);
+    if (check) throw new Error('Email already exists');
+    const updatedUser = await updateEmailQuery(id, email); 
+    return updatedUser; 
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
+
 export const updatePasswordService = async (id, password) => {
   try {
-    const salt = await bcrypt.genSalt(10)
-    const hashPassword = await bcrypt.hash(password, salt)
-    await updatePasswordQuery(id, hashPassword)
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(password, salt);
+    const updatedUser = await updatePasswordQuery(id, hashPassword); 
+    return updatedUser; 
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
 
 export const uploadAvatarFileService = async (id, avatar) => {
   try {
-    await uploadAvatarFileQuery(id, avatar)
+    const updatedUser = await uploadAvatarFileQuery(id, avatar); 
+    return updatedUser; 
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
+
 
 export const findAdminService = async (
   warehouseId,

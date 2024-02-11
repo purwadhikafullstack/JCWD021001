@@ -1,7 +1,7 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Flex, HStack, Icon, Text } from '@chakra-ui/react';
 import { HomeIcon } from '@heroicons/react/24/outline';
 import { ChevronRightIcon } from '@chakra-ui/icons'
-export const BreadCrumbs = () => {
+export const BreadCrumbsEditWarehouse = () => {
   
     return (
       <Breadcrumb spacing='8px' separator={<ChevronRightIcon color='gray.500' />}>
@@ -13,15 +13,16 @@ export const BreadCrumbs = () => {
       <BreadcrumbItem>
           <BreadcrumbLink color={'brand.lightred'}
           fontWeight={'700'}
-          fontSize={'12px'}>
-              Manage Address
+          fontSize={'12px'}
+          href='/dashboard/warehouse-list'>
+              Warehouse List
           </BreadcrumbLink>
       </BreadcrumbItem>
       <BreadcrumbItem isCurrentPage>
           <BreadcrumbLink color={'brand.lightred'}
           fontWeight={'700'}
           fontSize={'12px'}>
-              Create Address
+              Create Warehouse
           </BreadcrumbLink>
       </BreadcrumbItem>
   </Breadcrumb>

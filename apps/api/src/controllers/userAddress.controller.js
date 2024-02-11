@@ -10,6 +10,7 @@ import {
   deleteUserAddressService,
   findSearchableCityService,
   findSearchableProvinceService,
+  findMainAddressService,
 } from '../services/userAddress.services'
 
 export const findUserAddressController = async (req, res) => {
@@ -138,6 +139,21 @@ export const findSearchableProvinceController = async (req, res) => {
   }
 }
 
+export const findMainAddressController = async (req, res) => {
+  try{
+    const {id} = req.params
+    const result = await findMainAddressService(id)
+    return res.status(200).json({
+      message: 'success',
+      data: result
+    })
+  } catch (err){
+    return res.status(500).json({
+      message: err.message
+    })
+  }
+}
+
 export const createUserAddressController = async (req, res) => {
   try {
     const { id, latitude, longitude } = req.query
@@ -195,14 +211,15 @@ export const updateMainAddressController = async (req, res) => {
 
 export const deleteUserAddressController = async (req, res) => {
   try {
-    const { id } = req.params
-    await deleteUserAddressService(id)
+    const { id } = req.params;
+    const userId = req.user.id;
+    await deleteUserAddressService(id, userId);
     return res.status(200).json({
       message: 'success',
-    })
+    });
   } catch (err) {
     return res.status(500).json({
       message: err.message,
-    })
+    });
   }
-}
+};

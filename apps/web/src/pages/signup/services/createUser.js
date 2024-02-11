@@ -1,10 +1,10 @@
 import axios from "axios";
 
 
-export const register = async (email, username, setLoading, openSuccessModal, openErrorModal) => {
+export const registerFunction = async (email, username, setLoading, openSuccessModal, openErrorModal) => {
     try {
         setLoading(true);
-        await axios.post("http://localhost:8000/api/auth/user-registration",
+        await axios.post(`${import.meta.env.VITE_API_URL}auth/user-registration`,
         {
             email,
             username
