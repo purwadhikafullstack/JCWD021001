@@ -68,9 +68,17 @@ export const AddNewGroupButton = (props) => {
           bgColor={'redPure.600'}
           color={'white'}
           onClick={async () => {
-            const res = await createProductCategory(props?.fixInput, props?.genderId, props?.toast)
-            createProductCategory(props?.newChildren, res?.data?.data?.id, props?.toast)
-            props?.setFixInput('')
+            try {
+              const res = await createProductCategory(
+                props?.fixInput,
+                props?.genderId,
+                props?.toast,
+              )
+              createProductCategory(props?.newChildren, res?.data?.data?.id, props?.toast)
+              props?.setFixInput('')
+            } catch (err) {
+              throw err
+            }
           }}
         >
           Submit

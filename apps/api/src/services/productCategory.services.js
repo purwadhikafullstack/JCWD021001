@@ -1,6 +1,7 @@
 import {
   createProductCategoryQuery,
   deleteProductCategoryQuery,
+  findProductCategoryByName,
   getGenderQuery,
   getProductCategoryQuery,
   updateProductCategoryQuery,
@@ -26,6 +27,8 @@ export const getGenderServices = async (name) => {
 
 export const createProductCategoryService = async (name, parentId) => {
   try {
+    const check = await findProductCategoryByName({ name, parentId })
+    if (check) throw new Error('Product Category with that name is already exist')
     const res = await createProductCategoryQuery(name, parentId)
     return res
   } catch (err) {

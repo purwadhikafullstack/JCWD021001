@@ -47,6 +47,26 @@ export const getProductCategoryQuery = async (gender) => {
   }
 }
 
+export const findProductCategoryByName = async ({ name = null, parentId = null }) => {
+  try {
+    const res = await ProductCategory.findOne({
+      where: {
+        [Op.and]: [
+          {
+            name: name,
+          },
+          {
+            parentId: parentId,
+          },
+        ],
+      },
+    })
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
 export const getGenderQuery = async (name = null) => {
   try {
     const filter = {}
