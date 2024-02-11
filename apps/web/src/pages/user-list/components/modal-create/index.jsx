@@ -2,6 +2,8 @@ import {
   Box,
   Button,
   Flex,
+  FormControl,
+  FormErrorMessage,
   Icon,
   Input,
   Modal,
@@ -20,8 +22,9 @@ import { useFormik } from 'formik'
 import { createUser } from '../../services/createuser'
 import { BeatLoader } from 'react-spinners'
 import { useState } from 'react'
+import { userSchema } from '../../services/validation'
 
-function CreateUser({onAdminUpdated}) {
+function CreateUser({ onUserUpdated }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [loading, setLoading] = useState(false)
   const override = {
@@ -34,12 +37,15 @@ function CreateUser({onAdminUpdated}) {
     initialValues: {
       email: '',
       username: '',
-      roleId: null,
+      roleId: '',
     },
+    validationSchema: userSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
         console.log('Formik Submission Values:', values)
         await createUser(values.email, values.username, values.roleId, setLoading)
+        onUserUpdated()
+      onClose()
       } catch (err) {
         console.log(err.message)
       }
@@ -47,11 +53,9 @@ function CreateUser({onAdminUpdated}) {
         values: {
           email: '',
           username: '',
-          roleId: null,
+          roleId: '',
         },
       })
-      onAdminUpdated()
-      onClose()
     },
   })
   return (
@@ -61,14 +65,14 @@ function CreateUser({onAdminUpdated}) {
         color={'white'}
         _hover={{ bg: '#f50f5a' }}
         _active={{ opacity: '70%' }}
-        w={{base: '124px', md:'220px'}}
-        h={{base: '34px', md:'48px'}}
+        w={{ base: '124px', md: '220px' }}
+        h={{ base: '34px', md: '48px' }}
         display={'flex'}
         onClick={onOpen}
       >
         <Flex justifyContent={'center'} alignItems={'center'} padding={'12px 16px'} gap={'10px'}>
-          <Icon as={PlusIcon} boxSize={{base: '18px', md: '24px'}} />
-          <Text fontSize={{base: '12px', md:'14px'}} fontWeight={'700'}>
+          <Icon as={PlusIcon} boxSize={{ base: '18px', md: '24px' }} />
+          <Text fontSize={{ base: '12px', md: '14px' }} fontWeight={'700'}>
             Create User
           </Text>
         </Flex>
@@ -85,46 +89,68 @@ function CreateUser({onAdminUpdated}) {
                 <Text fontSize={'16px'} fontWeight={'700'} color={'brand.grey350'}>
                   Email
                 </Text>
-                <Input
-                  placeholder="Type email here ..."
-                  _placeholder={{ color: 'brand.grey350' }}
-                  bg={'brand.grey100'}
-                  type="email"
-                  variant={'filled'}
-                  mb={'24px'}
-                  name="email"
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                />
+                <FormControl
+                  isInvalid={!!(formik.touched.email && formik.errors.email)}
+                  marginBottom={'24px'}
+                >
+                  <Input
+                    placeholder="Type email here ..."
+                    _placeholder={{ color: 'brand.grey350' }}
+                    bg={'brand.grey100'}
+                    type="email"
+                    variant={'filled'}
+                    name="email"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                  />
+                  {formik.touched.email && formik.errors.email && (
+                    <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+                  )}
+                </FormControl>
               </Box>
               <Box mb={'10px'}>
                 <Text fontSize={'16px'} fontWeight={'700'} color={'brand.grey350'}>
                   Username
                 </Text>
-                <Input
-                  placeholder="Type username here ..."
-                  _placeholder={{ color: 'brand.grey350' }}
-                  bg={'brand.grey100'}
-                  variant={'filled'}
-                  mb={'24px'}
-                  name="username"
-                  value={formik.values.username}
-                  onChange={formik.handleChange}
-                />
+                <FormControl
+                  isInvalid={!!(formik.touched.username && formik.errors.username)}
+                  marginBottom={'32px'}
+                >
+                  <Input
+                    placeholder="Type username here ..."
+                    _placeholder={{ color: 'brand.grey350' }}
+                    bg={'brand.grey100'}
+                    variant={'filled'}
+                    name="username"
+                    value={formik.values.username}
+                    onChange={formik.handleChange}
+                  />
+                  {formik.touched.username && formik.errors.username && (
+                    <FormErrorMessage>{formik.errors.username}</FormErrorMessage>
+                  )}
+                </FormControl>
               </Box>
               <Box mb={'24px'}>
                 <Text fontSize={'16px'} fontWeight={'700'} color={'brand.grey350'}>
                   Role
                 </Text>
-                <Select
-                  placeholder="Select user role"
-                  name="roleId"
-                  value={formik.values.roleId}
-                  onChange={formik.handleChange}
+                <FormControl
+                  isInvalid={!!(formik.touched.roleId && formik.errors.roleId)}
+                  marginBottom={'32px'}
                 >
-                  <option value="2">Admin</option>
-                  <option value="3">User</option>
-                </Select>
+                  <Select
+                    name="roleId"
+                    value={formik.values.roleId}
+                    onChange={formik.handleChange}
+                  >
+                    <option value="">Select user role</option>
+                    <option value="2">Admin</option>
+                    <option value="3">User</option>
+                  </Select>
+                  {formik.touched.roleId && formik.errors.roleId && (
+                    <FormErrorMessage>{formik.errors.roleId}</FormErrorMessage>
+                  )}
+                </FormControl>
               </Box>
             </ModalBody>
 

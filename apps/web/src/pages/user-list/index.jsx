@@ -58,7 +58,7 @@ function UserList() {
               <Text fontSize={{ base: '16px', md: '24px' }} fontWeight={'700'}>
                 User List
               </Text>
-              <CreateUser onAdminUpdated={fetchUserList} />
+              <CreateUser onUserUpdated={fetchUserList} />
             </Flex>
             <Flex mb={'20px'}>
               <BreadCrumbs />
@@ -79,7 +79,7 @@ function UserList() {
               <Flex justifyContent={'flex-end'} gap={'12px'}>
                 <SearchUserList setUsername={setUsername} />
                 <FilterUser setCityId={setCityId} setIsVerified={setIsVerified} />
-                <CreateUser onAdminUpdated={fetchUserList} />
+                <CreateUser onUserUpdated={fetchUserList} />
               </Flex>
             </Flex>
             <Flex>

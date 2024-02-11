@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Input, Select, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Input, Select, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import FormCreateWarehouse from "./form/Index";
 // import FormWarehouse from "./form-disabled/Index";
@@ -9,6 +9,7 @@ import ModalNotif from "./modal";
 import FormInitialWarehouse from "./form-disabled/Index";
 import { Navbar } from "../../../../components/navbar";
 import Footer from "../../../../components/Footer/Footer";
+import { BreadCrumbsCreateWarehouse } from "./breadcrumbs";
 
 function CreateWarehouse(){
 
@@ -67,10 +68,10 @@ function CreateWarehouse(){
                 gap={'16px'}
                 marginTop={'24px'}
                 marginBottom={'40px'}>
-                    <Text fontSize={{base: '16px', md:'24px'}}
-                    fontWeight={'700'}>Create Warehouse</Text>
+                    <Heading fontSize={{base: '16px', md:'24px'}}
+                    fontWeight={'700'}>Create Warehouse</Heading>
                     <Flex>
-                        <BreadCrumbs/>
+                        <BreadCrumbsCreateWarehouse/>
                     </Flex>
                 </Flex>
                 <Box width={'100%'}

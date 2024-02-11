@@ -31,7 +31,7 @@ import { useNavigate } from 'react-router-dom'
 const NotificationBox = () => {
   const navigate = useNavigate()
   return (
-    <Popover>
+    <Popover flip='false'>
       <PopoverTrigger>
         <Box cursor={'pointer'}>
           <Icon as={BellIcon} boxSize={'24px'} />

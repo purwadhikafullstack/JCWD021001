@@ -6,10 +6,10 @@ function getQueryParam(param){
     return urlParams.get(param);
 }
 const token = getQueryParam('token')
-export const verification = async (password, setLoading, openSuccessModal, openErrorModal) => {
+export const emailVerification = async (password, setLoading, openSuccessModal, openErrorModal) => {
     try {
         setLoading(true);
-        await axios.put(`http://localhost:8000/api/auth/reset-password?token=${encodeURIComponent(token)}`,
+        await axios.put(`${import.meta.env.VITE_API_URL}auth/reset-password?token=${encodeURIComponent(token)}`,
         {
             password,
         });

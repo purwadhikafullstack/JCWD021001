@@ -201,6 +201,7 @@ export const findUserQuery = async () => {
   }
 }
 
+
 //UPDDATE
 export const updateUserQuery = async (id, username, email, password, roleId) => {
   try {
@@ -212,35 +213,43 @@ export const updateUserQuery = async (id, username, email, password, roleId) => 
 
 export const updateUsernameQuery = async (id, username) => {
   try {
-    await User.update({ username }, { where: { id: id } })
+    await User.update({ username }, { where: { id } });
+    const updatedUser = await User.findOne({ where: { id } });
+    return updatedUser; 
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
 
 export const updateEmailQuery = async (id, email) => {
   try {
-    await User.update({ email }, { where: { id: id } })
+    await User.update({ email }, { where: { id } });
+    const updatedUser = await User.findOne({ where: { id } });
+    return updatedUser; 
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
 
 export const updatePasswordQuery = async (id, password) => {
   try {
-    await User.update({ password }, { where: { id: id } })
+    await User.update({ password }, { where: { id } });
+    const updatedUser = await User.findOne({ where: { id } });
+    return updatedUser; 
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
 
 export const uploadAvatarFileQuery = async (id, avatar) => {
   try {
-    await User.update({ avatar }, { where: { id: id } })
+    await User.update({ avatar }, { where: { id } });
+    const updatedUser = await User.findOne({ where: { id } });
+    return updatedUser; 
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
 
 //DESTROY
 export const deleteUserQuery = async (id) => {
