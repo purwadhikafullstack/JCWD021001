@@ -1,13 +1,4 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Select,
-  Text,
-  VStack,
-  useToast,
-} from '@chakra-ui/react'
+import { Box, Button, FormControl, FormLabel, Select, VStack, useToast } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { getColours } from '../../../create-stock/services/readColour'
 import { useFormik } from 'formik'
@@ -50,9 +41,6 @@ export const CreateColour = (props) => {
     onSubmit: handleSubmit,
   })
 
-  console.log('colours', colours)
-  console.log('formik', formik.values)
-  console.log('productId', props?.productId)
   return (
     <Box>
       <form>

@@ -13,7 +13,6 @@ const OrderManagement = () => {
     return location.state?.status || (storedTab ? JSON.parse(storedTab) : [2])
   })
 
-
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(3)
   const [pagination, setPagination] = useState([])

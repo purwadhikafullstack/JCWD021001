@@ -63,7 +63,7 @@ export const Navbar = (props) => {
   const { cartData, cartCount } = useCart()
 
   return (
-    <Box p={'1em 2em'} bg={'white'} position={'static'}>
+    <Box p={'1em 2em'} bg={'white'} maxW={'100vw'}>
       <Flex alignItems={'center'} justifyContent={'space-between'} >
         <HStack spacing={'2em'}>
           <AspectRatio ratio={1} cursor={'pointer'} w={'3em'} onClick={() => navigate('/')}>

@@ -1,5 +1,6 @@
 import {
   createStockService,
+  deleteStockService,
   getStockByIdService,
   getStockByProductIdService,
   getStockReportService,
@@ -8,8 +9,8 @@ import {
 
 export const getStockController = async (req, res) => {
   try {
-    const { warehouseId, page, pageSize } = req.query
-    const result = await getStockService(warehouseId, page, pageSize)
+    const { warehouseId, name, page, pageSize } = req.query
+    const result = await getStockService(warehouseId, name, page, pageSize)
     return res.status(200).json({
       title: 'Get Stock Success',
       data: result,
@@ -28,6 +29,21 @@ export const createStockController = async (req, res) => {
     const result = await createStockService(productId, warehouseId, qty, sizeId, colourId)
     return res.status(200).json({
       title: 'Create Stock Success',
+      data: result,
+    })
+  } catch (err) {
+    return res.status(500).json({
+      message: err.message,
+    })
+  }
+}
+
+export const deleteStockController = async (req, res) => {
+  try {
+    const { id } = req.params
+    const result = await deleteStockService(id)
+    return res.status(200).json({
+      message: 'Delete Stock Success',
       data: result,
     })
   } catch (err) {

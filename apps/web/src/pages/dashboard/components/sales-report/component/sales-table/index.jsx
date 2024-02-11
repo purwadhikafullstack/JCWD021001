@@ -16,14 +16,22 @@ import { useEffect, useState } from 'react'
 import { getOrders } from '../../services/readOrders'
 
 export const SalesTable = (props) => {
-  console.log('props-sales', props)
   const [data, setData] = useState([])
-
+  {
+    console.log('props?.user?.warehouseId', props?.user?.warehouseId)
+  }
   useEffect(() => {
-    getOrders(props?.pageValue, props?.warehouseId, props?.startDate, props?.endDate).then((data) =>
-      setData(data),
-    )
-  }, [])
+    if (props?.isSuperAdmin) {
+      getOrders(props?.pageValue, props?.warehouseValue, props?.startDate, props?.endDate).then(
+        (data) => setData(data),
+      )
+    }
+    if (!props?.isSuperAdmin) {
+      getOrders(props?.pageValue, props?.user?.warehouseId, props?.startDate, props?.endDate).then(
+        (data) => setData(data),
+      )
+    }
+  }, [props?.startDate, props?.warehouseValue, props?.user?.warehouseId])
 
   const renderedTableBody = data?.map((order, index) => {
     const timestamp = order?.orderDate

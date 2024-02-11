@@ -4,12 +4,14 @@ import { CategoryTable } from '../category-table'
 import { ProductTable } from '../product-table'
 
 export const ReportTable = (props) => {
-  console.log('props', props)
   const renderComponent = () => {
     switch (props?.categoryValue) {
       case 'all':
         return (
           <SalesTable
+            user={props?.user}
+            isSuperAdmin={props?.isSuperAdmin}
+            warehouseValue={props?.warehouseValue}
             warehouseId={props?.warehouseId}
             startDate={props?.startDate}
             endDate={props?.endDate}
@@ -19,6 +21,9 @@ export const ReportTable = (props) => {
       case 'cat':
         return (
           <CategoryTable
+            user={props?.user}
+            isSuperAdmin={props?.isSuperAdmin}
+            warehouseValue={props?.warehouseValue}
             warehouseId={props?.warehouseId}
             startDate={props?.startDate}
             endDate={props?.endDate}
@@ -27,6 +32,9 @@ export const ReportTable = (props) => {
       case 'pro':
         return (
           <ProductTable
+            user={props?.user}
+            isSuperAdmin={props?.isSuperAdmin}
+            warehouseValue={props?.warehouseValue}
             warehouseId={props?.warehouseId}
             startDate={props?.startDate}
             endDate={props?.endDate}

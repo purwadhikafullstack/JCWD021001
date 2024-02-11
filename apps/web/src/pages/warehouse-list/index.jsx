@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Icon, Text } from '@chakra-ui/react'
+import { Box, Button, Flex, Heading, Icon, Text } from '@chakra-ui/react'
 // import CreateUser from './components/modal-create'
 import { BreadCrumbs } from './components/breadcrumbs'
 import { Navbar } from '../../components/Navbar'
@@ -16,7 +16,6 @@ import { useLocation } from 'react-router-dom'
 function WarehouseList() {
   const location = useLocation()
   const [warehouse, setWarehouse] = useState([])
-
   const [provinceId, setProvinceId] = useState('')
   const [name, setName] = useState('')
   const [pageSize, setPageSize] = useState(10)
@@ -50,22 +49,23 @@ function WarehouseList() {
 
   useEffect(() => {
     if (location.state?.warehouseCreated) {
-      console.log('A warehouse was just created.')
-      fetchWarehouseList()
+        console.log('A warehouse was just created.');
+        fetchWarehouseList();
+        navigate('/dashboard/warehouse-list', { state: { warehouseCreated: false } });
     }
-  }, [location.state])
+}, [location.state]);
 
   const navigate = useNavigate()
 
   return (
-    <Box bg={'#F1F1F1'} height={'100%'}>
+    <Box bg={'#F1F1F1'} height={'100%'} maxW={{base: '100vw', md: '65vw', lg: '100vw'}}>
       <Box padding={{base: '0px 10px', md:'0px 30px'}} marginBottom={'150px'}>
         <Box className="top-dashboard" mt={'36px'} mb={'24px'}>
-          <Box display={{ base: 'block', md: 'none' }}>
+          <Box display={{ base: 'block', lg: 'none' }}>
             <Flex justifyContent={'space-between'} align={'center'} mb={'10px'}>
-              <Text fontSize={{ base: '16px', md: '24px' }} fontWeight={'700'}>
+              <Heading fontSize={{ base: '16px', md: '24px' }} fontWeight={'700'}>
                 Warehouse List
-              </Text>
+              </Heading>
               <Button
                 bg={'brand.lightred'}
                 color={'white'}
@@ -101,7 +101,7 @@ function WarehouseList() {
             
           </Box>
 
-          <Box display={{ base: 'none', md: 'block' }}>
+          <Box display={{ base: 'none', lg: 'block' }}>
             <Flex justifyContent={'space-between'}>
               <Flex>
                 <Text fontSize={'24px'} fontWeight={'700'}>

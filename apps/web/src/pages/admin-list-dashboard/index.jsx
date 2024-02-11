@@ -3,12 +3,10 @@ import { SearchAdmin } from './components/search'
 import FilterAdmin from './components/filter'
 import CreateUser from './components/modal-create'
 import { BreadCrumbs } from './components/breadcrumbs'
-import Navbar from '../../components/Navbar/Navbar'
 import TableAdmin from './components/table-admin'
 import { getAdminList } from './services/getAdmin'
 import { useEffect, useState } from 'react'
 import Pagination from './components/pagination'
-import Footer from '../../components/Footer/Footer'
 
 function AdminListDashboard() {
   const [admin, setAdmin] = useState([])
@@ -23,7 +21,7 @@ function AdminListDashboard() {
   const [totalPages, setTotalPages] = useState(0)
   const [totalRecords, setTotalRecords] = useState(0)
 
-  const fetchAdmin = async (page = currentPage, props) => {
+  const fetchAdmin = async (page = currentPage) => {
     try {
       const fetchAdminData = await getAdminList(
         warehouseId,
@@ -50,7 +48,6 @@ function AdminListDashboard() {
 
   return (
     <Box bg={'#F1F1F1'} height={'100%'}>
-      {/* <Navbar /> */}
       <Box padding={{base: '0px 10px', md:'0px 30px'}} marginBottom={'150px'}>
         <Box className="top-dashboard" mt={'36px'} mb={'24px'}>
           <Box display={{ base: 'block', md: 'none' }}>
@@ -102,7 +99,6 @@ function AdminListDashboard() {
           totalRecords={totalRecords}
         />
       </Box>
-      {/* <Footer/> */}
     </Box>
   )
 }

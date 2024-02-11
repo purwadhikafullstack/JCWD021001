@@ -6,7 +6,7 @@ import CategoryList from './components/category-list'
 // import './Home.css';
 import { Navbar } from '../../components/Navbar'
 import Footer from '../../components/Footer/Footer'
-import { Box, Flex, Text, Image, Stack, Button, Icon, Grid } from '@chakra-ui/react'
+import { Box, Flex, Text, Image, Link, Button, Icon, Grid } from '@chakra-ui/react'
 import swiper1 from '../../assets/images/homepage-images/swiper-1.jpeg'
 import swiper2 from '../../assets/images/homepage-images/swiper-2.jpeg'
 import swiper3 from '../../assets/images/homepage-images/swiper-3.jpeg'
@@ -17,7 +17,6 @@ import { Pagination, Navigation } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/navigation'
-import product1 from '../../assets/images/homepage-images/product-1.png'
 import { useNavigate } from 'react-router-dom'
 import { getProducts } from './services/readProducts'
 import { ProductCard } from './components/productCard'
@@ -52,12 +51,12 @@ function Home() {
     return <ProductCard {...product} key={index} />
   })
 
-  console.log('rendered product', renderedProducts);
+  console.log('rendered product', renderedProducts)
 
   return (
-    <>
-      <Navbar  position="relative" />
-      <Box className="container-homepage" width={'100vw'} bg={'brand.grey100'}>
+    <Box width={'100vw'} overflow={'hidden'}>
+      <Navbar position="relative" />
+      <Box className="container-homepage" bg={'brand.grey100'}>
         <Box className="Header" height={'712px'} position={'relative'}>
           <Swiper
             slidesPerView={1}
@@ -67,7 +66,7 @@ function Home() {
               clickable: true,
               dynamicBullets: true,
             }}
-            // navigation={true}
+            navigation={true}
             modules={[Pagination, Navigation]}
             className="mySwiper"
             zIndex={0}
@@ -90,43 +89,39 @@ function Home() {
           </Swiper>
           {/* <Text position={'absolute'}>SALE 2023</Text> */}
         </Box>
-       <CategoryList/>
-        <Box className="Best-Deal" margin={'24px auto 24px'} position={'relative'} width={'95%'}>
-          <Text fontWeight={'700'} fontSize={'24px'}>
-            Best Deals
-          </Text>
-          
-          <Flex
-            className="best-list"
-            gap={'24px'}
-            flexWrap={'wrap'}
-            marginTop={'14px'}
-            justifyContent={'center'}
-          >
-            <Box w={'100%'}>
-                <Grid
-                  gridTemplateColumns={{
-                    base: 'repeat(2, 1fr)',
-                    sm: 'repeat(3, 1fr)',
-                    md: 'repeat(3, 1fr)',
-                    lg: 'repeat(5, 1fr)',
-                    xl: 'repeat(7, 1fr)',
-                  }}
-                  // gridGap={{ base: '2em' }}
-                  gridColumnGap={'1.5em'}
-                  gridRowGap={'1.5em'}
-                  justifyItems={'center'}
-                >
-                  {renderedProducts}
-                </Grid>
-              </Box>
-          </Flex>
+        <Box padding={'20px'}>
+          <CategoryList />
+          <Box className="Best-Deal" margin={'24px auto 24px'} position={'relative'} width={'95%'}>
+            <Flex justifyContent={'space-between'}>
+            <Text fontWeight={'700'} fontSize={'24px'}>
+              Best Deals
+            </Text>
+            <Link color={'brand.lightred'} fontSize={'18px'} fontWeight={'700'} _hover={{color: '#fd1c65'}} href='/search'>
+              See more
+            </Link>
+            </Flex>
+            
+            <Flex
+              className="best-list"
+              gap={'24px'}
+              overflowX={{ base: '', md: 'auto' }}
+              marginTop={'14px'}
+              justifyContent={{ base: 'center', md: 'flex-start' }}
+              wrap={{ base: 'wrap', md: 'nowrap' }}
+            >
+              {renderedProducts}
+            </Flex>
+
+            <Box className="category-second" margin={'24px auto'} position={'relative'} width={'95%'}>
+
+            </Box>
+          </Box>
         </Box>
         <Box>
           <Footer />
         </Box>
       </Box>
-    </>
+    </Box>
   )
 }
 

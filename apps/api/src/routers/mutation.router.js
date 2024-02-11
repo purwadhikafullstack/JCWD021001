@@ -4,10 +4,11 @@ import {
   createMutationController,
   getMutationController,
 } from '../controllers/mutation.controller'
+import { checkRoleAdmin, verifyToken } from '../middleware/auth.middleware'
 const mutationRouter = Router()
 
-mutationRouter.get('/', getMutationController)
-mutationRouter.post('/', createMutationController)
-mutationRouter.patch('/:id', acceptMutationController)
+mutationRouter.get('/', verifyToken, checkRoleAdmin, getMutationController)
+mutationRouter.post('/', verifyToken, checkRoleAdmin, createMutationController)
+mutationRouter.patch('/:id', verifyToken, checkRoleAdmin, acceptMutationController)
 
 export { mutationRouter }

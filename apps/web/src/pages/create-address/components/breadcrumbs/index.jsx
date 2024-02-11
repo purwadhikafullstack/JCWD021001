@@ -6,22 +6,31 @@ export const BreadCrumbs = () => {
     return (
       <Breadcrumb spacing='8px' separator={<ChevronRightIcon color='gray.500' />}>
       <BreadcrumbItem >
-          <BreadcrumbLink>
+          <BreadcrumbLink href='/'>
           <Icon as={HomeIcon} boxSize={'16px'} color={'#838383'} />
           </BreadcrumbLink>
       </BreadcrumbItem>
       <BreadcrumbItem>
           <BreadcrumbLink color={'brand.lightred'}
           fontWeight={'700'}
-          fontSize={'12px'}>
-              User Management
+          fontSize={'12px'}
+          href='/profile'>
+              Account Setting
+          </BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbItem>
+          <BreadcrumbLink color={'brand.lightred'}
+          fontWeight={'700'}
+          fontSize={'12px'}
+          href='/manage-address'>
+              Manage Address
           </BreadcrumbLink>
       </BreadcrumbItem>
       <BreadcrumbItem isCurrentPage>
           <BreadcrumbLink color={'brand.lightred'}
           fontWeight={'700'}
           fontSize={'12px'}>
-              Admin List
+              Create Address
           </BreadcrumbLink>
       </BreadcrumbItem>
   </Breadcrumb>

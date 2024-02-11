@@ -19,16 +19,17 @@ import { StockReport } from '../stock-report'
 import OrderManagement from '../../../order-management'
 
 export const Body = (props) => {
+  console.log('props', props?.user)
   const renderComponent = () => {
     switch (props?.destination) {
       case 'product-list':
-        return <ProductList />
+        return <ProductList user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'product-category':
-        return <ProductCategory />
+        return <ProductCategory user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'stock-management':
-        return <StockManagement />
+        return <StockManagement user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'stock-mutation':
-        return <StockMutation />
+        return <StockMutation user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'admin-list':
         return (
           <AdminRoute>
@@ -48,29 +49,32 @@ export const Body = (props) => {
           </AdminRoute>
         )
       case 'sales-report':
-        return <SalesReport />
+        return <SalesReport user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'stock-report':
-        return <StockReport />
+        return <StockReport user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'order-management':
         return <OrderManagement />
+        
     }
   }
   const renderComponentAgain = () => {
     switch (props?.createProduct) {
       case 'create-product':
-        return <CreateProduct />
+        return <CreateProduct user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'edit-product':
-        return <EditProduct />
+      case 'view-product':
+        return <EditProduct user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'create-product-category':
-        return <CreateProductCategoryGender />
+        return <CreateProductCategoryGender user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'edit-product-category':
-        return <EditProductCategory />
+      case 'view-product-category':
+        return <EditProductCategory user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'order-history':
-        return <OrderHistory />
+        return <OrderHistory user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'create-stock':
-        return <CreateStock />
+        return <CreateStock user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'form-mutation':
-        return <FormMutation />
+        return <FormMutation user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
     }
   }
   const create = renderComponentAgain()

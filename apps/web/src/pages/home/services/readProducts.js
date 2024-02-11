@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getProducts = async (
     page = 1, 
-    pageSize = 10,
+    pageSize = 8,
 ) => {
     try {
         const product = await axios.get(

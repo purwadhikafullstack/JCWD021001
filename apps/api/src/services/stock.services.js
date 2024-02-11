@@ -1,14 +1,15 @@
 import {
   createStockQuery,
+  deleteStockQuery,
   getStockByIdQuery,
   getStockByProductIdQuery,
   getStockQuery,
   getStockReportQuery,
 } from '../queries/stock.queries'
 
-export const getStockService = async (warehouseId, page, pageSize) => {
+export const getStockService = async (warehouseId, name, page, pageSize) => {
   try {
-    const res = await getStockQuery(warehouseId, page, pageSize)
+    const res = await getStockQuery(warehouseId, name, page, pageSize)
     return res
   } catch (err) {
     throw err
@@ -36,6 +37,15 @@ export const getStockByIdService = async (id) => {
 export const getStockByProductIdService = async (productId, sizeId, colourId) => {
   try {
     const res = await getStockByProductIdQuery(productId, sizeId, colourId)
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
+export const deleteStockService = async (id) => {
+  try {
+    const res = await deleteStockQuery(id)
     return res
   } catch (err) {
     throw err

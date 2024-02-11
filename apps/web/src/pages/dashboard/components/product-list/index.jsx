@@ -1,10 +1,10 @@
 import {
   AspectRatio,
   Box,
-  Button,
   Flex,
   HStack,
   Heading,
+  Icon,
   Image,
   Spacer,
   Table,
@@ -16,15 +16,19 @@ import {
   Thead,
   Tr,
   VStack,
-  useToast,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { getProduct } from '../../../product-list/services/readProduct'
-import axios from 'axios'
-import { PaginationList } from './components/pagination-list'
 import toRupiah from '@develoka/angka-rupiah-js'
-export const ProductList = () => {
+import { CreateButton } from './components/create-button'
+import { PaginationList } from './components/pagination-list'
+import { EditButton } from './components/edit-button'
+import { DeleteButton } from './components/delete-button'
+import { ViewButton } from './components/view-button'
+import { SearchInput } from '../create-stock/component/search-input'
+import { ChevronRightIcon } from '@heroicons/react/24/outline'
+export const ProductList = (props) => {
   // LOCATION
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
@@ -35,56 +39,34 @@ export const ProductList = () => {
   // PATHNAME
   const pathName = location.pathname
 
-  // NAVIGATE
-  const navigate = useNavigate()
+  // Trigger
+  const [trigger, setTrigger] = useState(true)
 
-  // TOAST
-  const toast = useToast()
+  //   PRODUCT NAME FILTER
+  const [productNameFilter, setProductNameFilter] = useState('')
 
-  // PRODUCTS
   const [products, setProducts] = useState([])
   useEffect(() => {
-    getProduct('', '', '', '', setProducts, 'name', 'ASC', pageValue, 10)
-  }, [pageValue])
-
-  // DELETE PRODUCT IMAGES
-  const deleteProductImage = async (id, productId) => {
-    try {
-      await axios.delete(`http://localhost:8000/api/product-image`, { data: { id, productId } })
-    } catch (err) {
-      throw err
-    }
-  }
-
-  // DELETE PRODUCTS
-  const deleteProduct = async (id, productId) => {
-    try {
-      await deleteProductImage('', productId)
-      const res = await axios.delete(`http://localhost:8000/api/product/${id}`)
-      setProducts((products) => products?.rows?.filter((product) => product.id !== id))
-      toast({
-        title: `${res?.data?.title}`,
-        status: 'success',
-        placement: 'bottom',
-      })
-    } catch (err) {
-      toast({
-        title: `${err?.message}`,
-        status: 'error',
-      })
-    }
-  }
+    getProduct(productNameFilter, '', '', '', setProducts, 'name', 'ASC', pageValue, 10)
+    changeBoxToggle(pageValue)
+  }, [pageValue, trigger, productNameFilter])
 
   // Toggle Box Colour
   const [boxToggle, setBoxToggle] = useState({ [pageValue]: true })
 
   // Handle Toggle
   const changeBoxToggle = (id) => {
-    setBoxToggle((set) => ({
-      [id]: !set[id],
-      [!id]: set[id],
-    }))
+    if (pageValue != id) {
+      setBoxToggle((set) => ({
+        [id]: !set[id],
+        [!id]: set[id],
+      }))
+    }
+    if (pageValue == 1) {
+      setBoxToggle({ [pageValue]: true })
+    }
   }
+  console.log(boxToggle)
 
   return (
     <Box p={'1em'} w={'100%'} h={'100%'}>
@@ -94,20 +76,18 @@ export const ProductList = () => {
             <Heading as={'h1'} fontSize={'1.5em'} fontWeight={'bold'}>
               Product List
             </Heading>
-            <Button
-              _hover={{
-                bgColor: 'redPure.600',
-              }}
-              h={'3em'}
-              w={'10em'}
-              bgColor={'redPure.600'}
-              color={'white'}
-              onClick={() => {
-                navigate('/dashboard/product-list/create-product')
-              }}
-            >
-              Create Product
-            </Button>
+            <HStack>
+              <Box>
+                <SearchInput
+                  setProductNameFilter={setProductNameFilter}
+                  pageValue={pageValue}
+                  changeBoxToggle={changeBoxToggle}
+                />
+              </Box>
+              {props.isSuperAdmin && (
+                <CreateButton navigate={'/dashboard/product-list/create-product'} />
+              )}
+            </HStack>
           </Flex>
           <Box
             boxShadow={'md'}
@@ -136,7 +116,9 @@ export const ProductList = () => {
                     <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
                       Products
                     </Th>
-                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}></Th>
+                    <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
+                      Name
+                    </Th>
                     <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
                       Price
                     </Th>
@@ -158,42 +140,38 @@ export const ProductList = () => {
                               objectFit={'cover'}
                             />
                           </AspectRatio>
+                          <HStack mt={'.5em'} fontSize={'.75em'} spacing={'.1em'}>
+                            <Text>{el?.category?.parent?.parent?.name}</Text>
+                            <Icon as={ChevronRightIcon} />
+                            <Text>{el?.category?.parent?.name}</Text>
+                            <Icon as={ChevronRightIcon} />
+                            <Text>{el?.category?.name}</Text>
+                          </HStack>
                         </Td>
-                        <Td>{el?.name}</Td>
+                        <Td>
+                          <Text>{el?.name}</Text>
+                        </Td>
                         <Td>{toRupiah(el.price)}</Td>
                         <Td alignItems={'center'}>
                           <HStack>
-                            <Button
-                              _hover={{
-                                bgColor: 'redPure.600',
-                              }}
-                              fontSize={'.8em'}
-                              h={'2.5em'}
-                              w={'5em'}
-                              bgColor={'redPure.600'}
-                              color={'white'}
-                              onClick={() => {
-                                navigate(`/dashboard/product-list/edit-product/${el.id}`)
-                              }}
-                            >
-                              Edit
-                            </Button>
-                            <Button
-                              _hover={{
-                                bgColor: 'transparent',
-                              }}
-                              fontSize={'.8em'}
-                              h={'2.5em'}
-                              w={'5em'}
-                              border={'1px solid #CD0244'}
-                              bgColor={'transparent'}
-                              color={'redPure.600'}
-                              onClick={() => {
-                                deleteProduct(el?.id, el?.id)
-                              }}
-                            >
-                              Delete
-                            </Button>
+                            {props?.user?.warehouseId && (
+                              <ViewButton
+                                navigate={`/dashboard/product-list/view-product/${el.id}`}
+                              />
+                            )}
+                            {props?.isSuperAdmin && (
+                              <EditButton
+                                navigate={`/dashboard/product-list/edit-product/${el.id}`}
+                              />
+                            )}
+                            {props?.isSuperAdmin && (
+                              <DeleteButton
+                                id={el?.id}
+                                productId={el?.id}
+                                trigger={trigger}
+                                setTrigger={setTrigger}
+                              />
+                            )}
                           </HStack>
                         </Td>
                       </Tr>

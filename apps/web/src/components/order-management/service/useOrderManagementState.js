@@ -248,6 +248,27 @@ const useOrderManagementState = ({
             status: 'error',
           })
         }
+  
+        // try {
+        //   const newUpdateOrder = {
+        //     orderId: clickedItem?.id,
+        //     orderStatusId: 3,
+        //   }
+        //   // Update the order status after processing OrderProducts
+        //   const updateOrderRes = await updateOrder(newUpdateOrder)
+        //   // Handle success for updateOrder
+        //   toast({
+        //     title: `${updateOrderRes?.data?.message}`,
+        //     status: 'success',
+        //     placement: 'bottom',
+        //   })
+        // } catch (updateOrderError) {
+        //   // Handle error for updateOrder
+        //   toast({
+        //     title: `${updateOrderError?.message}`,
+        //     status: 'error',
+        //   })
+        // }
       }
     } catch (err) {
       // Handle error for finding the order
@@ -257,6 +278,7 @@ const useOrderManagementState = ({
       })
     }
   }
+  
 
   // reject
   const handleRejectButton = async (orderId) => {

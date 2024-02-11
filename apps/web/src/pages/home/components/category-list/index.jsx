@@ -51,8 +51,8 @@ function CategoryList() {
               borderRadius={'12px'}
               height={'100%'}
               width={'100%'}
-              opacity={'0.75'}
-              _hover={{ opacity: '1' }}
+              opacity={'1'}
+              _hover={{ opacity: '0.75' }}
             />
           </Box>
           <Box
@@ -92,8 +92,8 @@ function CategoryList() {
               borderRadius={'12px'}
               height={'100%'}
               width={'100%'}
-              opacity={'0.75'}
-              _hover={{ opacity: '1' }}
+              opacity={'1'}
+              _hover={{ opacity: '0.75' }}
             />
           </Box>
           <Box
@@ -133,8 +133,8 @@ function CategoryList() {
               borderRadius={'12px'}
               height={'100%'}
               width={'100%'}
-              opacity={'0.75'}
-              _hover={{ opacity: '1' }}
+              opacity={'1'}
+              _hover={{ opacity: '0.75' }}
             />
           </Box>
           <Box
@@ -174,8 +174,8 @@ function CategoryList() {
               borderRadius={'12px'}
               height={'100%'}
               width={'100%'}
-              opacity={'0.75'}
-              _hover={{ opacity: '1' }}
+              opacity={'1'}
+              _hover={{ opacity: '0.75' }}
             />
           </Box>
         </Flex>
