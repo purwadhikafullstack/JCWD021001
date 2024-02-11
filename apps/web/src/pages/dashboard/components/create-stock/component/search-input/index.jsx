@@ -16,6 +16,7 @@ export const SearchInput = (props) => {
   const handleNavigate = () => {
     if (props?.pageValue) {
       navigate('/dashboard/product-list?pa=1')
+      props?.changeBoxToggle(props?.pageValue)
     }
   }
   return (
@@ -28,6 +29,7 @@ export const SearchInput = (props) => {
         placeholder={'Search a product here'}
         onChange={(e) => {
           setFilter(e?.target?.value)
+          props?.changeBoxToggle(1)
           props?.setProductNameFilter(e.target.value)
           handleNavigate()
         }}

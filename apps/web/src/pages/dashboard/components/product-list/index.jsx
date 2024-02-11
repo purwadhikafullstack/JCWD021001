@@ -45,14 +45,8 @@ export const ProductList = (props) => {
   //   PRODUCT NAME FILTER
   const [productNameFilter, setProductNameFilter] = useState('')
 
-  const [products, setProducts] = useState([])
-  useEffect(() => {
-    getProduct(productNameFilter, '', '', '', setProducts, 'name', 'ASC', pageValue, 10)
-    changeBoxToggle(pageValue)
-  }, [pageValue, trigger, productNameFilter])
-
   // Toggle Box Colour
-  const [boxToggle, setBoxToggle] = useState({ [pageValue]: true })
+  const [boxToggle, setBoxToggle] = useState({ 1: true })
 
   // Handle Toggle
   const changeBoxToggle = (id) => {
@@ -62,11 +56,14 @@ export const ProductList = (props) => {
         [!id]: set[id],
       }))
     }
-    if (pageValue == 1) {
-      setBoxToggle({ [pageValue]: true })
-    }
   }
   console.log(boxToggle)
+
+  const [products, setProducts] = useState([])
+  useEffect(() => {
+    getProduct(productNameFilter, '', '', '', setProducts, 'name', 'ASC', pageValue, 10)
+    changeBoxToggle(pageValue)
+  }, [pageValue, trigger, productNameFilter])
 
   return (
     <Box p={'1em'} w={'100%'} h={'100%'}>
