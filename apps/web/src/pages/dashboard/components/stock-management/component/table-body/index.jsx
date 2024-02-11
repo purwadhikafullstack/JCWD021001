@@ -137,8 +137,8 @@ export const TableBody = (props) => {
                     color={'white'}
                     onClick={() => {
                       navigate(
-                        `${props?.pathName}/order-history/${stock?.id}?pa=1${
-                          props?.warehouseValue ? `&wa=${props?.warehouseValue}` : ''
+                        `${props?.pathName}/order-history/${stock?.id}?pa=1&mo=jan${
+                          props?.warehouseValue ? `&war=${props?.warehouseValue}` : ''
                         }`,
                       )
                     }}

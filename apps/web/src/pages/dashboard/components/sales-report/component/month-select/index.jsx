@@ -16,7 +16,6 @@ export const MonthSelect = (props) => {
     const firstDateOfMonth = `${currentYear}-${monthIndex.toString().padStart(2, '0')}-01`
     return { name: monthName, date: firstDateOfMonth }
   })
-  console.log(getFullMonthName(props?.monthValue))
   return (
     <VStack spacing={4}>
       <Select
@@ -24,9 +23,11 @@ export const MonthSelect = (props) => {
         onChange={(e) => {
           props?.setMonth(e.target.value)
           navigate(
-            `${props?.pathName}?pa=${props?.pageValue}&cat=${props?.categoryValue}&mo=${
-              getAbbreviatedMonth(e.target.value).monthAbbreviation
-            }&war=${props?.warehouseValue}`,
+            `${props?.pathName}?pa=${props?.pageValue}${
+              props?.categoryValue ? `&cat=${props?.categoryValue}` : ''
+            }&mo=${getAbbreviatedMonth(e.target.value).monthAbbreviation}${
+              props?.warValue ? `&war=${props?.warValue}` : ''
+            }`,
           )
         }}
       >

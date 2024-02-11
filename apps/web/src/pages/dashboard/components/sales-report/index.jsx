@@ -125,6 +125,7 @@ export const SalesReport = (props) => {
                 </Select>
               )}
               <MonthSelect
+                isSuperAdmin={props?.isSuperAdmin}
                 warehouseValue={warehouseValue}
                 monthValue={monthValue}
                 setMonth={setMonth}
@@ -143,7 +144,9 @@ export const SalesReport = (props) => {
               onClick={(e) => {
                 changeTextToggle(e.target.id)
                 navigate(
-                  `${pathName}?pa=${pageValue}&cat=all&mo=${monthValue}&war=${warehouseValue}`,
+                  `${pathName}?pa=${pageValue}&cat=all&mo=${monthValue}${
+                    props?.isSuperAdmin ? `&war=${warehouseValue}` : ''
+                  }`,
                 )
               }}
             >
@@ -157,7 +160,9 @@ export const SalesReport = (props) => {
               onClick={(e) => {
                 changeTextToggle(e.target.id)
                 navigate(
-                  `${pathName}?pa=${pageValue}&cat=cat&mo=${monthValue}&war=${warehouseValue}`,
+                  `${pathName}?pa=${pageValue}&cat=cat&mo=${monthValue}${
+                    props?.isSuperAdmin ? `&war=${warehouseValue}` : ''
+                  }`,
                 )
               }}
             >
@@ -171,7 +176,9 @@ export const SalesReport = (props) => {
               onClick={(e) => {
                 changeTextToggle(e.target.id)
                 navigate(
-                  `${pathName}?pa=${pageValue}&cat=pro&mo=${monthValue}&war=${warehouseValue}`,
+                  `${pathName}?pa=${pageValue}&cat=pro&mo=${monthValue}${
+                    props?.isSuperAdmin ? `&war=${warehouseValue}` : ''
+                  }`,
                 )
               }}
             >

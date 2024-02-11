@@ -16,6 +16,12 @@ import { useEffect, useState } from 'react'
 import { getStockJournals } from './services/readStockJournal'
 import { useLocation, useParams } from 'react-router-dom'
 import { PaginationList } from '../product-list/components/pagination-list'
+import {
+  getCurrentYear,
+  getFirstDateOfMonthByAbbreviation,
+} from '../sales-report/component/month-select/utils/services'
+import { getMonthDates } from '../sales-report/services/utils'
+import { MonthSelect } from '../sales-report/component/month-select'
 
 export const OrderHistory = (props) => {
   // LOCATION
@@ -25,6 +31,8 @@ export const OrderHistory = (props) => {
   // QUERY PARAMS
   const pageValue = queryParams.get('pa')
   const warehouseValue = queryParams.get('wa')
+  const monthValue = queryParams.get(`mo`)
+  const warValue = queryParams.get('war')
 
   // PATHNAME
   const pathName = location.pathname
@@ -35,19 +43,34 @@ export const OrderHistory = (props) => {
   // WAREHOUSE ID
   const [warehouseId, setWarehouseId] = useState(props?.user?.warehouseId)
 
+  const [month, setMonth] = useState(
+    getFirstDateOfMonthByAbbreviation(monthValue, getCurrentYear()),
+  )
+
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+
   const [trigger, setTrigger] = useState(false)
 
   // EPID
   const { epid } = useParams()
   useEffect(() => {
     if (props?.isSuperAdmin) {
-      getStockJournals(warehouseValue, epid, pageValue, 10).then((data) => setStockJournals(data))
+      setStartDate(getMonthDates(new Date(month)).startDate)
+      setEndDate(getMonthDates(new Date(month)).endDate)
+      getStockJournals(warehouseValue || warValue, epid, startDate, endDate, pageValue, 10).then(
+        (data) => setStockJournals(data),
+      )
     }
     if (!props?.isSuperAdmin) {
+      setStartDate(getMonthDates(new Date(month)).startDate)
+      setEndDate(getMonthDates(new Date(month)).endDate)
       setWarehouseId(props?.user?.warehouseId)
-      getStockJournals(warehouseId, epid, pageValue, 10).then((data) => setStockJournals(data))
+      getStockJournals(warehouseId, epid, startDate, endDate, pageValue, 10).then((data) =>
+        setStockJournals(data),
+      )
     }
-  }, [pageValue, trigger])
+  }, [pageValue, trigger, startDate, endDate, monthValue])
 
   // RENDERED TABLE BODY
   const renderedTableBody = stockJournals?.rows?.map((stockJournal, index) => {
@@ -90,17 +113,14 @@ export const OrderHistory = (props) => {
         <VStack align={'stretch'}>
           <Flex alignItems={'center'} justifyContent={'space-between'}>
             <Text fontWeight={'bold'}>Order History</Text>
-            <Button
-              _hover={{
-                bgColor: 'redPure.500',
-              }}
-              w={'10em'}
-              bgColor={'redPure.500'}
-              color={'white'}
-              onClick={() => {}}
-            >
-              Download
-            </Button>
+            <MonthSelect
+              isSuperAdmin={props?.isSuperAdmin}
+              warValue={warValue}
+              monthValue={monthValue}
+              setMonth={setMonth}
+              pathName={pathName}
+              pageValue={pageValue}
+            />
           </Flex>
           <Box
             h={'70vh'}
@@ -157,6 +177,8 @@ export const OrderHistory = (props) => {
           location={location}
           pathName={pathName}
           pageValue={pageValue}
+          monthValue={monthValue}
+          warValue={warValue}
         />
       </Flex>
     </Box>

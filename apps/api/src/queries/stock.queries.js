@@ -157,6 +157,9 @@ export const deleteStockQuery = async (id) => {
           {
             stockJournalIdRequester: idsToDelete,
           },
+          {
+            stockId: id,
+          },
         ],
       },
     })

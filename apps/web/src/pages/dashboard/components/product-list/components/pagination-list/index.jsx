@@ -31,7 +31,9 @@ export const PaginationList = (props) => {
             navigate(
               `${props?.pathName}?pa=${i}${
                 props?.warehouseValue ? `&wa=${props?.warehouseValue}` : ''
-              }${props?.filterValue ? `&sta=${props?.filterValue}` : ''}`,
+              }${props?.monthValue ? `&mo=${props?.monthValue}` : ''}${
+                props?.filterValue ? `&sta=${props?.filterValue}` : ''
+              }${props?.warValue ? `&war=${props?.warValue}` : ''}`,
             )
           }}
         >
