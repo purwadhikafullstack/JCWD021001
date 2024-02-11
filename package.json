@@ -28,5 +28,11 @@
     "hooks": {
       "pre-commit": "npx lint-staged"
     }
+  },
+  "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
+    "lodash": "^4.17.21",
+    "react-slick": "^0.29.0",
+    "slick-carousel": "^1.8.1"
   }
 }
