@@ -35,11 +35,9 @@ export const Product = () => {
 
   // Splitting pathname for breadcrumbs
   const segments = pathname.split('/')
-  // Splitting pathname for breadcrumbs
 
   // Empty array state for products
   const [products, setProducts] = useState([])
-  // Empty array state for products
 
   // State for filtering products
   const [productName, setProductName] = useState('')

@@ -24,7 +24,7 @@ const limits = {
   fileSize: 1024 * 1024,
 }
 const productLimits = {
-  fileSize: 10 * 1024 * 1024,
+  fileSize: 1024 * 1024,
 }
 const uploadAvatarFile = multer({
   storage: avatarStorage,

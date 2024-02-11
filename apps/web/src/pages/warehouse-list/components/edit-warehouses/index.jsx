@@ -81,7 +81,6 @@ function EditWarehousePage(){
                     fontWeight={'700'}>
                         Address
                     </Text>
-
                     <Box 
                     className="map"
                     width={'100%'}

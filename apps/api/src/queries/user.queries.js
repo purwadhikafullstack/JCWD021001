@@ -251,7 +251,6 @@ export const uploadAvatarFileQuery = async (id, avatar) => {
   }
 };
 
-
 //DESTROY
 export const deleteUserQuery = async (id) => {
   try {

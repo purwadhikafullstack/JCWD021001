@@ -10,7 +10,6 @@ import {
 import { Link, useNavigate } from 'react-router-dom'
 import { logoutSuccess } from '../../../../redux/reducer/authReducer'
 
-
 function AvatarNavbar() {
   const dispatch = useDispatch()
   const navigate = useNavigate()

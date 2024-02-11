@@ -159,7 +159,7 @@ function EditUser({ id, username, email, roleId, onUserUpdated }) {
               </Button>
 
               <Button
-                type="sumbit"
+                type="submit"
                 width={'168px'}
                 padding={'12px 16px'}
                 bgColor={'brand.lightred'}

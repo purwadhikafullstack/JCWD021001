@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom"
 
 export const LoggedInRoute = ({ children }) => {
+  const check = localStorage.getItem('token')
+  const location = useLocation()
 
-	const check = localStorage.getItem("token");
-	const location = useLocation();
 
 	if (check) {
 		return <>{children}</>;

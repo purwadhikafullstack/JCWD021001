@@ -156,6 +156,7 @@ export const createMutationService = async (
   stockId,
 ) => {
   try {
+    console.log('susu', requesterWarehouseId, recipientWarehouseId, qty, isAccepted, stockId);
     //Check its an manual or automatic mutation
     if (isAccepted === 1) {
       const recipientStock = await getStockByIdQuery(stockId)

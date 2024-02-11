@@ -15,26 +15,62 @@ import {
 import { useEffect, useState } from 'react'
 import { getStockJournals } from './services/readStockJournal'
 import { useLocation, useParams } from 'react-router-dom'
+import { PaginationList } from '../product-list/components/pagination-list'
+import {
+  getCurrentYear,
+  getFirstDateOfMonthByAbbreviation,
+} from '../sales-report/component/month-select/utils/services'
+import { getMonthDates } from '../sales-report/services/utils'
+import { MonthSelect } from '../sales-report/component/month-select'
 
-export const OrderHistory = () => {
+export const OrderHistory = (props) => {
   // LOCATION
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
 
   // QUERY PARAMS
   const pageValue = queryParams.get('pa')
+  const warehouseValue = queryParams.get('wa')
+  const monthValue = queryParams.get(`mo`)
+  const warValue = queryParams.get('war')
+
+  // PATHNAME
+  const pathName = location.pathname
 
   // STOCK JOURNALS
   const [stockJournals, setStockJournals] = useState([])
 
   // WAREHOUSE ID
-  const [warehouseId, setWarehouseId] = useState(4)
+  const [warehouseId, setWarehouseId] = useState(props?.user?.warehouseId)
+
+  const [month, setMonth] = useState(
+    getFirstDateOfMonthByAbbreviation(monthValue, getCurrentYear()),
+  )
+
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+
+  const [trigger, setTrigger] = useState(false)
 
   // EPID
   const { epid } = useParams()
   useEffect(() => {
-    getStockJournals(warehouseId, epid, pageValue, 10).then((data) => setStockJournals(data))
-  }, [])
+    if (props?.isSuperAdmin) {
+      setStartDate(getMonthDates(new Date(month)).startDate)
+      setEndDate(getMonthDates(new Date(month)).endDate)
+      getStockJournals(warehouseValue || warValue, epid, startDate, endDate, pageValue, 10).then(
+        (data) => setStockJournals(data),
+      )
+    }
+    if (!props?.isSuperAdmin) {
+      setStartDate(getMonthDates(new Date(month)).startDate)
+      setEndDate(getMonthDates(new Date(month)).endDate)
+      setWarehouseId(props?.user?.warehouseId)
+      getStockJournals(warehouseId, epid, startDate, endDate, pageValue, 10).then((data) =>
+        setStockJournals(data),
+      )
+    }
+  }, [pageValue, trigger, startDate, endDate, monthValue])
 
   // RENDERED TABLE BODY
   const renderedTableBody = stockJournals?.rows?.map((stockJournal, index) => {
@@ -58,23 +94,33 @@ export const OrderHistory = () => {
       </Tr>
     )
   })
+
+  // Toggle Box Colour
+  const [boxToggle, setBoxToggle] = useState({ [pageValue]: true })
+
+  // Handle Toggle
+  const changeBoxToggle = (id) => {
+    if (pageValue != id) {
+      setBoxToggle((set) => ({
+        [id]: !set[id],
+        [!id]: set[id],
+      }))
+    }
+  }
   return (
     <Box p={'1em'} h={'100%'} w={'100%'}>
       <Flex flexDir={'column'} justifyContent={'space-between'} h={'100%'}>
         <VStack align={'stretch'}>
           <Flex alignItems={'center'} justifyContent={'space-between'}>
             <Text fontWeight={'bold'}>Order History</Text>
-            <Button
-              _hover={{
-                bgColor: 'redPure.500',
-              }}
-              w={'10em'}
-              bgColor={'redPure.500'}
-              color={'white'}
-              onClick={() => {}}
-            >
-              Download
-            </Button>
+            <MonthSelect
+              isSuperAdmin={props?.isSuperAdmin}
+              warValue={warValue}
+              monthValue={monthValue}
+              setMonth={setMonth}
+              pathName={pathName}
+              pageValue={pageValue}
+            />
           </Flex>
           <Box
             h={'70vh'}
@@ -112,13 +158,28 @@ export const OrderHistory = () => {
                     </Th>
                   </Tr>
                 </Thead>
-                <Tbody position={'relative'} fontWeight={'bold'}>
+                <Tbody
+                  position={'relative'}
+                  fontWeight={'bold'}
+                  setTrigger={setTrigger}
+                  trigger={trigger}
+                >
                   {renderedTableBody}
                 </Tbody>
               </Table>
             </TableContainer>
           </Box>
         </VStack>
+        <PaginationList
+          warehouseValue={warehouseValue}
+          boxToggle={boxToggle}
+          changeBoxToggle={changeBoxToggle}
+          location={location}
+          pathName={pathName}
+          pageValue={pageValue}
+          monthValue={monthValue}
+          warValue={warValue}
+        />
       </Flex>
     </Box>
   )

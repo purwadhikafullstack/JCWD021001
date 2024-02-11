@@ -34,6 +34,7 @@ const ModalCheck = ({ checkStock, isOpen, onClose, handleAcceptButton }) => {
               </Text>
               {insufficientStockItems.map((item, index) => (
                 <Box key={index}>
+                  <Text>Stock ID: {item.stockId}</Text>
                   <Text>Product ID: {item.productId}</Text>
                   <Text>Quantity: {item.quantity}</Text>
                   <Text>Status: {item.status}</Text>
@@ -54,7 +55,7 @@ const ModalCheck = ({ checkStock, isOpen, onClose, handleAcceptButton }) => {
               </Text>
               {availableStockItems.map((item, index) => (
                 <Box key={index}>
-                  <Text>Product ID: {item.productId}</Text>
+                  <Text>Stock ID: {item.stockId}</Text>
                 </Box>
               ))}
             </Box>

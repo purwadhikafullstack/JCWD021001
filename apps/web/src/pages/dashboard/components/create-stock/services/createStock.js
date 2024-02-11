@@ -10,14 +10,23 @@ export const createStockJournal = async (
   isUpdate,
 ) => {
   try {
-    const stockJournal = await axios.post(`${API_ROUTE}/stock-journal`, {
-      productId,
-      warehouseId,
-      sizeId,
-      colourId,
-      qty,
-      isUpdate,
-    })
+    const token = localStorage.getItem('token')
+    const stockJournal = await axios.post(
+      `${API_ROUTE}/stock-journal`,
+      {
+        productId,
+        warehouseId,
+        sizeId,
+        colourId,
+        qty,
+        isUpdate,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
     return stockJournal
   } catch (err) {
     throw err

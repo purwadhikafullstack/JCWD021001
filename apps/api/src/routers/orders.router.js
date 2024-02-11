@@ -10,8 +10,8 @@ import {
   getAllOrderByCategoryController, // by putu
   getAllOrderByProductController, // by putu
   getAllOrderController, // by putu
-  
 } from '../controllers/orders.controller'
+import { checkRoleSuperAdminAdmin, verifyToken } from '../middleware/auth.middleware'
 const orderRouter = Router()
 
 orderRouter.post('/', createOrderController)
@@ -23,8 +23,18 @@ orderRouter.get('/:userId', getOrderController)
 orderRouter.get('/stock/:orderId', calculationCheckStockController)
 
 // by putu
-// orderRouter.get('/', getAllOrderController)
-orderRouter.get('/sales/category', getAllOrderByCategoryController)
-orderRouter.get('/sales/product', getAllOrderByProductController)
+orderRouter.get('/sales/all', verifyToken, checkRoleSuperAdminAdmin, getAllOrderController)
+orderRouter.get(
+  '/sales/category',
+  verifyToken,
+  checkRoleSuperAdminAdmin,
+  getAllOrderByCategoryController,
+)
+orderRouter.get(
+  '/sales/product',
+  verifyToken,
+  checkRoleSuperAdminAdmin,
+  getAllOrderByProductController,
+)
 
 export { orderRouter }

@@ -18,6 +18,7 @@ import {
 } from '@chakra-ui/react'
 import { SearchInput } from '../search-input'
 import { ChevronRightIcon } from '@chakra-ui/icons'
+import { getProductDetails } from '../../services/readProducts'
 
 export const ProductList = (props) => {
   return (
@@ -91,10 +92,11 @@ export const ProductList = (props) => {
                         w={'5em'}
                         bgColor={'redPure.500'}
                         color={'white'}
-                        onClick={() => {
+                        onClick={async () => {
+                          const productDetails = await getProductDetails(product?.id)
                           props?.setProductId(product?.id)
                           props?.setProductName(product?.name)
-                          props?.setProductSelected(product)
+                          props?.setProductSelected(productDetails)
                         }}
                       >
                         Choose

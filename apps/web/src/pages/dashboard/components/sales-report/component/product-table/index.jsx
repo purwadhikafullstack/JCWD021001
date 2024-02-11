@@ -15,7 +15,6 @@ import { useEffect, useState } from 'react'
 import { getOrders, getOrdersByProduct } from '../../services/readOrders'
 
 export const ProductTable = (props) => {
-  console.log('props-sales', props)
   const [data, setData] = useState([])
 
   useEffect(() => {
@@ -26,7 +25,7 @@ export const ProductTable = (props) => {
       props?.startDate,
       props?.endDate,
     ).then((data) => setData(data))
-  }, [])
+  }, [props?.startDate])
   const renderedTableBody = data?.map((order, index) => {
     return (
       <Tr key={index} cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'}>

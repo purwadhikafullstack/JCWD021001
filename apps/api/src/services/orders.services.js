@@ -158,6 +158,7 @@ export const calculationCheckStockService = async (orderId) => {
     for (const orderProduct of orders.OrderProducts) {
       const { quantity, stocks } = orderProduct
       const { productId } = stocks
+      console.log('stocks', stocks.id)
 
       const selectedWarehouse = warehouse.find((wh) => wh.id === orders.warehouseId)
 
@@ -170,6 +171,7 @@ export const calculationCheckStockService = async (orderId) => {
           if (availableQuantity >= quantity) {
             checkStockResults.push({
               orderId: orders.id,
+              stockId: stocks.id,
               productId,
               quantity,
               status: 'Available',
@@ -224,6 +226,7 @@ export const calculationCheckStockService = async (orderId) => {
             // Update checkStockResults based on the condition
             checkStockResults.push({
               orderId: orders.id,
+              stockId: stocks.id,
               productId,
               quantity,
               status: availableQuantity >= quantity ? 'Available Stock' : 'Insufficient Stock',
@@ -245,6 +248,7 @@ export const calculationCheckStockService = async (orderId) => {
         } else {
           checkStockResults.push({
             orderId: orders.id,
+            stockId: stocks.id,
             productId,
             quantity,
             status: 'Stock Not Found',
@@ -253,6 +257,7 @@ export const calculationCheckStockService = async (orderId) => {
       } else {
         checkStockResults.push({
           orderId: orders.id,
+          stockId: stocks.id,
           productId,
           quantity,
           status: 'Warehouse Not Found',
@@ -261,15 +266,14 @@ export const calculationCheckStockService = async (orderId) => {
     }
 
     return {
-      // orders,
-      // warehouse,
+      orders,
+      warehouse,
       checkStockResults,
     }
   } catch (err) {
     throw err
   }
 }
-
 
 export const getAllOrderService = async (
   sortBy,
@@ -290,6 +294,7 @@ export const getAllOrderService = async (
       startDate,
       endDate,
     )
+    return res
   } catch (err) {
     throw err
   }

@@ -6,13 +6,20 @@ import { getColours } from './services/readColour'
 import { ProductList } from './component/product-list'
 import { StockSelection } from './component/stock-selection'
 import { createStockJournal } from './services/createStock'
+import { useLocation } from 'react-router-dom'
 
-export const CreateStock = () => {
+export const CreateStock = (props) => {
+  // LOCATION
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+
+  // QUERY PARAMS
+  const warehouseValue = queryParams.get('wa')
   // TOAST
   const toast = useToast()
 
   // WAREHOUSE ID
-  const [warehouseId, setWarehouseId] = useState(4)
+  const [warehouseId, setWarehouseId] = useState(props?.user?.warehouseId)
 
   const [colourId, setColourId] = useState(0)
 
@@ -28,6 +35,7 @@ export const CreateStock = () => {
   // COLOUR
   const colours = productSelected?.colour
   useEffect(() => {
+    setWarehouseId(props?.user?.warehouseId)
     getProduct(productNameFilter, '', '', '', setProducts, 'name', 'ASC', 1)
   }, [productNameFilter, setProductSelected])
 
@@ -129,7 +137,7 @@ export const CreateStock = () => {
               onClick={async () => {
                 await handleCreateStockJournal(
                   productId,
-                  warehouseId,
+                  warehouseValue ? warehouseValue : warehouseId,
                   sizeId,
                   colourId,
                   Number(stockValue),

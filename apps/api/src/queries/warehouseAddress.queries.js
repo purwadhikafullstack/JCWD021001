@@ -39,6 +39,7 @@ export const findWarehousesQuery = async () => {
     }
 }
 
+
 export const getShippingCostQuery = async (origin, destination, weight, courier) => {
     try {
         const API_KEY = process.env.RAJAONGKIR_API_KEY
