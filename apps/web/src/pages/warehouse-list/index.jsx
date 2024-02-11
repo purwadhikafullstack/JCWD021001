@@ -16,7 +16,6 @@ import { useLocation } from 'react-router-dom'
 function WarehouseList() {
   const location = useLocation()
   const [warehouse, setWarehouse] = useState([])
-
   const [provinceId, setProvinceId] = useState('')
   const [name, setName] = useState('')
   const [pageSize, setPageSize] = useState(10)
@@ -50,10 +49,11 @@ function WarehouseList() {
 
   useEffect(() => {
     if (location.state?.warehouseCreated) {
-      console.log('A warehouse was just created.')
-      fetchWarehouseList()
+        console.log('A warehouse was just created.');
+        fetchWarehouseList();
+        navigate('/dashboard/warehouse-list', { state: { warehouseCreated: false } });
     }
-  }, [location.state])
+}, [location.state]);
 
   const navigate = useNavigate()
 

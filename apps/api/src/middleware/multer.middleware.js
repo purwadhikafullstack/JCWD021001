@@ -12,13 +12,13 @@ const avatarStorage = multer.diskStorage({
 })
 
 const fileFilter = (req, file, cb) => {
-  const fileType = file.mimetype.split('/')[1]
+  const fileType = file.mimetype.split('/')[1];
   if (fileType === 'png' || fileType === 'jpg' || fileType === 'jpeg' || fileType === 'gif') {
-    cb(null, true)
+    cb(null, true);
   } else {
-    cb('File type not allowed', false)
+    cb(new Error('File type not allowed'), false);
   }
-}
+};
 
 const limits = {
   fileSize: 1024 * 1024,

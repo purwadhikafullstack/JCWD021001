@@ -40,6 +40,7 @@ function UploadAvatar() {
           },
         },
       )
+      console.log(formData);
       dispatch(setUser(data?.data));
       toast.success(data?.message)
     } catch (err) {

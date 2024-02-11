@@ -15,6 +15,7 @@ import { uploadAvatarFile } from '../middleware/multer.middleware'
 import { checkRoleSuperadmin, checkRoleAdmin, verifyToken } from '../middleware/auth.middleware'
 import { validator } from '../middleware/validator.middleware';
 import { body } from "express-validator";
+const multer = require('multer')
 
 const userRouter = Router()
 
@@ -50,6 +51,24 @@ body('username')
   .matches(/^\S*$/).withMessage('username cannot contain spaces')
 ];
 
+const uploadAvatarMiddleware = (req, res, next) => {
+  uploadAvatarFile(req, res, function(err) {
+    if (err) {
+      // Handling 'LIMIT_FILE_SIZE' error from 'multer'.
+      if (err instanceof multer.MulterError && err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({ message: "File size should not exceed 1MB!" });
+      }
+      // Handling custom file type error.
+      if (err.message === 'File type not allowed') {
+        return res.status(400).json({ message: err.message });
+      }
+      // For other errors
+      return res.status(500).json({ message: "An error occurred during the upload process, please try again." });
+    }
+    next();
+  });
+};
+
 //GET
 userRouter.get('/', verifyToken, checkRoleSuperadmin, findAdminController)
 userRouter.get('/user', verifyToken, checkRoleSuperadmin, findUserController)
@@ -63,7 +82,7 @@ userRouter.patch('/:id', validator(patchUserValidations), verifyToken, checkRole
 userRouter.patch('/update-username/:id', validator(usernameValidations),verifyToken, updateUsernameController)
 userRouter.patch('/update-email/:id', validator(emailValidations), verifyToken, updateEmailController)
 userRouter.patch('/update-password/:id', validator(passwordValidations), verifyToken, updatePasswordController)
-userRouter.patch('/upload-avatar/:id', verifyToken, uploadAvatarFile, uploadAvatarFileController)
+userRouter.patch('/upload-avatar/:id', verifyToken, uploadAvatarMiddleware, uploadAvatarFileController)
 
 //DELETE
 userRouter.delete('/:id', verifyToken, checkRoleSuperadmin, deleteUserController)

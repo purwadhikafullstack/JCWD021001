@@ -30,3 +30,12 @@ export const AdminRoute = ({children}) => {
 		return <Navigate to="/signin" state={{ from: location }} replace />;
 	}
 }
+
+export const LoggedOutRoute = ({children}) => {
+	const check = localStorage.getItem("token");
+	if (check) {
+			return <Navigate to="/" />;
+	} else {
+		return <>{children}</>;
+	}
+}

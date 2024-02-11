@@ -2,19 +2,13 @@ import {
   Box,
   Button,
   Flex,
-  Grid,
-  GridItem,
-  Icon,
   Image,
   Input,
-  InputGroup,
-  InputRightElement,
   Text,
+  Link
 } from '@chakra-ui/react'
 import logo from '../../assets/images/logo.png'
-import { MagnifyingGlassIcon, ShoppingCartIcon, HeartIcon } from '@heroicons/react/24/outline'
-import { Link } from 'react-router-dom'
-import { color } from 'framer-motion'
+
 function Footer() {
   return (
     <Box className="footer-container" padding={'45.5'} bg={'white'}>
@@ -51,11 +45,11 @@ function Footer() {
             fontWeight="700"
             color={'brand.grey300'}
           >
-            <Link>Home</Link>
-            <Link>Category</Link>
-            <Link>Cart</Link>
-            <Link>Favourite</Link>
-            <Link>My Profile</Link>
+            <Link _hover={{color: 'brand.lightred'}} href='/'>Home</Link>
+            <Link _hover={{color: 'brand.lightred'}} href='/'>Category</Link>
+            <Link _hover={{color: 'brand.lightred'}} href='/'>Cart</Link>
+            <Link _hover={{color: 'brand.lightred'}} href='/'>Favourite</Link>
+            <Link _hover={{color: 'brand.lightred'}} href='/profile'>My Profile</Link>
           </Flex>
         </Flex>
         <Flex w={'500px'} flexDir={'column'}

@@ -50,7 +50,7 @@ function Profile() {
           </Flex>
         </Flex>
 
-        <Flex className="profile-container"  gap={'24px'} flexWrap={'wrap'}>
+        <Flex className="profile-container"  gap={'24px'} flexWrap={{base: 'wrap', lg: 'nowrap'}}>
           <Box className="upload-photo" padding={'24px'} bg={'white'}>
             <Text marginBottom={'24px'} fontSize={{base: '14px', md:'24px'}} fontWeight={'700'}>
               Photo Profile

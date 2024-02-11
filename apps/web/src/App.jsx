@@ -10,7 +10,7 @@ import Profile from './pages/profile/Index'
 // import { useSelector } from 'react-redux';
 import { Box } from '@chakra-ui/react'
 import { Product } from './pages/product-list/container'
-import { LoggedInRoute } from './components/Auth/ProtectedRoute'
+import { LoggedInRoute, LoggedOutRoute } from './components/Auth/ProtectedRoute'
 import CreateAddress from './pages/create-address'
 import ManageAddress from './pages/manage-address'
 import Cart from './pages/cart'
@@ -36,9 +36,23 @@ function App() {
         <CartProvider>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/signup" element={<Signup />} />
+            <Route
+              path="/signup"
+              element={
+                <LoggedOutRoute>
+                  <Signup />
+                </LoggedOutRoute>
+              }
+            />
             <Route path="/auth/email-verification" element={<Verification />} />
-            <Route path="/signin" element={<Signin />} />
+            <Route
+              path="/signin"
+              element={
+                <LoggedOutRoute>
+                  <Signin />
+                </LoggedOutRoute>
+              }
+            />
             <Route path="/password-reset-request" element={<RequestPasswordReset />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route

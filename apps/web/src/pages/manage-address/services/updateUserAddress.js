@@ -19,8 +19,11 @@ export const updateUserAddress = async (id, specificAddress, cityId, fullName, p
           }
         )
     } catch (err){
-        const errorMessage = err?.response?.data || 'An error occurred while deleting the user address.';
-        toast.error(errorMessage);
+        const errorMessage =
+      err.response && err.response.data && err.response.data.message
+        ? err.response.data.message
+        : 'An unexpected error occurred'
+    toast.error(errorMessage)
     }
 }
 
@@ -34,7 +37,10 @@ export const updateMainAddress = async (id, userId) => {
             }
           })
     } catch (err){
-        const errorMessage = err?.response?.data || 'An error occurred while deleting the user address.';
-        toast.error(errorMessage);
+        const errorMessage =
+      err.response && err.response.data && err.response.data.message
+        ? err.response.data.message
+        : 'An unexpected error occurred'
+    toast.error(errorMessage)
     }
 }

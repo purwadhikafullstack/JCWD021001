@@ -90,7 +90,7 @@ function FormInitialWarehouse() {
             borderColor={'brand.lightred'}
             _hover={{ borderColor: '#f50f5a', color: '#f50f5a' }}
             _active={{ opacity: '70%' }}
-            onClick={() => navigate('/manage-address')}
+            onClick={() => navigate('/dashboard/warehouse-list')}
           >
             Cancel
           </Button>

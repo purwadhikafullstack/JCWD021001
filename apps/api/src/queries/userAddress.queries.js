@@ -132,7 +132,7 @@ export const findMainAddressQuery = async (id) => {
 }
 
 // POST 
-export const createUserAddressQuery = async (id, specificAddress, cityId, fullName, phoneNumber, postalCode, latitude, longitude) => {
+export const createUserAddressQuery = async (id, specificAddress, cityId, fullName, phoneNumber, postalCode, latitude, longitude, isMainAddress = false) => {
     try{
         return await UserAddress.create(
             {   specificAddress,
@@ -142,7 +142,8 @@ export const createUserAddressQuery = async (id, specificAddress, cityId, fullNa
                 phoneNumber,
                 postalCode,
                 latitude, 
-                longitude
+                longitude, 
+                isMainAddress
             })
     } catch (err){
         throw err;

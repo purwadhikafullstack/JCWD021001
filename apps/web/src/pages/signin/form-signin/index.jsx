@@ -33,7 +33,7 @@ function FormSignin() {
       onSubmit: (values, { resetForm }) => {
         dispatch(login(values.email, values.password))
           .then(() => {
-            navigate(from.pathname, { replace: true })
+            navigate(`${from.pathname}${from.search}`, { replace: true });
           })
           .catch((error) => {
             console.error('Login error:', error)

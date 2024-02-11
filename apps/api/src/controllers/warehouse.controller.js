@@ -78,30 +78,30 @@ export const findUnassignedAdminController = async (req, res) => {
 
 export const assignAdminWarehouseController = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { adminIds } = req.body;
-    console.log("admin id", adminIds, 'warehouseIds', id);
-    await assignAdminWarehouseService(adminIds, id);
-    return res.status(200).json({
-      message: 'success',
-    });
-  } catch (err) {
-    return res.status(500).json({
-      message: err.message,
-    });
-  }
-};
-
-export const editWarehouseController = async (req, res) => {
-  try {
     const { id } = req.params
-    const { name } = req.body
-    await editWarehouseService(id, name)
+    const { adminIds } = req.body
+    console.log('admin id', adminIds, 'warehouseIds', id)
+    await assignAdminWarehouseService(adminIds, id)
     return res.status(200).json({
       message: 'success',
     })
   } catch (err) {
-    return res.satus(500).json({
+    return res.status(500).json({
+      message: err.message,
+    })
+  }
+}
+
+export const editWarehouseController = async (req, res) => {
+  try {
+    const { id } = req.params
+    const { location, cityId, postalCode, latitude, longitude, name } = req.body
+    await editWarehouseService(id, location, cityId, postalCode, latitude, longitude, name)
+    return res.status(200).json({
+      message: 'success',
+    })
+  } catch (err) {
+    return res.status(500).json({
       message: err.message,
     })
   }

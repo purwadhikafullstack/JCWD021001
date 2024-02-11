@@ -1,8 +1,4 @@
-import {
-  Text,
-  Icon,
-  Flex,
-} from '@chakra-ui/react'
+import { Text, Icon, Flex } from '@chakra-ui/react'
 import { useSelector } from 'react-redux'
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import { useEffect, useState } from 'react'
@@ -43,28 +39,40 @@ function UserAddress() {
         _hover={{ color: 'brand.lightred', bg: 'none' }}
         onClick={() => navigate('/manage-address')}
       >
-        <Flex flexDir={'column'} flexWrap={'wrap'} maxW={'750px'} paddingRight={'10px'}>
-          <Text
-            fontSize={{ base: '12px', md: '14px' }}
-            mb={'2px'}
-            textAlign={'left'}
-          >
-            {mainAddress?.phoneNumber}
-          </Text>
-          <Text
-          display={'flex'}
-          flexWrap={'wrap'}
-            fontSize={{ base: '12px', md: '14px' }}
-            textAlign={'left'}
-            mb={'20px'}
-          >
-            {mainAddress?.specificAddress ?? ''}, {mainAddress?.City?.name},{' '}
-            {mainAddress?.City?.Province?.name} {mainAddress?.postalCode ?? ''}
-          </Text>
-        </Flex>
-        <Flex>
-          <Icon as={ChevronRightIcon} />
-        </Flex>
+        {mainAddress ? (
+          <>
+            <Flex flexDir={'column'} flexWrap={'wrap'} maxW={'750px'} paddingRight={'10px'}>
+              <Text fontSize={{ base: '12px', md: '16px' }} mb={'2px'} textAlign={'left'}>
+                {mainAddress?.phoneNumber}
+              </Text>
+              <Text
+                display={'flex'}
+                flexWrap={'wrap'}
+                fontSize={{ base: '12px', md: '16px' }}
+                textAlign={'left'}
+                mb={'20px'}
+              >
+                {mainAddress?.specificAddress ?? ''}, {mainAddress?.City?.name},{' '}
+                {mainAddress?.City?.Province?.name} {mainAddress?.postalCode ?? ''}
+              </Text>
+            </Flex>
+            <Flex>
+              <Icon as={ChevronRightIcon} />
+            </Flex>
+          </>
+        ) : (
+          <>
+            <Text
+              display={'flex'}
+              flexWrap={'wrap'}
+              fontSize={{ base: '12px', md: '16px' }}
+              textAlign={'left'}
+              mb={'20px'}
+            >
+              You haven't set your address. Set your address here
+            </Text>
+          </>
+        )}
       </Flex>
     </>
   )

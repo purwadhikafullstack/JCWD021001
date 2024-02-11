@@ -211,14 +211,15 @@ export const updateMainAddressController = async (req, res) => {
 
 export const deleteUserAddressController = async (req, res) => {
   try {
-    const { id } = req.params
-    await deleteUserAddressService(id)
+    const { id } = req.params;
+    const userId = req.user.id;
+    await deleteUserAddressService(id, userId);
     return res.status(200).json({
       message: 'success',
-    })
+    });
   } catch (err) {
     return res.status(500).json({
       message: err.message,
-    })
+    });
   }
-}
+};

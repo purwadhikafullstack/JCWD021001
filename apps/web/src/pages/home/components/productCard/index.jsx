@@ -15,8 +15,9 @@ export const ProductCard = (props) => {
   return (
     <Box
       bgColor={'white'}
-      maxW={'212px'}
-      h={{ base: '16em' }}
+      width={{base: '150px', md: '212px'}}
+       flex="0 0 auto"
+      h={{ base: '16em', md: '18em' }}
       borderRadius={'.5em'}
       overflow={'hidden'}
       cursor={'pointer'}
@@ -37,7 +38,6 @@ export const ProductCard = (props) => {
           w={'100%'}
           h={'80%'}
           gap={'10px'}
-        //   justifyContent={'space-between'}
           fontSize={'.85em'}
           fontWeight={'bold'}
         >

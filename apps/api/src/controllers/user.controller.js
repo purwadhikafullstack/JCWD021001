@@ -62,9 +62,9 @@ export const updatePasswordController = async (req, res) => {
 export const uploadAvatarFileController = async (req, res) => {
   try {
     const { id } = req.params;
-    const updatedUser = await uploadAvatarFileService(id, req.file?.filename); // Capture the updated user data from the service
+    const updatedUser = await uploadAvatarFileService(id, req.file?.filename);
     return res.status(200).json({
-      message: 'Success',
+      message: 'Your avatar has been updated successfully!',
       data: updatedUser, 
     });
   } catch (err) {
