@@ -4,7 +4,7 @@ select * from orders;
 select * from productCategories;
 select * from stockJournals;
 select * from colours;
-select * from sizes;
+select * from mutations;
 
 SELECT 
     SUM(totalPrice) AS TotalSales,
@@ -131,13 +131,14 @@ select * from stocks;
 
 select * from stockJournals;
 
-SELECT stocks.id, products.name,
+SELECT stocks.id, products.name, sizes.name,
 SUM(CASE WHEN isAdding = 1 THEN stocks.qty ELSE 0 END) AS addition,
 SUM(CASE WHEN isAdding = 0 THEN stocks.qty ELSE 0 END) AS reduction,
 stocks.qty
 FROM stockJournals
 join stocks on stockJournals.stockId = stocks.id
 join products on stocks.productId = products.id
+join sizes on stocks.sizeId = sizes.sizeId
 where stocks.warehouseId = 5 
 AND stockJournals.createdAt>= '2024-01-01 00:00:00' AND stockJournals.createdAt<= '2024-01-30 00:00:00'
 GROUP BY stocks.id;

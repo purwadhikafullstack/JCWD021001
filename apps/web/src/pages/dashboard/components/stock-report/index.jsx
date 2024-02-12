@@ -8,6 +8,7 @@ import {
   TableContainer,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
@@ -96,7 +97,12 @@ export const StockReport = (props) => {
   const renderedTableBody = stockReports?.map((stockReport, index) => {
     return (
       <Tr key={index} cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'}>
-        <Td>{stockReport?.name}</Td>
+        <Td>
+          <Text>{stockReport?.product}</Text>
+          <Text as={'span'} fontSize={'.6em'}>
+            {stockReport?.name}
+          </Text>
+        </Td>
         <Td>{stockReport?.addition}</Td>
         <Td>{stockReport?.reduction}</Td>
         <Td>{stockReport?.qty}</Td>
@@ -124,6 +130,7 @@ export const StockReport = (props) => {
       }))
     }
   }
+  console.log('stockReports', stockReports)
   return (
     <Box p={'1em'} w={'100%'} minH={'100vh'}>
       <Flex flexDir={'column'} justifyContent={'space-between'} h={'100%'}>

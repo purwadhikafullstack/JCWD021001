@@ -1,9 +1,21 @@
-import { AspectRatio, Button, HStack, Image, Input, Td, Text, Tr, useToast } from '@chakra-ui/react'
+import {
+  AspectRatio,
+  Button,
+  HStack,
+  Icon,
+  Image,
+  Input,
+  Td,
+  Text,
+  Tr,
+  useToast,
+} from '@chakra-ui/react'
 import toRupiah from '@develoka/angka-rupiah-js'
 import { useState, useRef } from 'react'
 import { createStockJournal } from '../../services/createStocks'
 import { useNavigate } from 'react-router-dom'
 import { DeleteButton } from '../delete-button'
+import { ChevronDoubleRightIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 export const TableBody = (props) => {
   // NAVIGATE
   const navigate = useNavigate()
@@ -74,7 +86,16 @@ export const TableBody = (props) => {
                     objectFit={'cover'}
                   />
                 </AspectRatio>
-                <Text>{stock?.product?.name}</Text>
+                <Text>
+                  {stock?.product?.name}
+                  <HStack fontSize={'.6em'}>
+                    <Text>{stock?.product?.category?.parent?.parent?.name}</Text>
+                    <Icon as={ChevronRightIcon} />
+                    <Text>{stock?.product?.category?.parent?.name}</Text>
+                    <Icon as={ChevronRightIcon} />
+                    <Text>{stock?.product?.category?.name}</Text>
+                  </HStack>
+                </Text>
               </HStack>
             </Td>
             <Td>{stock?.size?.name}</Td>

@@ -68,6 +68,8 @@ export const StockManagement = (props) => {
     }
   }
 
+  console.log('stocks', stocks)
+
   // Warehouse lists
   const [warehouses, setWarehouses] = useState([])
 
