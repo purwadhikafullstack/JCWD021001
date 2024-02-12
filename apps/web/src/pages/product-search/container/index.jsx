@@ -1,6 +1,6 @@
 import { Box, Text } from '@chakra-ui/react'
 import { useLocation } from 'react-router-dom'
-import { Navbar } from '../../../components/navbar'
+import { Navbar } from '../../../components/Navbar'
 import { Body } from '../component/body'
 import { getProduct } from '../../product-list/services/readProduct'
 import { useEffect, useState } from 'react'

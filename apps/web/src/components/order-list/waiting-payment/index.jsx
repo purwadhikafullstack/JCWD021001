@@ -8,11 +8,12 @@ const WaitingPayment = ({
   handlePayNowClick,
   expandedProducts,
   handleToggleProducts,
+  handleCancelButton,
   navigate,
 }) => {
   return (
     <Box display={'flex'} flexDirection={'column'} gap={'16px'}>
-      {waitingPaymentOrders.map((order) => (
+      {waitingPaymentOrders?.map((order) => (
         <Box
           key={order.id}
           bgColor={'white'}
@@ -105,27 +106,27 @@ const WaitingPayment = ({
                       {order?.OrderProducts[0]?.quantity} item x{' '}
                       {toRupiah(+order?.OrderProducts[0]?.price, { floatingPoint: 0 })}
                     </Text>
-                    {order.OrderProducts.length > 1 && (
+                    {order?.OrderProducts?.length > 1 && (
                       <Box>
                         <Text
                           fontFamily={'body'}
                           fontWeight={'600'}
                           fontSize={'14px'}
-                          onClick={() => handleToggleProducts(order.id)}
+                          onClick={() => handleToggleProducts(order?.id)}
                           color="#CD0244"
                           cursor="pointer"
                         >
                           {expandedProducts[order.id]
                             ? '- Less Products'
-                            : `+ More Products (${order.OrderProducts.length - 1})`}
+                            : `+ More Products (${order?.OrderProducts?.length - 1})`}
                         </Text>
                       </Box>
                     )}
                   </Box>
                 </Box>
-                <Collapse in={expandedProducts[order.id]}>
+                <Collapse in={expandedProducts[order?.id]}>
                   <Box display={'flex'} flexDirection={'column'} gap={'16px'}>
-                    {order.OrderProducts.slice(1).map((product, index) => (
+                    {order?.OrderProducts?.slice(1).map((product, index) => (
                       <Box display={'flex'} gap={'16px'} key={index}>
                         <Box bgColor={'brand.grey100'} w={'112px'} h={'112px'}></Box>
                         <Box display={'flex'} flexDirection={'column'} gap={'6px'}>
@@ -170,13 +171,18 @@ const WaitingPayment = ({
               </Box>
             </Box>
             <Box w={'full'} display={'flex'} justifyContent={'flex-end'} gap={'16px'}>
-              <Button bgColor={'white'} color={'#CD0244'} border={'1px solid #CD0244'}>
+              <Button
+                bgColor={'white'}
+                color={'#CD0244'}
+                border={'1px solid #CD0244'}
+                onClick={() => handleCancelButton(order?.id)}
+              >
                 Cancel Order
               </Button>
               <Button
                 bgColor={'#CD0244'}
                 color={'white'}
-                onClick={() => handlePayNowClick(order.id)}
+                onClick={() => handlePayNowClick(order?.id)}
               >
                 Pay Now
               </Button>

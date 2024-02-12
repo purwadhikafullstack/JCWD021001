@@ -164,7 +164,7 @@ const OrderConfirmed = ({
                   Total Price
                 </Text>
                 <Text fontFamily={'body'} fontWeight={'700'} fontSize={'16px'} color={'#CD0244'}>
-                  {toRupiah(+order?.totalPrice, { floatingPoint: 0 })}
+                  {toRupiah(+order?.Payment?.grossAmount, { floatingPoint: 0 })}
                 </Text>
               </Box>
             </Box>

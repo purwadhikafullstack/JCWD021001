@@ -1,16 +1,14 @@
 import axios from 'axios'
+import { API_ROUTE } from '../../../services/route'
 
 export const productToStock = async (products, nearestWarehouse) => {
   try {
-    // console.log('halo', stockData)
-    const response = await axios.get(`http://localhost:8000/api/order/stock`, {
+    const response = await axios.get(`${API_ROUTE}/order/stock`, {
       params: {
         products: products,
         nearestWarehouse: nearestWarehouse,
       },
     })
-    // alert("payment created")
-    console.log('productToStock', response.data.data)
     return response.data.data
   } catch (err) {
     alert('Error occurred')
