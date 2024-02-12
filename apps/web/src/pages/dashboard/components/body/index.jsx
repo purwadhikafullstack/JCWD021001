@@ -24,18 +24,32 @@ export const Body = (props) => {
     switch (props?.destination) {
       case 'product-list':
         return (
-          <ProductList
-            collapseSidebar={props?.collapseSidebar}
-            user={props?.user}
-            isSuperAdmin={props?.isSuperAdmin}
-          />
+          <AdminRoute>
+            <ProductList
+              collapseSidebar={props?.collapseSidebar}
+              user={props?.user}
+              isSuperAdmin={props?.isSuperAdmin}
+            />
+          </AdminRoute>
         )
       case 'product-category':
-        return <ProductCategory user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminRoute>
+            <ProductCategory user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminRoute>
+        )
       case 'product-colour':
-        return <ProductColour user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminRoute>
+            <ProductColour user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminRoute>
+        )
       case 'stock-management':
-        return <StockManagement user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminRoute>
+            <StockManagement user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminRoute>
+        )
       case 'stock-mutation':
         return <StockMutation user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'admin-list':
@@ -57,31 +71,71 @@ export const Body = (props) => {
           </AdminRoute>
         )
       case 'sales-report':
-        return <SalesReport user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminRoute>
+            <SalesReport user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminRoute>
+        )
       case 'stock-report':
-        return <StockReport user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminRoute>
+            <StockReport user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminRoute>
+        )
     }
   }
   const renderComponentAgain = () => {
     switch (props?.createProduct) {
       case 'create-product':
-        return <CreateProduct user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminRoute>
+            <CreateProduct user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminRoute>
+        )
       case 'edit-product':
       case 'view-product':
-        return <EditProduct user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminRoute>
+            <EditProduct user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminRoute>
+        )
       case 'create-product-category':
-        return <CreateProductCategoryGender user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminRoute>
+            <CreateProductCategoryGender user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminRoute>
+        )
       case 'edit-product-category':
       case 'view-product-category':
-        return <EditProductCategory user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminRoute>
+            <EditProductCategory user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminRoute>
+        )
       case 'create-colour':
-        return <CreateColour user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminRoute>
+            <CreateColour user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminRoute>
+        )
       case 'order-history':
-        return <OrderHistory user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminRoute>
+            <OrderHistory user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminRoute>
+        )
       case 'create-stock':
-        return <CreateStock user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminRoute>
+            <CreateStock user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminRoute>
+        )
       case 'form-mutation':
-        return <FormMutation user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminRoute>
+            <FormMutation user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminRoute>
+        )
     }
   }
   const create = renderComponentAgain()
