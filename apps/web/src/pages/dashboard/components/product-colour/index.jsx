@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Flex,
   HStack,
   Heading,
@@ -17,8 +18,10 @@ import {
 import { useEffect, useState } from 'react'
 import { getColours } from '../create-stock/services/readColour'
 import { DeleteButton } from './component/delete-button'
+import { useNavigate } from 'react-router-dom'
 
 export const ProductColour = (props) => {
+  const navigate = useNavigate()
   const [colours, setColours] = useState([])
 
   useEffect(() => {
@@ -38,6 +41,22 @@ export const ProductColour = (props) => {
           >
             Product Colour
           </Heading>
+          {props?.isSuperAdmin && (
+            <Button
+              h={'2.5em'}
+              w={'10em'}
+              _hover={{
+                bgColor: 'redPure.600',
+              }}
+              bgColor={'redPure.600'}
+              color={'white'}
+              onClick={() => {
+                navigate('/dashboard/product-colour/create-colour')
+              }}
+            >
+              Create Colour
+            </Button>
+          )}
         </Flex>
         <Box
           maxW={'100%'}

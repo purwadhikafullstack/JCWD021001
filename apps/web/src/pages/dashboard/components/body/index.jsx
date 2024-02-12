@@ -17,6 +17,7 @@ import { AdminRoute } from '../../../../components/Auth/ProtectedRoute'
 import { SalesReport } from '../sales-report'
 import { StockReport } from '../stock-report'
 import { ProductColour } from '../product-colour'
+import { CreateColour } from '../create-colour'
 
 export const Body = (props) => {
   const renderComponent = () => {
@@ -73,6 +74,8 @@ export const Body = (props) => {
       case 'edit-product-category':
       case 'view-product-category':
         return <EditProductCategory user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+      case 'create-colour':
+        return <CreateColour user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'order-history':
         return <OrderHistory user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'create-stock':
