@@ -71,7 +71,9 @@ export const EditProductCategory = (props) => {
 
   useEffect(() => {
     getGender(epid, setGender)
-    getProductCategory(setProductCategory, epid)
+    if (gender) {
+      getProductCategory(setProductCategory, epid)
+    }
   }, [])
 
   const [editable, setEditable] = useState({})
@@ -123,7 +125,6 @@ export const EditProductCategory = (props) => {
     initialValues,
     enableReinitialize: true,
   })
-  console.log('prod-cat', productCategory)
   return (
     <Box bgColor={'white'} p={'1em'} w={'100%'} h={'100%'}>
       <VStack align={'stretch'}>
@@ -177,16 +178,21 @@ export const EditProductCategory = (props) => {
                 <Text fontWeight={'bold'} mb={'.5em'}>
                   Size
                 </Text>
-                {item?.size?.map((size) => {
-                  return (
-                    <>
-                      <Text fontWeight={'bold'} fontSize={'.9'}>
-                        {size?.name}
-                      </Text>
-                      <DeleteSize id={size?.id} toast={toast} />
-                    </>
-                  )
-                })}
+                {item &&
+                  item?.size &&
+                  [...new Set(item.size.map((size) => size.id))].map((uniqueSizeId, index) => {
+                    const uniqueSize = item.size.find((size) => size.id === uniqueSizeId)
+
+                    return (
+                      <Box key={index}>
+                        <Text fontWeight="bold" fontSize=".9">
+                          {uniqueSize?.name}
+                        </Text>
+                        {props?.isSuperAdmin && <DeleteSize id={uniqueSize?.id} toast={toast} />}
+                      </Box>
+                    )
+                  })}
+
                 {editable[item?.id] && props?.isSuperAdmin && (
                   <FormControl>
                     <NewProductInput

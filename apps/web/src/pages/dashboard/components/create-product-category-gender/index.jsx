@@ -5,15 +5,12 @@ import {
   Input,
   FormLabel,
   FormErrorMessage,
-  Textarea,
-  InputGroup,
-  InputLeftElement,
   Button,
   VStack,
   useToast,
 } from '@chakra-ui/react'
 import { useParams } from 'react-router-dom'
-import { Formik, Field, Form, ErrorMessage } from 'formik'
+import { Formik, Field, Form } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios'
 

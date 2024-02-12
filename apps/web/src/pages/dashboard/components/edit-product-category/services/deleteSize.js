@@ -2,8 +2,13 @@ import axios from 'axios'
 import { API_ROUTE } from '../../../../../services/route'
 
 export const deleteSize = async (id, toast) => {
+  const token = localStorage.getItem('token')
   try {
-    const res = await axios.delete(`${API_ROUTE}size/${id}`)
+    const res = await axios.delete(`${API_ROUTE}size/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     toast({
       title: `${res?.data?.message}`,
       status: 'success',

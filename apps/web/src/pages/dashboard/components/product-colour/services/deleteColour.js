@@ -3,7 +3,12 @@ import { API_ROUTE } from '../../../../../services/route'
 
 export const deleteColour = async (id, toast) => {
   try {
-    const res = await axios.delete(`${API_ROUTE}colour/${id}`)
+    const token = localStorage.getItem('token')
+    const res = await axios.delete(`${API_ROUTE}colour/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     toast({
       title: `${res?.data?.message}`,
       status: 'success',

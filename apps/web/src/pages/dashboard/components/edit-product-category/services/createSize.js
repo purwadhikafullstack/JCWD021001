@@ -3,10 +3,19 @@ import { API_ROUTE } from '../../../../../services/route'
 
 export const createSize = async (name, productCategoryId, toast) => {
   try {
-    const res = await axios.post(`${API_ROUTE}/size`, {
-      name,
-      productCategoryId,
-    })
+    const token = localStorage.getItem('token')
+    const res = await axios.post(
+      `${API_ROUTE}/size`,
+      {
+        name,
+        productCategoryId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
     toast({
       title: `${res?.data?.message}`,
       status: 'success',

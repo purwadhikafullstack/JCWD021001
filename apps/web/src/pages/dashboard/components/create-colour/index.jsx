@@ -45,7 +45,7 @@ export const CreateColour = (props) => {
         },
       )
       toast({
-        title: `${res?.data?.title}`,
+        title: `${res?.data?.message}`,
         status: 'success',
         placement: 'bottom',
       })

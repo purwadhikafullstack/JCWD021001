@@ -23,7 +23,7 @@ export const createColourController = async (req, res) => {
     const { name } = req.body
     const result = await createColourService(name)
     return res.status(200).json({
-      title: 'Create Colour Success',
+      message: 'Create Colour Success',
       data: result,
     })
   } catch (err) {
@@ -38,7 +38,7 @@ export const deleteColourController = async (req, res) => {
     const { id } = req.params
     const result = await deleteColourService(id)
     return res.status(200).json({
-      title: 'Delete Colour Success',
+      message: 'Delete Colour Success',
       data: result,
     })
   } catch (err) {
