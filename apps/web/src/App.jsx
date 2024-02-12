@@ -7,7 +7,6 @@ import RequestPasswordReset from './pages/request-password-reset/Index'
 import Auth from './components/Auth/Auth'
 import ResetPassword from './pages/reset-password/Index'
 import Profile from './pages/profile/Index'
-// import { useSelector } from 'react-redux';
 import { Box } from '@chakra-ui/react'
 import { Product } from './pages/product-list/container'
 import { LoggedInRoute, LoggedOutRoute } from './components/Auth/ProtectedRoute'
@@ -20,15 +19,11 @@ import { ProductSearch } from './pages/product-search/container'
 import OrderList from './pages/order-list'
 import Payment from './pages/payments'
 import { Dashboard } from './pages/dashboard/container'
-import OrderManagement from './pages/order-management'
 import { AuthenticatedRouteOrder } from './pages/order/authenticatedRouteOrder'
 import { CartProvider } from './components/cart-table/service/cartContext'
 import CreateWarehouse from './pages/warehouse-list/components/create-warehouse'
 import EditWarehousePage from './pages/warehouse-list/components/edit-warehouses'
 import OrderDetails from './pages/order-details'
-import OrderManagementDetails from './pages/order-management-details'
-
-
 
 function App() {
   return (
@@ -73,20 +68,48 @@ function App() {
               }
             />
             <Route path="/product" element={<Product />} />
-            <Route path="/cart" element={<Cart />} />
+            <Route
+              path="/cart"
+              element={
+                <LoggedInRoute>
+                  <Cart />
+                </LoggedInRoute>
+              }
+            />
             <Route
               path="/cart/order"
               element={
-                <AuthenticatedRouteOrder>
-                  <Order />
-                </AuthenticatedRouteOrder>
+                <LoggedInRoute>
+                  <AuthenticatedRouteOrder>
+                    <Order />
+                  </AuthenticatedRouteOrder>
+                </LoggedInRoute>
               }
             />
-            <Route path="/order-list" element={<OrderList />} />
-            <Route path="/order-details" element={<OrderDetails />} />
-            {/* <Route path="/order-management" element={<OrderManagement />} />
-            <Route path="/order-management/details" element={<OrderManagementDetails />} /> */}
-            <Route path="/payment" element={<Payment />} />
+            <Route
+              path="/order-list"
+              element={
+                <LoggedInRoute>
+                  <OrderList />
+                </LoggedInRoute>
+              }
+            />
+            <Route
+              path="/order-details"
+              element={
+                <LoggedInRoute>
+                  <OrderDetails />
+                </LoggedInRoute>
+              }
+            />
+            <Route
+              path="/payment"
+              element={
+                <LoggedInRoute>
+                  <Payment />
+                </LoggedInRoute>
+              }
+            />
             <Route path="/p/:gender/:group?/:category?" element={<Product />} />
             <Route path="/search" element={<ProductSearch />} />
             <Route path="/product/:id" element={<ProductDetails />} />

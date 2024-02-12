@@ -9,7 +9,7 @@ export const updateCart = async (cartProductId, quantity, onCartUpdated) => {
         Authorization: `Bearer ${token}`,
       },
     }
-    const response = await axios.patch(
+    const res = await axios.patch(
       `${API_ROUTE}cart/${cartProductId}`,
       {
         quantity: quantity,
@@ -20,6 +20,6 @@ export const updateCart = async (cartProductId, quantity, onCartUpdated) => {
       onCartUpdated()
     }
   } catch (err) {
-    console.error('Error updating cart:', err)
+    throw err?.response?.data?.error
   }
 }

@@ -20,10 +20,7 @@ import {
   Avatar,
   AspectRatio,
 } from '@chakra-ui/react'
-import {
-  XMarkIcon,
-  ChevronDownIcon,
-} from '@heroicons/react/24/outline'
+import { XMarkIcon, ChevronDownIcon } from '@heroicons/react/24/outline'
 import pure from '/logo/pure.png'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -31,10 +28,8 @@ import { SearchModal } from './components/search-modal'
 import { SearchMenu } from './components/search-menu'
 import ShoppingCartBox from './components/shopping-cart-box'
 import AvatarNavbar from './components/avatar-menu'
-import { useCart } from '../cart-table/service/cartContext'
+import { useCart } from '../cart-table/service/cartContext' // andri
 import NotificationBox from './components/notification-box'
-
-
 
 export const Navbar = (props) => {
   const user = useSelector((state) => state.AuthReducer.user)
@@ -46,7 +41,7 @@ export const Navbar = (props) => {
 
   return (
     <Box p={'1em 2em'} bg={'white'} maxW={'100vw'}>
-      <Flex alignItems={'center'} justifyContent={'space-between'} >
+      <Flex alignItems={'center'} justifyContent={'space-between'}>
         <HStack spacing={'2em'}>
           <AspectRatio ratio={1} cursor={'pointer'} w={'3em'} onClick={() => navigate('/')}>
             <Image src={pure} alt="Pure Logo" />
@@ -60,17 +55,21 @@ export const Navbar = (props) => {
           <HStack fontSize={'1.5em'} spacing={'.5em'}>
             <SearchModal />
             <HStack fontSize={'1.5em'} spacing={'.5em'} position="relative">
-              <Box>
-                <ShoppingCartBox cartData={cartData} cartCount={cartCount} />
-              </Box>
+              {/* andri */}
+              {user?.roleId === 3 && (
+                <Box>
+                  <ShoppingCartBox cartData={cartData} cartCount={cartCount} /> 
+                </Box>
+              )}
             </HStack>
             <HStack fontSize={'1.5em'} spacing={'.5em'} position="relative">
-              <Box>
-                <NotificationBox  />
-              </Box>
+              {/* andri */}
+              {user?.roleId === 3 && (
+                <Box>
+                  <NotificationBox />
+                </Box>
+              )}
             </HStack>
-            {/* <Icon as={ShoppingCartIcon} /> */}
-            {/* <Icon as={BellIcon} /> */}
           </HStack>
           <Center height="2em">
             <Divider orientation="vertical" borderWidth={'1px'} />

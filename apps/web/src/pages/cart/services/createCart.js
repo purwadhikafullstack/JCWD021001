@@ -21,8 +21,8 @@ export const createCart = async (items) => {
       },
       config,
     )
-    return res
+    return res?.data?.message
   } catch (err) {
-    throw err
+    throw err?.response?.data?.error
   }
 }

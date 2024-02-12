@@ -14,8 +14,8 @@ export const productToStock = async (products, nearestWarehouse) => {
       },
     };
     const response = await axios.get(`${API_ROUTE}order/stock`, config)
-    return response.data.data
+    return response?.data?.data
   } catch (err) {
-    alert('Error occurred')
+    throw err?.response?.data?.error
   }
 }

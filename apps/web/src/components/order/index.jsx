@@ -9,6 +9,9 @@ import ShoppingSummaryDesktop from './shopping-summary-dekstop'
 import ShoppingSummaryMobile from './shopping-summary-mobile'
 import DeliveryAddress from './deliveryAddress'
 import { fetchStockOrder } from './services/fetchStockOrder'
+import { useCart } from '../cart-table/service/cartContext'
+import toast from 'react-hot-toast'
+
 
 const OrderBody = ({ orderData, totalPrice, totalQuantity }) => {
   const [stockOrder, setStockOrder] = useState([])
@@ -16,18 +19,26 @@ const OrderBody = ({ orderData, totalPrice, totalQuantity }) => {
   const [nearestWarehouse, setNearestWarehouse] = useState(null)
   const [costResult, setCostResult] = useState('')
   const navigate = useNavigate()
+
+  const { fetchCartCount } = useCart()
+
   // handle payment
   const handlePaymentClick = (orderItem) => {
-    paymentHandler(
-      orderItem,
-      stockOrder,
-      selectedAddress,
-      nearestWarehouse,
-      costResult,
-      totalPrice,
-      totalQuantity,
-      navigate,
-    )
+    if (costResult !== null && costResult !== undefined && costResult !== 0) {
+      paymentHandler(
+        orderItem,
+        stockOrder,
+        selectedAddress,
+        nearestWarehouse,
+        costResult,
+        totalPrice,
+        totalQuantity,
+        navigate,
+        fetchCartCount,
+      ) 
+    } else {
+      toast.error("Choose shipping service before payment.")
+    }
   }
 
   useEffect(() => {
@@ -38,7 +49,6 @@ const OrderBody = ({ orderData, totalPrice, totalQuantity }) => {
     <Box>
       {orderData?.map((orderItem) => (
         <Box key={orderItem?.id}>
-          {console.log('orderItem', orderItem)}
           <Box padding={{ base: '24px 24px 280px 24px', xl: '24px' }}>
             {/* header */}
             <Box display={'flex'} flexDirection={'column'} gap={'6px'} mb={'16px'}>
@@ -58,7 +68,7 @@ const OrderBody = ({ orderData, totalPrice, totalQuantity }) => {
             {/* body */}
             <Box display={'flex'} gap={'16px'}>
               <Box
-                w={{ xl: '1100px', '2xl': '1420px' }}
+                w={{ base: 'full', xl: '1100px', '2xl': '1420px' }}
                 display={'flex'}
                 flexDirection={'column'}
                 gap={'24px'}

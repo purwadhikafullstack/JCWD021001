@@ -19,6 +19,6 @@ export const getOrder = async (userId, orderNumber, orderDate, orderStatusId, pa
     const response = await axios.get(`${API_ROUTE}order/${userId}`, config)
     return response?.data?.data
   } catch (err) {
-    alert('Error occurred')
+    throw err?.response?.data?.error
   }
 }

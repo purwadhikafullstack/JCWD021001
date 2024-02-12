@@ -13,13 +13,13 @@ import { FormMutation } from '../form-mutation'
 import AdminListDashboard from '../../../admin-list-dashboard'
 import UserList from '../../../user-list'
 import WarehouseList from '../../../warehouse-list'
-import { AdminRoute } from '../../../../components/Auth/ProtectedRoute'
+import { AdminRoute, LoggedInRoute } from '../../../../components/Auth/ProtectedRoute'
 import { SalesReport } from '../sales-report'
 import { StockReport } from '../stock-report'
 import OrderManagement from '../../../order-management'
+import OrderManagementDetails from '../../../order-management-details'
 
 export const Body = (props) => {
-  console.log('props', props?.user)
   const renderComponent = () => {
     switch (props?.destination) {
       case 'product-list':
@@ -53,8 +53,11 @@ export const Body = (props) => {
       case 'stock-report':
         return <StockReport user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'order-management':
-        return <OrderManagement />
-        
+        return (
+          <LoggedInRoute>
+            <OrderManagement />
+          </LoggedInRoute>
+        )
     }
   }
   const renderComponentAgain = () => {
@@ -75,6 +78,8 @@ export const Body = (props) => {
         return <CreateStock user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'form-mutation':
         return <FormMutation user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+      case 'details':
+        return <OrderManagementDetails />
     }
   }
   const create = renderComponentAgain()

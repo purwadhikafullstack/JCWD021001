@@ -23,6 +23,6 @@ export const createPayment = async (result, orderId) => {
       config,
     )
   } catch (err) {
-    alert('Create payment Error')
+    throw err?.response?.data?.error
   }
 }

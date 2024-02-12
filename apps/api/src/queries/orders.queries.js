@@ -68,18 +68,15 @@ export const createOrderQuery = async (
 
 export const findOrderIdQuery = async ({ orderId, userId }) => {
   try {
-    
     if (orderId) {
       const res = await Orders.findOne({
         where: { id: orderId },
       })
       return res
     } else if (userId) {
-      console.log('user', userId);
-      const res = await Orders.findOne({
+      const res = await Orders.findAll({
         where: { userId: userId },
       })
-      console.log('res', res);
       return res
     }
   } catch (err) {
@@ -89,7 +86,10 @@ export const findOrderIdQuery = async ({ orderId, userId }) => {
 
 export const findOrderStatusQuery = async (orderStatusId) => {
   try {
-    const res = Orders.findAll({ where: { orderStatusId: orderStatusId } })
+    const res = Orders.findAll({
+      include: [{ model: Payments }],
+      where: { orderStatusId: orderStatusId },
+    })
     return res
   } catch (err) {
     throw err
@@ -197,6 +197,7 @@ export const getOrderQuery = async ({
 }
 
 export const getOrderManagementQuery = async ({
+  adminWarehouse,
   orderNumber,
   orderDate,
   warehouseId,
@@ -206,6 +207,10 @@ export const getOrderManagementQuery = async ({
 }) => {
   try {
     const whereClause = {}
+
+    if (adminWarehouse) {
+      whereClause.warehouseId = adminWarehouse
+    }
 
     if (orderNumber) {
       whereClause.orderNumber = orderNumber
@@ -281,6 +286,39 @@ export const getOrderManagementQuery = async ({
     throw err
   }
 }
+
+export const getOrderDetailQuery = async (orderId) => {
+  try {
+    const orders = await Orders.findOne({
+      include: [
+        { model: User },
+        { model: UserAddress },
+        { model: Warehouse, as: 'warehouse' },
+        { model: Payments },
+        { model: OrderStatuses },
+        {
+          model: OrderProducts,
+          include: [
+            {
+              model: Stock,
+              as: 'stocks',
+              include: [
+                { model: Product, as: 'product' },
+                { model: Size, as: 'size' },
+                { model: Colour, as: 'colour' },
+              ],
+            },
+          ],
+        },
+      ],
+      where: {id: orderId}
+    })
+    return orders
+  } catch (err) {
+    throw err
+  }
+}
+
 
 export const findWarehouseQuery = async () => {
   try {

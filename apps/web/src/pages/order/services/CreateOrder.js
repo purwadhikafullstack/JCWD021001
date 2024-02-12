@@ -32,8 +32,8 @@ export const createOrder = async ({
       },
       config,
     )
-    return response.data.data
+    return response?.data?.data
   } catch (err) {
-    alert('Error occurred')
+    throw err?.response?.data?.error
   }
 }

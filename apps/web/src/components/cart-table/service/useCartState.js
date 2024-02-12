@@ -1,16 +1,14 @@
-import axios from 'axios';
+import axios from 'axios'
 import { useState, useEffect, useCallback } from 'react'
 import { updateCart } from '../../../pages/cart/services/updateCart'
 import { deleteCart } from '../../../pages/cart/services/deleteCart'
 import _debounce from 'lodash/debounce'
 import { useNavigate } from 'react-router-dom'
-import { useToast } from "@chakra-ui/react";
-import { useCart } from './cartContext';
-import { API_ROUTE } from '../../../services/route';
-
+import { useCart } from './cartContext'
+import { API_ROUTE } from '../../../services/route'
+import toast from 'react-hot-toast'
 
 const useCartState = (cartData, onCartUpdated) => {
-  console.log('cartData', cartData);
   const [selectedCartProducts, setSelectedCartProducts] = useState([])
   const [selectAllChecked, setSelectAllChecked] = useState(false)
   const [productData, setProductData] = useState(() => {
@@ -20,47 +18,43 @@ const useCartState = (cartData, onCartUpdated) => {
   const [dataLoaded, setDataLoaded] = useState(false)
   const { fetchCartCount } = useCart()
   const navigate = useNavigate()
-  const toast = useToast();
 
-   // Function to fetch stock data for a product
-   const getStock = async (productId, sizeId, colourId) => {
+  // Function to fetch stock data for a product
+  const getStock = async (productId, sizeId, colourId) => {
     try {
       const res = await axios.get(
         `${API_ROUTE}/stock/stock/qty?productId=${productId}&sizeId=${sizeId}&colourId=${colourId}`,
-      );
-      return res?.data?.data || 0; // Return stock quantity or 0 if not available
+      )
+      return res?.data?.data || 0 // Return stock quantity or 0 if not available
     } catch (err) {
-      console.error('Error fetching stock:', err);
-      return 0; // Return 0 in case of error
+      console.error('Error fetching stock:', err)
+      return 0 // Return 0 in case of error
     }
-  };
+  }
 
   // Function to fetch stock data for all products in the cart
   const fetchStockData = async (cartData) => {
-    const newData = {};
+    const newData = {}
     for (const cartItem of cartData) {
       for (const item of cartItem.CartProducts) {
-        const stock = await getStock(item.productId, item.sizeId, item.colourId);
-        newData[item.id] = stock;
-        console.log('lala', item);
+        const stock = await getStock(item.productId, item.sizeId, item.colourId)
+        newData[item.id] = stock
       }
     }
-    console.log('newData', newData);
-    return newData;
-  };
+    return newData
+  }
 
   // State to store stock data
-  const [stockData, setStockData] = useState({});
-  console.log('stock', stockData);
+  const [stockData, setStockData] = useState({})
 
   // Fetch stock data when cart data changes
   useEffect(() => {
     const fetchAndUpdateStockData = async () => {
-      const newData = await fetchStockData(cartData);
-      setStockData(newData);
-    };
-    fetchAndUpdateStockData();
-  }, [cartData]);
+      const newData = await fetchStockData(cartData)
+      setStockData(newData)
+    }
+    fetchAndUpdateStockData()
+  }, [cartData])
 
   const updateProductData = (newProductData) => {
     // Update state dan simpan ke localStorage
@@ -136,19 +130,25 @@ const useCartState = (cartData, onCartUpdated) => {
   }, [dataLoaded, cartData])
 
   const handleDeleteButtonClick = async () => {
-    // Check if there are selected products to delete
-    if (selectedCartProducts.length > 0) {
-      // Perform deletion of selected products
-      await deleteCart(selectedCartProducts, onCartUpdated)
+    try {
+      // Check if there are selected products to delete
+      if (selectedCartProducts.length > 0) {
+        // Perform deletion of selected products
+        const res = await deleteCart(selectedCartProducts, onCartUpdated)
 
-      // Remove deleted products from selectedCartProducts state
-      setSelectedCartProducts([])
+        // Remove deleted products from selectedCartProducts state
+        setSelectedCartProducts([])
 
-      // Update the local storage
-      localStorage.removeItem('selectedCartProducts')
-      localStorage.removeItem('selectAllChecked')
-
-      await fetchCartCount()
+        // Update the local storage
+        localStorage.removeItem('selectedCartProducts')
+        localStorage.removeItem('selectAllChecked')
+        toast.success(res)
+        setTimeout(() => {
+          fetchCartCount()
+        }, 3000)
+      }
+    } catch (err) {
+      toast.error(err)
     }
   }
 
@@ -212,16 +212,6 @@ const useCartState = (cartData, onCartUpdated) => {
     return { totalPrice, totalQuantity }
   }
 
-  const showToast = (message) => {
-    toast({
-      title: message,
-      status: "warning", // Sesuaikan dengan status yang sesuai (info, success, warning, error)
-      position: 'top-right',
-      duration: 3000, // Durasi toast ditampilkan dalam milidetik (opsional)
-      isClosable: true, // Mungkin ingin memberikan opsi untuk menutup toast
-    });
-  };
-
   // Mengatur hasVisitedCart ke true ketika pengguna mengunjungi rute /cart
   const handleVisitCart = () => {
     localStorage.setItem('hasVisitedCart', 'true')
@@ -232,33 +222,26 @@ const useCartState = (cartData, onCartUpdated) => {
     for (const cartItem of cartData) {
       for (const item of cartItem.CartProducts) {
         if (item?.quantity && productData[item.id]?.quantity > stockData[item.id]) {
-          return true; // Disable checkout if any product exceeds stock
+          return true // Disable checkout if any product exceeds stock
         }
       }
     }
-    return false; // Enable checkout if no product exceeds stock
-  };
+    return false // Enable checkout if no product exceeds stock
+  }
 
   const handleCheckout = async () => {
     // Check if checkout should be disabled
-    console.log(disableCheckout());
     if (disableCheckout()) {
       // Display toast message indicating why checkout is disabled
-      toast({
-        title: 'One or more products exceed stock quantity',
-        status: 'warning',
-        position: 'top-right',
-        duration: 3000,
-        isClosable: true,
-      });
-      return; // Exit early if checkout should be disabled
+      toast.error('One or more products exceed stock quantity')
+      return // Exit early if checkout should be disabled
     }
 
-    const {totalPrice, totalQuantity} = calculateTotalPriceAndQuantity()
+    const { totalPrice, totalQuantity } = calculateTotalPriceAndQuantity()
     try {
       // Check if selectedCartProducts is not empty
       if (selectedCartProducts.length === 0) {
-        showToast('Select products to checkout') // Menampilkan pesan toast jika selectedCartProducts kosong
+        toast.error('Select products to checkout') // Menampilkan pesan toast jika selectedCartProducts kosong
         return // Menghentikan proses checkout jika selectedCartProducts kosong
       }
       // Extract stock data from selected products
@@ -272,8 +255,6 @@ const useCartState = (cartData, onCartUpdated) => {
           productId: selectedProduct?.productId,
         }
       })
-      
-      console.log('stockData', stockData)
 
       handleVisitCart()
       navigate('/cart/order', { state: { stockData, totalPrice, totalQuantity } })
@@ -298,4 +279,4 @@ const useCartState = (cartData, onCartUpdated) => {
   }
 }
 
-export default useCartState;
+export default useCartState

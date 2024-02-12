@@ -1,16 +1,16 @@
 import React from 'react'
-import { Box, Text } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import OrderBody from '../../components/order'
 import { useState, useEffect } from 'react'
 import { getCart } from '../cart/services/getCart'
 import { useLocation } from 'react-router-dom'
 import { Navbar } from '../../components/Navbar'
 import { useSelector } from 'react-redux'
+import toast from 'react-hot-toast'
 
 const Order = () => {
   const [orderData, setOrderData] = useState([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null);
   const location = useLocation()
   const stockData = location.state ? location.state.stockData : null
   const totalPrice = location.state ? location.state.totalPrice : null
@@ -25,7 +25,7 @@ const Order = () => {
         const data = await getCart(user?.id, stockData) // Assuming getCart fetches order data
         setOrderData(data)
       } catch (error) {
-        console.error('Error fetching order data:', error)
+        toast.error(err)
       } finally {
         setLoading(false)
       }
@@ -41,22 +41,13 @@ const Order = () => {
     return null
   }
 
-  // // Handle errors
-  // if (error) {
-  //   return (
-  //     <Box>
-  //       <Text>Error: {error}</Text>
-  //     </Box>
-  //   );
-  // }
-
   return (
-    <>
+    <Box maxW={'100vw'} minH={'100vh'} overflow={'hidden'} bgColor={'brand.grey100'}>
       <Navbar />
-      <Box bgColor={'brand.grey100'} maxW={'100vw'} minH={'100vh'}>
+      <Box>
         <OrderBody orderData={orderData} stockData={stockData} totalPrice={totalPrice} totalQuantity={totalQuantity}/>
       </Box>
-    </>
+    </Box>
   )
 }
 

@@ -12,15 +12,12 @@ export const deleteCart = async (cartProductId, onCartUpdated) => {
           cartProductIds: cartProductId
         }
       };
-      const response = await axios.delete(`${API_ROUTE}cart`, config);
-  
-  
-      // Optionally, you can handle the success or show a notification here.
+      const res = await axios.delete(`${API_ROUTE}cart`, config);
       if (onCartUpdated) {
         onCartUpdated();
       }
+      return res?.data?.message
     } catch (err) {
-      console.error('Error deleting cart:', err);
-      // Optionally, you can handle the error or show a notification here.
+      throw err?.response?.data?.error
     }
   };

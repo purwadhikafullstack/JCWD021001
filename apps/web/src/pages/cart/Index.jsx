@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { getCart } from './services/getCart'
 import { Navbar } from '../../components/Navbar'
 import { useSelector } from 'react-redux'
+import toast from 'react-hot-toast'
 
 const Cart = () => {
   const [cartData, setCartData] = useState([])
@@ -14,7 +15,7 @@ const Cart = () => {
       const data = await getCart(user?.id)
       setCartData(data)
     } catch (error) {
-      console.error('Error fetching cart data:', error)
+      toast.error(err)
     }
   }
 

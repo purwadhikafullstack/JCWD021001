@@ -4,6 +4,7 @@ import {
   getAllOrderByCategoryService,
   getAllOrderByProductService,
   getAllOrderService,
+  getOrderDetailService,
   getOrderManagementService,
   getOrderService,
   getWarehouseService,
@@ -11,10 +12,10 @@ import {
   updateOrderService,
 } from '../services/orders.services'
 
-const sendResponse = (res, statusCode, result, errorMessage) => {
+const sendResponse = (res, statusCode, result, errorMessage, customMessage) => {
   if (statusCode === 200) {
     return res.status(statusCode).json({
-      message: 'success',
+      message: customMessage,
       data: result,
     })
   } else if (statusCode === 500) {
@@ -47,7 +48,7 @@ export const createOrderController = async (req, res) => {
       orderStatusId,
       products,
     )
-    return sendResponse(res, 200, result, null)
+    return sendResponse(res, 200, result, null, 'Order created successfully')
   } catch (err) {
     console.log(err)
     return sendResponse(res, 500, null, err.message)
@@ -58,7 +59,7 @@ export const updateOrderController = async (req, res) => {
     const { orderId } = req.params
     const { orderStatusId } = req.body
     const result = await updateOrderService(orderId, orderStatusId)
-    return sendResponse(res, 200, result, null)
+    return sendResponse(res, 200, result, null, 'Successfully')
   } catch (err) {
     console.log(err)
     return sendResponse(res, 500, null, err.message)
@@ -68,18 +69,16 @@ export const updateOrderController = async (req, res) => {
 export const getOrderController = async (req, res) => {
   try {
     const { userId } = req.params
-    console.log('userId', userId);
-    let newUserId = parseInt(userId);
     const { orderNumber, orderDate, orderStatusId, page, pageSize } = req.query
     const result = await getOrderService(
-      newUserId,
+      userId,
       orderNumber,
       orderDate,
       orderStatusId,
       page,
       pageSize,
     )
-    return sendResponse(res, 200, result, null)
+    return sendResponse(res, 200, result, null, 'Order retrieved successfully')
   } catch (err) {
     console.log(err)
     return sendResponse(res, 500, null, err.message)
@@ -88,9 +87,10 @@ export const getOrderController = async (req, res) => {
 
 export const getOrderManagementController = async (req, res) => {
   try {
-    // const { userId } = req.params
-    const { orderNumber, orderDate, warehouseId, orderStatusId, page, pageSize } = req.query
+    const { adminWarehouse, orderNumber, orderDate, warehouseId, orderStatusId, page, pageSize } =
+      req.query
     const result = await getOrderManagementService(
+      adminWarehouse,
       orderNumber,
       orderDate,
       warehouseId,
@@ -98,7 +98,18 @@ export const getOrderManagementController = async (req, res) => {
       page,
       pageSize,
     )
-    return sendResponse(res, 200, result, null)
+    return sendResponse(res, 200, result, null, 'Order retrieved successfully')
+  } catch (err) {
+    console.log(err)
+    return sendResponse(res, 500, null, err.message)
+  }
+}
+
+export const getOrderDetailController = async (req, res) => {
+  try {
+    const { orderId } = req.params
+    const result = await getOrderDetailService(orderId)
+    return sendResponse(res, 200, result, null, 'Order retrieved successfully')
   } catch (err) {
     console.log(err)
     return sendResponse(res, 500, null, err.message)
@@ -108,7 +119,7 @@ export const getOrderManagementController = async (req, res) => {
 export const getWarehouseController = async (req, res) => {
   try {
     const result = await getWarehouseService()
-    return sendResponse(res, 200, result, null)
+    return sendResponse(res, 200, result, null, 'Warehouse retrieved successfully')
   } catch (err) {
     console.log(err)
     return sendResponse(res, 500, null, err.message)
@@ -119,7 +130,7 @@ export const productToStockIdController = async (req, res) => {
   try {
     const { products, nearestWarehouse } = req.query
     const result = await productToStockIdService(products, nearestWarehouse)
-    return sendResponse(res, 200, result, null)
+    return sendResponse(res, 200, result, null, 'Product to stock successfully')
   } catch (err) {
     console.log(err)
     return sendResponse(res, 500, null, err.message)
@@ -130,7 +141,7 @@ export const calculationCheckStockController = async (req, res) => {
   try {
     const { orderId } = req.params
     const result = await calculationCheckStockService(orderId)
-    return sendResponse(res, 200, result, null)
+    return sendResponse(res, 200, result, null, 'Stock check successfully')
   } catch (err) {
     console.log(err)
     return sendResponse(res, 500, null, err.message)
@@ -196,4 +207,4 @@ export const getAllOrderByProductController = async (req, res) => {
     })
   }
 }
-// 
+//
