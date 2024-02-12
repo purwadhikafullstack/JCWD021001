@@ -382,7 +382,7 @@ export const getAllOrderByCategoryQuery = async (warehouseId, startDate, endDate
     const res = await OrderProducts.sequelize
       .query(`SELECT  grandparent_category.name as grandparent_name, parent_category.name AS group_name, parent_category.id as group_id,  
       SUM(orderProducts.quantity) as ordercount,
-      SUM(orderProducts.price * orderProducts.quantity) AS total
+      SUM(orderProducts.price) AS total
       FROM orders
       JOIN orderProducts ON orders.id = orderProducts.orderId
       JOIN stocks ON orderProducts.stockId = stocks.id

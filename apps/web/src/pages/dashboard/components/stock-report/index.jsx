@@ -3,6 +3,7 @@ import {
   Flex,
   HStack,
   Heading,
+  Icon,
   Select,
   Table,
   TableContainer,
@@ -26,6 +27,7 @@ import {
 } from '../sales-report/component/month-select/utils/services'
 import { getWarehouses } from '../form-mutation/services/readWarehouse'
 import { PaginationList } from '../product-list/components/pagination-list'
+import { ChevronRightIcon } from '@heroicons/react/24/outline'
 
 export const StockReport = (props) => {
   // LOCATION
@@ -69,7 +71,7 @@ export const StockReport = (props) => {
         setStockReports(data)
       })
     }
-  }, [warehouseId, startDate, endDate, month, warValue, pageValue])
+  }, [warehouseId, startDate, endDate, month, warValue, pageValue, props?.warehouseValue])
 
   // Warehouse lists
   const [warehouses, setWarehouses] = useState([])
@@ -99,9 +101,16 @@ export const StockReport = (props) => {
       <Tr key={index} cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'}>
         <Td>
           <Text>{stockReport?.product}</Text>
-          <Text as={'span'} fontSize={'.6em'}>
+          <Text as={'span'} fontSize={'.75em'}>
             {stockReport?.name}
           </Text>
+          <HStack fontSize={'.75em'}>
+            <Text>{stockReport?.category}</Text>
+            <Icon as={ChevronRightIcon} fontSize={'.6em'} />
+            <Text>{stockReport?.grooup}</Text>
+            <Icon as={ChevronRightIcon} fontSize={'.6em'} />
+            <Text>{stockReport?.gender}</Text>
+          </HStack>
         </Td>
         <Td>{stockReport?.addition}</Td>
         <Td>{stockReport?.reduction}</Td>

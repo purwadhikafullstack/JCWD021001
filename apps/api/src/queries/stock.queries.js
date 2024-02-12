@@ -216,11 +216,14 @@ export const getStockReportQuery = async (
       .query(`SELECT stocks.id, products.name as  product, sizes.name,
 SUM(CASE WHEN isAdding = 1 THEN stockJournals.qty ELSE 0 END) AS addition,
 SUM(CASE WHEN isAdding = 0 THEN stockJournals.qty ELSE 0 END) AS reduction,
-stocks.qty
+stocks.qty, child_category.name as category, parent_category.name as grooup,grandparent_category.name as gender
 FROM stockJournals
 join stocks on stockJournals.stockId = stocks.id
 join products on stocks.productId = products.id
 join sizes on stocks.sizeId = sizes.id
+JOIN productCategories AS child_category ON products.productCategoryId = child_category.id
+JOIN productCategories AS parent_category ON child_category.parentId = parent_category.id
+JOIN productCategories AS grandparent_category ON parent_category.parentId = grandparent_category.id
 where stocks.warehouseId = ${warehouseId} 
 AND stockJournals.createdAt>= '${startDate}' AND stockJournals.createdAt<= '${endDate}'
 GROUP BY stocks.id

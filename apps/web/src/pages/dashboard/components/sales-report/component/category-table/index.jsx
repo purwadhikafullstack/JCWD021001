@@ -1,11 +1,12 @@
 import {
   Box,
-  Button,
   HStack,
+  Icon,
   Table,
   TableContainer,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
@@ -13,24 +14,39 @@ import {
 import toRupiah from '@develoka/angka-rupiah-js'
 import { useEffect, useState } from 'react'
 import { getOrdersByCategory } from '../../services/readOrders'
+import { ChevronRightIcon } from '@heroicons/react/24/outline'
 
 export const CategoryTable = (props) => {
   const [data, setData] = useState([])
 
   useEffect(() => {
-    getOrdersByCategory(props?.warehouseId, props?.startDate, props?.endDate).then((data) => {
-      setData(data)
-    })
-  }, [props?.startDate])
-
+    if (props?.isSuperAdmin) {
+      getOrdersByCategory(props?.warehouseValue, props?.startDate, props?.endDate).then((data) => {
+        setData(data)
+      })
+    }
+    if (!props?.isSuperAdmin) {
+      getOrdersByCategory(props?.warehouseId, props?.startDate, props?.endDate).then((data) => {
+        setData(data)
+      })
+    }
+  }, [props?.startDate, props?.warehouseValue])
+  console.log('data', data)
   const renderedTableBody = data?.map((data, index) => {
     return (
       <Tr key={index} cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'}>
-        <Td>{data?.grandparent_name}</Td>
+        <Td>
+          <HStack>
+            <Text>{data?.grandparent_name}</Text>
+            <Icon as={ChevronRightIcon} />
+            <Text>{data?.group_name}</Text>
+          </HStack>
+        </Td>
         <Td>{toRupiah(data?.total)}</Td>
       </Tr>
     )
   })
+
   return (
     <Box
       maxW={'100%'}
