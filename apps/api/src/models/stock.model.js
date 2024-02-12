@@ -66,11 +66,26 @@ export const init = (sequelize) => {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: new Date(Date.now()),
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: new Date(Date.now()),
+      },
+      deletedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
     },
     {
       sequelize,
       modelName: 'Stock',
       timestamps: true,
+      paranoid: true,
     },
   )
 }
