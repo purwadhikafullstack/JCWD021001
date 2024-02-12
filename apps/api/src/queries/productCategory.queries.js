@@ -216,7 +216,16 @@ export const deleteProductCategoryQuery = async (id, parentId, grandParentId = n
 
     if (checkLastChild.length === 1) {
       if (checkParent.length <= 1) throw new Error('You cant delete the last category')
-
+      const products = await Product.findAll({
+        where: {
+          productCategoryId: id,
+        },
+      })
+      for (const product of products) {
+        await product.update({
+          productCategoryId: null, // Assuming you want to set productCategoryId to null
+        })
+      }
       const res = ProductCategory.destroy({
         where: {
           id: { [Op.eq]: id },

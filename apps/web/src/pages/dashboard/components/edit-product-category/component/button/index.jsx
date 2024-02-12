@@ -105,6 +105,7 @@ export const HandleAddSubmitSizeButton = (props) => {
 }
 
 export const AddNewGroupButton = (props) => {
+  const toast = useToast()
   return (
     <HStack>
       <Button
@@ -137,11 +138,17 @@ export const AddNewGroupButton = (props) => {
                 props?.genderId,
                 props?.toast,
               )
-              if (!res) throw new Error('error')
-              createProductCategory(props?.newChildren, res?.data?.data?.id, props?.toast)
+              if (res) {
+                throw new Error('Group with that name already exist')
+              }
+              if (!res?.data?.data?.id) throw new Error('Canceled')
+              await createProductCategory(props?.newChildren, res?.data?.data?.id, props?.toast)
               props?.setFixInput('')
             } catch (err) {
-              throw err
+              toast({
+                title: err.message,
+                status: 'error',
+              })
             }
           }}
         >
