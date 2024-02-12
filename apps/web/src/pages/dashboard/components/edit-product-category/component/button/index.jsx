@@ -138,7 +138,7 @@ export const AddNewGroupButton = (props) => {
                 props?.genderId,
                 props?.toast,
               )
-              if (res) {
+              if (res?.data?.message == 'Product Category with that name is already exist') {
                 throw new Error('Group with that name already exist')
               }
               if (!res?.data?.data?.id) throw new Error('Canceled')
