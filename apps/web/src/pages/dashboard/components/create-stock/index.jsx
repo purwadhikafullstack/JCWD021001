@@ -7,6 +7,7 @@ import { ProductList } from './component/product-list'
 import { StockSelection } from './component/stock-selection'
 import { createStockJournal } from './services/createStock'
 import { useLocation } from 'react-router-dom'
+import { checkStock } from './services/readStock'
 
 export const CreateStock = (props) => {
   // LOCATION
@@ -139,19 +140,40 @@ export const CreateStock = (props) => {
               _hover={{ bg: '#f50f5a' }}
               _active={{ opacity: '70%' }}
               onClick={async () => {
-                await handleCreateStockJournal(
-                  productId,
-                  warehouseValue ? warehouseValue : warehouseId,
-                  sizeId,
-                  colourId,
-                  Number(stockValue),
-                  false,
-                )
-                setProductId(0)
-                setWarehouseId(warehouseId)
-                setSizeId(0)
-                setColourId(0)
-                setStockValue(0)
+                try {
+                  const res = await checkStock(
+                    productId,
+                    warehouseValue ? warehouseValue : warehouseId,
+                    sizeId,
+                    colourId,
+                  )
+                  console.log('res', res)
+                  if (res?.data?.data) throw new Error('Stock is exist')
+                  await handleCreateStockJournal(
+                    productId,
+                    warehouseValue ? warehouseValue : warehouseId,
+                    sizeId,
+                    colourId,
+                    Number(stockValue),
+                    false,
+                  )
+                  setProductId(0)
+                  setWarehouseId(warehouseId)
+                  setSizeId(0)
+                  setColourId(0)
+                  setStockValue(0)
+                } catch (err) {
+                  const errorMessage =
+                    err.message && err.response && err.response.data && err.response.data.message
+                      ? err.response.data.message
+                      : 'An unexpected error occurred'
+                  if (err.message === 'Stock is exist') {
+                    toast({
+                      title: 'Stock already exists',
+                      status: 'error', // or 'info' depending on your design
+                    })
+                  }
+                }
               }}
             >
               Create
