@@ -1,6 +1,7 @@
 import { Button, HStack } from '@chakra-ui/react'
 import { createProductCategory } from '../../services/createProductCategory'
 import { useNavigate } from 'react-router-dom'
+import { createSize } from '../../services/createSize'
 
 export const HandleEditButton = (props) => {
   return (
@@ -19,6 +20,26 @@ export const HandleEditButton = (props) => {
     </Button>
   )
 }
+export const HandleEditSizeButton = (props) => {
+  return (
+    <Button
+      _hover={{
+        bgColor: 'redPure.600',
+      }}
+      fontSize={'.8em'}
+      h={'2.5em'}
+      w={'5em'}
+      bgColor={'redPure.600'}
+      color={'white'}
+      onClick={() => {
+        console.log('props', props?.id)
+        props?.handleEditClick(props.id)
+      }}
+    >
+      {props?.editable[props?.id] ? 'Cancel' : 'Add Size'}
+    </Button>
+  )
+}
 
 export const HandleAddSubmitButton = (props) => {
   return (
@@ -33,6 +54,27 @@ export const HandleAddSubmitButton = (props) => {
       color={'white'}
       onClick={async () => {
         await createProductCategory(props?.fixInput, props?.id, props?.toast)
+        props?.setFixInput('')
+      }}
+    >
+      Submit
+    </Button>
+  )
+}
+
+export const HandleAddSubmitSizeButton = (props) => {
+  return (
+    <Button
+      _hover={{
+        bgColor: 'redPure.600',
+      }}
+      fontSize={'.8em'}
+      h={'2.5em'}
+      w={'5em'}
+      bgColor={'redPure.600'}
+      color={'white'}
+      onClick={async () => {
+        await createSize(props?.fixInput, props?.productCategoryId, props?.toast)
         props?.setFixInput('')
       }}
     >

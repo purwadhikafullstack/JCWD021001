@@ -31,14 +31,19 @@ export const getProductCategoryQuery = async (gender) => {
       ],
       ...filter,
     })
-    // Group by gender
     const groupedCategories = results.reduce((result, item) => {
       const parentName = item.parent.name
       const parentId = item.parent.id
+
       if (!result[parentName]) {
-        result[parentName] = { name: parentName, id: parentId, category: [] }
+        result[parentName] = { name: parentName, id: parentId, category: [], size: [] }
       }
+
+      const sizeInfo = item.parent.size.map((size) => ({ id: size.id, name: size.name }))
+
+      result[parentName].size.push(...sizeInfo)
       result[parentName].category.push({ id: item.id, name: item.name })
+
       return result
     }, {})
     const res = Object.values(groupedCategories)

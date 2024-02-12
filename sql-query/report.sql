@@ -2,6 +2,8 @@
 USE PURE;
 select * from orders;
 select * from productCategories;
+select * from stockJournals;
+select * from colours;
 select * from sizes;
 
 SELECT 

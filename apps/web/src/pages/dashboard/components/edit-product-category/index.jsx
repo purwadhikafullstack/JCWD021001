@@ -12,15 +12,19 @@ import {
   GroupNameInput,
   NewGroupInput,
   NewProductInput,
+  NewSizeInput,
 } from './component/input'
 import {
   AddNewGroupButton,
   EditableButton,
   HandleAddSubmitButton,
+  HandleAddSubmitSizeButton,
   HandleEditButton,
+  HandleEditSizeButton,
 } from './component/button'
 import { GrandParentInput } from './component/grandparent-input'
 import { SaveGrandParentText } from './component/save-grandparent-text'
+import { DeleteSize } from './component/delete-size'
 
 export const EditProductCategory = (props) => {
   const { epid } = useParams() //params
@@ -34,6 +38,7 @@ export const EditProductCategory = (props) => {
   const [newChildren, setNewChildren] = useState(null)
 
   const [input, setInput] = useState([{}])
+  console.log('input', input)
 
   const [fixInput, setFixInput] = useState('')
 
@@ -119,9 +124,7 @@ export const EditProductCategory = (props) => {
     initialValues,
     enableReinitialize: true,
   })
-
-  console.log('formik', formik?.initialValues)
-
+  console.log('prod-cat', productCategory)
   return (
     <Box bgColor={'white'} p={'1em'} w={'100%'} h={'100%'}>
       <VStack align={'stretch'}>
@@ -172,7 +175,19 @@ export const EditProductCategory = (props) => {
                       </div>
                     ))}
                 </VStack>
-                {console.log('editable-item-id', editable[item?.id])}
+                <Text fontWeight={'bold'} mb={'.5em'}>
+                  Size
+                </Text>
+                {item?.size?.map((size) => {
+                  return (
+                    <>
+                      <Text fontWeight={'bold'} fontSize={'.9'}>
+                        {size?.name}
+                      </Text>
+                      <DeleteSize id={size?.id} toast={toast} />
+                    </>
+                  )
+                })}
                 {editable[item?.id] && props?.isSuperAdmin && (
                   <NewProductInput
                     id={item?.id}
@@ -195,6 +210,33 @@ export const EditProductCategory = (props) => {
                     <HandleAddSubmitButton
                       setFixInput={setFixInput}
                       id={item?.id}
+                      toast={toast}
+                      fixInput={fixInput}
+                    />
+                  )}
+                </HStack>
+                {editable[`size-${item?.id}`] && props?.isSuperAdmin && (
+                  <NewSizeInput
+                    id={`size-${item?.id}`}
+                    findById={findById}
+                    onFocusInput={onFocusInput}
+                    setInput={setInput}
+                    handleInput={handleInput}
+                  />
+                )}
+                <HStack my={'.5em'}>
+                  {props?.isSuperAdmin && (
+                    <HandleEditSizeButton
+                      handleEditClick={handleEditClick}
+                      editable={editable}
+                      id={`size-${item?.id}`}
+                    />
+                  )}
+                  {editable[`size-${item?.id}`] && props?.isSuperAdmin && (
+                    <HandleAddSubmitSizeButton
+                      productCategoryId={item?.id}
+                      setFixInput={setFixInput}
+                      id={`size-${item?.id}`}
                       toast={toast}
                       fixInput={fixInput}
                     />
