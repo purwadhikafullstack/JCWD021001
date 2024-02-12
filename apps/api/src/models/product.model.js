@@ -14,10 +14,17 @@ export default class Product extends Model {
   static associate(models) {
     // define association here
     Product.hasMany(models.Stock, { as: 'stocks', foreignKey: 'productId' })
-    Product.belongsTo(ProductCategory, { foreignKey: 'productCategoryId', as: 'category' })
+    Product.belongsTo(ProductCategory, {
+      foreignKey: 'productCategoryId',
+      as: 'category',
+    })
     Product.hasMany(ProductImage, { as: 'picture' })
     Product.hasMany(StockJournal, { as: 'history' })
-    Product.hasMany(models.CartProducts, { as: 'cartProducts', foreignKey: 'productId' })
+    Product.hasMany(models.CartProducts, {
+      as: 'cartProducts',
+      foreignKey: 'productId',
+      paranoid: true,
+    })
     Product.belongsToMany(Colour, { through: ProductToColour, as: 'colour' })
   }
 }

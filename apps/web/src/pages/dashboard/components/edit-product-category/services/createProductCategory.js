@@ -17,7 +17,7 @@ export const createProductCategory = async (name, parentId, toast) => {
       },
     )
     toast({
-      title: `${res?.data?.title}`,
+      title: `${res?.data?.message}`,
       status: 'success',
     })
     return res

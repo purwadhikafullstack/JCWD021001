@@ -48,7 +48,7 @@ export const CreateProductCategoryGender = (props) => {
         },
       )
       toast({
-        title: `${res?.data?.title}`,
+        title: `${res?.data?.message}`,
         status: 'success',
         placement: 'bottom',
       })

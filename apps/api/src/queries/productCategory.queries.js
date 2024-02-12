@@ -36,17 +36,25 @@ export const getProductCategoryQuery = async (gender) => {
       const parentId = item.parent.id
 
       if (!result[parentName]) {
-        result[parentName] = { name: parentName, id: parentId, category: [], size: [] }
+        result[parentName] = { name: parentName, id: parentId, category: [], size: new Set() }
       }
 
-      const sizeInfo = item.parent.size.map((size) => ({ id: size.id, name: size.name }))
-
-      result[parentName].size.push(...sizeInfo)
+      // Add category information
       result[parentName].category.push({ id: item.id, name: item.name })
+
+      // Add unique size information
+      item.parent.size.forEach((size) => {
+        result[parentName].size.add({ id: size.id, name: size.name })
+      })
 
       return result
     }, {})
-    const res = Object.values(groupedCategories)
+
+    // Convert Set to array
+    const res = Object.values(groupedCategories).map((group) => ({
+      ...group,
+      size: [...group.size],
+    }))
     return res
   } catch (err) {
     throw err
@@ -187,6 +195,7 @@ export const deleteProductCategoryQuery = async (id, parentId, grandParentId = n
         },
       },
     })
+
     const checkParent = await ProductCategory.findAll({
       where: {
         parentId: {
@@ -215,6 +224,7 @@ export const deleteProductCategoryQuery = async (id, parentId, grandParentId = n
       })
       return res
     }
+
     if (check) {
       const sizes = await Size.findAll({
         where: {

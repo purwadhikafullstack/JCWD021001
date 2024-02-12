@@ -14,7 +14,7 @@ export const deleteProductCategory = async (id, parentId, grandParentId = null, 
       },
     })
     toast({
-      title: `${res?.data?.title}`,
+      title: `${res?.data?.message}`,
       status: 'success',
     })
   } catch (err) {
