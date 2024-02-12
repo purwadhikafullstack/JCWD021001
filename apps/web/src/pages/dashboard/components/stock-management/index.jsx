@@ -8,12 +8,10 @@ import {
   Table,
   TableContainer,
   Tbody,
-  Text,
   Th,
   Thead,
   Tr,
   VStack,
-  useToast,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -67,8 +65,6 @@ export const StockManagement = (props) => {
       }))
     }
   }
-
-  console.log('stocks', stocks)
 
   // Warehouse lists
   const [warehouses, setWarehouses] = useState([])

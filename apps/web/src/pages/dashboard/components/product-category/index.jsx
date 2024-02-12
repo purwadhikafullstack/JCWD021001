@@ -1,11 +1,9 @@
 import {
-  AspectRatio,
   Box,
   Button,
   Flex,
   HStack,
   Heading,
-  Image,
   Table,
   TableContainer,
   Tbody,
@@ -52,7 +50,6 @@ export const ProductCategory = (props) => {
     getGender()
   }, [])
 
-  console.log('product-category', props)
   return (
     <Box height={'100%'} w={'100%'} minH={'100vh'}>
       <VStack align={' stretch'}>

@@ -1,25 +1,11 @@
-import {
-  Box,
-  Button,
-  HStack,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-} from '@chakra-ui/react'
+import { Box, HStack, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import toRupiah from '@develoka/angka-rupiah-js'
 import { useEffect, useState } from 'react'
 import { getOrders } from '../../services/readOrders'
 
 export const SalesTable = (props) => {
   const [data, setData] = useState([])
-  {
-    console.log('props?.user?.warehouseId', props?.user?.warehouseId)
-  }
+
   useEffect(() => {
     if (props?.isSuperAdmin) {
       getOrders(props?.pageValue, props?.warehouseValue, props?.startDate, props?.endDate).then(

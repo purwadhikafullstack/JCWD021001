@@ -2,7 +2,6 @@ import { Box, Button, Input, Text, VStack, useToast } from '@chakra-ui/react'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { getProduct } from '../../../product-list/services/readProduct'
-import { getColours } from './services/readColour'
 import { ProductList } from './component/product-list'
 import { StockSelection } from './component/stock-selection'
 import { createStockJournal } from './services/createStock'
@@ -147,7 +146,6 @@ export const CreateStock = (props) => {
                     sizeId,
                     colourId,
                   )
-                  console.log('res', res)
                   if (res?.data?.data) throw new Error('Stock is exist')
                   await handleCreateStockJournal(
                     productId,

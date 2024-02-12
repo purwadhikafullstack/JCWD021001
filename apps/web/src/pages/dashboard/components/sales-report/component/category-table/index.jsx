@@ -31,7 +31,6 @@ export const CategoryTable = (props) => {
       })
     }
   }, [props?.startDate, props?.warehouseValue])
-  console.log('data', data)
   const renderedTableBody = data?.map((data, index) => {
     return (
       <Tr key={index} cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'}>

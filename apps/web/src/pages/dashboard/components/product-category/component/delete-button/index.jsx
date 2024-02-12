@@ -1,6 +1,5 @@
 import {
   Button,
-  useToast,
   Modal,
   ModalOverlay,
   ModalContent,

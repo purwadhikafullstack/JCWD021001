@@ -139,7 +139,6 @@ export const StockReport = (props) => {
       }))
     }
   }
-  console.log('stockReports', stockReports)
   return (
     <Box p={'1em'} w={'100%'} minH={'100vh'}>
       <Flex flexDir={'column'} justifyContent={'space-between'} h={'100%'}>

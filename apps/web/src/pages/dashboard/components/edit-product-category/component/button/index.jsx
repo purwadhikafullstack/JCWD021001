@@ -32,7 +32,6 @@ export const HandleEditSizeButton = (props) => {
       bgColor={'redPure.600'}
       color={'white'}
       onClick={() => {
-        console.log('props', props?.id)
         props?.handleEditClick(props.id)
       }}
     >
