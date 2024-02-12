@@ -38,6 +38,7 @@ export const DeleteSize = (props) => {
               cursor={'pointer'}
               onClick={async () => {
                 await deleteSize(props?.id, props?.toast)
+                props?.setTrigger(!props?.trigger)
                 onClose()
               }}
             >

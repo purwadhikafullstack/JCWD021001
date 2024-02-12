@@ -27,6 +27,8 @@ import { SaveGrandParentText } from './component/save-grandparent-text'
 import { DeleteSize } from './component/delete-size'
 
 export const EditProductCategory = (props) => {
+  const [trigger, setTrigger] = useState(false)
+
   const { epid } = useParams() //params
 
   const toast = useToast() //toast
@@ -74,7 +76,7 @@ export const EditProductCategory = (props) => {
     if (gender) {
       getProductCategory(setProductCategory, epid)
     }
-  }, [])
+  }, [trigger])
 
   const [editable, setEditable] = useState({})
 
@@ -141,7 +143,13 @@ export const EditProductCategory = (props) => {
                 />
                 {props?.isSuperAdmin && (
                   <>
-                    <SaveGrandParentText formik={formik} toast={toast} id={gender[0]?.id} />
+                    <SaveGrandParentText
+                      formik={formik}
+                      toast={toast}
+                      id={gender[0]?.id}
+                      trigger={trigger}
+                      setTrigger={setTrigger}
+                    />
                   </>
                 )}
                 <Text fontWeight={'bold'} mb={'.5em'}>
@@ -150,8 +158,19 @@ export const EditProductCategory = (props) => {
                 <GroupNameInput id={item.id} formik={formik} editableCategory={editableCategory} />
                 {props?.isSuperAdmin && (
                   <>
-                    <SaveText formik={formik} toast={toast} id={item.id} />
-                    <DeleteText id={item?.id} toast={toast} />
+                    <SaveText
+                      formik={formik}
+                      toast={toast}
+                      id={item.id}
+                      trigger={trigger}
+                      setTrigger={setTrigger}
+                    />
+                    <DeleteText
+                      id={item?.id}
+                      toast={toast}
+                      trigger={trigger}
+                      setTrigger={setTrigger}
+                    />
                   </>
                 )}
                 <Text fontWeight={'bold'} mb={'.5em'}>
@@ -168,8 +187,20 @@ export const EditProductCategory = (props) => {
                         />
                         {props?.isSuperAdmin && (
                           <>
-                            <SaveChildren id={child?.id} toast={toast} formik={formik} />
-                            <DeleteChildren id={child?.id} itemId={item?.id} toast={toast} />
+                            <SaveChildren
+                              id={child?.id}
+                              toast={toast}
+                              formik={formik}
+                              trigger={trigger}
+                              setTrigger={setTrigger}
+                            />
+                            <DeleteChildren
+                              id={child?.id}
+                              itemId={item?.id}
+                              toast={toast}
+                              trigger={trigger}
+                              setTrigger={setTrigger}
+                            />
                           </>
                         )}
                       </div>
@@ -188,7 +219,14 @@ export const EditProductCategory = (props) => {
                         <Text fontWeight="bold" fontSize=".9">
                           {uniqueSize?.name}
                         </Text>
-                        {props?.isSuperAdmin && <DeleteSize id={uniqueSize?.id} toast={toast} />}
+                        {props?.isSuperAdmin && (
+                          <DeleteSize
+                            id={uniqueSize?.id}
+                            toast={toast}
+                            trigger={trigger}
+                            setTrigger={setTrigger}
+                          />
+                        )}
                       </Box>
                     )
                   })}
@@ -219,12 +257,16 @@ export const EditProductCategory = (props) => {
                       id={item?.id}
                       toast={toast}
                       fixInput={fixInput}
+                      trigger={trigger}
+                      setTrigger={setTrigger}
                     />
                   )}
                 </HStack>
                 {editable[`size-${item?.id}`] && props?.isSuperAdmin && (
                   <FormControl>
                     <NewSizeInput
+                      trigger={trigger}
+                      setTrigger={setTrigger}
                       id={`size-${item?.id}`}
                       findById={findById}
                       onFocusInput={onFocusInput}
@@ -243,6 +285,8 @@ export const EditProductCategory = (props) => {
                   )}
                   {editable[`size-${item?.id}`] && props?.isSuperAdmin && (
                     <HandleAddSubmitSizeButton
+                      trigger={trigger}
+                      setTrigger={setTrigger}
                       productCategoryId={item?.id}
                       setFixInput={setFixInput}
                       id={`size-${item?.id}`}
@@ -271,6 +315,8 @@ export const EditProductCategory = (props) => {
               />
             )}
             <AddNewGroupButton
+              trigger={trigger}
+              setTrigger={setTrigger}
               handleEditClick={handleEditClick}
               editable={editable}
               genderId={gender[0]?.id}

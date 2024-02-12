@@ -52,7 +52,7 @@ export const EditProduct = (props) => {
   useEffect(() => {
     getGender(setGenders)
   }, [])
-
+  const [trigger, setTrigger] = useState(false)
   // HANDLE SUBMIT
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     await updateProduct(
@@ -63,6 +63,7 @@ export const EditProduct = (props) => {
       product?.id,
       toast,
     )
+    setTrigger(!trigger)
     resetForm()
     setSubmitting(false)
   }
@@ -79,7 +80,7 @@ export const EditProduct = (props) => {
       .then(() => setGender(product?.category?.parent?.parent?.name || 'Men'))
       .then(() => setGroup(product?.category?.parent?.name || ''))
       .then(() => setCategoryValue(product?.category?.name || ''))
-  }, [product?.name])
+  }, [product?.name, trigger])
 
   const formik = useFormik({
     validateOnBlur: true,
@@ -101,6 +102,8 @@ export const EditProduct = (props) => {
       </Text>
       <form onSubmit={formik.handleSubmit}>
         <EditInput
+          trigger={trigger}
+          setTrigger={setTrigger}
           formik={formik}
           editable={editable}
           group={group}
