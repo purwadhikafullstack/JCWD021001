@@ -1,4 +1,4 @@
-import { Box, Text, VStack, useToast, HStack } from '@chakra-ui/react'
+import { Box, Text, VStack, useToast, HStack, FormControl } from '@chakra-ui/react'
 import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { useFormik } from 'formik'
@@ -188,13 +188,15 @@ export const EditProductCategory = (props) => {
                   )
                 })}
                 {editable[item?.id] && props?.isSuperAdmin && (
-                  <NewProductInput
-                    id={item?.id}
-                    findById={findById}
-                    onFocusInput={onFocusInput}
-                    setInput={setInput}
-                    handleInput={handleInput}
-                  />
+                  <FormControl>
+                    <NewProductInput
+                      id={item?.id}
+                      findById={findById}
+                      onFocusInput={onFocusInput}
+                      setInput={setInput}
+                      handleInput={handleInput}
+                    />
+                  </FormControl>
                 )}
                 <HStack my={'.5em'}>
                   {props?.isSuperAdmin && (
@@ -215,13 +217,15 @@ export const EditProductCategory = (props) => {
                   )}
                 </HStack>
                 {editable[`size-${item?.id}`] && props?.isSuperAdmin && (
-                  <NewSizeInput
-                    id={`size-${item?.id}`}
-                    findById={findById}
-                    onFocusInput={onFocusInput}
-                    setInput={setInput}
-                    handleInput={handleInput}
-                  />
+                  <FormControl>
+                    <NewSizeInput
+                      id={`size-${item?.id}`}
+                      findById={findById}
+                      onFocusInput={onFocusInput}
+                      setInput={setInput}
+                      handleInput={handleInput}
+                    />
+                  </FormControl>
                 )}
                 <HStack my={'.5em'}>
                   {props?.isSuperAdmin && (

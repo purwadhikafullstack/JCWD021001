@@ -1,4 +1,4 @@
-import { Button, HStack } from '@chakra-ui/react'
+import { Button, HStack, useToast } from '@chakra-ui/react'
 import { createProductCategory } from '../../services/createProductCategory'
 import { useNavigate } from 'react-router-dom'
 import { createSize } from '../../services/createSize'
@@ -42,6 +42,7 @@ export const HandleEditSizeButton = (props) => {
 }
 
 export const HandleAddSubmitButton = (props) => {
+  const toast = useToast()
   return (
     <Button
       _hover={{
@@ -53,8 +54,18 @@ export const HandleAddSubmitButton = (props) => {
       bgColor={'redPure.600'}
       color={'white'}
       onClick={async () => {
-        await createProductCategory(props?.fixInput, props?.id, props?.toast)
-        props?.setFixInput('')
+        try {
+          if (props?.fixInput.trim() === '') {
+            throw new Error('Input cannot be empty')
+          }
+          await createProductCategory(props?.fixInput, props?.id, props?.toast)
+          props?.setFixInput('')
+        } catch (err) {
+          toast({
+            title: err?.message,
+            status: 'error',
+          })
+        }
       }}
     >
       Submit
@@ -63,6 +74,7 @@ export const HandleAddSubmitButton = (props) => {
 }
 
 export const HandleAddSubmitSizeButton = (props) => {
+  const toast = useToast()
   return (
     <Button
       _hover={{
@@ -74,8 +86,18 @@ export const HandleAddSubmitSizeButton = (props) => {
       bgColor={'redPure.600'}
       color={'white'}
       onClick={async () => {
-        await createSize(props?.fixInput, props?.productCategoryId, props?.toast)
-        props?.setFixInput('')
+        try {
+          if (props?.fixInput.trim() === '') {
+            throw new Error('Input cannot be empty')
+          }
+          await createSize(props?.fixInput, props?.productCategoryId, props?.toast)
+          props?.setFixInput('')
+        } catch (err) {
+          toast({
+            title: err.message,
+            status: 'error',
+          })
+        }
       }}
     >
       Submit

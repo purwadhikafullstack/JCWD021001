@@ -37,7 +37,7 @@ export const CreateProduct = () => {
 
   // Validation Schema
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
+    name: Yup.string().trim().required('Name is required').min(1, 'Field cannot be empty'),
     price: Yup.number().notOneOf([0], 'Price cannot be 0').required('Price is required'),
     productCategoryId: Yup.number().required('Category is required'),
     description: Yup.string().required('Description is required'),

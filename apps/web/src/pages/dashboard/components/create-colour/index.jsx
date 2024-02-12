@@ -21,7 +21,7 @@ export const CreateColour = (props) => {
 
   //   SCHEMA
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
+    name: Yup.string().trim().required('Name is required').min(1, 'Field cannot be empty'),
   })
   //   SCHEMA
 
