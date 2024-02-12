@@ -61,8 +61,8 @@ export const Navbar = (props) => {
   // const { cartData, cartCount } = useCart()
 
   return (
-    <Box p={'1em 2em'} bg={'white'} maxW={'100vw'}>
-      <Flex alignItems={'center'} justifyContent={'space-between'} >
+    <Box p={'1em 2em'} bg={'white'} maxW={'100vw'} boxShadow={'md'}>
+      <Flex alignItems={'center'} justifyContent={'space-between'}>
         <HStack spacing={'2em'}>
           <AspectRatio ratio={1} cursor={'pointer'} w={'3em'} onClick={() => navigate('/')}>
             <Image src={pure} alt="Pure Logo" />
@@ -76,13 +76,11 @@ export const Navbar = (props) => {
           <HStack fontSize={'1.5em'} spacing={'.5em'}>
             <SearchModal />
             <HStack fontSize={'1.5em'} spacing={'.5em'} position="relative">
-              <Box>
-                {/* <ShoppingCartBox cartData={cartData} cartCount={cartCount} /> */}
-              </Box>
+              <Box>{/* <ShoppingCartBox cartData={cartData} cartCount={cartCount} /> */}</Box>
             </HStack>
             <HStack fontSize={'1.5em'} spacing={'.5em'} position="relative">
               <Box>
-                <NotificationBox  />
+                <NotificationBox />
               </Box>
             </HStack>
             {/* <Icon as={ShoppingCartIcon} /> */}

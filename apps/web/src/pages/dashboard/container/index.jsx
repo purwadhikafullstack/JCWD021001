@@ -10,7 +10,7 @@ import { Navbar } from '../../../components/Navbar'
 export const Dashboard = () => {
   const user = useSelector((state) => state.AuthReducer.user)
   const { destination, createProduct } = useParams()
-  const [collapseSideBar, setCollapseSideBar] = useState(true)
+  const [collapseSideBar, setCollapseSideBar] = useState(false)
   const toggleSideBar = () => {
     setCollapseSideBar(!collapseSideBar)
   }
@@ -19,10 +19,10 @@ export const Dashboard = () => {
   const isSuperAdmin = useSelector((state) => state.AuthReducer.isSuperAdmin)
 
   return (
-    <Box maxW={'100vw'} overflow={{ xl: 'hidden', base: 'hidden' }}>
+    <Box maxW={'100vw'} overflow={'hidden'}>
       <Navbar />
-      <Box display={{ md: 'flex' }} w={'100%'}>
-        <Box display={{ md: 'flex' }}>
+      <Box display={{ lg: 'flex' }} w={'100%'}>
+        <Box display={{ lg: 'flex' }}>
           <Sidebar
             collapseSideBar={collapseSideBar}
             setCollapseSideBar={setCollapseSideBar}
@@ -30,13 +30,15 @@ export const Dashboard = () => {
             isSuperAdmin={isSuperAdmin}
           />
         </Box>
-        <Body
-          user={user}
-          isSuperAdmin={isSuperAdmin}
-          destination={destination}
-          createProduct={createProduct}
-          collapseSideBar={collapseSideBar} // responsive
-        />
+        <Box w={'100%'} display={collapseSideBar ? 'none' : 'block'}>
+          <Body
+            user={user}
+            isSuperAdmin={isSuperAdmin}
+            destination={destination}
+            createProduct={createProduct}
+            collapseSideBar={collapseSideBar} // responsive
+          />
+        </Box>
       </Box>
       <Flex
         zIndex={'3'}
@@ -52,7 +54,7 @@ export const Dashboard = () => {
         left={'-.5em'}
         visibility={{
           base: collapseSideBar ? 'hidden' : 'visible',
-          md: 'hidden',
+          lg: 'hidden',
         }}
         cursor={'pointer'}
       >

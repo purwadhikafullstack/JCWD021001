@@ -54,15 +54,20 @@ export const ProductCategory = (props) => {
 
   console.log('product-category', props)
   return (
-    <Box p={'1em'}>
+    <Box height={'100%'} w={'100%'} minH={'100vh'}>
       <VStack align={' stretch'}>
         <Flex justifyContent={'space-between'} alignItems={'center'}>
-          <Heading as={'h1'} fontSize={'1.5em'}>
+          <Heading
+            as={'h1'}
+            fontSize={{ base: '1em', md: '1.5em' }}
+            fontWeight={'bold'}
+            justifyContent={'space-between'}
+          >
             Product Category
           </Heading>
           {props?.isSuperAdmin && (
             <Button
-              h={'3em'}
+              h={'2.5em'}
               w={'10em'}
               _hover={{
                 bgColor: 'redPure.600',
@@ -77,46 +82,62 @@ export const ProductCategory = (props) => {
             </Button>
           )}
         </Flex>
-        <TableContainer w={'100%'}>
-          <Table
-            variant={'striped'}
-            colorScheme={'customTableColor'}
-            style={{
-              padding: '0',
-              borderRadius: '.5em',
-              overflow: 'hidden',
-            }}
-          >
-            <Thead bg={'redPure.600'} position={'relative'}>
-              <Tr>
-                <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
-                  Product Category Name
-                </Th>
-                <Th color={'#FEFEFE'} w={'10em'} textTransform={'none'} fontSize={'1em'}>
-                  Action
-                </Th>
-              </Tr>
-            </Thead>
-            <Tbody position={'relative'} fontWeight={'bold'}>
-              {gender?.map((el, index) => {
-                return (
-                  <Tr cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'} key={index}>
-                    <Td>
-                      <Text>{el?.name}</Text>
-                    </Td>
-                    <Td alignItems={'center'}>
-                      <HStack>
-                        {props?.isSuperAdmin && <EditButton name={el?.name} navigate={navigate} />}
-                        {props?.isSuperAdmin && <DeleteButton id={el?.id} toast={toast} />}
-                        {props?.user?.warehouseId && <ViewButton name={el?.name} />}
-                      </HStack>
-                    </Td>
-                  </Tr>
-                )
-              })}
-            </Tbody>
-          </Table>
-        </TableContainer>
+        <Box
+          maxW={'100%'}
+          boxShadow={'md'}
+          h={'27em'}
+          borderRadius={'.5em'}
+          overflowX={'scroll'}
+          overflowY={'scroll'}
+          sx={{
+            '&::-webkit-scrollbar': {
+              display: 'none',
+            },
+          }}
+        >
+          <TableContainer w={'100%'}>
+            <Table
+              variant={'striped'}
+              colorScheme={'customTableColor'}
+              style={{
+                padding: '0',
+                borderRadius: '.5em',
+                overflow: 'hidden',
+              }}
+            >
+              <Thead bg={'redPure.600'} position={'relative'}>
+                <Tr>
+                  <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
+                    Product Category Name
+                  </Th>
+                  <Th color={'#FEFEFE'} w={'10em'} textTransform={'none'} fontSize={'1em'}>
+                    Action
+                  </Th>
+                </Tr>
+              </Thead>
+              <Tbody position={'relative'} fontWeight={'bold'}>
+                {gender?.map((el, index) => {
+                  return (
+                    <Tr cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'} key={index}>
+                      <Td>
+                        <Text>{el?.name}</Text>
+                      </Td>
+                      <Td alignItems={'center'}>
+                        <HStack>
+                          {props?.isSuperAdmin && (
+                            <EditButton name={el?.name} navigate={navigate} />
+                          )}
+                          {props?.isSuperAdmin && <DeleteButton id={el?.id} toast={toast} />}
+                          {props?.user?.warehouseId && <ViewButton name={el?.name} />}
+                        </HStack>
+                      </Td>
+                    </Tr>
+                  )
+                })}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </Box>
       </VStack>
     </Box>
   )

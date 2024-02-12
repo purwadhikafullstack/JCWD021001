@@ -142,7 +142,7 @@ export const Body = (props) => {
   }
 
   return (
-    <Box p={'1em'} bgColor={'grey.50'} minH={'100vh'}>
+    <Box p={'1em'} bgColor={'grey.50'} minH={'100vh'} maxW={'100vw'}>
       <VStack align={'sretch'}>
         <Box>
           <Text fontWeight={'bold'} fontSize={{ md: '1.5em' }}>
@@ -203,7 +203,6 @@ export const Body = (props) => {
               <VStack align={'stretch'}>
                 <Flex justifyContent={'space-between'} alignItems={'center'} fontSize={'.9em'}>
                   <Text fontWeight={'bold'}>Size</Text>
-                  <Text color={'redPure.500'}>View Size Chart</Text>
                 </Flex>
                 <HStack>
                   {sizes?.map((size, index) => {

@@ -63,7 +63,7 @@ function CategoryList() {
             position={'relative'}
             flexShrink={'0'}
             onClick={() => {
-              navigate('/p/men')
+              navigate('/p/man')
             }}
           >
             <Box

@@ -28,42 +28,15 @@ export const CategoryTable = (props) => {
       <Tr key={index} cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'}>
         <Td>{data?.grandparent_name}</Td>
         <Td>{toRupiah(data?.total)}</Td>
-        <Td>
-          <HStack>
-            <Button
-              _hover={{
-                bgColor: 'redPure.600',
-              }}
-              fontSize={'.8em'}
-              h={'2.5em'}
-              w={'5em'}
-              bgColor={'redPure.600'}
-              color={'white'}
-              onClick={() => {}}
-            >
-              Download
-            </Button>
-            <Button
-              _hover={{
-                bgColor: 'redPure.600',
-              }}
-              fontSize={'.8em'}
-              h={'2.5em'}
-              w={'5em'}
-              bgColor={'redPure.600'}
-              color={'white'}
-              onClick={() => {}}
-            >
-              Print
-            </Button>
-          </HStack>
-        </Td>
       </Tr>
     )
   })
   return (
     <Box
-      h={'70vh'}
+      maxW={'100%'}
+      boxShadow={'md'}
+      h={'27em'}
+      borderRadius={'.5em'}
       overflowX={'scroll'}
       overflowY={'scroll'}
       sx={{
@@ -89,9 +62,6 @@ export const CategoryTable = (props) => {
               </Th>
               <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
                 Total Sales
-              </Th>
-              <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
-                Actions
               </Th>
             </Tr>
           </Thead>

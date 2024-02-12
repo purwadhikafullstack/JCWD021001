@@ -92,11 +92,16 @@ export const StockManagement = (props) => {
   })
 
   return (
-    <Box p={'1em'} h={'100%'} w={'100%'}>
+    <Box height={'100%'} w={'100%'} minH={'100vh'}>
       <Flex flexDir={'column'} justifyContent={'space-between'} h={'100%'}>
         <VStack align={'stretch'}>
           <Flex alignItems={'center'} justifyContent={'space-between'}>
-            <Heading as={'h1'} fontSize={'1.5em'} fontWeight={'bold'}>
+            <Heading
+              as={'h1'}
+              fontSize={{ base: '1em', md: '1.5em' }}
+              fontWeight={'bold'}
+              justifyContent={'space-between'}
+            >
               Stock Management
             </Heading>
             <HStack>
@@ -142,7 +147,10 @@ export const StockManagement = (props) => {
             </HStack>
           </Flex>
           <Box
-            h={'70vh'}
+            maxW={'100%'}
+            boxShadow={'md'}
+            h={'27em'}
+            borderRadius={'.5em'}
             overflowX={'scroll'}
             overflowY={'scroll'}
             sx={{

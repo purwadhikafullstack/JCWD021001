@@ -38,42 +38,15 @@ export const SalesTable = (props) => {
       <Tr key={index} cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'}>
         <Td>{toRupiah(order?.TotalSales || 0)}</Td>
         <Td>{order?.TotalQuantity}</Td>
-        <Td>
-          <HStack>
-            <Button
-              _hover={{
-                bgColor: 'redPure.600',
-              }}
-              fontSize={'.8em'}
-              h={'2.5em'}
-              w={'5em'}
-              bgColor={'redPure.600'}
-              color={'white'}
-              onClick={() => {}}
-            >
-              Download
-            </Button>
-            <Button
-              _hover={{
-                bgColor: 'redPure.600',
-              }}
-              fontSize={'.8em'}
-              h={'2.5em'}
-              w={'5em'}
-              bgColor={'redPure.600'}
-              color={'white'}
-              onClick={() => {}}
-            >
-              Print
-            </Button>
-          </HStack>
-        </Td>
       </Tr>
     )
   })
   return (
     <Box
-      h={'70vh'}
+      maxW={'100%'}
+      boxShadow={'md'}
+      h={'27em'}
+      borderRadius={'.5em'}
       overflowX={'scroll'}
       overflowY={'scroll'}
       sx={{
@@ -99,9 +72,6 @@ export const SalesTable = (props) => {
               </Th>
               <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
                 Item Sold
-              </Th>
-              <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
-                Actions
               </Th>
             </Tr>
           </Thead>

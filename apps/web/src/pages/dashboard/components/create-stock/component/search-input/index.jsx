@@ -23,7 +23,7 @@ export const SearchInput = (props) => {
     <InputGroup>
       <Input
         id={'exclude'}
-        w={'20em'}
+        w={{ base: '9em', lg: '20em' }}
         variant={'outline'}
         focusBorderColor={'lightgray'}
         placeholder={'Search a product here'}

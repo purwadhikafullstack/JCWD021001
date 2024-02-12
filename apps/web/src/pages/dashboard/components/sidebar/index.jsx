@@ -24,12 +24,12 @@ export const Sidebar = (props) => {
       position={'relative'}
       p={'1em'}
       m={{ base: '0' }}
-      w={{ base: '100%', md: '15em' }}
+      w={{ base: '100%', lg: '15em' }}
       borderEndRadius={{ base: 'none', md: '1em' }}
       zIndex={'2'}
       top={'0'}
       minH={'100vh'}
-      display={{ base: props?.collapseSideBar ? 'block' : 'none', md: 'block' }}
+      display={{ base: props?.collapseSideBar ? 'block' : 'none', lg: 'block' }}
     >
       <VStack align={'stretch'}>
         <HStack alignItems={'center'}>
@@ -149,7 +149,7 @@ export const Sidebar = (props) => {
           justifyContent={'space-between'}
           onClick={() => props?.toggleSideBar()}
           cursor={'pointer'}
-          display={{ base: 'flex', md: 'none' }}
+          display={{ base: 'flex', lg: 'none' }}
         >
           <Flex
             bgColor={'white'}

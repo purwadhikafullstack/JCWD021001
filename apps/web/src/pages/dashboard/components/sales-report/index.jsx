@@ -106,11 +106,16 @@ export const SalesReport = (props) => {
   }
 
   return (
-    <Box p={'1em'} h={'100%'} w={'100%'}>
+    <Box p={'1em'} w={'100%'} minH={'100vh'}>
       <Flex flexDir={'column'} justifyContent={'space-between'} h={'100%'}>
         <VStack align={'stretch'}>
           <Flex alignItems={'center'} justifyContent={'space-between'}>
-            <Heading as={'h1'} fontSize={'1.5em'}>
+            <Heading
+              as={'h1'}
+              fontSize={{ base: '1em', md: '1.5em' }}
+              fontWeight={'bold'}
+              justifyContent={'space-between'}
+            >
               Sales Report
             </Heading>
             <HStack>
@@ -141,6 +146,7 @@ export const SalesReport = (props) => {
               <MonthSelect
                 isSuperAdmin={props?.isSuperAdmin}
                 warehouseValue={warehouseValue}
+                warValue={warehouseValue}
                 monthValue={monthValue}
                 setMonth={setMonth}
                 pathName={pathName}

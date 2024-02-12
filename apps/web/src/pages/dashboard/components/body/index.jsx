@@ -18,11 +18,16 @@ import { SalesReport } from '../sales-report'
 import { StockReport } from '../stock-report'
 
 export const Body = (props) => {
-  console.log('props', props?.user)
   const renderComponent = () => {
     switch (props?.destination) {
       case 'product-list':
-        return <ProductList user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <ProductList
+            collapseSidebar={props?.collapseSidebar}
+            user={props?.user}
+            isSuperAdmin={props?.isSuperAdmin}
+          />
+        )
       case 'product-category':
         return <ProductCategory user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'stock-management':
@@ -80,7 +85,7 @@ export const Body = (props) => {
       bgColor={'grey.50'}
       w={'100%'}
       p={'1em'}
-      display={props?.collapseSidebar ? 'none' : 'block'}
+      display={!props?.collapseSidebar ? 'block' : 'none'}
     >
       {props?.createProduct ? create : rendered}
     </Box>

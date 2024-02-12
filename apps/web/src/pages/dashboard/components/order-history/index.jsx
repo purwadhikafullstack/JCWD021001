@@ -108,7 +108,7 @@ export const OrderHistory = (props) => {
     }
   }
   return (
-    <Box p={'1em'} h={'100%'} w={'100%'}>
+    <Box p={'1em'} minH={'100vh'} w={'100%'}>
       <Flex flexDir={'column'} justifyContent={'space-between'} h={'100%'}>
         <VStack align={'stretch'}>
           <Flex alignItems={'center'} justifyContent={'space-between'}>
@@ -123,7 +123,10 @@ export const OrderHistory = (props) => {
             />
           </Flex>
           <Box
-            h={'70vh'}
+            maxW={'100%'}
+            boxShadow={'md'}
+            h={'27em'}
+            borderRadius={'.5em'}
             overflowX={'scroll'}
             overflowY={'scroll'}
             sx={{
