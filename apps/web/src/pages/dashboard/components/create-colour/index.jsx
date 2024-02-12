@@ -5,14 +5,11 @@ import {
   Input,
   FormLabel,
   FormErrorMessage,
-  Textarea,
-  InputGroup,
-  InputLeftElement,
   Button,
   VStack,
   useToast,
 } from '@chakra-ui/react'
-import { Formik, Field, Form, ErrorMessage } from 'formik'
+import { Formik, Field, Form } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios'
 import { API_ROUTE } from '../../../../services/route'
@@ -53,11 +50,14 @@ export const CreateColour = (props) => {
         placement: 'bottom',
       })
     } catch (err) {
+      const errorMessage =
+        err.response && err.response.data && err.response.data.message
+          ? err.response.data.message
+          : 'An unexpected error occurred'
       toast({
-        title: `${err?.message}`,
+        title: `${errorMessage}`,
         status: 'error',
       })
-      throw err
     }
     //   CREATE PRODUCT CATEGORY
   }

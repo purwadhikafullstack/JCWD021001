@@ -38,7 +38,6 @@ export const EditProductCategory = (props) => {
   const [newChildren, setNewChildren] = useState(null)
 
   const [input, setInput] = useState([{}])
-  console.log('input', input)
 
   const [fixInput, setFixInput] = useState('')
 

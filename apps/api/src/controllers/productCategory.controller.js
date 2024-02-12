@@ -42,7 +42,7 @@ export const createProductCategoryController = async (req, res) => {
     const { name, parentId } = req.body
     const result = await createProductCategoryService(name, parentId)
     return res.status(200).json({
-      title: 'Create Product Category Success',
+      message: 'Create Product Category Success',
       data: result,
     })
   } catch (err) {
@@ -58,7 +58,7 @@ export const updateProductCategoryController = async (req, res) => {
     const { name, parentId } = req.body
     const result = await updateProductCategoryService(name, parentId, id)
     return res.status(200).json({
-      title: 'Update Product Category Success',
+      message: 'Update Product Category Success',
       data: result,
     })
   } catch (err) {
@@ -74,7 +74,7 @@ export const deleteProductCategoryController = async (req, res) => {
     const { parentId, grandParentId } = req.body
     const result = await deleteProductCategoryService(id, parentId, grandParentId)
     return res.status(200).json({
-      title: 'Delete Product CategorySuccess',
+      message: 'Delete Product CategorySuccess',
       data: result,
     })
   } catch (err) {

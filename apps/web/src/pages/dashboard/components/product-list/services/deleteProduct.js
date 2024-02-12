@@ -24,8 +24,12 @@ export const deleteProduct = async (id, productId, toast) => {
       placement: 'bottom',
     })
   } catch (err) {
+    const errorMessage =
+      err.response && err.response.data && err.response.data.message
+        ? err.response.data.message
+        : 'An unexpected error occurred'
     toast({
-      title: `${err?.message}`,
+      title: `${errorMessage}`,
       status: 'error',
     })
   }
