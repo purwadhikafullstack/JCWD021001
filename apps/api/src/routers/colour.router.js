@@ -1,7 +1,13 @@
 import { Router } from 'express'
-import { getColourController } from '../controllers/colour.controller'
+import {
+  createColourController,
+  deleteColourController,
+  getColourController,
+} from '../controllers/colour.controller'
 const colourRouter = Router()
 
 colourRouter.get('/', getColourController)
+colourRouter.post('/', createColourController)
+colourRouter.delete('/:id', deleteColourController)
 
 export { colourRouter }
