@@ -1,4 +1,4 @@
-import { registerQuery, findUserAuthQuery, emailVerificationQuery, verifiedUserQuery, keepLoginQuery, forgotPasswordQuery, resetPasswordQuery, checkTokenUsageQuery } from "../queries/auth.queries";
+import { registerQuery, findUserAuthQuery, emailVerificationQuery, verifiedUserQuery, keepLoginQuery, forgotPasswordQuery, resetPasswordQuery, checkTokenUsageQuery, findEmailQuery, registerGoogleQuery } from "../queries/auth.queries";
 import bcrypt from "bcrypt"
 import jwt, {Secret} from "jsonwebtoken";
 import handlebars from "handlebars";
@@ -119,6 +119,8 @@ export const keepLoginService = async (id) => {
 export const forgotPasswordService = async (email) => {
   try {
 
+    const check = await findEmailQuery({ email });
+      if (!check) throw new Error("Email is not registered");
     // GENERATE TOKEN TO SET PASSWORD BASED ON THE TOKEN
     const secretKey= process.env.JWT_SECRET_KEY;
       if (!secretKey) {
@@ -137,7 +139,7 @@ export const forgotPasswordService = async (email) => {
     );
     
     // SEND EMAIL FOR PASSWORD RESET
-    const resetPasswordLink = `${process.env.FE_BASE_URL}/auth/reset-password?token=${resetToken}`
+    const resetPasswordLink = `${process.env.FE_BASE_URL}/reset-password?token=${resetToken}`
       const tempCompile = await handlebars.compile(temp);
       const tempResult = tempCompile({ email: email, link: resetPasswordLink });
       const gmailUser = process.env.GMAIL_USER;
@@ -174,3 +176,27 @@ export const resetPasswordService = async (token, password) => {
     throw err
   }
 }
+
+export const googleLoginService = async (email, username) => {
+  try {
+    let user = await findEmailQuery({ email });
+    if (!user) {
+      user = await registerGoogleQuery(email, username);
+    }
+    const payload = {
+      id: user.id,
+      email: user.email,
+      username: user.username,
+      roleId: user.roleId,
+    };
+    const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+      expiresIn: "1h", 
+    });
+
+    return { user, token };
+    
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};

@@ -31,7 +31,9 @@ function FormCreateWarehouse({ address, lat, lng }) {
       setSelectedProvince(address.city.provinceId)
       setSelectedCity(address.city.id)
     }
+  }, [address])
 
+  useEffect(() => {
     const fetchProvinceData = async () => {
       try {
         const data = await getProvinceWarehouse()
@@ -41,19 +43,23 @@ function FormCreateWarehouse({ address, lat, lng }) {
       }
     }
     fetchProvinceData()
+  }, [])
 
-    const fetchCityData = async () => {
-      if (address?.city?.provinceId) {
-        try {
-          const cityData = await getCity(address.city.provinceId)
-          setCityList(cityData)
-        } catch (error) {
-          console.error('Error fetching city data:', error)
+    useEffect(() => {
+      const fetchCityData = async () => {
+        const provinceId = selectedProvince || address?.city?.provinceId
+  
+        if (provinceId) {
+          try {
+            const cityData = await getCity(provinceId)
+            setCityList(cityData)
+          } catch (error) {
+            console.error('Error fetching city data:', error)
+          }
         }
       }
-    }
-    fetchCityData()
-  }, [address])
+      fetchCityData()
+    }, [selectedProvince, address])
 
   console.log('ini lat form', lat, 'ini lng form', lng)
   const formik = useFormik({

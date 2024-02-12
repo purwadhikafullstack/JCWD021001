@@ -19,18 +19,19 @@ import {
   Flex,
 } from '@chakra-ui/react'
 import { useFormik } from 'formik'
-import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import { CheckBadgeIcon } from '@heroicons/react/24/solid'
 import { EmailScheme } from '../../services/validation'
 import { updateEmail } from '../../services/updateProfile'
-import { setUser } from '../../../../redux/reducer/authReducer'
+import { logoutSuccess, setUser } from '../../../../redux/reducer/authReducer'
+import { useNavigate } from 'react-router-dom'
 
 function UpdateEmail() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const user = useSelector((state) => state.AuthReducer.user)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const formik = useFormik({
     initialValues: {
@@ -45,10 +46,9 @@ function UpdateEmail() {
           dispatch(setUser(data))
         }
         onClose()
-      } catch (err){
-        console.log(err);
+      } catch (err) {
+        console.log(err)
       }
-      
     },
   })
 
@@ -83,56 +83,70 @@ function UpdateEmail() {
         <span>
           <Icon as={ChevronRightIcon} />
         </span>
-        <Modal isOpen={isOpen} onClose={onClose} size={{base: 'xs', md: 'md'}}>
+        <Modal isOpen={isOpen} onClose={onClose} size={{ base: 'xs', md: 'md' }}>
           <ModalOverlay />
           <form onSubmit={formik.handleSubmit}>
             <ModalContent>
-              <ModalHeader fontSize={{base: '14px', md: '24px'}}>Edit Email</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody pb={6}>
-                <FormControl isInvalid={!!(formik.touched.email && formik.errors.email)}>
-                  <FormLabel fontSize={{base: '12px', md: '16px'}}>Email</FormLabel>
-                  <Input
-                    name="email"
-                    // placeholder='Enter email'
-                    type="email"
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                  />
+              {user?.isVerified ? (
+                <>
+                  <ModalHeader fontSize={{ base: '14px', md: '24px' }}>Edit Email</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody pb={6}>
+                    <FormControl isInvalid={!!(formik.touched.email && formik.errors.email)}>
+                      <FormLabel fontSize={{ base: '12px', md: '16px' }}>Email</FormLabel>
+                      <Input
+                        name="email"
+                        // placeholder='Enter email'
+                        type="email"
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
+                      />
 
-                  {formik.touched.email && formik.errors.email && (
-                    <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
-                  )}
-                </FormControl>
-              </ModalBody>
+                      {formik.touched.email && formik.errors.email && (
+                        <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+                      )}
+                    </FormControl>
+                  </ModalBody>
 
-              <ModalFooter>
-                <Button
-                  bg={'brand.lightred'}
-                  fontSize={{ base: '12px', md: '16px' }}
-                  size={{ base: 'sm', md: 'md' }}
-                  color={'white'}
-                  _hover={{ bg: '#f62252' }}
-                  _active={{ bg: '#f95278' }}
-                  mr={3}
-                  type="submit"
-                >
-                  Save
-                </Button>
-                <Button
-                  onClick={onClose}
-                  variant={'outline'}
-                  borderColor={'brand.lightred'}
-                  bg={'white'}
-                  color={'brand.lightred'}
-                  fontSize={{ base: '12px', md: '16px' }}
-                  size={{ base: 'sm', md: 'md' }}
-                  _hover={{ borderColor: '#f62252', color: '#f62252' }}
-                  _active={{ borderColor: '#f95278', color: '#f95278' }}
-                >
-                  Cancel
-                </Button>
-              </ModalFooter>
+                  <ModalFooter>
+                    <Button
+                      bg={'brand.lightred'}
+                      fontSize={{ base: '12px', md: '16px' }}
+                      size={{ base: 'sm', md: 'md' }}
+                      color={'white'}
+                      _hover={{ bg: '#f62252' }}
+                      _active={{ bg: '#f95278' }}
+                      mr={3}
+                      type="submit"
+                    >
+                      Save
+                    </Button>
+                    <Button
+                      onClick={onClose}
+                      variant={'outline'}
+                      borderColor={'brand.lightred'}
+                      bg={'white'}
+                      color={'brand.lightred'}
+                      fontSize={{ base: '12px', md: '16px' }}
+                      size={{ base: 'sm', md: 'md' }}
+                      _hover={{ borderColor: '#f62252', color: '#f62252' }}
+                      _active={{ borderColor: '#f95278', color: '#f95278' }}
+                    >
+                      Cancel
+                    </Button>
+                  </ModalFooter>
+                </>
+              ) : (
+                <>
+                  <Button
+                    onClick={() => {
+                      dispatch(logoutSuccess()), navigate('/verify-new-email')
+                    }}
+                  >
+                    Verify your email
+                  </Button>
+                </>
+              )}
             </ModalContent>
           </form>
         </Modal>

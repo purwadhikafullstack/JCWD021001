@@ -13,8 +13,9 @@ function CategoryList() {
         <Text fontWeight={'700'} fontSize={'24px'}>
           Category
         </Text>
-        <Flex className="category-list" gap={'24px'} marginTop={'14px'} overflowX={'auto'}>
-          <Box
+        <Flex className="category-list" gap={'24px'} marginTop={'14px'} overflowX={{base: 'auto', md: ''}} borderRadius={'12px'}>
+          <Box 
+          width={{base: '', md: '24%'}}
             className={'category-women'}
             minWidth={{ base: '136px', md: '330px' }}
             height={{ base: '136px', md: '330px' }}
@@ -56,6 +57,7 @@ function CategoryList() {
             />
           </Box>
           <Box
+          width={{base: '', md: '24%'}}
             className={'category-men'}
             minWidth={{ base: '136px', md: '330px' }}
             height={{ base: '136px', md: '330px' }}
@@ -97,6 +99,7 @@ function CategoryList() {
             />
           </Box>
           <Box
+          width={{base: '', md: '24%'}}
             className={'category-kids'}
             minWidth={{ base: '136px', md: '330px' }}
             height={{ base: '136px', md: '330px' }}
@@ -138,6 +141,7 @@ function CategoryList() {
             />
           </Box>
           <Box
+          width={{base: '', md: '24%'}}
             className={'category-baby'}
             minWidth={{ base: '136px', md: '330px' }}
             height={{ base: '136px', md: '330px' }}

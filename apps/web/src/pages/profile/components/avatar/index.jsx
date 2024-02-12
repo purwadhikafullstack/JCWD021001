@@ -2,7 +2,6 @@ import { AbsoluteCenter, Box, Button, Flex, Icon, Input, InputGroup, Image, Avat
 import axios from 'axios'
 import { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { PhotoIcon } from '@heroicons/react/24/solid'
 import { setUser } from '../../../../redux/reducer/authReducer'
 import toast from 'react-hot-toast'
 

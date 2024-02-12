@@ -16,7 +16,7 @@ import UpdatePassword from './components/password'
 import UploadAvatar from './components/avatar'
 import Footer from '../../components/Footer/Footer'
 import UserAddress from './components/address'
-import { Navbar } from '../../components/navbar'
+import { Navbar } from '../../components/Navbar'
 
 function Profile() {
   return (

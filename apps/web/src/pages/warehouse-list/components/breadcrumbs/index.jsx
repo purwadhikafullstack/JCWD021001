@@ -10,6 +10,15 @@ export const BreadCrumbs = () => {
           <Icon as={HomeIcon} boxSize={'16px'} color={'#838383'} />
           </BreadcrumbLink>
       </BreadcrumbItem>
+      <BreadcrumbItem>
+          <BreadcrumbLink color={'brand.lightred'}
+          fontWeight={'700'}
+          fontSize={'12px'}
+          _hover={'brand.lightred'}
+          href='/dashboard'>
+              Dashboard
+          </BreadcrumbLink>
+      </BreadcrumbItem>
       <BreadcrumbItem isCurrentPage>
           <BreadcrumbLink color={'brand.lightred'}
           fontWeight={'700'}

@@ -7,7 +7,7 @@ import { findOpenCageAndCity } from "../../services/getWarehouseList";
 import MapWarehouse from "./map";
 import ModalNotif from "./modal";
 import FormInitialWarehouse from "./form-disabled/Index";
-import { Navbar } from "../../../../components/navbar";
+import { Navbar } from "../../../../components/Navbar";
 import Footer from "../../../../components/Footer/Footer";
 import { BreadCrumbsCreateWarehouse } from "./breadcrumbs";
 

@@ -9,7 +9,7 @@ import FormInitialWarehouse from "./form-disabled/Index";
 import { useLocation, useParams } from "react-router-dom";
 import { BreadCrumbsEditWarehouse } from "./breadcrumbs";
 import Footer from "../../../../components/Footer/Footer";
-import { Navbar } from "../../../../components/navbar";
+import { Navbar } from "../../../../components/Navbar";
 
 function EditWarehousePage(){
 

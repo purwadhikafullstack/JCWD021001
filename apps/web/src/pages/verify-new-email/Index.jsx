@@ -25,7 +25,7 @@ import { BeatLoader } from 'react-spinners'
 import { emailSchema } from './services/validation'
 import { createRequestReset } from './services/createRequestResetPassword'
 
-function RequestPasswordReset() {
+function VerifyNewEmail() {
   const {
     isOpen: isSuccessModalOpen,
     onOpen: openSuccessModal,
@@ -106,11 +106,11 @@ function RequestPasswordReset() {
               fontSize={{ base: '18px', md: '42px' }}
               marginBottom={'40px'}
             >
-              RESET PASSWORD
+              EMAIL VERIFICATION
             </Text>
             <form onSubmit={formik.handleSubmit}>
               <FormControl
-                isInvalid={!!(formik.touched.username && formik.errors.username)}
+                isInvalid={!!(formik.touched.email && formik.errors.email)}
                 marginBottom={'32px'}
               >
                 <InputGroup marginBottom={'8px'}>
@@ -143,8 +143,8 @@ function RequestPasswordReset() {
                     </Flex>
                   </InputLeftElement>
                 </InputGroup>
-                {formik.touched.username && formik.errors.username && (
-                  <FormErrorMessage>{formik.errors.username}</FormErrorMessage>
+                {formik.touched.email && formik.errors.email && (
+                  <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
                 )}
               </FormControl>
               {loading ? (
@@ -196,4 +196,4 @@ function RequestPasswordReset() {
   )
 }
 
-export default RequestPasswordReset
+export default VerifyNewEmail

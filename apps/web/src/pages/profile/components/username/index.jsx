@@ -25,7 +25,7 @@ import { ChevronRightIcon } from '@chakra-ui/icons'
 import { updateUsername } from '../../services/updateProfile'
 import { setUser } from '../../../../redux/reducer/authReducer'
 import { UsernameScheme } from '../../services/validation'
-import toast from 'react-hot-toast'
+
 
 function UpdateUsername() {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -44,7 +44,7 @@ function UpdateUsername() {
         }
         onClose()
       } catch (err) {
-        toast.error(err?.response?.data?.message)
+        console.log(err);
       }
     },
   })

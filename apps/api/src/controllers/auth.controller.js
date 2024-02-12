@@ -5,6 +5,7 @@ import {
   keepLoginService,
   forgotPasswordService,
   resetPasswordService,
+  googleLoginService,
 } from '../services/auth.services'
 
 //POST USER REGISTRATION
@@ -100,6 +101,19 @@ export const resetPasswordController = async (req, res) => {
       data: result,
     })
   } catch (err) {
+    return res.status(500).send(err.message)
+  }
+}
+
+export const googleLoginController = async (req, res) => {
+  try {
+    const {email, username} = req.body
+    const response = await googleLoginService(email, username)
+    return res.status(200).json({
+      message: 'Success',
+      data: response,
+    })
+  } catch (err){
     return res.status(500).send(err.message)
   }
 }
