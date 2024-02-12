@@ -64,11 +64,16 @@ export const init = (sequelize) => {
           key: 'id',
         },
       },
+      deletedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
     },
     {
       sequelize,
       modelName: 'Product',
       timestamps: true,
+      paranoid: true,
     },
   )
 }
