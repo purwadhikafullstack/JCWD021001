@@ -16,6 +16,7 @@ import WarehouseList from '../../../warehouse-list'
 import { AdminRoute } from '../../../../components/Auth/ProtectedRoute'
 import { SalesReport } from '../sales-report'
 import { StockReport } from '../stock-report'
+import { ProductColour } from '../product-colour'
 
 export const Body = (props) => {
   const renderComponent = () => {
@@ -30,6 +31,8 @@ export const Body = (props) => {
         )
       case 'product-category':
         return <ProductCategory user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+      case 'product-colour':
+        return <ProductColour user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'stock-management':
         return <StockManagement user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'stock-mutation':

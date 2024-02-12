@@ -95,6 +95,14 @@ export const Sidebar = (props) => {
               >
                 Product Category
               </Text>
+              <Text
+                onClick={() => {
+                  navigate('/dashboard/product-colour')
+                }}
+                cursor={'pointer'}
+              >
+                Product Colour
+              </Text>
             </VStack>
           </Box>
           <SidebarButton label={'Inventory'} icon={Squares2X2Icon} />
