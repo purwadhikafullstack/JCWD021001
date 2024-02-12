@@ -40,7 +40,10 @@ export const CreateProduct = () => {
     name: Yup.string().trim().required('Name is required').min(1, 'Field cannot be empty'),
     price: Yup.number().notOneOf([0], 'Price cannot be 0').required('Price is required'),
     productCategoryId: Yup.number().required('Category is required'),
-    description: Yup.string().required('Description is required'),
+    description: Yup.string()
+      .trim()
+      .required('Description is required')
+      .min(1, 'Field cannot be empty'),
   })
 
   // Category value to shown in input
