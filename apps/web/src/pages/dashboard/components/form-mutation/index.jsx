@@ -75,7 +75,7 @@ export const FormMutation = (props) => {
         stockId,
       )
       toast({
-        title: `${res?.message}`,
+        title: `${res?.data?.message}`,
         status: 'success',
         placement: 'bottom',
       })
