@@ -4,11 +4,7 @@ import {
   createMutationController,
   getMutationController,
 } from '../controllers/mutation.controller'
-import {
-  checkRoleAdmin,
-  checkRoleSuperAdminAdmin,
-  verifyToken,
-} from '../middleware/auth.middleware'
+import { checkRoleSuperAdminAdmin, verifyToken } from '../middleware/auth.middleware'
 const mutationRouter = Router()
 
 mutationRouter.get('/', verifyToken, checkRoleSuperAdminAdmin, getMutationController)
