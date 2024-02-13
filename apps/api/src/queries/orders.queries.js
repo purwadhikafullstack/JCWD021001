@@ -311,7 +311,7 @@ export const getOrderDetailQuery = async (orderId) => {
           ],
         },
       ],
-      where: { id: orderId },
+      where: {id: orderId}
     })
     return orders
   } catch (err) {
