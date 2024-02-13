@@ -108,8 +108,11 @@ export const TableBody = (props) => {
             <Td>
               {isEditable ? (
                 <Input
-                  borderColor={'#D9D9D9'}
-                  focusBorderColor={'#D9D9D9'}
+                  border={'2px solid lightgray'}
+                  focusBorderColor="lightgray !important"
+                  focusShadow="none !important"
+                  _hover={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
+                  _focus={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
                   id={stock?.id}
                   w={'3.5em'}
                   type="number"
@@ -121,8 +124,11 @@ export const TableBody = (props) => {
                 />
               ) : (
                 <Input
-                  borderColor={'#D9D9D9'}
-                  focusBorderColor={'#D9D9D9'}
+                  border={'2px solid lightgray'}
+                  focusBorderColor="lightgray !important"
+                  focusShadow="none !important"
+                  _hover={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
+                  _focus={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
                   w={'3.5em'}
                   type="number"
                   value={stock?.qty}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useBreakpointValue, useDisclosure } from '@chakra-ui/react'
-import { useToast } from '@chakra-ui/react'
+import toast from 'react-hot-toast'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { createStockJournal } from '../../../pages/dashboard/components/stock-management/services/createStocks'
 import { updateOrder } from '../../../pages/order/services/updateOrder'
@@ -12,9 +12,8 @@ const useOrderManagementState = ({
   onOrderNumberSubmit,
   onOrderDateSubmit,
   onWarehouseSubmit,
-  onTabClick
+  onTabClick,
 }) => {
-  const toast = useToast()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -53,9 +52,6 @@ const useOrderManagementState = ({
     let transactionSuccess = false // Flag to track transaction status
 
     try {
-      // Begin transaction
-
-      // Find the corresponding order based on orderId
       const clickedItem = orderData.find((order) => order.id === orderId)
 
       if (!clickedItem) {
@@ -86,10 +82,8 @@ const useOrderManagementState = ({
             productParams.isUpdate,
             productParams.isAdding,
           )
-          // Handle success for each OrderProduct
-        } catch (error) {
-          // Rollback changes on error
-          throw new Error('Failed to create stock journal')
+        } catch (err) {
+          toast.error(err)
         }
       }
 
@@ -99,41 +93,16 @@ const useOrderManagementState = ({
         orderStatusId: 6,
       }
 
-      const updateOrderRes = await updateOrder(newUpdateOrder)
+      const res = await updateOrder(newUpdateOrder)
       // Commit transaction
       transactionSuccess = true
-
-      // Handle success for updateOrder
-      // Only display the success toast if all operations were successful
-      toast({
-        title: 'Success',
-        status: 'success',
-        placement: 'bottom',
-      })
+      toast.success(res)
       setTimeout(() => {
-        handleTabChange(4);
-        handleTabClick(6);
-      }, 2000);
-    } catch (error) {
-      // Rollback changes on error
-      if (!transactionSuccess) {
-        toast({
-          title: `${error?.message}`,
-          status: 'error',
-        })
-      }
-      // Handle specific error cases
-      if (error.message === 'Failed to create stock journal') {
-        toast({
-          title: 'Failed to create stock journal',
-          status: 'error',
-        })
-      } else if (error.message === 'Order not found') {
-        toast({
-          title: 'Order not found',
-          status: 'error',
-        })
-      }
+        handleTabChange(4)
+        handleTabClick(6)
+      }, 2000)
+    } catch (err) {
+      toast.error(err)
     }
   }
 
@@ -175,19 +144,8 @@ const useOrderManagementState = ({
                 1, // isAccepted
                 matchingStock.stockId, // stockId
               )
-
-              // // Handle success for createMutation
-              // toast({
-              //   title: `${res?.data?.message}`,
-              //   status: 'success',
-              //   placement: 'bottom',
-              // })
             } catch (mutationError) {
-              // Handle error for createMutation
-              toast({
-                title: `${mutationError?.message}`,
-                status: 'error',
-              })
+              toast.error('mutation error')
               allOperationsSuccessful = false // Set flag to false if mutation fails
             }
           } else if (matchingStock.status === 'Available') {
@@ -201,19 +159,8 @@ const useOrderManagementState = ({
                 productParams.qty,
                 productParams.isUpdate,
               )
-
-              // // Handle success for createStockJournal
-              // toast({
-              //   title: `${res?.message}`,
-              //   status: 'success',
-              //   placement: 'bottom',
-              // })
             } catch (error) {
-              // Handle error for createStockJournal
-              toast({
-                title: `${error?.message}`,
-                status: 'error',
-              })
+              toast.error('stock journal error')
               allOperationsSuccessful = false // Set flag to false if stock journal creation fails
             }
           }
@@ -228,57 +175,20 @@ const useOrderManagementState = ({
         }
 
         try {
-          // Update the order status
-          const updateOrderRes = await updateOrder(newUpdateOrder)
-
-          // Handle success for updateOrder
-          toast({
-            title: `${updateOrderRes?.data?.message}`,
-            status: 'success',
-            placement: 'bottom',
-          })
+          const res = await updateOrder(newUpdateOrder)
+          toast.success(res)
           setTimeout(() => {
-            handleTabChange(1);
-            handleTabClick(3);
-          }, 2000);
-        } catch (updateOrderError) {
-          // Handle error for updateOrder
-          toast({
-            title: `${updateOrderError?.message}`,
-            status: 'error',
-          })
+            handleTabChange(1)
+            handleTabClick(3)
+          }, 2000)
+        } catch (err) {
+          toast.error(err)
         }
-  
-        // try {
-        //   const newUpdateOrder = {
-        //     orderId: clickedItem?.id,
-        //     orderStatusId: 3,
-        //   }
-        //   // Update the order status after processing OrderProducts
-        //   const updateOrderRes = await updateOrder(newUpdateOrder)
-        //   // Handle success for updateOrder
-        //   toast({
-        //     title: `${updateOrderRes?.data?.message}`,
-        //     status: 'success',
-        //     placement: 'bottom',
-        //   })
-        // } catch (updateOrderError) {
-        //   // Handle error for updateOrder
-        //   toast({
-        //     title: `${updateOrderError?.message}`,
-        //     status: 'error',
-        //   })
-        // }
       }
     } catch (err) {
-      // Handle error for finding the order
-      toast({
-        title: `${err?.message}`,
-        status: 'error',
-      })
+      toast.error(err)
     }
   }
-  
 
   // reject
   const handleRejectButton = async (orderId) => {
@@ -288,24 +198,14 @@ const useOrderManagementState = ({
         orderId: clickedItem?.id,
         orderStatusId: 6,
       }
-      // Update the order status after processing OrderProducts
-      const updateOrderRes = await updateOrder(newUpdateOrder)
-      // Handle success for updateOrder
-      toast({
-        title: `${updateOrderRes?.data?.message}`,
-        status: 'success',
-        placement: 'bottom',
-      })
+      const res = await updateOrder(newUpdateOrder)
+      toast.success(res)
       setTimeout(() => {
-        handleTabChange(4);
-        handleTabClick(6);
-      }, 2000);
+        handleTabChange(4)
+        handleTabClick(6)
+      }, 2000)
     } catch (updateOrderError) {
-      // Handle error for updateOrder
-      toast({
-        title: `${updateOrderError?.message}`,
-        status: 'error',
-      })
+      toast.error(err)
     }
   }
 
@@ -351,7 +251,7 @@ const useOrderManagementState = ({
       setCheckStock(check)
       onOpen()
     } catch (err) {
-      console.log(err)
+      toast.error(err)
     }
   }
 
@@ -366,27 +266,28 @@ const useOrderManagementState = ({
           orderId: clickedItem?.id,
           orderStatusId: 4,
         }
-        // Update the order status after processing OrderProducts
-        const updateOrderRes = await updateOrder(newUpdateOrder)
-        console.log('update', updateOrderRes);
-        // Handle success for updateOrder
-        toast({
-          title: `${updateOrderRes?.data?.message}`,
-          status: 'success',
-          placement: 'bottom',
-        })
+        const res = await updateOrder(newUpdateOrder)
+        toast.success(res)
         setTimeout(() => {
-          handleTabChange(2);
-          handleTabClick(4);
-        }, 2000);
+          handleTabChange(2)
+          handleTabClick(4)
+        }, 2000)
       }
     } catch (err) {
-      // Handle error for finding the order
-      toast({
-        title: `${err?.message}`,
-        status: 'error',
-      })
+      toast.error(err)
     }
+  }
+
+  const formatDate = (dateString) => {
+    const options = {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    }
+    return new Date(dateString).toLocaleDateString('id-ID', options).replace(/\//g, '-')
   }
 
   return {
@@ -414,6 +315,7 @@ const useOrderManagementState = ({
     handleTabChange,
     activeTab,
     handleTabClick,
+    formatDate,
   }
 }
 

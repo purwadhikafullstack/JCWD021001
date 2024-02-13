@@ -43,8 +43,7 @@ function AdminListDashboard() {
   }, [warehouseId, cityId, username, currentPage, pageSize, sortField, sortOrder])
 
   return (
-    <Box bg={'#F1F1F1'} height={'100%'}>
-      <Box padding={{base: '0px 10px', md:'0px 30px'}} marginBottom={'150px'}>
+    <Box bg={'#F1F1F1'} height={'100%'} w={'100%'} padding={{base: '0px 10px', md:'0px 30px'}}>
         <Box className="top-dashboard" mt={'36px'} mb={'24px'}>
           <Box display={{ base: 'block', md: 'none' }}>
             <Flex justifyContent={'space-between'} align={'center'} mb={'10px'}>
@@ -94,7 +93,7 @@ function AdminListDashboard() {
           pageSize={pageSize}
           totalRecords={totalRecords}
         />
-      </Box>
+      
     </Box>
   )
 }

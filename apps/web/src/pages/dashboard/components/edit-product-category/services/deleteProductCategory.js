@@ -18,12 +18,19 @@ export const deleteProductCategory = async (id, parentId, grandParentId = null, 
       status: 'success',
     })
   } catch (err) {
+    let custom = ''
+    if (
+      err.response.data.message ===
+      'Cannot delete or update a parent row: a foreign key constraint fails (`pure`.`stockjournals`, CONSTRAINT `stockjournals_ibfk_3` FOREIGN KEY (`sizeId`) REFERENCES `sizes` (`id`))'
+    ) {
+      custom = 'Stock with the category still exist'
+    }
     const errorMessage =
       err.response && err.response.data && err.response.data.message
         ? err.response.data.message
         : 'An unexpected error occurred'
     toast({
-      title: `${errorMessage}`,
+      title: `${custom || errorMessage}`,
       status: 'error',
     })
   }

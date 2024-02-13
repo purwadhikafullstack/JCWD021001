@@ -148,6 +148,7 @@ export const deleteProductCategoryQuery = async (id, parentId, grandParentId = n
           parentId: grandParentId,
         },
       })
+
       const childrenId = checkChildren.map((item) => item.id)
       const group = await ProductCategory.findAll({
         where: { parentId: childrenId },
@@ -155,6 +156,18 @@ export const deleteProductCategoryQuery = async (id, parentId, grandParentId = n
       // return group
       const groupId = group.map((item) => item.id)
 
+      const sizes = await Size.findAll({
+        where: {
+          productCategoryId: childrenId,
+        },
+      })
+
+      const sizeId = sizes.map((item) => item.id)
+      await Size.destroy({
+        where: {
+          id: sizeId,
+        },
+      })
       const products = await Product.findAll({
         where: {
           productCategoryId: groupId,
