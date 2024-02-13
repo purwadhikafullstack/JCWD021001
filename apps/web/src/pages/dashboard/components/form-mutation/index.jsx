@@ -75,7 +75,7 @@ export const FormMutation = (props) => {
         stockId,
       )
       toast({
-        title: `${res?.message}`,
+        title: `${res?.data?.message}`,
         status: 'success',
         placement: 'bottom',
       })
@@ -179,7 +179,12 @@ export const FormMutation = (props) => {
     <Box p={'1em'} bgColor={'white'} minH={'100vh'}>
       <Flex dir={'column'} justifyContent={'space-between'}>
         <VStack align={'stretch'} w={'100%'}>
-          <Heading as={'h1'} fontSize={'1.5em'}>
+          <Heading
+            as={'h1'}
+            fontSize={{ base: '1em', md: '1.5em' }}
+            fontWeight={'bold'}
+            justifyContent={'space-between'}
+          >
             Form Mutation
           </Heading>
           <form onSubmit={formik.handleSubmit}>
@@ -189,6 +194,11 @@ export const FormMutation = (props) => {
                   Warehouse Destination
                 </FormLabel>
                 <Select
+                  border={'2px solid lightgray'}
+                  focusBorderColor="lightgray !important"
+                  focusShadow="none !important"
+                  _hover={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
+                  _focus={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
                   placeholder={'Select warehouse'}
                   id={'recipientWarehouseAddress'}
                   name={'recipientWarehouseAddress'}
@@ -202,9 +212,6 @@ export const FormMutation = (props) => {
                     }))
                     formik.setFieldValue('recipientWarehouseAddress', e.target.value)
                   }}
-                  borderColor={'transparent'}
-                  focusBorderColor={'transparent'}
-                  bgColor={'grey.50'}
                 >
                   {warehouseOptions}
                 </Select>
@@ -231,9 +238,11 @@ export const FormMutation = (props) => {
                   type={'text'}
                   value={formik.values.productName}
                   onChange={formik.handleChange}
-                  borderColor={'transparent'}
-                  focusBorderColor={'transparent'}
-                  bgColor={'grey.50'}
+                  border={'2px solid lightgray'}
+                  focusBorderColor="lightgray !important"
+                  focusShadow="none !important"
+                  _hover={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
+                  _focus={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
                   onKeyDown={handleKeyDown}
                   isReadOnly
                 />
@@ -290,6 +299,11 @@ export const FormMutation = (props) => {
                 </FormLabel>
                 <Input
                   placeholder={'Input quantity'}
+                  border={'2px solid lightgray'}
+                  focusBorderColor="lightgray !important"
+                  focusShadow="none !important"
+                  _hover={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
+                  _focus={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
                   w={'10em'}
                   id={'qty'}
                   name={'qty'}
@@ -303,9 +317,6 @@ export const FormMutation = (props) => {
                       qty: e.target.value,
                     }))
                   }}
-                  borderColor={'transparent'}
-                  focusBorderColor={'transparent'}
-                  bgColor={'grey.50'}
                 />
                 {formik.errors.qty && <Text color="red">{formik.errors.qty}</Text>}
               </FormControl>

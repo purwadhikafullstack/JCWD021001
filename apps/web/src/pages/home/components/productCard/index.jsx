@@ -9,12 +9,12 @@ export const ProductCard = (props) => {
     }
     return str.slice(0, maxLength) + '...'
   }
-  
+
   return (
     <Box
       bgColor={'white'}
-      width={{base: '140px', md: '212px'}}
-       flex="0 0 auto"
+      width={{ base: '140px', md: '212px' }}
+      flex="0 0 auto"
       h={{ base: '16em', md: '18em' }}
       borderRadius={'.5em'}
       overflow={'hidden'}

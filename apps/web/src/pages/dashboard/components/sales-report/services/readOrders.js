@@ -30,7 +30,6 @@ export const getOrdersByCategory = async (warehouseId, startDate, endDate) => {
         },
       },
     )
-    console.log('res', res)
     const orders = res?.data?.data
     return orders
   } catch (err) {

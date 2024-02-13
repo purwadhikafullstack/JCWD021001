@@ -75,7 +75,7 @@ const OnDelivery = ({
                     w={'112px'}
                     h={'112px'}
                     cursor={'pointer'}
-                    onClick={() => navigate('/order-details')}
+                    onClick={() => navigate('/order-details', { state: { orderId: order?.id } })}
                   ></Box>
                   <Box display={'flex'} flexDirection={'column'} gap={'6px'}>
                     <Text
@@ -83,7 +83,7 @@ const OnDelivery = ({
                       fontWeight={'600'}
                       fontSize={'14px'}
                       cursor={'pointer'}
-                      onClick={() => navigate('/order-details')}
+                      onClick={() => navigate('/order-details', { state: { orderId: order?.id } })}
                     >
                       {order?.OrderProducts[0]?.stocks?.product?.name}
                     </Text>
@@ -172,9 +172,6 @@ const OnDelivery = ({
               </Box>
             </Box>
             <Box w={'full'} display={'flex'} justifyContent={'flex-end'} gap={'16px'}>
-              {/* <Button bgColor={'white'} color={'#CD0244'} border={'1px solid #CD0244'}>
-                Cancel Order
-              </Button> */}
               <Button
                 bgColor={'#CD0244'}
                 color={'white'}

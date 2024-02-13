@@ -13,13 +13,19 @@ import { FormMutation } from '../form-mutation'
 import AdminListDashboard from '../../../admin-list-dashboard'
 import UserList from '../../../user-list'
 import WarehouseList from '../../../warehouse-list'
-import { AdminBiasaRoute, AdminRoute } from '../../../../components/Auth/ProtectedRoute'
+import {
+  AdminBiasaRoute,
+  AdminRoute,
+  LoggedInRoute,
+} from '../../../../components/Auth/ProtectedRoute'
+import OrderManagement from '../../../order-management'
+import OrderManagementDetails from '../../../order-management-details'
 import { SalesReport } from '../sales-report'
 import { StockReport } from '../stock-report'
-import OrderManagement from '../../../order-management'
+import { ProductColour } from '../product-colour'
+import { CreateColour } from '../create-colour'
 
 export const Body = (props) => {
-  console.log('props', props?.user)
   const renderComponent = () => {
     switch (props?.destination) {
       case 'product-list':
@@ -29,11 +35,29 @@ export const Body = (props) => {
           </AdminBiasaRoute>
         )
       case 'product-category':
-        return <ProductCategory user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminBiasaRoute>
+            <ProductCategory user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminBiasaRoute>
+        )
+      case 'product-colour':
+        return (
+          <AdminBiasaRoute>
+            <ProductColour user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminBiasaRoute>
+        )
       case 'stock-management':
-        return <StockManagement user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminBiasaRoute>
+            <StockManagement user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminBiasaRoute>
+        )
       case 'stock-mutation':
-        return <StockMutation user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminBiasaRoute>
+            <StockMutation user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminBiasaRoute>
+        )
       case 'admin-list':
         return (
           <AdminRoute>
@@ -53,35 +77,83 @@ export const Body = (props) => {
           </AdminRoute>
         )
       case 'sales-report':
-        return <SalesReport user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
-      case 'stock-report':
-        return <StockReport user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
-      case 'order-management':
         return (
           <AdminBiasaRoute>
-            <OrderManagement />
+            <SalesReport user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
           </AdminBiasaRoute>
+        )
+      case 'stock-report':
+        return (
+          <AdminBiasaRoute>
+            <StockReport user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminBiasaRoute>
+        )
+      case 'order-management':
+        return (
+          <LoggedInRoute>
+            <OrderManagement />
+          </LoggedInRoute>
         )
     }
   }
   const renderComponentAgain = () => {
     switch (props?.createProduct) {
       case 'create-product':
-        return <CreateProduct user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminBiasaRoute>
+            <CreateProduct user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminBiasaRoute>
+        )
       case 'edit-product':
       case 'view-product':
-        return <EditProduct user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminBiasaRoute>
+            <EditProduct user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminBiasaRoute>
+        )
       case 'create-product-category':
-        return <CreateProductCategoryGender user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminBiasaRoute>
+            <CreateProductCategoryGender user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminBiasaRoute>
+        )
       case 'edit-product-category':
       case 'view-product-category':
-        return <EditProductCategory user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminBiasaRoute>
+            <EditProductCategory user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminBiasaRoute>
+        )
+      case 'create-colour':
+        return (
+          <AdminBiasaRoute>
+            <CreateColour user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminBiasaRoute>
+        )
       case 'order-history':
-        return <OrderHistory user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminBiasaRoute>
+            <OrderHistory user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminBiasaRoute>
+        )
       case 'create-stock':
-        return <CreateStock user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminBiasaRoute>
+            <CreateStock user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminBiasaRoute>
+        )
       case 'form-mutation':
-        return <FormMutation user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminBiasaRoute>
+            <FormMutation user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminBiasaRoute>
+        )
+      case 'details':
+        return (
+          <LoggedInRoute>
+            <OrderManagementDetails />
+          </LoggedInRoute>
+        )
     }
   }
   const create = renderComponentAgain()
@@ -91,7 +163,7 @@ export const Body = (props) => {
       bgColor={'grey.50'}
       w={'100%'}
       p={'1em'}
-      display={props?.collapseSidebar ? 'none' : 'block'}
+      display={!props?.collapseSidebar ? 'block' : 'none'}
     >
       {props?.createProduct ? create : rendered}
     </Box>

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Box, Text, Button, ButtonGroup, Icon, Input, Collapse } from '@chakra-ui/react'
+import React from 'react'
+import { Box, Text, Button, Collapse } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import toRupiah from '@develoka/angka-rupiah-js'
 
@@ -9,6 +9,7 @@ const NewOrder = ({
   handleToggleProducts,
   handleRejectButton,
   handleCheckStock,
+  formatDate,
 }) => {
   const navigate = useNavigate()
   return (
@@ -35,7 +36,7 @@ const NewOrder = ({
                 flexDirection={{ base: 'column', xl: 'row' }}
               >
                 <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
-                  {items?.orderDate}
+                  {formatDate(items?.orderDate)}
                 </Text>
                 <Box display={'flex'} alignItems={'center'} gap={'12px'}>
                   <Box bgColor={'#E8E7E7'} minW={'8px'} h={'8px'} borderRadius={'50%'} />
@@ -45,7 +46,11 @@ const NewOrder = ({
                     fontWeight={'600'}
                     fontSize={'14px'}
                     cursor={'pointer'}
-                    onClick={() => navigate('/order-management/details')}
+                    onClick={() =>
+                      navigate('/dashboard/order-management/details', {
+                        state: { orderId: items?.id },
+                      })
+                    }
                   >
                     No. Order {items?.orderNumber}
                   </Text>
@@ -70,7 +75,11 @@ const NewOrder = ({
                     w={'112px'}
                     h={'112px'}
                     cursor={'pointer'}
-                    onClick={() => navigate('/order-management/details')}
+                    onClick={() =>
+                      navigate('/dashboard/order-management/details', {
+                        state: { orderId: items?.id },
+                      })
+                    }
                   ></Box>
                   <Box display={'flex'} flexDirection={'column'} gap={'6px'}>
                     <Text
@@ -78,7 +87,11 @@ const NewOrder = ({
                       fontWeight={'600'}
                       fontSize={'14px'}
                       cursor={'pointer'}
-                      onClick={() => navigate('/order-management/details')}
+                      onClick={() =>
+                        navigate('/dashboard/order-management/details', {
+                          state: { orderId: items?.id },
+                        })
+                      }
                     >
                       {items?.OrderProducts[0]?.stocks?.product?.name}
                     </Text>

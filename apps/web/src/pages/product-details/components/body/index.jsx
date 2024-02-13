@@ -5,10 +5,11 @@ import { Carousel } from '../carousel'
 import axios from 'axios'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { createCart } from '../../../cart/services/createCart' // edit by andri
-import { useToast } from '@chakra-ui/react' // edit by andri
+import toast from 'react-hot-toast' // edit by andri
 import { useCart } from '../../../../components/cart-table/service/cartContext' // edit by andri
 import { ColourBox } from '../colour-box'
 import { SizeBox } from '../size-box'
+import { useSelector } from 'react-redux'
 
 
 
@@ -69,11 +70,16 @@ export const Body = (props) => {
   const shouldDisable = !stock ? true : false
 
   // edit by andri
+  const user = useSelector((state) => state.AuthReducer.user)
   const { cartData, fetchCartCount } = useCart()
-  const toast = useToast()
   const handleAddToCart = async () => {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      toast.error('Please login first')
+      return
+    }
     const newItem = {
-      userId: 1,
+      userId: user?.id,
       productId: props?.product?.id,
       colourId: colourValue,
       sizeId: sizeValue,
@@ -81,42 +87,26 @@ export const Body = (props) => {
       quantity: 1,
     }
 
-    const isProductInCart = cartData.some((cartItem) =>
-      cartItem.CartProducts.some((product) => product.product.id === newItem.productId),
-    )
+    const existingCart = cartData.find((cartItem) => cartItem.userId === user?.id)
+    if (existingCart && existingCart.CartProducts) {
+      const isProductInCart = existingCart.CartProducts.some(
+        (product) => product.product.id === newItem.productId,
+      )
 
-    if (isProductInCart) {
-      toast({
-        title: 'Product Already in Cart',
-        description: 'This product is already in your cart.',
-        status: 'warning',
-        position: 'top-right',
-        duration: 3000,
-        isClosable: true,
-      });
-      return; 
+      if (isProductInCart) {
+        toast.error('Product Already in Cart')
+        return
+      }
     }
-    try {
-      await createCart(newItem)
-      toast({
-        title: 'Cart Created',
-        description: 'Your cart has been successfully created.',
-        status: 'success',
-        position: 'top-right',
-        duration: 3000,
-        isClosable: true,
-      })
 
-      await fetchCartCount()
+    try {
+      const res = await createCart(newItem)
+      toast.success(res)
+      setTimeout(() => {
+        fetchCartCount()
+      }, 3000)
     } catch (err) {
-      toast({
-        title: 'Error',
-        description: err?.response?.data?.error || 'An error occurred.',
-        status: 'error',
-        position: 'top-right',
-        duration: 3000,
-        isClosable: true,
-      })
+      toast.error(err)
     }
   }
   //
@@ -144,7 +134,7 @@ export const Body = (props) => {
   }
 
   return (
-    <Box p={'1em'} bgColor={'grey.50'} minH={'100vh'}>
+    <Box p={'1em'} bgColor={'grey.50'} minH={'100vh'} maxW={'100vw'}>
       <VStack align={'sretch'}>
         <Box>
           <Text fontWeight={'bold'} fontSize={{ md: '1.5em' }}>
@@ -205,7 +195,6 @@ export const Body = (props) => {
               <VStack align={'stretch'}>
                 <Flex justifyContent={'space-between'} alignItems={'center'} fontSize={'.9em'}>
                   <Text fontWeight={'bold'}>Size</Text>
-                  <Text color={'redPure.500'}>View Size Chart</Text>
                 </Flex>
                 <HStack>
                   {sizes?.map((size, index) => {

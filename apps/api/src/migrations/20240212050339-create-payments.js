@@ -42,8 +42,12 @@ export async function up(queryInterface, Sequelize) {
       allowNull: false,
       type: Sequelize.STRING,
     },
+    expectedWaitingPaymentTime: {
+      type: Sequelize.TIME
+    }
   })
 }
 export async function down(queryInterface, Sequelize) {
   await queryInterface.dropTable('payments')
 }
+

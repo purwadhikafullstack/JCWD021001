@@ -5,11 +5,13 @@ import {
   getCartController,
   updateCartController,
 } from '../controllers/carts.controller'
+import { checkRoleUser, verifyToken } from '../middleware/auth.middleware'
+
 const cartRouter = Router()
 
-cartRouter.post('/', createCartController)
-cartRouter.get('/:userId', getCartController)
-cartRouter.patch('/:cartProductId', updateCartController)
-cartRouter.delete('/', deleteCartController)
+cartRouter.post('/', verifyToken, checkRoleUser, createCartController)
+cartRouter.get('/:userId', verifyToken, checkRoleUser, getCartController)
+cartRouter.patch('/:cartProductId', verifyToken, checkRoleUser, updateCartController)
+cartRouter.delete('/', verifyToken, checkRoleUser, deleteCartController)
 
 export { cartRouter }

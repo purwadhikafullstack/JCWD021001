@@ -1,3 +1,4 @@
+import { getSpesificStockQuery } from '../queries/stock.queries'
 import {
   createStockService,
   deleteStockService,
@@ -18,6 +19,21 @@ export const getStockController = async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       title: 'Get Stock Failed',
+      message: err.message,
+    })
+  }
+}
+
+export const getSpesificStockController = async (req, res) => {
+  try {
+    const { productId, warehouseId, sizeId, colourId } = req.body
+    const result = await getSpesificStockQuery(productId, warehouseId, sizeId, colourId)
+    return res.status(200).json({
+      message: 'Get Stock Success',
+      data: result,
+    })
+  } catch (err) {
+    return res.status(500).json({
       message: err.message,
     })
   }

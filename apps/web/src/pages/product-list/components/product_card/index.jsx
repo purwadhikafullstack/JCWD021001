@@ -15,6 +15,7 @@ export const ProductCard = (props) => {
   return (
     <Box
       bgColor={'white'}
+      minW={'10em'}
       maxW={'10em'}
       h={{ base: '16em' }}
       borderRadius={'.5em'}

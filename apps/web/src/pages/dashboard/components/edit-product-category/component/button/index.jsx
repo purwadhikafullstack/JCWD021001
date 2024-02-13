@@ -1,6 +1,7 @@
-import { Button, HStack } from '@chakra-ui/react'
+import { Button, HStack, useToast } from '@chakra-ui/react'
 import { createProductCategory } from '../../services/createProductCategory'
 import { useNavigate } from 'react-router-dom'
+import { createSize } from '../../services/createSize'
 
 export const HandleEditButton = (props) => {
   return (
@@ -19,8 +20,28 @@ export const HandleEditButton = (props) => {
     </Button>
   )
 }
+export const HandleEditSizeButton = (props) => {
+  return (
+    <Button
+      _hover={{
+        bgColor: 'redPure.600',
+      }}
+      fontSize={'.8em'}
+      h={'2.5em'}
+      w={'5em'}
+      bgColor={'redPure.600'}
+      color={'white'}
+      onClick={() => {
+        props?.handleEditClick(props.id)
+      }}
+    >
+      {props?.editable[props?.id] ? 'Cancel' : 'Add Size'}
+    </Button>
+  )
+}
 
 export const HandleAddSubmitButton = (props) => {
+  const toast = useToast()
   return (
     <Button
       _hover={{
@@ -32,8 +53,52 @@ export const HandleAddSubmitButton = (props) => {
       bgColor={'redPure.600'}
       color={'white'}
       onClick={async () => {
-        await createProductCategory(props?.fixInput, props?.id, props?.toast)
-        props?.setFixInput('')
+        try {
+          if (props?.fixInput.trim() === '') {
+            throw new Error('Input cannot be empty')
+          }
+          await createProductCategory(props?.fixInput, props?.id, props?.toast)
+          await props?.setFixInput('')
+          props?.setTrigger(!props?.trigger)
+        } catch (err) {
+          toast({
+            title: err?.message,
+            status: 'error',
+          })
+        }
+      }}
+    >
+      Submit
+    </Button>
+  )
+}
+
+export const HandleAddSubmitSizeButton = (props) => {
+  const toast = useToast()
+  return (
+    <Button
+      _hover={{
+        bgColor: 'redPure.600',
+      }}
+      fontSize={'.8em'}
+      h={'2.5em'}
+      w={'5em'}
+      bgColor={'redPure.600'}
+      color={'white'}
+      onClick={async () => {
+        try {
+          if (props?.fixInput.trim() === '') {
+            throw new Error('Input cannot be empty')
+          }
+          await createSize(props?.fixInput, props?.productCategoryId, props?.toast)
+          await props?.setFixInput('')
+          props?.setTrigger(!props?.trigger)
+        } catch (err) {
+          toast({
+            title: err.message,
+            status: 'error',
+          })
+        }
       }}
     >
       Submit
@@ -42,6 +107,7 @@ export const HandleAddSubmitButton = (props) => {
 }
 
 export const AddNewGroupButton = (props) => {
+  const toast = useToast()
   return (
     <HStack>
       <Button
@@ -68,9 +134,25 @@ export const AddNewGroupButton = (props) => {
           bgColor={'redPure.600'}
           color={'white'}
           onClick={async () => {
-            const res = await createProductCategory(props?.fixInput, props?.genderId, props?.toast)
-            createProductCategory(props?.newChildren, res?.data?.data?.id, props?.toast)
-            props?.setFixInput('')
+            try {
+              const res = await createProductCategory(
+                props?.fixInput,
+                props?.genderId,
+                props?.toast,
+              )
+              if (res?.data?.message == 'Product Category with that name is already exist') {
+                throw new Error('Group with that name already exist')
+              }
+              if (!res?.data?.data?.id) throw new Error('Canceled')
+              await createProductCategory(props?.newChildren, res?.data?.data?.id, props?.toast)
+              await props?.setFixInput('')
+              props?.setTrigger(!props?.trigger)
+            } catch (err) {
+              toast({
+                title: err.message,
+                status: 'error',
+              })
+            }
           }}
         >
           Submit

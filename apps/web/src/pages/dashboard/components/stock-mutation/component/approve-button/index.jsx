@@ -1,6 +1,5 @@
 import {
   Button,
-  useToast,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -37,7 +36,6 @@ export const ApproveButton = (props) => {
           <ModalHeader fontWeight={'bold'}>Approve</ModalHeader>
           <ModalBody>Are you sure you want to accept?</ModalBody>
           <ModalFooter>
-            {console.log('props?.mutation?.isAccepted', props?.mutation?.isAccepted)}
             <Button
               mr={'3'}
               visibility={

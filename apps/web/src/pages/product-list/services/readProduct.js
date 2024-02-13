@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { API_ROUTE } from '../../../services/route'
 
 export const getProduct = async (
   name = '',
@@ -14,7 +15,7 @@ export const getProduct = async (
   try {
     const token = localStorage.getItem('token')
     const res = await axios.get(
-      `http://localhost:8000/api/product?name=${name}&gender=${gender}&group=${group}&category=${category}&sortBy=${sortBy}&orderBy=${orderBy}&page=${page}&pageSize=${pageSize}`,
+      `${API_ROUTE}product?name=${name}&gender=${gender}&group=${group}&category=${category}&sortBy=${sortBy}&orderBy=${orderBy}&page=${page}&pageSize=${pageSize}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

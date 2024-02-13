@@ -17,6 +17,7 @@ import { stockJournalRouter } from './routers/stockJournal.router'
 import { mutationRouter } from './routers/mutation.router'
 import { warehouseRouter } from './routers/warehouse.router'
 import { prodToColRouter } from './routers/prodToCol.router'
+import { sizeRouter } from './routers/size.router'
 const router = Router()
 
 router.get('/', (req, res) => {
@@ -42,4 +43,5 @@ router.use('/stock-journal', stockJournalRouter)
 router.use('/mutation', mutationRouter)
 router.use('/warehouse', warehouseRouter)
 router.use('/prod-to-col', prodToColRouter)
+router.use('/size', sizeRouter)
 export default router

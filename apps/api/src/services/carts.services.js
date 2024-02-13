@@ -10,7 +10,7 @@ import {
 
 export const createCartService = async (userId, productId, colourId, sizeId, price, quantity) => {
   try {
-    const existingCartProduct = await findCartStockQuery(productId)
+    const existingCartProduct = await findCartStockQuery(userId, productId)
     if (existingCartProduct) throw new Error('The product is already in the cart')
     const calcPrice = price * quantity
     const res = await createCartQuery(userId, productId, colourId, sizeId, calcPrice, quantity)
@@ -56,8 +56,8 @@ export const deleteCartService = async (cartProductIds) => {
 
 export const getCartService = async (userId, stockIds) => {
   try {
-    const check = await findCartUserQuery(userId)
-    if (!check) throw new Error('Data doesnt exist')
+    // const check = await findCartUserQuery(userId)
+    // if (!check) throw new Error('Data doesnt exist')
     const res = await getCartQuery(userId, stockIds)
     return res
   } catch (err) {

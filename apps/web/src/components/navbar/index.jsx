@@ -8,88 +8,57 @@ import {
   Spacer,
   Center,
   Button,
-  Input,
-  InputGroup,
-  InputRightElement,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
   Text,
-  Select,
-  Avatar,
   AspectRatio,
 } from '@chakra-ui/react'
-// edit by andri
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverAnchor,
-} from '@chakra-ui/react'
-//
-import {
-  MagnifyingGlassIcon,
-  ShoppingCartIcon,
-  BellIcon,
-  XMarkIcon,
-  ChevronDownIcon,
-} from '@heroicons/react/24/outline'
+import { XMarkIcon, ChevronDownIcon } from '@heroicons/react/24/outline'
 import pure from '/logo/pure.png'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { SearchModal } from './components/search-modal'
 import { SearchMenu } from './components/search-menu'
-import { useState, useEffect } from 'react'
-import { getCart } from '../../pages/cart/services/getCart'
-import ShoppingCartBox from './components/shopping-cart-box'
 import AvatarNavbar from './components/avatar-menu'
-import { useCart } from '../cart-table/service/cartContext'
+import { useCart } from '../cart-table/service/cartContext' // andri
 import NotificationBox from './components/notification-box'
-
-
+import ShoppingCartBox from './components/shopping-cart-box'
 
 export const Navbar = (props) => {
   const user = useSelector((state) => state.AuthReducer.user)
   console.log("ini", user);
   const isLogin = useSelector((state) => state.AuthReducer.isLogin)
   const location = useLocation()
+  const isDashboardPage = location.pathname.includes('dashboard')
   const navigate = useNavigate()
   // edit by andri
   const { cartData, cartCount } = useCart()
 
   return (
-    <Box p={'1em 2em'} bg={'white'} maxW={'100vw'}>
-      <Flex alignItems={'center'} justifyContent={'space-between'} >
+    <Box p={'1em 2em'} bg={'white'} maxW={'100vw'} boxShadow={'md'}>
+      <Flex alignItems={'center'} justifyContent={'space-between'}>
         <HStack spacing={'2em'}>
           <AspectRatio ratio={1} cursor={'pointer'} w={'3em'} onClick={() => navigate('/')}>
             <Image src={pure} alt="Pure Logo" />
           </AspectRatio>
-          <Box display={{ base: 'none', md: 'block' }}>
-            <SearchMenu />
-          </Box>
+          <Box display={{ base: 'none', md: 'block' }}>{!isDashboardPage && <SearchMenu />}</Box>
         </HStack>
         <Spacer />
         <HStack visibility={props?.collapseSideBar ? 'hidden' : 'visible'}>
           <HStack fontSize={'1.5em'} spacing={'.5em'}>
-            <SearchModal />
+            {!isDashboardPage && <SearchModal />}
             <HStack fontSize={'1.5em'} spacing={'.5em'} position="relative">
               <Box>
-                <ShoppingCartBox cartData={cartData} cartCount={cartCount} />
+                {!isDashboardPage && <ShoppingCartBox cartData={cartData} cartCount={cartCount} />}
               </Box>
             </HStack>
             <HStack fontSize={'1.5em'} spacing={'.5em'} position="relative">
               <Box>
-                <NotificationBox  />
+                <NotificationBox />
               </Box>
             </HStack>
-            {/* <Icon as={ShoppingCartIcon} /> */}
-            {/* <Icon as={BellIcon} /> */}
           </HStack>
           <Center height="2em">
             <Divider orientation="vertical" borderWidth={'1px'} />

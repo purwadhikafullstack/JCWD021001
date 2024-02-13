@@ -25,8 +25,12 @@ export const updateProduct = async (name, price, description, productCategoryId,
     })
     return res
   } catch (err) {
+    const errorMessage =
+      err.response && err.response.data && err.response.data.message
+        ? err.response.data.message
+        : 'An unexpected error occurred'
     toast({
-      title: `${err?.message}`,
+      title: `${errorMessage}`,
       status: 'error',
     })
   }

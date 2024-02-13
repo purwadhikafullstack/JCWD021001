@@ -117,7 +117,13 @@ export const EditInput = (props) => {
           })}
         </Grid>
       </VStack>
-      {props?.editable && props?.isSuperAdmin && <ImageUpload productId={props?.product?.id} />}
+      {props?.editable && props?.isSuperAdmin && (
+        <ImageUpload
+          productId={props?.product?.id}
+          trigger={props?.trigger}
+          setTrigger={props?.setTrigger}
+        />
+      )}
       <FormControl isRequired>
         <FormLabel htmlFor="description" fontWeight={'bold'}>
           Description
@@ -136,7 +142,13 @@ export const EditInput = (props) => {
       </FormControl>
       <Text fontWeight={'bold'}>Product Colours</Text>
       <Colours product={props?.product} />
-      {props?.editable && props?.isSuperAdmin && <CreateColour productId={props?.productId} />}
+      {props?.editable && props?.isSuperAdmin && (
+        <CreateColour
+          productId={props?.productId}
+          trigger={props?.trigger}
+          setTrigger={props?.setTrigger}
+        />
+      )}
       <FormControl isRequired>
         <FormLabel htmlFor="price" fontWeight={'bold'}>
           Price

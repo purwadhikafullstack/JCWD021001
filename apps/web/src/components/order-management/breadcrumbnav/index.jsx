@@ -12,7 +12,7 @@ const BreadcrumbNav = () => {
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbItem isCurrentPage>
-          <BreadcrumbLink href="#">
+          <BreadcrumbLink href="">
             <Text fontFamily={'heading'} fontWeight={'700'} fontSize={'14px'} color={'#CD0244'}>
               Order Management
             </Text>

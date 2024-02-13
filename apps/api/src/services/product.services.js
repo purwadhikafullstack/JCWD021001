@@ -44,7 +44,7 @@ export const getProductService = async (
 
 export const createProductService = async (name, price, description, productCategoryId) => {
   try {
-    const check = await getProductByName({ name })
+    const check = await getProductByName({ name, productCategoryId })
     console.log('name', name)
     if (check) throw new Error('Product with that name is already exist')
 

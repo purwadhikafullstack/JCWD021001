@@ -24,12 +24,12 @@ export const Sidebar = (props) => {
       position={'relative'}
       p={'1em'}
       m={{ base: '0' }}
-      w={{ base: '100%', md: '15em' }}
+      w={{ base: '100%', lg: '15em' }}
       borderEndRadius={{ base: 'none', md: '1em' }}
       zIndex={'2'}
       top={'0'}
       minH={'100vh'}
-      display={{ base: props?.collapseSideBar ? 'block' : 'none', md: 'block' }}
+      display={{ base: props?.collapseSideBar ? 'block' : 'none', lg: 'block' }}
     >
       <VStack align={'stretch'}>
         <HStack alignItems={'center'}>
@@ -71,7 +71,6 @@ export const Sidebar = (props) => {
               </Text>
             </VStack>
           </Box>
-          <SidebarButton label={'Product'} icon={Squares2X2Icon} />
           <SidebarButton
             label={'Product'}
             icon={Squares2X2Icon}
@@ -95,6 +94,14 @@ export const Sidebar = (props) => {
                 cursor={'pointer'}
               >
                 Product Category
+              </Text>
+              <Text
+                onClick={() => {
+                  navigate('/dashboard/product-colour')
+                }}
+                cursor={'pointer'}
+              >
+                Product Colour
               </Text>
             </VStack>
           </Box>
@@ -126,7 +133,9 @@ export const Sidebar = (props) => {
             <VStack align={'stretch'} spacing={'1.5em'}>
               <Text
                 onClick={() => {
-                  navigate('/dashboard/order-management', { state: { refresh: true, activeTab: 0, status: [2] } })
+                  navigate('/dashboard/order-management', {
+                    state: { refresh: true, activeTab: 0, status: [2] },
+                  })
                 }}
                 cursor={'pointer'}
               >
@@ -155,7 +164,6 @@ export const Sidebar = (props) => {
               </Text>
             </VStack>
           </Box>
-          <SidebarButton label={'Test'} icon={Squares2X2Icon} />
         </VStack>
         <Flex
           alignItems={'center'}
@@ -163,7 +171,7 @@ export const Sidebar = (props) => {
           justifyContent={'space-between'}
           onClick={() => props?.toggleSideBar()}
           cursor={'pointer'}
-          display={{ base: 'flex', md: 'none' }}
+          display={{ base: 'flex', lg: 'none' }}
         >
           <Flex
             bgColor={'white'}

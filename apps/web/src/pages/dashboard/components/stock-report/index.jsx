@@ -3,11 +3,13 @@ import {
   Flex,
   HStack,
   Heading,
+  Icon,
   Select,
   Table,
   TableContainer,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
@@ -24,6 +26,8 @@ import {
   getFirstDateOfMonthByAbbreviation,
 } from '../sales-report/component/month-select/utils/services'
 import { getWarehouses } from '../form-mutation/services/readWarehouse'
+import { PaginationList } from '../product-list/components/pagination-list'
+import { ChevronRightIcon } from '@heroicons/react/24/outline'
 
 export const StockReport = (props) => {
   // LOCATION
@@ -67,7 +71,7 @@ export const StockReport = (props) => {
         setStockReports(data)
       })
     }
-  }, [warehouseId, startDate, endDate, month, warValue])
+  }, [warehouseId, startDate, endDate, month, warValue, pageValue, props?.warehouseValue])
 
   // Warehouse lists
   const [warehouses, setWarehouses] = useState([])
@@ -95,7 +99,19 @@ export const StockReport = (props) => {
   const renderedTableBody = stockReports?.map((stockReport, index) => {
     return (
       <Tr key={index} cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'}>
-        <Td>{stockReport?.name}</Td>
+        <Td>
+          <Text>{stockReport?.product}</Text>
+          <Text as={'span'} fontSize={'.75em'}>
+            {stockReport?.name}
+          </Text>
+          <HStack fontSize={'.75em'}>
+            <Text>{stockReport?.category}</Text>
+            <Icon as={ChevronRightIcon} fontSize={'.6em'} />
+            <Text>{stockReport?.grooup}</Text>
+            <Icon as={ChevronRightIcon} fontSize={'.6em'} />
+            <Text>{stockReport?.gender}</Text>
+          </HStack>
+        </Td>
         <Td>{stockReport?.addition}</Td>
         <Td>{stockReport?.reduction}</Td>
         <Td>{stockReport?.qty}</Td>
@@ -110,8 +126,21 @@ export const StockReport = (props) => {
       </Tr>
     )
   })
+
+  // Toggle Box Colour
+  const [boxToggle, setBoxToggle] = useState({ 1: true })
+
+  // Handle Toggle
+  const changeBoxToggle = (id) => {
+    if (pageValue != id) {
+      setBoxToggle((set) => ({
+        [id]: !set[id],
+        [!id]: set[id],
+      }))
+    }
+  }
   return (
-    <Box p={'1em'} h={'100%'} w={'100%'}>
+    <Box p={'1em'} w={'100%'} minH={'100vh'}>
       <Flex flexDir={'column'} justifyContent={'space-between'} h={'100%'}>
         <VStack align={'stretch'}>
           <Flex alignItems={'center'} justifyContent={'space-between'}>
@@ -125,9 +154,11 @@ export const StockReport = (props) => {
                   id={'recipientWarehouseAddress'}
                   name={'recipientWarehouseAddress'}
                   type={'text'}
-                  borderColor={'transparent'}
-                  focusBorderColor={'transparent'}
-                  bgColor={'grey.50'}
+                  border={'2px solid lightgray'}
+                  focusBorderColor="lightgray !important"
+                  focusShadow="none !important"
+                  _hover={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
+                  _focus={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
                   onChange={async (e) => {
                     setWarehouseId(e?.target?.value)
                     {
@@ -151,7 +182,10 @@ export const StockReport = (props) => {
             </HStack>
           </Flex>
           <Box
-            h={'70vh'}
+            maxW={'100%'}
+            boxShadow={'md'}
+            h={'27em'}
+            borderRadius={'.5em'}
             overflowX={'scroll'}
             overflowY={'scroll'}
             sx={{
@@ -196,6 +230,15 @@ export const StockReport = (props) => {
             </TableContainer>
           </Box>
         </VStack>
+        <PaginationList
+          boxToggle={boxToggle}
+          changeBoxToggle={changeBoxToggle}
+          location={location}
+          pathName={pathName}
+          pageValue={pageValue}
+          warValue={warValue}
+          monthValue={monthValue}
+        />
       </Flex>
     </Box>
   )

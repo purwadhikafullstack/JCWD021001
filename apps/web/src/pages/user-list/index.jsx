@@ -63,7 +63,7 @@ function UserList() {
               <FilterUser setCityId={setCityId} setIsVerified={setIsVerified} />
             </Flex>
           </Box>
-          
+
           <Box display={{ base: 'none', md: 'block' }}>
             <Flex justifyContent={'space-between'}>
               <Flex>

@@ -1,13 +1,9 @@
 import { Router } from 'express'
-import {
-  createPaymentController,
-  getPaymentController,
-  paymentGatewayController,
-} from '../controllers/payments.controller'
+import { createPaymentController } from '../controllers/payments.controller'
+import { checkRoleUser, verifyToken } from '../middleware/auth.middleware'
+
 const paymentRouter = Router()
 
-paymentRouter.post('/result', createPaymentController)
-paymentRouter.post('/', paymentGatewayController)
-paymentRouter.get('/:userId', getPaymentController)
+paymentRouter.post('/result', verifyToken, checkRoleUser, createPaymentController)
 
 export { paymentRouter }

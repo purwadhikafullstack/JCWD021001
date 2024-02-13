@@ -9,6 +9,7 @@ import {
   productToStockIdQuery,
   updateOrderQuery,
   findOrderStatusQuery,
+  getOrderDetailQuery,
   getAllOrderByCategoryQuery, // by putu
   getAllOrderByProductQuery, // by putu
   getAllOrderQuery, // by putu
@@ -61,7 +62,8 @@ export const updateOrderStatus = async () => {
     const orders = await findOrderStatusQuery(orderStatusId)
     const now = moment().tz('Asia/Jakarta') // Ambil waktu saat ini dengan zona waktu yang sesuai
 
-    for (const order of orders) { // Menggunakan for...of loop agar dapat menunggu setiap operasi async selesai
+    for (const order of orders) {
+      // Menggunakan for...of loop agar dapat menunggu setiap operasi async selesai
       const expectedDeliveryDate = moment(order?.expectedDeliveryDate).tz('Asia/Jakarta')
       const differenceInDays = now.diff(expectedDeliveryDate, 'days')
       // const differenceInMinutes = now.diff(expectedDeliveryDate, 'minutes')
@@ -76,7 +78,33 @@ export const updateOrderStatus = async () => {
   }
 }
 
-schedule.scheduleJob('00 00 * * *', updateOrderStatus)
+export const updateOrderStatusWaiting = async () => {
+  try {
+    const orderStatusId = 1
+    const orders = await findOrderStatusQuery(orderStatusId)
+    const now = moment().tz('Asia/Jakarta') // Ambil waktu saat ini dengan zona waktu yang sesuai
+
+    for (const order of orders) {
+      // Menggunakan for...of loop agar dapat menunggu setiap operasi async selesai
+      const expectedWaitingPaymentTime = moment(order?.Payments?.expectedWaitingPaymentTime, 'HH:mm:ss').tz('Asia/Jakarta');
+      const differenceInHours = now.diff(expectedWaitingPaymentTime, 'hours');
+
+      // const differenceInMinutes = now.diff(expectedDeliveryDate, 'minutes')
+
+      if (differenceInHours >= 2) {
+        const newOrderStatusId = 6
+        await updateOrderQuery(order.id, newOrderStatusId)
+      }
+    }
+  } catch (err) {
+    throw new Error('Failed to update order status: ' + err.message)
+  }
+}
+
+schedule.scheduleJob('00 00 * * *', () => {
+  updateOrderStatus()
+  updateOrderStatusWaiting()
+})
 
 export const updateOrderService = async (orderId, orderStatusId) => {
   try {
@@ -98,8 +126,8 @@ export const getOrderService = async (
   pageSize,
 ) => {
   try {
-    const check = await findOrderIdQuery({ userId })
-    if (!check) throw new Error('Data doesnt exist')
+    // const check = await findOrderIdQuery({ userId })
+    // if (!check) throw new Error('Data doesnt exist')
     const res = await getOrderQuery({
       userId,
       orderNumber,
@@ -115,6 +143,7 @@ export const getOrderService = async (
 }
 
 export const getOrderManagementService = async (
+  adminWarehouse,
   orderNumber,
   orderDate,
   warehouseId,
@@ -126,6 +155,7 @@ export const getOrderManagementService = async (
     //   const check = await findOrderIdQuery({ userId })
     //   if (!check) throw new Error('Data doesnt exist')
     const res = await getOrderManagementQuery({
+      adminWarehouse,
       orderNumber,
       orderDate,
       warehouseId,
@@ -139,10 +169,19 @@ export const getOrderManagementService = async (
   }
 }
 
+export const getOrderDetailService = async (orderId) => {
+  try {
+    const res = await getOrderDetailQuery(orderId)
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
 export const getWarehouseService = async () => {
   try {
-    const check = await findWarehouseQuery()
-    if (!check) throw new Error('Data doesnt exist')
+    // const check = await findWarehouseQuery()
+    // if (!check) throw new Error('Data doesnt exist')
     const res = await getWarehouseQuery()
     return res
   } catch (err) {

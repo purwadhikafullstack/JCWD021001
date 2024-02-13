@@ -14,7 +14,6 @@ const CartProductRow = ({
   productData,
   stockData,
 }) => {
-  console.log('cartItem', stockData)
   return (
     <Box w={{ xl: '1100px', '2xl': '1420px' }}>
       <TableContainer>

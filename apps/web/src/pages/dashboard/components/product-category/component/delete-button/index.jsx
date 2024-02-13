@@ -1,6 +1,5 @@
 import {
   Button,
-  useToast,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -46,7 +45,12 @@ export const DeleteButton = (props) => {
               color={'white'}
               mr={3}
               onClick={async () => {
-                await deleteProductCategory(null, null, props?.id, props?.toast)
+                const res = await deleteProductCategory(null, null, props?.id, props?.toast)
+                if (
+                  res?.data?.message ===
+                  'Cannot delete or update a parent row: a foreign key constraint fails (`pure`.`stockjournals`, CONSTRAINT `stockjournals_ibfk_3` FOREIGN KEY (`sizeId`) REFERENCES `sizes` (`id`))'
+                )
+                  throw new Error('Stock still exist')
                 onClose()
               }}
             >

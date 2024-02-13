@@ -57,12 +57,18 @@ export const ImageUpload = (props) => {
         status: 'success',
         placement: 'bottom',
       })
+      props?.setTrigger(!props?.trigger)
       setSelectedImage(null)
     } catch (err) {
+      const errorMessage =
+        err.response && err.response.data && err.response.data.message
+          ? err.response.data.message
+          : 'An unexpected error occurred'
       toast({
-        title: `${err?.message}`,
+        title: `${errorMessage}`,
         status: 'error',
       })
+      props?.setTrigger(!props?.trigger)
     }
   }
   // UPLOAD IMAGE

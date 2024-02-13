@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes } from 'sequelize'
 
 export default class Payments extends Model {
   /**
@@ -8,7 +8,7 @@ export default class Payments extends Model {
    */
   static associate(models) {
     // define association here
-    this.belongsTo(models.Orders, { foreignKey: 'orderId' });
+    this.belongsTo(models.Orders, { foreignKey: 'orderId' })
   }
 }
 
@@ -21,12 +21,13 @@ export const init = (sequelize) => {
       paymentDate: DataTypes.DATE,
       paymentMethod: DataTypes.STRING,
       paymentStatus: DataTypes.STRING,
-      paymentMessage: DataTypes.STRING
+      paymentMessage: DataTypes.STRING,
+      expectedWaitingPaymentTime: DataTypes.TIME,
     },
     {
       sequelize,
       timestamps: false,
       modelName: 'Payments',
     },
-  );
-};
+  )
+}
