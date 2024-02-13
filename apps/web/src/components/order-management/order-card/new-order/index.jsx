@@ -7,8 +7,8 @@ const NewOrder = ({
   newOrder,
   expandedProducts,
   handleToggleProducts,
-  handleAcceptButton,
   handleRejectButton,
+  handleCheckStock,
 }) => {
   const navigate = useNavigate()
   return (
@@ -170,19 +170,19 @@ const NewOrder = ({
             </Box>
             <Box w={'full'} display={'flex'} justifyContent={'flex-end'} gap={'16px'}>
               <Button
+                bgColor={'#CD0244'}
+                color={'white'}
+                onClick={() => handleCheckStock(items?.id)}
+              >
+                Accept
+              </Button>
+              <Button
                 bgColor={'white'}
                 color={'#CD0244'}
                 border={'1px solid #CD0244'}
                 onClick={() => handleRejectButton(items?.id)}
               >
                 Reject
-              </Button>
-              <Button
-                bgColor={'#CD0244'}
-                color={'white'}
-                onClick={() => handleAcceptButton(items?.id)}
-              >
-                Accept
               </Button>
             </Box>
           </Box>

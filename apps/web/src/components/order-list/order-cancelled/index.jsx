@@ -164,22 +164,10 @@ const OrderCancelled = ({
                   Total Price
                 </Text>
                 <Text fontFamily={'body'} fontWeight={'700'} fontSize={'16px'} color={'#CD0244'}>
-                  {toRupiah(+order?.totalPrice, { floatingPoint: 0 })}
+                  {toRupiah(+order?.Payment?.grossAmount, { floatingPoint: 0 })}
                 </Text>
               </Box>
             </Box>
-            {/* <Box w={'full'} display={'flex'} justifyContent={'flex-end'} gap={'16px'}>
-              <Button bgColor={'white'} color={'#CD0244'} border={'1px solid #CD0244'}>
-                Cancel Order
-              </Button>
-              <Button
-                bgColor={'#CD0244'}
-                color={'white'}
-                onClick={() => handlePayNowClick(order.id)}
-              >
-                Pay Now
-              </Button>
-            </Box> */}
           </Box>
         </Box>
       ))}

@@ -1,13 +1,13 @@
 import React from 'react'
 import { TabList, Tab } from '@chakra-ui/react'
 
-const CustomTabList = ({ isTabListVisible, onTabClick, isMobile }) => {
-  const handleTabClick = (orderStatusId, ...additionalParams) => {
-    // Konversi orderStatusId ke integer sebelum mengirimkannya
-    const parsedOrderStatusId = parseInt(orderStatusId, 10)
-    localStorage.setItem('status', JSON.stringify([parsedOrderStatusId, ...additionalParams]))
-    onTabClick(parsedOrderStatusId, ...additionalParams)
-  }
+const CustomTabList = ({ isTabListVisible, handleTabClick, isMobile }) => {
+  // const handleTabClick = (orderStatusId, ...additionalParams) => {
+  //   // Konversi orderStatusId ke integer sebelum mengirimkannya
+  //   const parsedOrderStatusId = parseInt(orderStatusId, 10)
+  //   localStorage.setItem('status', JSON.stringify([parsedOrderStatusId, ...additionalParams]))
+  //   onTabClick(parsedOrderStatusId, ...additionalParams)
+  // }
 
   return (
     <>

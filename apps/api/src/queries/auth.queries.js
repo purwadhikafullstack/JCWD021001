@@ -42,6 +42,20 @@ export const findUserAuthQuery = async ({ email = null, username = null }) => {
     }
   };
 
+  export const findEmailQuery = async ({ email = null }) => {
+    try {
+      const res = await User.findOne({
+        where: {
+          email, 
+        },
+      });
+  
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  };
+
   export const emailVerificationQuery = async (email, password) => {
     try{
         await User.update(
@@ -144,13 +158,36 @@ export const resetPasswordQuery = async (email, password, token) => {
 
 export const checkTokenUsageQuery = async (token) => {
   try{
-    await ResetToken.findOne({
+    const res = await ResetToken.findOne({
       where: { 
         token: token,
         isUsed: true 
       }
     })
+
+    return res
   } catch (err){
     throw err
+  }
+}
+
+export const registerGoogleQuery = async (email, username) => {
+  const t = await User.sequelize.transaction();
+  try {
+
+    const res = await User.create(
+      {
+        email,
+        username,
+        roleId: 3,
+        isVerified: true
+      },
+      { transaction: t }
+    );
+    await t.commit();
+    return res;
+  } catch (err) {
+    await t.rollback();
+    throw err;
   }
 }

@@ -37,7 +37,6 @@ function EditUser({ id, username, email, roleId, onUserUpdated }) {
     validationSchema: editUserSchema,
     onSubmit: async (values) => {
       try {
-        console.log('Formik Submission Values:', values)
         await editAdmin(id, values.username, values.email, values.password, values.roleId)
         onUserUpdated()
         onClose()
@@ -56,8 +55,8 @@ function EditUser({ id, username, email, roleId, onUserUpdated }) {
         fontWeight={'700'}
         padding={'4px 16px'}
         w={'72px'}
-        _hover={'none'}
-        _active={'none'}
+        _hover={''}
+        _active={''}
       >
         Edit
       </Button>

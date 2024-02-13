@@ -46,16 +46,19 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { SearchModal } from './components/search-modal'
 import { SearchMenu } from './components/search-menu'
 import AvatarNavbar from './components/avatar-menu'
+import { useCart } from '../cart-table/service/cartContext'
 import NotificationBox from './components/notification-box'
+import ShoppingCartBox from './components/shopping-cart-box'
 
 export const Navbar = (props) => {
   const user = useSelector((state) => state.AuthReducer.user)
+  console.log('ini', user)
   const isLogin = useSelector((state) => state.AuthReducer.isLogin)
   const location = useLocation()
   const isDashboardPage = location.pathname.includes('dashboard')
   const navigate = useNavigate()
   // edit by andri
-  // const { cartData, cartCount } = useCart()
+  const { cartData, cartCount } = useCart()
 
   return (
     <Box p={'1em 2em'} bg={'white'} maxW={'100vw'} boxShadow={'md'}>
@@ -71,7 +74,9 @@ export const Navbar = (props) => {
           <HStack fontSize={'1.5em'} spacing={'.5em'}>
             {!isDashboardPage && <SearchModal />}
             <HStack fontSize={'1.5em'} spacing={'.5em'} position="relative">
-              <Box>{/* <ShoppingCartBox cartData={cartData} cartCount={cartCount} /> */}</Box>
+              <Box>
+                <ShoppingCartBox cartData={cartData} cartCount={cartCount} />
+              </Box>
             </HStack>
             <HStack fontSize={'1.5em'} spacing={'.5em'} position="relative">
               <Box>

@@ -22,12 +22,11 @@ const OrderListBody = ({
   onTabClick,
   onPageChange,
   pagination,
+  refreshOrder,
 }) => {
   const navigate = useNavigate()
   const {
     activeTab,
-    waitingPaymentOrders,
-    onProcessOrders,
     expandedProducts,
     isTabListVisible,
     isMobile,
@@ -43,7 +42,16 @@ const OrderListBody = ({
     handleOrderNumberKeyPress,
     formatDate,
     handleConfirmButton,
-  } = useOrderListState({ orderData, loading, onOrderNumberSubmit, onOrderDateSubmit })
+    handleCancelButton,
+    handleTabClick,
+  } = useOrderListState({
+    orderData,
+    loading,
+    onOrderNumberSubmit,
+    onOrderDateSubmit,
+    refreshOrder,
+    onTabClick,
+  })
   return (
     <Box padding={'24px'}>
       <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
@@ -84,7 +92,8 @@ const OrderListBody = ({
           {/* tablist */}
           <CustomTabList
             isTabListVisible={isTabListVisible}
-            onTabClick={onTabClick}
+            // onTabClick={onTabClick}
+            handleTabClick={handleTabClick}
             isMobile={isMobile}
           />
           {/* tabpanel */}
@@ -96,6 +105,7 @@ const OrderListBody = ({
                 handlePayNowClick={handlePayNowClick}
                 expandedProducts={expandedProducts}
                 handleToggleProducts={handleToggleProducts}
+                handleCancelButton={handleCancelButton}
                 navigate={navigate}
               />
               <Pagination

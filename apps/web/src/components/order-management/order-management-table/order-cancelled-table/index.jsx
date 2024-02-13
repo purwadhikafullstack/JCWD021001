@@ -55,7 +55,7 @@ const OrderCancelledTable = ({
               </Td>
               <Td>
                 <Text fontFamily={'body'} fontWeight={'700'} fontSize={'14px'} color={'white'}>
-                  Total Price
+                  Gross Amount
                 </Text>
               </Td>
               <Td>
@@ -179,7 +179,7 @@ const OrderCancelledTable = ({
                 </Td>
                 <Td>
                   <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
-                    {toRupiah(+items?.totalPrice, { floatingPoint: 0 })}
+                    {toRupiah(+items?.Payment?.grossAmount, { floatingPoint: 0 })}
                   </Text>
                 </Td>
                 <Td>
@@ -189,14 +189,6 @@ const OrderCancelledTable = ({
                 </Td>
                 <Td>
                   <Box display={'flex'} gap={'8px'}>
-                    {/* <Button
-                      size={'sm'}
-                      bgColor={'#CD0244'}
-                      color={'white'}
-                      onClick={() => handleAcceptButton(items?.id)}
-                    >
-                      Send
-                    </Button> */}
                     <Button
                       size={'sm'}
                       border={'1px solid #CD0244'}

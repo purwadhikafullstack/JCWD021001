@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Modal, ModalBody, ModalContent, ModalFooter, ModalOverlay, useDisclosure } from "@chakra-ui/react"
+import { Button, Flex, Modal, ModalBody, ModalContent, ModalFooter, ModalOverlay, useDisclosure } from "@chakra-ui/react"
 import { deleteWarehouseFunction } from "../../services/deleteWarehouse";
 
 function DeleteWarehouse ({id, onDeletedWarehouse}){
@@ -23,8 +23,8 @@ function DeleteWarehouse ({id, onDeletedWarehouse}){
         fontWeight={'700'}
         padding={'4px 16px'}
         w={'72px'}
-        _hover={'none'}
-        _active={'none'}
+        _hover={''}
+        _active={''}
       >
         Delete
       </Button>
@@ -34,7 +34,7 @@ function DeleteWarehouse ({id, onDeletedWarehouse}){
         <ModalContent>
         <Flex flexDir={'column'} justify={'center'} align={'center'} margin={'24px 24px 8px'}>
         <ModalBody fontWeight={'700'}>
-            Are you sure you want to delete this admin?
+            Are you sure you want to delete this warehouse?
         </ModalBody>
         <ModalFooter display={'flex'} flexDir={'column'} gap={'10px'}>
             <Button bg={'brand.lightred'}

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { API_ROUTE } from '../../../services/route'
 
 export const getOrderManagement = async (
   orderNumber,
@@ -9,10 +10,7 @@ export const getOrderManagement = async (
   pageSize,
 ) => {
   try {
-    // console.log('orderNumber', orderNumber);
-    // console.log('orderDate', orderDate);
-    // console.log('warehouseId', warehouseId);
-    const response = await axios.get(`http://localhost:8000/api/order/management`, {
+    const response = await axios.get(`${API_ROUTE}/order/management`, {
       params: {
         orderNumber: orderNumber,
         orderDate: orderDate,
@@ -22,7 +20,6 @@ export const getOrderManagement = async (
         pageSize: pageSize,
       },
     })
-    // alert("payment created")
     return response.data.data
   } catch (err) {
     alert('Error occurred')

@@ -3,7 +3,6 @@ import UserAddress from '../models/userAddress.model'
 import City from '../models/city.model'
 import Warehouse from '../models/warehouse.model'
 import Role from '../models/role.model'
-
 import { Op } from 'sequelize'
 
 // FIND
@@ -223,7 +222,7 @@ export const updateUsernameQuery = async (id, username) => {
 
 export const updateEmailQuery = async (id, email) => {
   try {
-    await User.update({ email }, { where: { id } });
+    await User.update({ email, isVerified: false }, { where: { id } });
     const updatedUser = await User.findOne({ where: { id } });
     return updatedUser; 
   } catch (err) {

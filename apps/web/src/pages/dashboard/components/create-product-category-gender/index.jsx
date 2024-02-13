@@ -14,6 +14,7 @@ import { useParams } from 'react-router-dom'
 import { Formik, Field, Form } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios'
+import { API_ROUTE } from '../../../../services/route'
 
 export const CreateProductCategoryGender = (props) => {
   // SET TOAST
@@ -34,10 +35,10 @@ export const CreateProductCategoryGender = (props) => {
 
   //   CREATE PRODUCT CATEGORY
   const createProductCategory = async (name) => {
-    const token = localStorage.getItem('token')
     try {
+      const token = localStorage.getItem('token')
       const res = await axios.post(
-        `http://localhost:8000/api/product-category`,
+        `${API_ROUTE}product-category`,
         { name },
         {
           headers: {

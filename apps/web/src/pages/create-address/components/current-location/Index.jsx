@@ -31,7 +31,9 @@ function FormCurrentLocation({ address, lat, lng }) {
       setSelectedProvince(address.city.provinceId)
       setSelectedCity(address.city.id)
     }
+  }, [address])
 
+  useEffect(() => {
     const fetchProvinceData = async () => {
       try {
         const data = await getProvince()
@@ -41,11 +43,15 @@ function FormCurrentLocation({ address, lat, lng }) {
       }
     }
     fetchProvinceData()
+  }, [])
 
+  useEffect(() => {
     const fetchCityData = async () => {
-      if (address?.city?.provinceId) {
+      const provinceId = selectedProvince || address?.city?.provinceId
+
+      if (provinceId) {
         try {
-          const cityData = await getCity(address.city.provinceId)
+          const cityData = await getCity(provinceId)
           setCityList(cityData)
         } catch (error) {
           console.error('Error fetching city data:', error)
@@ -53,9 +59,8 @@ function FormCurrentLocation({ address, lat, lng }) {
       }
     }
     fetchCityData()
-  }, [address])
+  }, [selectedProvince, address])
 
-  console.log('ini lat form', lat, 'ini lng form', lng)
   const formik = useFormik({
     initialValues: {
       specificAddress: '',
@@ -67,7 +72,6 @@ function FormCurrentLocation({ address, lat, lng }) {
     validationSchema: addressSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
-        console.log('Formik Submission Values:', values)
         await createUserAddress(
           user.id,
           values.specificAddress,
@@ -221,16 +225,16 @@ function FormCurrentLocation({ address, lat, lng }) {
               isInvalid={formik.touched.postalCode && formik.errors.postalCode}
               mb={{ base: '', md: '24px' }}
             >
-            <Input
-              placeholder="Type a postal code"
-              _placeholder={{ color: 'brand.grey350' }}
-              bg={'brand.grey100'}
-              variant={'filled'}
-              name="postalCode"
-              value={formik.values.postalCode}
-              onChange={formik.handleChange}
-            />
-            {formik.touched.postalCode && formik.errors.postalCode && (
+              <Input
+                placeholder="Type a postal code"
+                _placeholder={{ color: 'brand.grey350' }}
+                bg={'brand.grey100'}
+                variant={'filled'}
+                name="postalCode"
+                value={formik.values.postalCode}
+                onChange={formik.handleChange}
+              />
+              {formik.touched.postalCode && formik.errors.postalCode && (
                 <FormErrorMessage>{formik.errors.postalCode}</FormErrorMessage>
               )}
             </FormControl>
@@ -242,17 +246,17 @@ function FormCurrentLocation({ address, lat, lng }) {
             <FormControl
               isInvalid={formik.touched.specificAddress && formik.errors.specificAddress}
             >
-            <Textarea
-              placeholder="Type your address"
-              name="specificAddress"
-              _placeholder={{ color: 'brand.grey350' }}
-              bg={'brand.grey100'}
-              variant={'filled'}
-              h={'210px'}
-              value={formik.values.specificAddress}
-              onChange={formik.handleChange}
-            />
-            {formik.touched.specificAddress && formik.errors.specificAddress && (
+              <Textarea
+                placeholder="Type your address"
+                name="specificAddress"
+                _placeholder={{ color: 'brand.grey350' }}
+                bg={'brand.grey100'}
+                variant={'filled'}
+                h={'210px'}
+                value={formik.values.specificAddress}
+                onChange={formik.handleChange}
+              />
+              {formik.touched.specificAddress && formik.errors.specificAddress && (
                 <FormErrorMessage>{formik.errors.specificAddress}</FormErrorMessage>
               )}
             </FormControl>

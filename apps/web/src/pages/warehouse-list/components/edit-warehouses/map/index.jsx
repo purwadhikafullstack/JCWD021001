@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvent } from 'react-leaflet';
-
 import 'leaflet/dist/leaflet.css';
 import { findOpenCageAndCity } from '../../../services/getWarehouseList';
 

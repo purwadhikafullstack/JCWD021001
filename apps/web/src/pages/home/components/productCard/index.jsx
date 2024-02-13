@@ -3,19 +3,17 @@ import toRupiah from '@develoka/angka-rupiah-js'
 import { useNavigate } from 'react-router-dom'
 export const ProductCard = (props) => {
   const navigate = useNavigate()
-
-  // TRUNCATE STRING
   const truncateString = (str, maxLength) => {
     if (str.length <= maxLength) {
       return str
     }
     return str.slice(0, maxLength) + '...'
   }
-  // TRUNCATE STRING
+
   return (
     <Box
       bgColor={'white'}
-      width={{ base: '150px', md: '212px' }}
+      width={{ base: '140px', md: '212px' }}
       flex="0 0 auto"
       h={{ base: '16em', md: '18em' }}
       borderRadius={'.5em'}

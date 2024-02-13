@@ -1,10 +1,8 @@
 import { Box, Flex, Text } from '@chakra-ui/react'
 import CreateUser from './components/modal-create'
 import { BreadCrumbs } from './components/breadcrumbs'
-import { Navbar } from '../../components/Navbar'
 import { useEffect, useState } from 'react'
 import Pagination from './components/pagination'
-import Footer from '../../components/Footer/Footer'
 import { getUserList } from './services/getUserList'
 import TableUser from './components/table-user'
 import { SearchUserList } from './components/search-user'
@@ -12,17 +10,15 @@ import FilterUser from './components/filterUser'
 
 function UserList() {
   const [user, setUser] = useState([])
-
   const [cityId, setCityId] = useState('')
   const [isVerified, setIsVerified] = useState('')
   const [username, setUsername] = useState('')
-  const [pageSize, setPageSize] = useState(10)
   const [sortField, setSortFiled] = useState('username')
   const [sortOrder, setSortOrder] = useState('ASC')
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(0)
   const [totalRecords, setTotalRecords] = useState(0)
-
+  const pageSize = 10
   const fetchUserList = async (page = currentPage) => {
     try {
       const fetchUserData = await getUserList(
@@ -46,11 +42,8 @@ function UserList() {
     fetchUserList()
   }, [cityId, isVerified, username, currentPage, pageSize, sortField, sortOrder])
 
-  console.log('ini isVerified', user)
-
   return (
     <Box bg={'#F1F1F1'} height={'100%'}>
-      {/* <Navbar /> */}
       <Box padding={{ base: '0px 10px', md: '0px 30px' }} marginBottom={'150px'}>
         <Box className="top-dashboard" mt={'36px'} mb={'24px'}>
           <Box display={{ base: 'block', md: 'none' }}>
@@ -103,7 +96,6 @@ function UserList() {
           totalRecords={totalRecords}
         />
       </Box>
-      {/* <Footer/> */}
     </Box>
   )
 }

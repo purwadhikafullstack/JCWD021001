@@ -6,11 +6,9 @@ import {
   Input,
   Menu,
   MenuButton,
-  MenuItem,
   MenuList,
   Radio,
   RadioGroup,
-  Select,
   Text,
   useDisclosure,
 } from '@chakra-ui/react'
@@ -75,7 +73,7 @@ function FilterAdmin({ setCityId, setWarehouseId }) {
         w={{base: '138px', md: '171px'}}
         padding={'12px 12px 12px 16px'}
         bg={'white'}
-        _hover={'none'}
+        _hover={''}
         onClick={onOpen}
         _active={{bg: '#FFF1F5', border: '1px solid #CD0244', color:'#CD0244'}}
       >
@@ -160,7 +158,7 @@ function FilterAdmin({ setCityId, setWarehouseId }) {
         </Box>
         <Flex gap={'10px'}
         justifyContent={'flex-end'}
-        _hover={{bg: 'none'}}
+        _hover={{bg: ''}}
         px={4} py={2}>
           <Button
             type="sumbit"
@@ -169,7 +167,7 @@ function FilterAdmin({ setCityId, setWarehouseId }) {
             variant={'outline'}
             border={'1px solid #CD0244'}
             color={'#CD0244'}
-            _hover={'none'}
+            _hover={''}
             _active={{ opacity: '70%' }}
             onClick={() => handleClear()}
             size={'sm'}

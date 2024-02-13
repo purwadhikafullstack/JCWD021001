@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { registerController, emailVerificationController, loginController, keepLoginController, forgotPasswordController, resetPasswordController } from "../controllers/auth.controller";
+import { registerController, emailVerificationController, loginController, keepLoginController, forgotPasswordController, resetPasswordController, googleLoginController, newUnverifiedEmailController, verifyNewEmailController } from "../controllers/auth.controller";
 import { validator } from '../middleware/validator.middleware';
 import { verifyToken } from '../middleware/auth.middleware';
 import { body } from "express-validator";
@@ -26,12 +26,15 @@ const passwordValidations = [
 authRouter.post("/user-registration", validator(validations),registerController);
 authRouter.post("/login", validator(emailValidations), loginController);
 authRouter.post("/request-password-reset", validator(emailValidations), forgotPasswordController);
+authRouter.post("/google-login", googleLoginController)
+authRouter.post("/new-unverified-email", newUnverifiedEmailController);
 
 // GET
 authRouter.get("/keep-login", verifyToken, keepLoginController);
 
 // PUT
 authRouter.put("/email-verification", validator(passwordValidations), emailVerificationController);
+authRouter.put("/verify-new-email", validator(passwordValidations), verifyNewEmailController);
 authRouter.put("/reset-password",  resetPasswordController);
 
 

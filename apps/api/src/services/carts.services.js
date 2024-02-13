@@ -37,16 +37,6 @@ export const updateCartService = async (cartProductId, quantity) => {
   }
 }
 
-// export const deleteCartService = async (cartProductId) => {
-//     try {
-//         const check = await findCartQuery(cartProductId);
-//         if (!check) throw new Error("Cart product not found");
-//         const res = await deleteCartQuery(cartProductId, check.cartId);
-//         return res;
-//     } catch (err) {
-//         throw err;
-//     }
-// }
 export const deleteCartService = async (cartProductIds) => {
   try {
     const results = []
