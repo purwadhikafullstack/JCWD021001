@@ -8,6 +8,7 @@ import {
   Button,
   VStack,
   useToast,
+  Heading,
 } from '@chakra-ui/react'
 import { Formik, Field, Form } from 'formik'
 import * as Yup from 'yup'
@@ -70,7 +71,14 @@ export const CreateColour = (props) => {
   // HANDLE SUBMIT
   return (
     <Box p={'1em'} bgColor={'white'} w={'100%'} minH={'100vh'}>
-      <Text>Create Colour</Text>
+      <Heading
+        as={'h1'}
+        fontSize={{ base: '1em', md: '1.5em' }}
+        fontWeight={'bold'}
+        justifyContent={'space-between'}
+      >
+        Create Colour
+      </Heading>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}

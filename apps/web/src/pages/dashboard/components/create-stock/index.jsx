@@ -1,4 +1,4 @@
-import { Box, Button, Input, Text, VStack, useToast } from '@chakra-ui/react'
+import { Box, Button, Heading, Input, Text, VStack, useToast } from '@chakra-ui/react'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { getProduct } from '../../../product-list/services/readProduct'
@@ -103,7 +103,14 @@ export const CreateStock = (props) => {
   return (
     <Box p={'1em'} h={'100%'} w={'100%'} bgColor={'white'}>
       <VStack align={'stretch'}>
-        <Text>Create Stock</Text>
+        <Heading
+          as={'h1'}
+          fontSize={{ base: '1em', md: '1.5em' }}
+          fontWeight={'bold'}
+          justifyContent={'space-between'}
+        >
+          Create Stock
+        </Heading>
         <form onSubmit={formik.handleSubmit}>
           <VStack align={'stretch'}>
             <Input

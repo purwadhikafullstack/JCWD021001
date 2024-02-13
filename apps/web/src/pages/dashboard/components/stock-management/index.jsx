@@ -109,9 +109,11 @@ export const StockManagement = (props) => {
                   id={'recipientWarehouseAddress'}
                   name={'recipientWarehouseAddress'}
                   type={'text'}
-                  borderColor={'transparent'}
-                  focusBorderColor={'transparent'}
-                  bgColor={'grey.50'}
+                  border={'2px solid lightgray'}
+                  focusBorderColor="lightgray !important"
+                  focusShadow="none !important"
+                  _hover={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
+                  _focus={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
                   onChange={async (e) => {
                     setWarehouseId(e?.target?.value)
                     {
@@ -128,7 +130,7 @@ export const StockManagement = (props) => {
                 _hover={{
                   bgColor: 'redPure.600',
                 }}
-                h={'3em'}
+                h={'2.5em'}
                 w={'10em'}
                 bgColor={'redPure.600'}
                 color={'white'}

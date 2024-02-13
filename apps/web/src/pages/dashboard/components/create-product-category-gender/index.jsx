@@ -8,6 +8,7 @@ import {
   Button,
   VStack,
   useToast,
+  Heading,
 } from '@chakra-ui/react'
 import { useParams } from 'react-router-dom'
 import { Formik, Field, Form } from 'formik'
@@ -70,7 +71,14 @@ export const CreateProductCategoryGender = (props) => {
   // HANDLE SUBMIT
   return (
     <Box p={'1em'} bgColor={'white'}>
-      <Text>Create Product Category</Text>
+      <Heading
+        as={'h1'}
+        fontSize={{ base: '1em', md: '1.5em' }}
+        fontWeight={'bold'}
+        justifyContent={'space-between'}
+      >
+        Create Product Category
+      </Heading>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}

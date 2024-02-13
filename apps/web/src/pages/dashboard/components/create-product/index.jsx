@@ -13,6 +13,7 @@ import {
   Grid,
   VStack,
   useToast,
+  Heading,
 } from '@chakra-ui/react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
@@ -168,9 +169,14 @@ export const CreateProduct = () => {
 
   return (
     <Box p={'1em'} bgColor={'white'}>
-      <Text fontWeight={'bold'} mb={'2em'}>
+      <Heading
+        as={'h1'}
+        fontSize={{ base: '1em', md: '1.5em' }}
+        fontWeight={'bold'}
+        justifyContent={'space-between'}
+      >
         Create Product
-      </Text>
+      </Heading>
       <form onSubmit={formik.handleSubmit}>
         <VStack direction="column" align="center">
           <FormControl isRequired>
