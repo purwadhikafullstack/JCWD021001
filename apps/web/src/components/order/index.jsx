@@ -12,7 +12,6 @@ import { fetchStockOrder } from './services/fetchStockOrder'
 import { useCart } from '../cart-table/service/cartContext'
 import toast from 'react-hot-toast'
 
-
 const OrderBody = ({ orderData, totalPrice, totalQuantity }) => {
   const [stockOrder, setStockOrder] = useState([])
   const [selectedAddress, setSelectedAddress] = useState(null)
@@ -35,15 +34,15 @@ const OrderBody = ({ orderData, totalPrice, totalQuantity }) => {
         totalQuantity,
         navigate,
         fetchCartCount,
-      ) 
+      )
     } else {
-      toast.error("Choose shipping service before payment.")
+      toast.error('Choose shipping service before payment.')
     }
   }
 
   useEffect(() => {
     fetchStockOrder(orderData, nearestWarehouse, setStockOrder) // Call fetchStockOrder from stockService
-  }, [orderData, nearestWarehouse])
+  }, [])
 
   return (
     <Box>
@@ -98,7 +97,7 @@ const OrderBody = ({ orderData, totalPrice, totalQuantity }) => {
               </Box>
               {/* Shopping Summary - Desktop Version */}
               <ShoppingSummaryDesktop
-                costResult={costResult? costResult: 0}
+                costResult={costResult ? costResult : 0}
                 totalQuantity={totalQuantity}
                 totalPrice={totalPrice}
                 handlePaymentClick={() => handlePaymentClick(orderItem)}
@@ -107,7 +106,7 @@ const OrderBody = ({ orderData, totalPrice, totalQuantity }) => {
           </Box>
           {/* Shopping Summary - Mobile Version */}
           <ShoppingSummaryMobile
-            costResult={costResult? costResult: 0}
+            costResult={costResult ? costResult : 0}
             totalQuantity={totalQuantity}
             totalPrice={totalPrice}
             handlePaymentClick={() => handlePaymentClick(orderItem)}

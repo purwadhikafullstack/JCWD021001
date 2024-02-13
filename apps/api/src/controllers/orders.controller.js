@@ -129,6 +129,8 @@ export const getWarehouseController = async (req, res) => {
 export const productToStockIdController = async (req, res) => {
   try {
     const { products, nearestWarehouse } = req.query
+    console.log('product', products);
+    console.log('near', nearestWarehouse);
     const result = await productToStockIdService(products, nearestWarehouse)
     return sendResponse(res, 200, result, null, 'Product to stock successfully')
   } catch (err) {

@@ -28,8 +28,6 @@ import OrderManagementDetails from './pages/order-management-details'
 import VerifyNewEmailReq from './pages/verify-new-email-req/Index'
 import VerifyNewEmail from './pages/verify-new-email/Index'
 
-
-
 function App() {
   return (
     <Box>
@@ -93,30 +91,9 @@ function App() {
                 </LoggedInRoute>
               }
             />
-            <Route
-              path="/order-list"
-              element={
-                <LoggedInRoute>
-                  <OrderList />
-                </LoggedInRoute>
-              }
-            />
-            <Route
-              path="/order-details"
-              element={
-                <LoggedInRoute>
-                  <OrderDetails />
-                </LoggedInRoute>
-              }
-            />
-            <Route
-              path="/payment"
-              element={
-                <LoggedInRoute>
-                  <Payment />
-                </LoggedInRoute>
-              }
-            />
+            <Route path="/order-list" element={<OrderList />} />
+            <Route path="/order-details" element={<OrderDetails />} />
+            <Route path="/payment" element={<Payment />} />
             <Route path="/p/:gender/:group?/:category?" element={<Product />} />
             <Route path="/search" element={<ProductSearch />} />
             <Route path="/product/:id" element={<ProductDetails />} />

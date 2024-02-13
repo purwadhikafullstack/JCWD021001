@@ -18,6 +18,7 @@ const Order = () => {
 
   const user = useSelector((state) => state.AuthReducer.user)
 
+
   useEffect(() => {
     localStorage.removeItem('hasVisitedCart')
     const fetchOrderData = async () => {

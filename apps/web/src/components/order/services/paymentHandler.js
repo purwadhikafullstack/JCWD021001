@@ -1,7 +1,7 @@
+import { createPayment } from '../../../pages/order/services/createPayment'
 import { createOrder } from '../../../pages/order/services/createOrder'
 import { deleteCart } from '../../../pages/cart/services/deleteCart'
 import toast from 'react-hot-toast'
-
 
 export const paymentHandler = async (
   order,
@@ -57,7 +57,7 @@ export const paymentHandler = async (
             /* You may add your own implementation here */
             // console.log(result)
             createPayment(result, orderId)
-            toast.success('Payment success!')
+            // toast.success('Payment success!')
             navigate('/order-list', { state: { refresh: true, activeTab: 1, status: [2, 3] } })
           },
           onPending: function (result) {
