@@ -19,6 +19,7 @@ export const editAdmin = async (id, username, email, password, roleId) => {
         },
       },
     )
+    toast.success('admin updated successfully')
   } catch (err) {
     const errorMessage =
       err.response && err.response.data && err.response.data.message
