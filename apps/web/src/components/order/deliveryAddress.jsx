@@ -1,12 +1,15 @@
 import { useSelector } from 'react-redux'
 import { findUserAddress } from '../../pages/manage-address/services/readUserAddress'
 import { useEffect, useState } from 'react'
-import { Box, Flex, Icon, Text } from '@chakra-ui/react'
+import { Box, Button, Flex, Icon, Text } from '@chakra-ui/react'
 import { MapPinIcon } from '@heroicons/react/24/outline'
 import ChangeAddressModal from './ModalChangeAddress'
 import { getNearestWarehouse, getShippingCost } from './services/getDeliveryFee'
 import ShippingCost from './shippingCost'
 import { useFormik } from 'formik'
+import { PlusIcon } from '@heroicons/react/24/outline'
+import { useNavigate } from 'react-router-dom'
+
 
 function DeliveryAddress({
   selectedAddress,
@@ -20,6 +23,7 @@ function DeliveryAddress({
   //   const [selectedAddress, setSelectedAddress] = useState(null)
   //   const [nearestWarehouse, setNearestWarehouse] = useState(null)
   const user = useSelector((state) => state.AuthReducer.user)
+  const navigate = useNavigate()
 
   const fetchData = async () => {
     try {
@@ -72,6 +76,7 @@ function DeliveryAddress({
             Delivery Address
           </Text>
         </Box>
+        { selectedAddress ? (<>
         {selectedAddress && (
           <Flex
             key={selectedAddress?.id}
@@ -113,6 +118,39 @@ function DeliveryAddress({
             <Flex justifyContent={'flex-end'} gap={'12px'}>
               <Flex justifyContent={'flex-end'} flexDir={'column'}></Flex>
             </Flex>
+          </Flex>
+        )}
+        </>) : (
+          <Flex borderRadius={'12px'}
+          border={'1px solid #818181'}
+          bg={'white'}
+          padding={'24px'}
+          mt={'24px'}
+          mb={'24px'}
+          align={'center'}
+          flexDir={'column'}>
+            <Text fontSize={'18px'} textAlign={'center'}>
+              You do not have address. Create your address first.
+            </Text>
+            <Button
+              bg={'brand.lightred'}
+              display={{base: 'none', md: 'inline'}}
+              color={'white'}
+              _hover={{ bg: '#f50f5a' }}
+              _active={{ opacity: '70%' }}
+              onClick={() => navigate('/create-address')}
+            >
+              <Flex
+                justifyContent={'center'}
+                alignItems={'center'}
+                gap={'10px'}
+              >
+                <Icon as={PlusIcon} boxSize={'24px'} />
+                <Text fontSize={'14px'} fontWeight={'700'}>
+                  Create Address
+                </Text>
+              </Flex>
+            </Button>
           </Flex>
         )}
 
