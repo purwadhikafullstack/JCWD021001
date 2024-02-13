@@ -56,6 +56,7 @@ import NotificationBox from './components/notification-box'
 
 export const Navbar = (props) => {
   const user = useSelector((state) => state.AuthReducer.user)
+  console.log("ini", user);
   const isLogin = useSelector((state) => state.AuthReducer.isLogin)
   const location = useLocation()
   const navigate = useNavigate()

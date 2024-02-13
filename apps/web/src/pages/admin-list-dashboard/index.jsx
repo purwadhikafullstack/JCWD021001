@@ -10,17 +10,15 @@ import Pagination from './components/pagination'
 
 function AdminListDashboard() {
   const [admin, setAdmin] = useState([])
-
   const [warehouseId, setWarehouseId] = useState('')
   const [cityId, setCityId] = useState('')
   const [username, setUsername] = useState('')
-  const [pageSize, setPageSize] = useState(10)
   const [sortField, setSortFiled] = useState('roleName')
   const [sortOrder, setSortOrder] = useState('DESC')
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(0)
   const [totalRecords, setTotalRecords] = useState(0)
-
+  const pageSize = 10
   const fetchAdmin = async (page = currentPage) => {
     try {
       const fetchAdminData = await getAdminList(
@@ -43,8 +41,6 @@ function AdminListDashboard() {
   useEffect(() => {
     fetchAdmin()
   }, [warehouseId, cityId, username, currentPage, pageSize, sortField, sortOrder])
-
-  console.log('ini cityId', cityId)
 
   return (
     <Box bg={'#F1F1F1'} height={'100%'}>

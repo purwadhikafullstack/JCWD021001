@@ -13,7 +13,7 @@ import { FormMutation } from '../form-mutation'
 import AdminListDashboard from '../../../admin-list-dashboard'
 import UserList from '../../../user-list'
 import WarehouseList from '../../../warehouse-list'
-import { AdminRoute } from '../../../../components/Auth/ProtectedRoute'
+import { AdminBiasaRoute, AdminRoute } from '../../../../components/Auth/ProtectedRoute'
 import { SalesReport } from '../sales-report'
 import { StockReport } from '../stock-report'
 import OrderManagement from '../../../order-management'
@@ -23,7 +23,11 @@ export const Body = (props) => {
   const renderComponent = () => {
     switch (props?.destination) {
       case 'product-list':
-        return <ProductList user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminBiasaRoute>
+            <ProductList user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminBiasaRoute>
+        )
       case 'product-category':
         return <ProductCategory user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'stock-management':
@@ -53,8 +57,11 @@ export const Body = (props) => {
       case 'stock-report':
         return <StockReport user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'order-management':
-        return <OrderManagement />
-        
+        return (
+          <AdminBiasaRoute>
+            <OrderManagement />
+          </AdminBiasaRoute>
+        )
     }
   }
   const renderComponentAgain = () => {
