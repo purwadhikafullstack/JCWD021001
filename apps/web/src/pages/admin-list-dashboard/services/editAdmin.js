@@ -13,6 +13,7 @@ export const editAdmin = async (id, username, email, password, roleId) => {
               Authorization: `Bearer ${token}`
             }
           })
+          toast.success('admin edited successfully')
     } catch (err){
         const errorMessage =
       err.response && err.response.data && err.response.data.message
