@@ -319,7 +319,6 @@ export const getOrderDetailQuery = async (orderId) => {
   }
 }
 
-
 export const findWarehouseQuery = async () => {
   try {
     const res = await Warehouse.findOne()

@@ -27,9 +27,8 @@ export const SearchInput = (props) => {
         variant={'outline'}
         border={'2px solid lightgray'}
         focusBorderColor="lightgray !important"
-        focusShadow="none !important"
-        _hover={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
-        _focus={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
+        _hover={{ borderColor: 'lightgray !important' }}
+        _focus={{ borderColor: 'lightgray !important' }}
         placeholder={'Search a product here'}
         onChange={(e) => {
           setFilter(e?.target?.value)
