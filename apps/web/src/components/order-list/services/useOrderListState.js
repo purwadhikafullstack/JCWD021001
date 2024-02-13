@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useBreakpointValue } from '@chakra-ui/react'
 import { updateOrder } from '../../../pages/order/services/updateOrder'
-import { useToast } from '@chakra-ui/react'
+import toast from 'react-hot-toast'
 
 const useOrderListState = ({
   orderData,
@@ -14,7 +14,6 @@ const useOrderListState = ({
 }) => {
   const location = useLocation()
   const navigate = useNavigate()
-  const toast = useToast()
 
   const [orderNumber, setOrderNumber] = useState('')
   const [orderDate, setOrderDate] = useState('')
@@ -30,7 +29,7 @@ const useOrderListState = ({
     if (orderToPay) {
       navigate('/payment', { state: { orderData: [orderToPay] } })
     } else {
-      console.error('Order not found.')
+      toast.error('Order not found')
     }
   }
 
@@ -106,25 +105,19 @@ const useOrderListState = ({
           orderId: clickedItem?.id,
           orderStatusId: 5,
         }
-        // Update the order status after processing OrderProducts
-        const updateOrderRes = await updateOrder(newUpdateOrder)
-        // Handle success for updateOrder
-        toast({
-          title: `${updateOrderRes?.data?.message}`,
-          status: 'success',
-          placement: 'bottom',
-        })
+        const res = await updateOrder(newUpdateOrder)
+        toast.success(res)
+        setTimeout(() => {
+          handleTabChange(3)
+          handleTabClick(5)
+        }, 2000)
       }
       setTimeout(() => {
         handleTabChange(3);
         handleTabClick(5);
       }, 2000);
     } catch (err) {
-      // Handle error for finding the order
-      toast({
-        title: `${err?.message}`,
-        status: 'error',
-      })
+      toast.error(err)
     }
   }
 
@@ -136,24 +129,14 @@ const useOrderListState = ({
         orderId: clickedItem?.id,
         orderStatusId: 6,
       }
-      // Update the order status after processing OrderProducts
-      const updateOrderRes = await updateOrder(newUpdateOrder)
-      // Handle success for updateOrder
-      toast({
-        title: `${updateOrderRes?.data?.message}`,
-        status: 'success',
-        placement: 'bottom',
-      })
+      const res = await updateOrder(newUpdateOrder)
+      toast.success(res)
       setTimeout(() => {
-        handleTabChange(4);
-        handleTabClick(6);
-      }, 2000);
+        handleTabChange(4)
+        handleTabClick(6)
+      }, 2000)
     } catch (err) {
-      // Handle error for updateOrder
-      toast({
-        title: `${err?.message}`,
-        status: 'error',
-      })
+      toast.error(err)
     }
   }
 

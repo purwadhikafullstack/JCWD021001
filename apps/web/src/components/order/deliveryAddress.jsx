@@ -31,7 +31,6 @@ function DeliveryAddress({
     }
   }
 
-  console.log(selectedAddress, selectedAddress?.City?.Province?.id)
   useEffect(() => {
     fetchData()
   }, [user.id])
@@ -54,7 +53,6 @@ function DeliveryAddress({
       fetchWarehouse()
     }
   }, [selectedAddress])
-  console.log('ini warehouse terdekat', nearestWarehouse)
 
   return (
     <>

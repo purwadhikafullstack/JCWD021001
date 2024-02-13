@@ -8,7 +8,6 @@ function ShippingCost({ nearestWarehouse, selectedAddress, costResult, setCostRe
   const [selectedCourier, setSelectedCourier] = useState('jne')
   const [courierService, setCourierService] = useState([])
   const [selectedService, setSelectedService] = useState('')
-  // const [costResult, setCostResult] = useState('')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +27,6 @@ function ShippingCost({ nearestWarehouse, selectedAddress, costResult, setCostRe
     }
     fetchData()
   }, [nearestWarehouse, selectedAddress, selectedCourier])
-  console.log('ini shipping cost', shippingCost)
 
   useEffect(() => {
     const courierCosts = shippingCost?.find((result) => result.code === selectedCourier)?.costs

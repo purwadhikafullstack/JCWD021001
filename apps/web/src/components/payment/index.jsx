@@ -1,17 +1,18 @@
 import React, { useState } from 'react'
-import { Box, Text, Button, ButtonGroup, Icon, Image } from '@chakra-ui/react'
+import { Box, Text, Icon, Image } from '@chakra-ui/react'
 import {
   ArrowLeftIcon,
-  DocumentDuplicateIcon,
   ChevronUpIcon,
   ChevronDownIcon,
 } from '@heroicons/react/24/outline'
-import MandiriIcon from '../../../public/logo/mandiri.png'
 import Qris from '../../../public/logo/qris.png'
 import QRCode from 'qrcode.react'
 import copy from 'clipboard-copy'
+import { useNavigate } from 'react-router-dom'
+import toRupiah from '@develoka/angka-rupiah-js'
 
 const PaymentBody = ({ orderData }) => {
+  const navigate = useNavigate()
   const [isMBankingVisible, setMBankingVisible] = useState(false)
   const [isIBankingVisible, setIBankingVisible] = useState(false)
   const [isATMVisible, setATMVisible] = useState(false)
@@ -35,7 +36,16 @@ const PaymentBody = ({ orderData }) => {
   }
   return (
     <Box padding={'24px'}>
-      <Box display={'flex'} alignItems={'center'} gap={'12px'} mb={'16px'}>
+      <Box
+        display={'flex'}
+        alignItems={'center'}
+        gap={'12px'}
+        mb={'16px'}
+        cursor={'pointer'}
+        onClick={() =>
+          navigate('/order-list', { state: { refresh: true, activeTab: 0, status: [1] } })
+        }
+      >
         <Icon as={ArrowLeftIcon} fontSize={'22px'} />
         <Text fontFamily={'heading'} fontWeight={'700'} fontSize={'22px'}>
           Payment
@@ -49,9 +59,13 @@ const PaymentBody = ({ orderData }) => {
           alignItems={'center'}
           gap={'24px'}
         >
-          {console.log(order)}
-          <Box display={'flex'} gap={'16px'} justifyContent={'center'}>
-            <Box w={'557px'} h={'214px'} bgColor={'white'} padding={'16px'}>
+          <Box
+            display={'flex'}
+            flexDirection={{ base: 'column', xl: 'row' }}
+            gap={'16px'}
+            justifyContent={'center'}
+          >
+            <Box w={{ base: 'full', xl: '557px' }} h={'214px'} bgColor={'white'} padding={'16px'}>
               <Box display={'flex'} flexDirection={'column'} gap={'24px'}>
                 <Text fontFamily={'body'} fontWeight={'400'} fontSize={'16px'} color={'#838383'}>
                   No. Order {order?.orderNumber}
@@ -61,7 +75,7 @@ const PaymentBody = ({ orderData }) => {
                     Total Payment
                   </Text>
                   <Text fontFamily={'body'} fontWeight={'700'} fontSize={'20px'} color={'#CD0244'}>
-                    Rp {order?.Payment?.grossAmount}
+                    {toRupiah(+order?.totalPrice + +order?.shippingCost, { floatingPoint: 0 })}
                   </Text>
                 </Box>
                 <Box w={'full'} h={'1px'} bgColor={'#F1F1F1'} />
@@ -76,7 +90,7 @@ const PaymentBody = ({ orderData }) => {
                       fontSize={'14px'}
                       color={'#CD0244'}
                     >
-                      23 Hours 14 Minutes 12 Seconds
+                      {/* 23 Hours 14 Minutes 12 Seconds */}
                     </Text>
                     <Text
                       fontFamily={'body'}
@@ -84,12 +98,13 @@ const PaymentBody = ({ orderData }) => {
                       fontSize={'14px'}
                       color={'#838383'}
                     >
-                      Due Date 28 December 2023, 10:25
+                      {/* Due Date 28 December 2023, 10:25 */}
                     </Text>
                   </Box>
                 </Box>
               </Box>
             </Box>
+
             <Box w={'617px'} h={'350px'} bgColor={'white'} padding={'16px'}>
               <Box display={'flex'} flexDirection={'column'} gap={'20px'}>
                 <Box display={'flex'} alignItems={'flex-end'} gap={'12px'}>
@@ -154,7 +169,13 @@ const PaymentBody = ({ orderData }) => {
               </Box>
             </Box>
           </Box>
-          <Box w={'1190px'} h={'fit-content'} bgColor={'white'} padding={'16px'}>
+
+          <Box
+            w={{ base: 'full', xl: '1190px' }}
+            h={'fit-content'}
+            bgColor={'white'}
+            padding={'16px'}
+          >
             <Box display={'flex'} flexDirection={'column'} gap={'16px'}>
               <Box display={'flex'} flexDirection={'column'} gap={'12px'}>
                 <Box

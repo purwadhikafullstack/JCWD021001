@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Box, Text, Button, ButtonGroup, Icon } from '@chakra-ui/react'
-import { Navbar } from '../../components/Navbar'
+import { Box } from '@chakra-ui/react'
 import OrderManagementBody from '../../components/order-management'
 import { getOrderManagement } from './service/getOrderManagement'
 import { getWarehouse } from './service/getWarehouse'
+import { useSelector } from 'react-redux'
 
 const OrderManagement = () => {
   const [orderData, setOrderData] = useState([])
@@ -18,9 +18,13 @@ const OrderManagement = () => {
   const [pagination, setPagination] = useState([])
   const orderDateRef = useRef('')
 
+  const user = useSelector((state) => state.AuthReducer.user)
+  const adminWarehouse = user?.roleId === 2 ? user?.warehouseId : undefined;
+  
   const refreshOrder = async (orderNumber, warehouseId) => {
     try {
       const data = await getOrderManagement(
+        adminWarehouse,
         orderNumber,
         orderDateRef.current,
         warehouseId,
@@ -34,6 +38,7 @@ const OrderManagement = () => {
       console.error('Error fetching order data:', error)
     }
   }
+
   const refreshWarehouse = async () => {
     try {
       const data = await getWarehouse()
@@ -74,12 +79,12 @@ const OrderManagement = () => {
 
   const handlePageChange = (newPage) => {
     setPage(newPage)
-    // refreshOrder();
   }
   return (
     <>
       <Box bgColor={'brand.grey100'} maxW={'100vw'} minH={'100vh'}>
         <OrderManagementBody
+          user={user}
           orderData={orderData}
           warehouseData={warehouseData}
           onOrderNumberSubmit={handleOrderNumberSubmit}

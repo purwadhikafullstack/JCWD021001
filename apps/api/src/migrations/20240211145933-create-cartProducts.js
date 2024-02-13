@@ -11,7 +11,6 @@ export async function up(queryInterface, Sequelize) {
     productId: {
       allowNull: false,
       type: Sequelize.INTEGER,
-      unique: true,
       reference: {
         model: {
           tableName: 'products',
@@ -65,3 +64,4 @@ export async function up(queryInterface, Sequelize) {
 export async function down(queryInterface, Sequelize) {
   await queryInterface.dropTable('cartProducts');
 }
+

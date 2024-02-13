@@ -3,14 +3,19 @@ import { API_ROUTE } from '../../../services/route'
 
 export const productToStock = async (products, nearestWarehouse) => {
   try {
-    const response = await axios.get(`${API_ROUTE}/order/stock`, {
+    const token = localStorage.getItem('token')
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       params: {
         products: products,
         nearestWarehouse: nearestWarehouse,
       },
-    })
-    return response.data.data
+    };
+    const response = await axios.get(`${API_ROUTE}order/stock`, config)
+    return response?.data?.data
   } catch (err) {
-    alert('Error occurred')
+    throw err?.response?.data?.error
   }
 }
