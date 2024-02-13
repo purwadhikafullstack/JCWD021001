@@ -33,8 +33,8 @@ function TableWarehouse({ warehouse, onWarehouseUpdated, setSortField, setSortOr
 
   return (
     <>
-      <TableContainer maxWidth={{ base: '100vw', md: '80vw' }} borderRadius={'8px'}>
-        <Table size={{ base: 'sm', md: 'md' }}>
+      <TableContainer maxWidth={{base: '100vw', md: '80vw'}} borderRadius={'8px'}>
+        <Table size={{base: 'sm', md:'md'}}>
           <Thead bgColor={'#CD0244'}>
             <Tr>
               <Td padding={'8px 8px 8px 16px'}>
