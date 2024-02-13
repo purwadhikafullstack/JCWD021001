@@ -19,6 +19,7 @@ export const createUser = async (email, username, roleId, setLoading) => {
       },
     )
     setLoading(false)
+    toast.success('user created successfully')
     return response?.data?.data
   } catch (err) {
     setLoading(false)

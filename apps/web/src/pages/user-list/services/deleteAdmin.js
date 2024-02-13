@@ -10,7 +10,7 @@ export const deleteAdminFunction = async (id) => {
               Authorization: `Bearer ${token}`
             }
           })
-        
+          toast.success('admin deleted successfully')
     } catch (err){
       const errorMessage = err.response && err.response.data && err.response.data.message
         ? err.response.data.message
