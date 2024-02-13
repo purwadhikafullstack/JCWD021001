@@ -114,10 +114,11 @@ export const CreateStock = (props) => {
         <form onSubmit={formik.handleSubmit}>
           <VStack align={'stretch'}>
             <Input
+              borderColor={'transparent'}
+              focusBorderColor={'transparent'}
               placeholder="Product Name"
               _placeholder={{ color: 'brand.grey350' }}
               bg={'brand.grey100'}
-              variant={'filled'}
               mb={'24px'}
               value={productName}
               isReadOnly

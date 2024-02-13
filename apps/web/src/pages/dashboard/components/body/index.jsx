@@ -162,6 +162,7 @@ export const Body = (props) => {
     <Box
       bgColor={'grey.50'}
       w={'100%'}
+      h={'100%'}
       p={'1em'}
       display={!props?.collapseSidebar ? 'block' : 'none'}
     >
