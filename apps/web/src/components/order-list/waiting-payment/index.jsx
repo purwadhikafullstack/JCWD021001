@@ -76,7 +76,7 @@ const WaitingPayment = ({
                     w={'112px'}
                     h={'112px'}
                     cursor={'pointer'}
-                    onClick={() => navigate('/order-details')}
+                    onClick={() => navigate('/order-details', { state: { orderId: order?.id } })}
                   ></Box>
                   <Box display={'flex'} flexDirection={'column'} gap={'6px'}>
                     <Text
@@ -84,7 +84,7 @@ const WaitingPayment = ({
                       fontWeight={'600'}
                       fontSize={'14px'}
                       cursor={'pointer'}
-                      onClick={() => navigate('/order-details')}
+                      onClick={() => navigate('/order-details', { state: { orderId: order?.id } })}
                     >
                       {order?.OrderProducts[0]?.stocks?.product?.name}
                     </Text>
@@ -166,7 +166,7 @@ const WaitingPayment = ({
                   Total Price
                 </Text>
                 <Text fontFamily={'body'} fontWeight={'700'} fontSize={'16px'} color={'#CD0244'}>
-                  {toRupiah(+order?.totalPrice, { floatingPoint: 0 })}
+                  {toRupiah(+order?.totalPrice + +order?.shippingCost, { floatingPoint: 0 })}
                 </Text>
               </Box>
             </Box>

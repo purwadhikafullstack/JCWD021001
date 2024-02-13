@@ -13,12 +13,17 @@ import { FormMutation } from '../form-mutation'
 import AdminListDashboard from '../../../admin-list-dashboard'
 import UserList from '../../../user-list'
 import WarehouseList from '../../../warehouse-list'
-import { AdminBiasaRoute, AdminRoute } from '../../../../components/Auth/ProtectedRoute'
+import {
+  AdminBiasaRoute,
+  AdminRoute,
+  LoggedInRoute,
+} from '../../../../components/Auth/ProtectedRoute'
+import OrderManagement from '../../../order-management'
+import OrderManagementDetails from '../../../order-management-details'
 import { SalesReport } from '../sales-report'
 import { StockReport } from '../stock-report'
 import { ProductColour } from '../product-colour'
 import { CreateColour } from '../create-colour'
-import OrderManagement from '../../../order-management'
 
 export const Body = (props) => {
   const renderComponent = () => {
@@ -78,16 +83,12 @@ export const Body = (props) => {
           </AdminBiasaRoute>
         )
       case 'stock-report':
-        return (
-          <AdminBiasaRoute>
-            <StockReport user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
-          </AdminBiasaRoute>
-        )
+        return <StockReport user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'order-management':
         return (
-          <AdminBiasaRoute>
+          <LoggedInRoute>
             <OrderManagement />
-          </AdminBiasaRoute>
+          </LoggedInRoute>
         )
     }
   }
@@ -142,6 +143,12 @@ export const Body = (props) => {
           <AdminBiasaRoute>
             <FormMutation user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
           </AdminBiasaRoute>
+        )
+      case 'details':
+        return (
+          <LoggedInRoute>
+            <OrderManagementDetails />
+          </LoggedInRoute>
         )
     }
   }

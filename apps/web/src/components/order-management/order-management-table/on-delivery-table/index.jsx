@@ -14,14 +14,10 @@ import {
 } from '@chakra-ui/react'
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
 import toRupiah from '@develoka/angka-rupiah-js'
+import { useNavigate } from 'react-router-dom'
 
-const OnDeliveryTable = ({
-  orderData,
-  expandedProducts,
-  handleToggleProducts,
-  handleAcceptButton,
-  handleRejectButton,
-}) => {
+const OnDeliveryTable = ({ orderData, expandedProducts, handleToggleProducts, formatDate }) => {
+  const navigate = useNavigate()
   return (
     <Box>
       <TableContainer display={{ base: 'none', xl: 'block' }} borderRadius={'8px'}>
@@ -77,22 +73,50 @@ const OnDeliveryTable = ({
                 bg={index % 2 === 0 ? '#FFF1F5' : 'white'}
                 // _hover={{ bg: '#FED7E2' }}
               >
-                <Td cursor={'pointer'} onClick={() => navigate('/order-management/details')}>
+                <Td
+                  cursor={'pointer'}
+                  onClick={() =>
+                    navigate('/dashboard/order-management/details', {
+                      state: { orderId: items?.id },
+                    })
+                  }
+                >
                   <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
-                    {items?.orderDate}
+                    {formatDate(items?.orderDate)}
                   </Text>
                 </Td>
-                <Td cursor={'pointer'} onClick={() => navigate('/order-management/details')}>
+                <Td
+                  cursor={'pointer'}
+                  onClick={() =>
+                    navigate('/dashboard/order-management/details', {
+                      state: { orderId: items?.id },
+                    })
+                  }
+                >
                   <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
                     {items?.warehouse?.id}
                   </Text>
                 </Td>
-                <Td cursor={'pointer'} onClick={() => navigate('/order-management/details')}>
+                <Td
+                  cursor={'pointer'}
+                  onClick={() =>
+                    navigate('/dashboard/order-management/details', {
+                      state: { orderId: items?.id },
+                    })
+                  }
+                >
                   <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
                     {items?.orderNumber}
                   </Text>
                 </Td>
-                <Td cursor={'pointer'} onClick={() => navigate('/order-management/details')}>
+                <Td
+                  cursor={'pointer'}
+                  onClick={() =>
+                    navigate('/dashboard/order-management/details', {
+                      state: { orderId: items?.id },
+                    })
+                  }
+                >
                   <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
                     {items?.User?.username}
                   </Text>
@@ -105,9 +129,20 @@ const OnDeliveryTable = ({
                         h={'66px'}
                         bgColor={'#D9D9D9'}
                         cursor={'pointer'}
-                        onClick={() => navigate('/order-management/details')}
+                        onClick={() =>
+                          navigate('/dashboard/order-management/details', {
+                            state: { orderId: items?.id },
+                          })
+                        }
                       />
-                      <Box cursor={'pointer'} onClick={() => navigate('/order-management/details')}>
+                      <Box
+                        cursor={'pointer'}
+                        onClick={() =>
+                          navigate('/dashboard/order-management/details', {
+                            state: { orderId: items?.id },
+                          })
+                        }
+                      >
                         <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
                           {items?.OrderProducts[0]?.stocks?.product?.name}
                         </Text>
