@@ -31,6 +31,21 @@ export const AdminRoute = ({children}) => {
 	}
 }
 
+export const AdminBiasaRoute = ({children}) => {
+	const user = useSelector((state) => state.AuthReducer.user);
+	const isAdmin = user.roleId
+	const location = useLocation();
+	const check = localStorage.getItem("token");
+	
+	if (isAdmin == 2 || isAdmin == 1) {
+		return <>{children}</>;
+	}  else if (isAdmin == 3){
+		return <Navigate to="/"  />;
+	} else if (!check) {
+		return <Navigate to="/signin" state={{ from: location }} replace />;
+	}
+}
+
 export const LoggedOutRoute = ({children}) => {
 	const check = localStorage.getItem("token");
 	if (check) {
