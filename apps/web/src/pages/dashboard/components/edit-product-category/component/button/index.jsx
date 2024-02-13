@@ -58,8 +58,8 @@ export const HandleAddSubmitButton = (props) => {
             throw new Error('Input cannot be empty')
           }
           await createProductCategory(props?.fixInput, props?.id, props?.toast)
+          await props?.setFixInput('')
           props?.setTrigger(!props?.trigger)
-          props?.setFixInput('')
         } catch (err) {
           toast({
             title: err?.message,
@@ -91,7 +91,7 @@ export const HandleAddSubmitSizeButton = (props) => {
             throw new Error('Input cannot be empty')
           }
           await createSize(props?.fixInput, props?.productCategoryId, props?.toast)
-          props?.setFixInput('')
+          await props?.setFixInput('')
           props?.setTrigger(!props?.trigger)
         } catch (err) {
           toast({
@@ -145,7 +145,7 @@ export const AddNewGroupButton = (props) => {
               }
               if (!res?.data?.data?.id) throw new Error('Canceled')
               await createProductCategory(props?.newChildren, res?.data?.data?.id, props?.toast)
-              props?.setFixInput('')
+              await props?.setFixInput('')
               props?.setTrigger(!props?.trigger)
             } catch (err) {
               toast({
