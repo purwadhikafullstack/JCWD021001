@@ -117,7 +117,6 @@ export const SalesReport = (props) => {
                   type={'text'}
                   border={'2px solid lightgray'}
                   focusBorderColor="lightgray !important"
-                  focusShadow="none !important"
                   _hover={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
                   _focus={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
                   onChange={async (e) => {
