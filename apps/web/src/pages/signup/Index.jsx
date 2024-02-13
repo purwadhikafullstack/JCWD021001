@@ -10,18 +10,34 @@ import {
   Link
 } from '@chakra-ui/react'
 import model from '../../assets/images/signup-model.jpeg'
-import { instagram, gmail } from '../../assets/Icons/Icons'
+import { gmail } from '../../assets/Icons/Icons'
 import logo from '../../assets/images/logo.png'
 import { signInWithGoogle } from '../../firebase'
 import SignupForm from './components/signup-form'
-function Signup({ setOpenTab }) {
-
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { loginSuccess, setUser } from '../../redux/reducer/authReducer'
+function Signup() {
+  const dispatch = useDispatch()
+  const navigate= useNavigate()
+  
   const onLoginWithGoogle = async () => {
     try {
-      const result = await signInWithGoogle()
-      if (result === 'signin with google success') {
-        setOpenTab(3)
-      }
+      const result = await signInWithGoogle();
+    
+    const userPayload = {
+      id: result.data.data.user.id, 
+      username: result.data.data.user.username,
+      email: result.data.data.user.email,
+      roleId: result.data.data.user.roleId,
+      isVerified: result.data.data.user.isVerified,
+      avatar: result.data.data.user.avatar,
+      warehouseId: result.data.data.user.warehouseId,
+    };
+
+    dispatch(setUser(userPayload));
+    dispatch(loginSuccess());
+    navigate(`/`);
     } catch (error) {
       console.log(error)
     }
@@ -93,7 +109,7 @@ function Signup({ setOpenTab }) {
                 padding={{base: '2px', md:'8px'}}
                 borderRadius={{base: '6px', md: '12px'}}
                 onClick={onLoginWithGoogle}
-                _hover={'#brand.redhover'}
+                _hover={{color: '#brand.redhover'}}
               >
                 <Icon as={gmail} boxSize={'38px'} color={'white'} />
               </Button>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Text, Button, ButtonGroup, Icon } from '@chakra-ui/react';
-import { Navbar } from '../../components/navbar';
+import { Navbar } from '../../components/Navbar';
 import PaymentBody from '../../components/payment';
 import { useLocation } from 'react-router-dom';
 

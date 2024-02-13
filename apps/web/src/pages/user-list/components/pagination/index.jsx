@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button, Flex, Box, Text } from '@chakra-ui/react';
 
 const Pagination = ({ currentPage, totalPages, onPageChange, pageSize, totalRecords }) => {
@@ -7,10 +6,17 @@ const Pagination = ({ currentPage, totalPages, onPageChange, pageSize, totalReco
     pageNumbers.push(i);
   }
 
+  const calculateItemsOnCurrentPage = () => {
+    const startIndex = (currentPage - 1) * pageSize;
+    return Math.min(pageSize, totalRecords - startIndex);
+  };
+
+  const itemsOnCurrentPage = calculateItemsOnCurrentPage(currentPage, pageSize, totalRecords);
+
   return (
     <Flex justifyContent={'space-between'} align={'center'}>
         <Flex>
-            <Text fontSize={'14px'} color={'brand.grey350'}>Showing {pageSize} of {totalRecords} data</Text>
+            <Text fontSize={'14px'} color={'brand.grey350'}>Showing {itemsOnCurrentPage} of {totalRecords} data</Text>
         </Flex>
         <Flex justify="center" align="center" mt="4">
         

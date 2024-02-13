@@ -29,6 +29,8 @@ export const init = (sequelize) => {
       totalQuantity: DataTypes.INTEGER,
       shippingCost: DataTypes.DECIMAL,
       orderDate: DataTypes.DATE,
+      updateDate: DataTypes.DATE,
+      orderNumber: DataTypes.STRING,
       orderStatusId: {
         type: DataTypes.INTEGER,
         references: {
@@ -38,13 +40,14 @@ export const init = (sequelize) => {
           key: 'id',
         },
       },
-      orderNumber: DataTypes.STRING,
+      expectedDeliveryDate: DataTypes.DATE,
     },
     {
       sequelize,
       createdAt: 'orderDate',
-      updatedAt: false,
+      updatedAt: 'updateDate',
       modelName: 'Orders',
+      timezone: '+07:00'
     },
   )
 }

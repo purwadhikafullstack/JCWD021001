@@ -12,7 +12,6 @@ import {
 import { deleteStock } from '../../services/deleteStock'
 export const DeleteButton = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  console.log('trigger', props?.setTrigger, props?.trigger)
   const toast = useToast()
   return (
     <>

@@ -7,6 +7,7 @@ import {
   Icon,
   Image,
   Spacer,
+  Stack,
   Table,
   TableContainer,
   Tbody,
@@ -45,14 +46,8 @@ export const ProductList = (props) => {
   //   PRODUCT NAME FILTER
   const [productNameFilter, setProductNameFilter] = useState('')
 
-  const [products, setProducts] = useState([])
-  useEffect(() => {
-    getProduct(productNameFilter, '', '', '', setProducts, 'name', 'ASC', pageValue, 10)
-    changeBoxToggle(pageValue)
-  }, [pageValue, trigger, productNameFilter])
-
   // Toggle Box Colour
-  const [boxToggle, setBoxToggle] = useState({ [pageValue]: true })
+  const [boxToggle, setBoxToggle] = useState({ 1: true })
 
   // Handle Toggle
   const changeBoxToggle = (id) => {
@@ -62,21 +57,34 @@ export const ProductList = (props) => {
         [!id]: set[id],
       }))
     }
-    if (pageValue == 1) {
-      setBoxToggle({ [pageValue]: true })
-    }
   }
-  console.log(boxToggle)
+
+  const [products, setProducts] = useState([])
+  useEffect(() => {
+    getProduct(productNameFilter, '', '', '', setProducts, 'name', 'ASC', pageValue, 10)
+    changeBoxToggle(pageValue)
+  }, [pageValue, trigger, productNameFilter])
 
   return (
-    <Box p={'1em'} w={'100%'} h={'100%'}>
-      <Flex flexDir={'column'} justifyContent={'space-between'}>
+    <Box height={'100%'} w={'100%'} minH={'100vh'}>
+      <Flex
+        flexDir={'column'}
+        justifyContent={'space-between'}
+        maxW={'100%'}
+        overflowX={'auto'}
+        p={'1em'}
+      >
         <VStack align={'stretch'}>
           <Flex alignItems={'center'} justifyContent={'space-between'}>
-            <Heading as={'h1'} fontSize={'1.5em'} fontWeight={'bold'}>
+            <Heading
+              as={'h1'}
+              fontSize={{ base: '1em', md: '1.5em' }}
+              fontWeight={'bold'}
+              justifyContent={'space-between'}
+            >
               Product List
             </Heading>
-            <HStack>
+            <Stack align={'flex-end'} direction={{ base: 'column', lg: 'row' }}>
               <Box>
                 <SearchInput
                   setProductNameFilter={setProductNameFilter}
@@ -87,9 +95,10 @@ export const ProductList = (props) => {
               {props.isSuperAdmin && (
                 <CreateButton navigate={'/dashboard/product-list/create-product'} />
               )}
-            </HStack>
+            </Stack>
           </Flex>
           <Box
+            maxW={'100%'}
             boxShadow={'md'}
             h={'27em'}
             borderRadius={'.5em'}
@@ -101,7 +110,7 @@ export const ProductList = (props) => {
               },
             }}
           >
-            <TableContainer w={'100%'}>
+            <TableContainer>
               <Table
                 variant={'striped'}
                 colorScheme={'customTableColor'}

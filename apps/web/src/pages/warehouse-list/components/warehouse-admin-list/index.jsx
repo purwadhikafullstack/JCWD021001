@@ -19,7 +19,6 @@ function WarehouseAdmin({ warehouseId }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [warehouseAdmin, setWarehouseAdmin] = useState([])
 
-
   const fetchWarehouseAdmin = async () => {
     try {
       const fetchWarehouseData = await getWarehouseAdmin(warehouseId)
@@ -33,19 +32,17 @@ function WarehouseAdmin({ warehouseId }) {
     fetchWarehouseAdmin()
   }, [])
 
-  console.log(warehouseAdmin);
 
   return (
     <>
       <Text
         onClick={onOpen}
         color={'#CD0244'}
-        // fontSize={'12px'}
         fontWeight={'700'}
         padding={'4px 16px'}
         w={'72px'}
-        _hover={'none'}
-        _active={'none'}
+        _hover={''}
+        _active={''}
       >
         Admin List
       </Text>
@@ -60,11 +57,20 @@ function WarehouseAdmin({ warehouseId }) {
                 {warehouseAdmin?.map((admin, index) => (
                   <Flex key={admin.id} bg={index % 2 === 0 ? '#FFF1F5' : 'white'} p={'10px 10px'}>
                     <Text>{admin.username}</Text>
+                    
                   </Flex>
                 ))}
+                <Text textAlign={'center'} mt={'20px'} color={'brand.lightred'} fontSize={'14px'}>
+                      If your data not updated yet, please refresh the page
+                    </Text>
               </Box>
             ) : (
-              <Text>There is no admin assigned</Text>
+              <>
+                <Text>There is no admin assigned</Text>
+                <Text textAlign={'center'} mt={'20px'} color={'brand.lightred'} fontSize={'14px'}>
+                  If your data not updated yet, please refresh the page
+                </Text>
+              </>
             )}
           </ModalBody>
           <ModalFooter>

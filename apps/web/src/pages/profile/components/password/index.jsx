@@ -12,8 +12,6 @@ import {
   FormControl,
   FormLabel,
   Text,
-  Select,
-  Link,
   FormErrorMessage,
   Icon,
   InputRightElement,
@@ -21,38 +19,38 @@ import {
   Flex,
 } from '@chakra-ui/react'
 import { useFormik } from 'formik'
-import axios from 'axios'
 import { useSelector } from 'react-redux'
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
 import { useState } from 'react'
 import { PasswordScheme } from '../../services/validation'
+import { editPassword } from '../../services/updateProfile'
 
 function UpdatePassword() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const user = useSelector((state) => state.AuthReducer.user)
-  const editPassword = async (password) => {
-    try {
-      await axios.patch(`http://localhost:8000/api/user/update-password/${user.id}`, {
-        password,
-      })
 
-      onClose()
-    } catch (err) {
-      console.log(err)
-    }
-  }
 
   const formik = useFormik({
     initialValues: {
-      username: '',
+      password: '',
     },
     validationSchema: PasswordScheme,
 
-    onSubmit: (values) => {
-      editPassword(values.password)
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        await editPassword(user.id, values.password)
+        onClose()
+      } catch (err) {
+        console.log(err);
+      }
+      resetForm({
+        values: {
+          password: '',
+        },
+      })
     },
   })
 
@@ -65,7 +63,7 @@ function UpdatePassword() {
         alignItems="center"
         bg={'transparent'}
         fontWeight={'500'}
-        _hover={{ color: 'brand.lightred', bg: 'none' }}
+        _hover={{ color: 'brand.lightred', bg: '' }}
         paddingLeft={'0'}
         cursor={'pointer'}
         onClick={onOpen}

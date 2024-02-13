@@ -4,7 +4,14 @@ import { useBreakpointValue } from '@chakra-ui/react'
 import { updateOrder } from '../../../pages/order/services/updateOrder'
 import { useToast } from '@chakra-ui/react'
 
-const useOrderListState = ({ orderData, loading, onOrderNumberSubmit, onOrderDateSubmit }) => {
+const useOrderListState = ({
+  orderData,
+  loading,
+  onOrderNumberSubmit,
+  onOrderDateSubmit,
+  refreshOrder,
+  onTabClick,
+}) => {
   const location = useLocation()
   const navigate = useNavigate()
   const toast = useToast()
@@ -30,6 +37,13 @@ const useOrderListState = ({ orderData, loading, onOrderNumberSubmit, onOrderDat
   const handleTabChange = (index) => {
     setActiveTab(index)
     navigate('.', { state: { activeTab: index } })
+  }
+
+  const handleTabClick = (orderStatusId, ...additionalParams) => {
+    // Konversi orderStatusId ke integer sebelum mengirimkannya
+    const parsedOrderStatusId = parseInt(orderStatusId, 10)
+    localStorage.setItem('status', JSON.stringify([parsedOrderStatusId, ...additionalParams]))
+    onTabClick(parsedOrderStatusId, ...additionalParams)
   }
 
   const [expandedProducts, setExpandedProducts] = useState({})
@@ -101,8 +115,41 @@ const useOrderListState = ({ orderData, loading, onOrderNumberSubmit, onOrderDat
           placement: 'bottom',
         })
       }
+      setTimeout(() => {
+        handleTabChange(3);
+        handleTabClick(5);
+      }, 2000);
     } catch (err) {
       // Handle error for finding the order
+      toast({
+        title: `${err?.message}`,
+        status: 'error',
+      })
+    }
+  }
+
+  // cancel
+  const handleCancelButton = async (orderId) => {
+    const clickedItem = orderData.find((order) => order.id === orderId)
+    try {
+      const newUpdateOrder = {
+        orderId: clickedItem?.id,
+        orderStatusId: 6,
+      }
+      // Update the order status after processing OrderProducts
+      const updateOrderRes = await updateOrder(newUpdateOrder)
+      // Handle success for updateOrder
+      toast({
+        title: `${updateOrderRes?.data?.message}`,
+        status: 'success',
+        placement: 'bottom',
+      })
+      setTimeout(() => {
+        handleTabChange(4);
+        handleTabClick(6);
+      }, 2000);
+    } catch (err) {
+      // Handle error for updateOrder
       toast({
         title: `${err?.message}`,
         status: 'error',
@@ -127,6 +174,8 @@ const useOrderListState = ({ orderData, loading, onOrderNumberSubmit, onOrderDat
     handleOrderNumberKeyPress,
     formatDate,
     handleConfirmButton,
+    handleCancelButton,
+    handleTabClick,
   }
 }
 

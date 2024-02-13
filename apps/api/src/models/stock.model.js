@@ -10,7 +10,7 @@ export default class Stock extends Model {
    */
   static associate(models) {
     // define association here
-    Stock.belongsTo(models.Product, { as: 'product', foreignKey: 'productId' })
+    Stock.belongsTo(models.Product, { as: 'product', foreignKey: 'productId', paranoid: true })
     Stock.belongsTo(models.Warehouse, { as: 'warehouse', foreignKey: 'warehouseId' })
     Stock.belongsTo(models.Size, { as: 'size', foreignKey: 'sizeId' })
     Stock.belongsTo(models.Colour, { as: 'colour', foreignKey: 'colourId' })
@@ -66,11 +66,26 @@ export const init = (sequelize) => {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: new Date(Date.now()),
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: new Date(Date.now()),
+      },
+      deletedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
     },
     {
       sequelize,
       modelName: 'Stock',
       timestamps: true,
+      paranoid: true,
     },
   )
 }

@@ -24,6 +24,7 @@ function FormSignin() {
     const dispatch = useDispatch()
     const location = useLocation()
     const from = location.state?.from || { pathname: '/' };
+    console.log(from.pathname);
     const formik = useFormik({
       initialValues: {
         email: '',
@@ -33,7 +34,11 @@ function FormSignin() {
       onSubmit: (values, { resetForm }) => {
         dispatch(login(values.email, values.password))
           .then(() => {
-            navigate(`${from.pathname}${from.search}`, { replace: true });
+            if (from.pathname === '/signup' || from.pathname === '/') {
+              navigate('/', { replace: true });
+            } else {
+              navigate(`${from.pathname}${from.search}`, { replace: true });
+            }
           })
           .catch((error) => {
             console.error('Login error:', error)
@@ -115,7 +120,8 @@ function FormSignin() {
               onClick={() => setShowPassword((showPassword) => !showPassword)}
               backgroundColor={'transparent'}
               height={'64px'}
-              _hover={'none'}
+              _hover={''}
+              _active={''}
               color={'#707070'}
             >
               {showPassword ? (

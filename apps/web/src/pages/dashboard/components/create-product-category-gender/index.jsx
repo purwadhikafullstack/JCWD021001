@@ -5,17 +5,16 @@ import {
   Input,
   FormLabel,
   FormErrorMessage,
-  Textarea,
-  InputGroup,
-  InputLeftElement,
   Button,
   VStack,
   useToast,
+  Heading,
 } from '@chakra-ui/react'
 import { useParams } from 'react-router-dom'
-import { Formik, Field, Form, ErrorMessage } from 'formik'
+import { Formik, Field, Form } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios'
+import { API_ROUTE } from '../../../../services/route'
 
 export const CreateProductCategoryGender = (props) => {
   // SET TOAST
@@ -24,7 +23,7 @@ export const CreateProductCategoryGender = (props) => {
 
   //   SCHEMA
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
+    name: Yup.string().trim().required('Name is required').min(1, 'Field cannot be empty'),
   })
   //   SCHEMA
 
@@ -37,18 +36,30 @@ export const CreateProductCategoryGender = (props) => {
   //   CREATE PRODUCT CATEGORY
   const createProductCategory = async (name) => {
     try {
-      const res = await axios.post(`http://localhost:8000/api/product-category`, { name })
+      const token = localStorage.getItem('token')
+      const res = await axios.post(
+        `${API_ROUTE}product-category`,
+        { name },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
       toast({
-        title: `${res?.data?.title}`,
+        title: `${res?.data?.message}`,
         status: 'success',
         placement: 'bottom',
       })
     } catch (err) {
+      const errorMessage =
+        err.response && err.response.data && err.response.data.message
+          ? err.response.data.message
+          : 'An unexpected error occurred'
       toast({
-        title: `${err?.message}`,
+        title: `${errorMessage}`,
         status: 'error',
       })
-      throw err
     }
     //   CREATE PRODUCT CATEGORY
   }
@@ -61,7 +72,14 @@ export const CreateProductCategoryGender = (props) => {
   // HANDLE SUBMIT
   return (
     <Box p={'1em'} bgColor={'white'}>
-      <Text>Create Product Category</Text>
+      <Heading
+        as={'h1'}
+        fontSize={{ base: '1em', md: '1.5em' }}
+        fontWeight={'bold'}
+        justifyContent={'space-between'}
+      >
+        Create Product Category
+      </Heading>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}

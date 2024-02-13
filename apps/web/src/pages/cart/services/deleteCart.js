@@ -1,8 +1,9 @@
 import axios from 'axios'
+import { API_ROUTE } from '../../../services/route';
 
 export const deleteCart = async (cartProductId, onCartUpdated) => {
     try {
-      const response = await axios.delete('http://localhost:8000/api/cart/', {
+      const response = await axios.delete(`${API_ROUTE}/cart`, {
         data: { cartProductIds: cartProductId }
       });
   

@@ -1,4 +1,3 @@
-
 import { Box, Text, Button, Icon, Checkbox } from '@chakra-ui/react'
 import { Table, Thead, Tbody, Tr, Td, TableContainer } from '@chakra-ui/react'
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline'
@@ -13,8 +12,9 @@ const CartProductRow = ({
   handleCheckboxChange,
   handleSelectAllChange,
   productData,
+  stockData,
 }) => {
-  console.log('cartItem', cartItem)
+  console.log('cartItem', stockData)
   return (
     <Box w={{ xl: '1100px', '2xl': '1420px' }}>
       <TableContainer>
@@ -140,34 +140,39 @@ const CartProductRow = ({
                   </Box>
                 </Td>
                 <Td>
-                  <Box
-                    w={'130px'}
-                    display={'flex'}
-                    alignItems={'center'}
-                    justifyContent={'center'}
-                    gap={'8px'}
-                    border={'1px solid #DEDCDC'}
-                    borderRadius={'8px'}
-                  >
-                    <Button
-                      variant="ghost"
-                      // onClick={() => debouncedUpdateCart(item.id, Math.max(1, item.quantity - 1), onCartUpdated)}
-                      onClick={() => handleButtonClick(item.id, -1)}
-                      isDisabled={item?.quantity === 1}
+                  <Box display={'flex'} alignItems={'center'} gap={'8px'}>
+                    <Box
+                      w={'130px'}
+                      display={'flex'}
+                      alignItems={'center'}
+                      justifyContent={'center'}
+                      gap={'8px'}
+                      border={'1px solid #DEDCDC'}
+                      borderRadius={'8px'}
                     >
-                      <Icon as={MinusIcon} color={'brand.lightred'} />
-                    </Button>
-                    <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
-                      {productData[item.id]?.quantity || item?.quantity}
+                      <Button
+                        variant="ghost"
+                        // onClick={() => debouncedUpdateCart(item.id, Math.max(1, item.quantity - 1), onCartUpdated)}
+                        onClick={() => handleButtonClick(item.id, -1)}
+                        isDisabled={item?.quantity === 1}
+                      >
+                        <Icon as={MinusIcon} color={'brand.lightred'} />
+                      </Button>
+                      <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
+                        {productData[item.id]?.quantity || item?.quantity}
+                      </Text>
+                      <Button
+                        variant="ghost"
+                        // onClick={() => debouncedUpdateCart(item.id, Math.min(10, item.quantity + 1), onCartUpdated)}
+                        onClick={() => handleButtonClick(item.id, 1)}
+                        isDisabled={item?.quantity === 10}
+                      >
+                        <Icon as={PlusIcon} color={'brand.lightred'} />
+                      </Button>
+                    </Box>
+                    <Text fontFamily={'body'} fontWeight={'600'} fontSize={'12px'}>
+                      Stock: {stockData[item.id] || 'N/A'} {/* Display stock quantity */}
                     </Text>
-                    <Button
-                      variant="ghost"
-                      // onClick={() => debouncedUpdateCart(item.id, Math.min(10, item.quantity + 1), onCartUpdated)}
-                      onClick={() => handleButtonClick(item.id, 1)}
-                      isDisabled={item?.quantity === 10}
-                    >
-                      <Icon as={PlusIcon} color={'brand.lightred'} />
-                    </Button>
                   </Box>
                 </Td>
                 <Td fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>

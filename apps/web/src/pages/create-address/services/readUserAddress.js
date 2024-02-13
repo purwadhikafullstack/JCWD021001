@@ -27,7 +27,6 @@ export const findOpenCageAndCity = async (latitude, longitude) => {
     try{
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/user-address/address-city?latitude=${latitude}&longitude=${longitude}`)
         const address = response.data
-        console.log(address)
         return address
     } catch (err){
         console.log(err);

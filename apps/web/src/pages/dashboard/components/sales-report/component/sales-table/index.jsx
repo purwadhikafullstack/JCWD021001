@@ -1,25 +1,11 @@
-import {
-  Box,
-  Button,
-  HStack,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-} from '@chakra-ui/react'
+import { Box, HStack, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import toRupiah from '@develoka/angka-rupiah-js'
 import { useEffect, useState } from 'react'
 import { getOrders } from '../../services/readOrders'
 
 export const SalesTable = (props) => {
   const [data, setData] = useState([])
-  {
-    console.log('props?.user?.warehouseId', props?.user?.warehouseId)
-  }
+
   useEffect(() => {
     if (props?.isSuperAdmin) {
       getOrders(props?.pageValue, props?.warehouseValue, props?.startDate, props?.endDate).then(
@@ -31,60 +17,22 @@ export const SalesTable = (props) => {
         (data) => setData(data),
       )
     }
-  }, [props?.startDate, props?.warehouseValue, props?.user?.warehouseId])
+  }, [props?.startDate, props?.warehouseValue, props?.user?.warehouseId, props?.pageValue])
 
-  const renderedTableBody = data?.map((order, index) => {
-    const timestamp = order?.orderDate
-    const dateObject = new Date(timestamp)
-    const formattedDate = new Intl.DateTimeFormat('en-GB', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      timeZone: 'UTC',
-    })?.format(dateObject)
+  const renderedTableBody = data[0]?.map((order, index) => {
     return (
       <Tr key={index} cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'}>
-        <Td>{formattedDate}</Td>
-        <Td>{toRupiah(order?.totalPrice)}</Td>
-        <Td>
-          <HStack>
-            <Button
-              _hover={{
-                bgColor: 'redPure.600',
-              }}
-              fontSize={'.8em'}
-              h={'2.5em'}
-              w={'5em'}
-              bgColor={'redPure.600'}
-              color={'white'}
-              onClick={() => {}}
-            >
-              Download
-            </Button>
-            <Button
-              _hover={{
-                bgColor: 'redPure.600',
-              }}
-              fontSize={'.8em'}
-              h={'2.5em'}
-              w={'5em'}
-              bgColor={'redPure.600'}
-              color={'white'}
-              onClick={() => {}}
-            >
-              Print
-            </Button>
-          </HStack>
-        </Td>
+        <Td>{toRupiah(order?.TotalSales || 0)}</Td>
+        <Td>{order?.TotalQuantity}</Td>
       </Tr>
     )
   })
   return (
     <Box
-      h={'70vh'}
+      maxW={'100%'}
+      boxShadow={'md'}
+      h={'27em'}
+      borderRadius={'.5em'}
       overflowX={'scroll'}
       overflowY={'scroll'}
       sx={{
@@ -106,13 +54,10 @@ export const SalesTable = (props) => {
           <Thead bg={'redPure.600'} position={'relative'}>
             <Tr>
               <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
-                Date
-              </Th>
-              <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
                 Total Sales
               </Th>
               <Th color={'#FEFEFE'} textTransform={'none'} fontSize={'1em'}>
-                Actions
+                Item Sold
               </Th>
             </Tr>
           </Thead>

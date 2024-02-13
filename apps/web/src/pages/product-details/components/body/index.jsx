@@ -5,10 +5,12 @@ import { Carousel } from '../carousel'
 import axios from 'axios'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { createCart } from '../../../cart/services/createCart' // edit by andri
-import { useCart } from '../../../../components/Navbar/components/use-cart' // edit by andri
 import { useToast } from '@chakra-ui/react' // edit by andri
+import { useCart } from '../../../../components/cart-table/service/cartContext' // edit by andri
 import { ColourBox } from '../colour-box'
 import { SizeBox } from '../size-box'
+
+
 
 export const Body = (props) => {
   // Location
@@ -67,7 +69,7 @@ export const Body = (props) => {
   const shouldDisable = !stock ? true : false
 
   // edit by andri
-  // const { cartData, fetchCartCount } = useCart()
+  const { cartData, fetchCartCount } = useCart()
   const toast = useToast()
   const handleAddToCart = async () => {
     const newItem = {
@@ -91,8 +93,8 @@ export const Body = (props) => {
         position: 'top-right',
         duration: 3000,
         isClosable: true,
-      })
-      return
+      });
+      return; 
     }
     try {
       await createCart(newItem)
@@ -142,7 +144,7 @@ export const Body = (props) => {
   }
 
   return (
-    <Box p={'1em'} bgColor={'grey.50'} minH={'100vh'}>
+    <Box p={'1em'} bgColor={'grey.50'} minH={'100vh'} maxW={'100vw'}>
       <VStack align={'sretch'}>
         <Box>
           <Text fontWeight={'bold'} fontSize={{ md: '1.5em' }}>
@@ -203,7 +205,6 @@ export const Body = (props) => {
               <VStack align={'stretch'}>
                 <Flex justifyContent={'space-between'} alignItems={'center'} fontSize={'.9em'}>
                   <Text fontWeight={'bold'}>Size</Text>
-                  <Text color={'redPure.500'}>View Size Chart</Text>
                 </Flex>
                 <HStack>
                   {sizes?.map((size, index) => {

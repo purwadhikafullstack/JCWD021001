@@ -1,13 +1,12 @@
+import axios from 'axios';
 import { useState, useEffect, useCallback } from 'react'
 import { updateCart } from '../../../pages/cart/services/updateCart'
 import { deleteCart } from '../../../pages/cart/services/deleteCart'
 import _debounce from 'lodash/debounce'
 import { useNavigate } from 'react-router-dom'
 import { useToast } from "@chakra-ui/react";
-import { useCart } from '../../navbar/components/use-cart'
-import { productToStock } from '../../../pages/order/services/productToStock'
-
-
+import { useCart } from './cartContext'
+import { API_ROUTE } from '../../../services/route';
 
 const useCartState = (cartData, onCartUpdated) => {
   console.log('cartData', cartData);
@@ -21,6 +20,46 @@ const useCartState = (cartData, onCartUpdated) => {
   const { fetchCartCount } = useCart()
   const navigate = useNavigate()
   const toast = useToast();
+
+   // Function to fetch stock data for a product
+   const getStock = async (productId, sizeId, colourId) => {
+    try {
+      const res = await axios.get(
+        `${API_ROUTE}/stock/stock/qty?productId=${productId}&sizeId=${sizeId}&colourId=${colourId}`,
+      );
+      return res?.data?.data || 0; // Return stock quantity or 0 if not available
+    } catch (err) {
+      console.error('Error fetching stock:', err);
+      return 0; // Return 0 in case of error
+    }
+  };
+
+  // Function to fetch stock data for all products in the cart
+  const fetchStockData = async (cartData) => {
+    const newData = {};
+    for (const cartItem of cartData) {
+      for (const item of cartItem.CartProducts) {
+        const stock = await getStock(item.productId, item.sizeId, item.colourId);
+        newData[item.id] = stock;
+        console.log('lala', item);
+      }
+    }
+    console.log('newData', newData);
+    return newData;
+  };
+
+  // State to store stock data
+  const [stockData, setStockData] = useState({});
+  console.log('stock', stockData);
+
+  // Fetch stock data when cart data changes
+  useEffect(() => {
+    const fetchAndUpdateStockData = async () => {
+      const newData = await fetchStockData(cartData);
+      setStockData(newData);
+    };
+    fetchAndUpdateStockData();
+  }, [cartData]);
 
   const updateProductData = (newProductData) => {
     // Update state dan simpan ke localStorage
@@ -188,7 +227,32 @@ const useCartState = (cartData, onCartUpdated) => {
     // Lakukan navigasi ke rute /cart jika diperlukan
   }
 
+  const disableCheckout = () => {
+    for (const cartItem of cartData) {
+      for (const item of cartItem.CartProducts) {
+        if (item?.quantity && productData[item.id]?.quantity > stockData[item.id]) {
+          return true; // Disable checkout if any product exceeds stock
+        }
+      }
+    }
+    return false; // Enable checkout if no product exceeds stock
+  };
+
   const handleCheckout = async () => {
+    // Check if checkout should be disabled
+    console.log(disableCheckout());
+    if (disableCheckout()) {
+      // Display toast message indicating why checkout is disabled
+      toast({
+        title: 'One or more products exceed stock quantity',
+        status: 'warning',
+        position: 'top-right',
+        duration: 3000,
+        isClosable: true,
+      });
+      return; // Exit early if checkout should be disabled
+    }
+
     const {totalPrice, totalQuantity} = calculateTotalPriceAndQuantity()
     try {
       // Check if selectedCartProducts is not empty
@@ -202,14 +266,9 @@ const useCartState = (cartData, onCartUpdated) => {
           item.CartProducts.some((product) => product.id === productId),
         )
         const selectedProduct = cartItem?.CartProducts.find((item) => item.id === productId)
-        // console.log('sdasd', selectedProduct);
-        // console.log('sdasdd', cartItem);
 
         return {
           productId: selectedProduct?.productId,
-          // price: selectedProduct?.price,
-          // quantity: selectedProduct?.quantity,
-          // priceProduct: selectedProduct?.stocks?.product?.price
         }
       })
       
@@ -234,6 +293,7 @@ const useCartState = (cartData, onCartUpdated) => {
     totalPrice,
     totalQuantity,
     handleCheckout,
+    stockData,
   }
 }
 

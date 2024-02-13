@@ -34,7 +34,6 @@ function EditAdmin({ id, username, email, roleId, onAdminUpdated }) {
     validationSchema: editUserSchema,
     onSubmit: async (values) => {
       try {
-        console.log('Formik Submission Values:', values)
         await editAdmin(id, values.username, values.email, values.password, values.roleId)
         onAdminUpdated()
       } catch (err) {
@@ -52,8 +51,8 @@ function EditAdmin({ id, username, email, roleId, onAdminUpdated }) {
         fontWeight={'700'}
         padding={'4px 16px'}
         w={'72px'}
-        _hover={'none'}
-        _active={'none'}
+        _hover={''}
+        _active={''}
       >
         Edit
       </Button>
@@ -61,7 +60,7 @@ function EditAdmin({ id, username, email, roleId, onAdminUpdated }) {
         <ModalOverlay />
         <form onSubmit={formik.handleSubmit}>
         <ModalContent>
-          <ModalHeader>Edit Address</ModalHeader>
+          <ModalHeader>Edit Admin</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Text fontSize={'16px'} fontWeight={'700'} color={'brand.grey350'} mb={'8px'}>

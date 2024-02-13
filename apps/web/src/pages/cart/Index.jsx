@@ -4,10 +4,7 @@ import LaptopCartTable from '../../components/cart-table'
 // import MobileCartTable from '../../components/cart-table/mobileCartTable'
 import { useState, useEffect } from 'react'
 import { getCart } from './services/getCart'
-import { Navbar } from '../../components/navbar'
-Navbar
-
-
+import { Navbar } from '../../components/Navbar'
 
 const Cart = () => {
   const [cartData, setCartData] = useState([])
@@ -30,13 +27,13 @@ const Cart = () => {
   }, [])
 
   return (
-    <>
+    <Box maxW={'100vw'} minH={'100vh'} overflow={'hidden'} bgColor={'brand.grey100'}>
       <Navbar />
-      <Box bgColor={'brand.grey100'} maxW={'100vw'} minH={'100vh'}>
+      <Box>
         <LaptopCartTable cartData={cartData} onCartUpdated={handleCartUpdated} />
         {/* <MobileCartTable cartData={cartData} onCartUpdated={handleCartUpdated}/> */}
       </Box>
-    </>
+    </Box>
   )
 }
 

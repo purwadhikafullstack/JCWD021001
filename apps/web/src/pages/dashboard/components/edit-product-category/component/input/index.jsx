@@ -54,6 +54,27 @@ export const NewProductInput = (props) => {
   )
 }
 
+export const NewSizeInput = (props) => {
+  return (
+    <Input
+      mt={'.5em'}
+      id={`${props.id}`}
+      placeholder={'Input new sizes'}
+      borderColor={'transparent'}
+      focusBorderColor={'transparent'}
+      bgColor={'grey.50'}
+      value={props?.findById(props?.id)}
+      onFocus={(e) => props?.onFocusInput(props?.id, e.target.value)}
+      onBlur={() => {
+        props?.setInput([{}])
+      }}
+      onChange={(e) => {
+        props?.handleInput(props?.id, e.target.value)
+      }}
+    />
+  )
+}
+
 export const NewGroupInput = (props) => {
   return (
     <>

@@ -13,7 +13,6 @@ import {
 
 import { LockClosedIcon, EyeSlashIcon, EyeIcon } from '@heroicons/react/24/outline'
 import { useFormik } from 'formik'
-
 import { useState } from 'react'
 import { SuccessModal } from '../../services/PopUpModal'
 import { ErrorModal } from '../../services/PopUpModal'
@@ -100,7 +99,7 @@ function FormResetPassword() {
                 onClick={() => setShowPassword((showPassword) => !showPassword)}
                 backgroundColor={'transparent'}
                 height={'64px'}
-                _hover={'none'}
+                _hover={''}
                 color={'#707070'}
               >
                 {showPassword ? (
@@ -158,7 +157,7 @@ function FormResetPassword() {
                 }
                 backgroundColor={'transparent'}
                 height={'64px'}
-                _hover={'none'}
+                _hover={''}
                 color={'#707070'}
               >
                 {showPasswordConfirmation ? (

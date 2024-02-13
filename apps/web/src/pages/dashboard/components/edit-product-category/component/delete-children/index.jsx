@@ -38,6 +38,7 @@ export const DeleteChildren = (props) => {
               cursor={'pointer'}
               onClick={async () => {
                 await deleteProductCategory(props?.id, props.itemId, null, props?.toast)
+                props?.setTrigger(!props?.trigger)
                 onClose()
               }}
             >

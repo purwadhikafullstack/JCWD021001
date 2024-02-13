@@ -1,11 +1,11 @@
 import axios from 'axios'
+import { API_ROUTE } from '../../../services/route'
 
 export const updateCart = async (cartProductId, quantity, onCartUpdated) => {
   try {
-    const response = await axios.patch(`http://localhost:8000/api/cart/${cartProductId}`, {
+    const response = await axios.patch(`${API_ROUTE}/cart/${cartProductId}`, {
       quantity: quantity,
     })
-    console.log('Cart updated successfully:', response.data.data)
     if (onCartUpdated) {
       onCartUpdated()
     }

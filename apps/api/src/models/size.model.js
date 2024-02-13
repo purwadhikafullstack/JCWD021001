@@ -22,12 +22,9 @@ export const init = (sequelize) => {
       name: {
         allowNull: false,
         type: DataTypes.STRING,
-        validate: {
-          isAlphanumeric: true,
-        },
       },
       productCategoryId: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         references: {
           model: {

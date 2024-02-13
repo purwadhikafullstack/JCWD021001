@@ -1,10 +1,7 @@
 import { Box, Button, Flex, Heading, Icon, Text } from '@chakra-ui/react'
-// import CreateUser from './components/modal-create'
 import { BreadCrumbs } from './components/breadcrumbs'
-import { Navbar } from '../../components/navbar'
 import { useEffect, useState } from 'react'
 import Pagination from './components/pagination'
-import Footer from '../../components/Footer/Footer'
 import { getWarehouseList } from './services/getWarehouseList'
 import { SearchWarehouseList } from './components/search-warehouse'
 import FilterUser from './components/filterUser'
@@ -18,13 +15,12 @@ function WarehouseList() {
   const [warehouse, setWarehouse] = useState([])
   const [provinceId, setProvinceId] = useState('')
   const [name, setName] = useState('')
-  const [pageSize, setPageSize] = useState(10)
   const [sortField, setSortField] = useState('name')
   const [sortOrder, setSortOrder] = useState('ASC')
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(0)
   const [totalRecords, setTotalRecords] = useState(0)
-
+  const pageSize = 10
   const fetchWarehouseList = async (page = currentPage) => {
     try {
       const fetchWarehouseData = await getWarehouseList(
@@ -49,7 +45,6 @@ function WarehouseList() {
 
   useEffect(() => {
     if (location.state?.warehouseCreated) {
-        console.log('A warehouse was just created.');
         fetchWarehouseList();
         navigate('/dashboard/warehouse-list', { state: { warehouseCreated: false } });
     }

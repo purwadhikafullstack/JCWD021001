@@ -13,7 +13,7 @@ export const deleteProduct = async (id, productId, toast) => {
   const token = localStorage.getItem('token')
   try {
     await deleteProductImage('', productId)
-    const res = await axios.delete(`${API_ROUTE}/product/${id}`, {
+    const res = await axios.delete(`${API_ROUTE}product/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -24,8 +24,12 @@ export const deleteProduct = async (id, productId, toast) => {
       placement: 'bottom',
     })
   } catch (err) {
+    const errorMessage =
+      err.response && err.response.data && err.response.data.message
+        ? err.response.data.message
+        : 'An unexpected error occurred'
     toast({
-      title: `${err?.message}`,
+      title: `${errorMessage}`,
       status: 'error',
     })
   }

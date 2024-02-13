@@ -1,11 +1,11 @@
-import { Box, Button, Flex, Heading, Input, Select, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { BreadCrumbs } from "./components/breadcrumbs";
 import Footer from "../../components/Footer/Footer";
 import FormCreateAddress from "./components/form/Index";
 import { useEffect, useState } from "react";
 import FormCurrentLocation from "./components/current-location/Index";
 import Map from "./components/map";
-import { Navbar } from "../../components/navbar";
+import { Navbar } from "../../components/Navbar";
 import { findOpenCageAndCity } from "./services/readUserAddress";
 import ModalMapAddressEntry from "./components/modal";
 
@@ -27,7 +27,6 @@ function CreateAddress(){
         })
     }, [])
 
-    console.log("ini latitude", latitude, "ini longitude", longitude, "ini address", address, "ini lat", lat, "ini lng", lng)
 
     useEffect(() => {
         const fetchAddress = async () => {
@@ -57,7 +56,8 @@ function CreateAddress(){
     return (
         <Box bg={'#F1F1F1'}
         height={'100%'}
-        maxW={'100vw'}>
+        maxW={'100vw'}
+        overflowX={'hidden'}>
             <Navbar/>
             <Box padding={{base: '0px 10px', md:'0px 100px'}}
              marginBottom={'150px'}>

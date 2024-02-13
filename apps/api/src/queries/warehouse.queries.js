@@ -124,11 +124,33 @@ export const findUnassignedAdminQuery = async () => {
 
 export const editWarehouseQuery = async (id, location, cityId, postalCode, latitude, longitude, name) => {
   try {
-    await Warehouse.update({ id, location, cityId, postalCode, latitude, longitude, name }, { where: { id: id } })
+    await Warehouse.update({ name }, {
+      where: { id: id }
+    });
+
+    const warehouse = await Warehouse.findByPk(id);
+    if (!warehouse) {
+      throw new Error('Warehouse not found');
+    }
+    await WarehouseAddress.update({
+      location, 
+      cityId, 
+      postalCode, 
+      latitude, 
+      longitude
+    }, {
+      where: { id: warehouse.warehouseAddressId }
+    });
+
+    return { message: 'Warehouse and address updated successfully' };
+
   } catch (err) {
-    throw err
+    throw err;
   }
 }
+
+
+
 
 export const assignAdminWarehouseQuery = async (adminIds, warehouseId) => {
   try {

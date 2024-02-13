@@ -9,19 +9,37 @@ import {
   Text,
   Link,
 } from '@chakra-ui/react'
-import model from '../../assets/images/signup-model.jpeg'
+import model from '../../assets/images/signin-model.jpeg'
 import { gmail } from '../../assets/Icons/Icons'
 import logo from '../../assets/images/logo.png'
 import { signInWithGoogle } from '../../firebase'
 import FormSignin from './form-signin'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { loginSuccess, setUser } from '../../redux/reducer/authReducer'
 
-function Signin({ setOpenTab }) {
+function Signin() {
+  const dispatch = useDispatch()
+  const navigate= useNavigate()
+  const location = useLocation()
+  const from = location.state?.from || { pathname: '/' };
   const onLoginWithGoogle = async () => {
     try {
-      const result = await signInWithGoogle()
-      if (result === 'signin with google success') {
-        setOpenTab(3)
-      }
+      const result = await signInWithGoogle();
+    
+    const userPayload = {
+      id: result.data.data.user.id, 
+      username: result.data.data.user.username,
+      email: result.data.data.user.email,
+      roleId: result.data.data.user.roleId,
+      isVerified: result.data.data.user.isVerified,
+      avatar: result.data.data.user.avatar,
+      warehouseId: result.data.data.user.warehouseId,
+    };
+
+    dispatch(setUser(userPayload));
+    dispatch(loginSuccess());
+    navigate(`${from.pathname}${from.search}`, { replace: true });
     } catch (error) {
       console.log(error)
     }
@@ -91,12 +109,11 @@ function Signin({ setOpenTab }) {
                 padding={{ base: '2px', md: '8px' }}
                 borderRadius={{ base: '6px', md: '12px' }}
                 onClick={onLoginWithGoogle}
-                _hover={'#brand.redhover'}
+                _hover={{color: '#brand.redhover'}}
               >
                 <Icon as={gmail} boxSize={{ base: '30px', md: '38px' }} color={'white'} />
               </Button>
             </Flex>
-
             <Box mt={'20px'}>
               <Text fontSize={{ md: '20px' }} textAlign={'center'}>
                 Don't have account?{' '}

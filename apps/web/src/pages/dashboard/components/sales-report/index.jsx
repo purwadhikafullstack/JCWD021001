@@ -1,25 +1,15 @@
-import {
-  Box,
-  Flex,
-  HStack,
-  Heading,
-  Select,
-  Text,
-  VStack,
-  useStepContext,
-  useToast,
-} from '@chakra-ui/react'
+import { Box, Flex, HStack, Heading, Select, Text, VStack, useToast } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ReportTable } from './component/table'
 import { getMonthDates } from './services/utils'
 import { MonthSelect } from './component/month-select'
 import {
-  getAbbreviatedMonth,
   getCurrentYear,
   getFirstDateOfMonthByAbbreviation,
 } from './component/month-select/utils/services'
 import { getWarehouses } from '../form-mutation/services/readWarehouse'
+import { PaginationList } from '../product-list/components/pagination-list'
 
 export const SalesReport = (props) => {
   // LOCATION
@@ -91,12 +81,30 @@ export const SalesReport = (props) => {
     )
   })
 
+  // Toggle Box Colour
+  const [boxToggle, setBoxToggle] = useState({ 1: true })
+
+  // Handle Toggle
+  const changeBoxToggle = (id) => {
+    if (pageValue != id) {
+      setBoxToggle((set) => ({
+        [id]: !set[id],
+        [!id]: set[id],
+      }))
+    }
+  }
+
   return (
-    <Box p={'1em'} h={'100%'} w={'100%'}>
+    <Box p={'1em'} w={'100%'} minH={'100vh'}>
       <Flex flexDir={'column'} justifyContent={'space-between'} h={'100%'}>
         <VStack align={'stretch'}>
           <Flex alignItems={'center'} justifyContent={'space-between'}>
-            <Heading as={'h1'} fontSize={'1.5em'}>
+            <Heading
+              as={'h1'}
+              fontSize={{ base: '1em', md: '1.5em' }}
+              fontWeight={'bold'}
+              justifyContent={'space-between'}
+            >
               Sales Report
             </Heading>
             <HStack>
@@ -107,9 +115,11 @@ export const SalesReport = (props) => {
                   id={'recipientWarehouseAddress'}
                   name={'recipientWarehouseAddress'}
                   type={'text'}
-                  borderColor={'transparent'}
-                  focusBorderColor={'transparent'}
-                  bgColor={'grey.50'}
+                  border={'2px solid lightgray'}
+                  focusBorderColor="lightgray !important"
+                  focusShadow="none !important"
+                  _hover={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
+                  _focus={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
                   onChange={async (e) => {
                     setWarehouseId(e?.target?.value)
                     {
@@ -127,6 +137,7 @@ export const SalesReport = (props) => {
               <MonthSelect
                 isSuperAdmin={props?.isSuperAdmin}
                 warehouseValue={warehouseValue}
+                warValue={warehouseValue}
                 monthValue={monthValue}
                 setMonth={setMonth}
                 pathName={pathName}
@@ -196,6 +207,16 @@ export const SalesReport = (props) => {
             endDate={endDate}
           />
         </VStack>
+        <PaginationList
+          boxToggle={boxToggle}
+          changeBoxToggle={changeBoxToggle}
+          location={location}
+          pathName={pathName}
+          pageValue={pageValue}
+          warValue={warehouseValue}
+          monthValue={monthValue}
+          categoryValue={categoryValue}
+        />
       </Flex>
     </Box>
   )
