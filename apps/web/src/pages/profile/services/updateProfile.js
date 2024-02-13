@@ -15,6 +15,7 @@ export const updateUsername = async (userId, username) => {
         },
       },
     )
+    toast.success("Username updated successfully")
     return data?.data
   } catch (err) {
     const errorMessage =
@@ -61,6 +62,7 @@ export const editPassword = async (userId, password) => {
         },
       },
     )
+    toast.success("Password updated successfully")
   } catch (err) {
     const errorMessage =
       err.response && err.response.data && err.response.data.message
