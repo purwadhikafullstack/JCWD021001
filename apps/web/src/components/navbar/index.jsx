@@ -75,7 +75,7 @@ export const Navbar = (props) => {
             {!isDashboardPage && <SearchModal />}
             <HStack fontSize={'1.5em'} spacing={'.5em'} position="relative">
               <Box>
-                <ShoppingCartBox cartData={cartData} cartCount={cartCount} />
+                {!isDashboardPage && <ShoppingCartBox cartData={cartData} cartCount={cartCount} />}
               </Box>
             </HStack>
             <HStack fontSize={'1.5em'} spacing={'.5em'} position="relative">
