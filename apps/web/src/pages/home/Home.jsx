@@ -1,52 +1,51 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
-import { PlusIcon } from '@heroicons/react/24/outline'
-import { StarIcon } from '@heroicons/react/24/solid'
 import CategoryList from './components/category-list'
-// import './Home.css';
 import { Navbar } from '../../components/Navbar'
 import Footer from '../../components/Footer/Footer'
-import { Box, Flex, Text, Image, Link, Button, Icon, Grid } from '@chakra-ui/react'
+import { Box, Flex, Text, Link } from '@chakra-ui/react'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/navigation'
-import { useNavigate } from 'react-router-dom'
-import { getProducts } from './services/readProducts'
+import { getProducts, getProductsDua } from './services/readProducts'
 import { ProductCard } from './components/productCard'
 import NewArrival from './components/new-arrival'
 import SwiperBox from './components/swiper'
 
-// import './Home.css';
 
 function Home() {
   const [products, setProducts] = useState([])
-  const bestDeals = async () => {
-    try {
-      await axios.get('http:localhost:8000/product')
-    } catch (err) {
-      console.log(err)
-    }
-  }
-  const navigate = useNavigate()
+  const [productsDua, setProductsDua] = useState([])
 
-  const fetchData = async (page, pageSize) => {
+  const fetchData = async (page, pageSize, orderBy, sortBy) => {
     try {
-      const fetchProducts = await getProducts(page, pageSize)
+      const fetchProducts = await getProducts(page, pageSize, orderBy, sortBy)
       setProducts(fetchProducts)
     } catch (err) {
       console.log(err.message)
     }
   }
-  console.log(products)
   useEffect(() => {
     fetchData()
+  }, [])
+
+  const fetchDataDua = async (page, pageSize, orderBy, sortBy) => {
+    try {
+      const fetchProducts = await getProductsDua(page, pageSize, orderBy, sortBy)
+      setProductsDua(fetchProducts)
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+  useEffect(() => {
+    fetchDataDua()
   }, [])
 
   const renderedProducts = products?.rows?.map((product, index) => {
     return <ProductCard {...product} key={index} />
   })
-
-  console.log('rendered product', renderedProducts)
+  const renderedProductsDua = productsDua?.rows?.map((product, index) => {
+    return <ProductCard {...product} key={index} />
+  })
 
   return (
     <Box width={'100vw'} overflow={'hidden'}>
@@ -103,7 +102,7 @@ function Home() {
               wrap={{ base: 'wrap', md: 'nowrap' }}
               borderRadius={'12px'}
             >
-              {renderedProducts}
+              {renderedProductsDua}
             </Flex>
             
           </Box>

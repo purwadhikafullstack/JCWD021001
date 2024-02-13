@@ -13,7 +13,6 @@ import {
 
 import { useEffect, useState } from 'react'
 import { useFormik } from 'formik'
-import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { createWarehouse } from '../../../services/createWarehouse'
 import { getCity, getProvinceWarehouse } from '../../../services/getWarehouseList'
@@ -61,7 +60,6 @@ function FormCreateWarehouse({ address, lat, lng }) {
       fetchCityData()
     }, [selectedProvince, address])
 
-  console.log('ini lat form', lat, 'ini lng form', lng)
   const formik = useFormik({
     initialValues: {
       location: '',
@@ -72,7 +70,6 @@ function FormCreateWarehouse({ address, lat, lng }) {
     validationSchema: warehouseSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
-        console.log('Formik Submission Values:', values)
         await createWarehouse(
           values.location,
           values.cityId,

@@ -4,9 +4,8 @@ import {
   Flex,
   Image,
   Text,
-  
 } from '@chakra-ui/react'
-import model from '../../assets/images/signup-model.jpeg'
+import model from '../../assets/images/reset-password.jpeg'
 import logo from '../../assets/images/logo.png'
 import FormResetPassword from './components/form-reset-password'
 function ResetPassword() {

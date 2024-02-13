@@ -44,10 +44,7 @@ export const SuccessModal = ({ isOpen, onClose }) => {
   )
 }
 
-// ErrorModal.propTypes = {
-//   isOpen: PropTypes.bool.isRequired,
-//   onClose: PropTypes.func.isRequired,
-// };
+
 export const ErrorModal = ({ isOpen, onClose }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={{base: 'xs', md: 'sm'}} isCentered>

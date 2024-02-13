@@ -1,19 +1,16 @@
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalOverlay, useDisclosure, Text } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
-// other imports remain the same
+import { useEffect } from 'react';
+
 
 function ModalNotif() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // useEffect hook to open the modal when the component mounts
   useEffect(() => {
     onOpen();
-  }, [onOpen]); // Dependency array ensures this only runs once when the component mounts
+  }, [onOpen]);
 
   return (
     <>
-      {/* Remove the button that manually opens the modal, as it's not needed */}
-      
       <Modal isOpen={isOpen} onClose={onClose} size={{base: 'xs', md: 'md'}}>
         <ModalOverlay />
         <ModalContent>

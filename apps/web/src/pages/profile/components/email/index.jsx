@@ -12,8 +12,6 @@ import {
   FormControl,
   FormLabel,
   Text,
-  Select,
-  Link,
   FormErrorMessage,
   Icon,
   Flex,
@@ -58,7 +56,7 @@ function UpdateEmail() {
         w={'100%'}
         display="flex"
         justifyContent="space-between"
-        _hover={{ color: 'brand.lightred', bg: 'none' }}
+        _hover={{ color: 'brand.lightred', bg: '' }}
         alignItems="center"
         bg={'transparent'}
         paddingLeft={'20px'}
@@ -96,7 +94,6 @@ function UpdateEmail() {
                       <FormLabel fontSize={{ base: '12px', md: '16px' }}>Email</FormLabel>
                       <Input
                         name="email"
-                        // placeholder='Enter email'
                         type="email"
                         value={formik.values.email}
                         onChange={formik.handleChange}
@@ -140,7 +137,7 @@ function UpdateEmail() {
                 <>
                   <Button
                     onClick={() => {
-                      dispatch(logoutSuccess()), navigate('/verify-new-email')
+                      dispatch(logoutSuccess()), navigate('/new-unverified-email')
                     }}
                   >
                     Verify your email

@@ -11,10 +11,8 @@ import {
 } from '@chakra-ui/react'
 import { UserCircleIcon, EnvelopeIcon } from '@heroicons/react/24/outline'
 import { useFormik } from 'formik'
-
 import { SuccessModal, ErrorModal } from '../../services/PopUpModal'
 import { useState } from 'react'
-
 import { BeatLoader } from 'react-spinners'
 import { registerFunction } from '../../services/createUser'
 import { signupScheme } from '../../services/validation'

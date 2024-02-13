@@ -1,5 +1,5 @@
 
-import { Box, Flex, Text, Image, Link, Button, Icon, Grid } from '@chakra-ui/react'
+import { Box, Text, Image} from '@chakra-ui/react'
 import swiper1 from '../../../../assets/images/homepage-images/swiper-1.jpeg'
 import swiper2 from '../../../../assets/images/homepage-images/swiper-2.jpeg'
 import swiper3 from '../../../../assets/images/homepage-images/swiper-3.jpeg'

@@ -14,7 +14,7 @@ export const BreadCrumbs = () => {
           <BreadcrumbLink color={'brand.lightred'}
           fontWeight={'700'}
           fontSize={'12px'}
-          _hover={'brand.lightred'}
+          _hover={{color: 'brand.lightred'}}
           href='/dashboard'>
               Dashboard
           </BreadcrumbLink>

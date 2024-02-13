@@ -7,9 +7,7 @@ import {
   Text,
   Tbody,
   Box,
-  Icon,
   Button,
-  Avatar,
   Flex,
   Menu,
   MenuButton,
@@ -21,9 +19,7 @@ import DeleteWarehouse from '../delete-warehouse'
 import WarehouseAdmin from '../warehouse-admin-list'
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import AssignAdmin from '../assign-admin'
-import { useEffect, useState } from 'react'
-import { getWarehouseAdmin } from '../../services/getWarehouseList'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 function TableWarehouse({ warehouse, onWarehouseUpdated, setSortField, setSortOrder }) {
   const navigate = useNavigate()
@@ -119,16 +115,11 @@ function TableWarehouse({ warehouse, onWarehouseUpdated, setSortField, setSortOr
                       fontWeight={'700'}
                       padding={'4px 16px'}
                       w={'72px'}
-                      _hover={'none'}
-                      _active={'none'}
+                      _hover={''}
+                      _active={''}
                     >
                       Edit
                     </Button>
-                    {/* <EditWarehouse
-                      id={warehouse.id}
-                      name={warehouse.name}
-                      onWarehouseUpdated={onWarehouseUpdated}
-                    /> */}
                     <DeleteWarehouse id={warehouse.id} onDeletedWarehouse={onWarehouseUpdated} />
                   </Box>
                 </Td>

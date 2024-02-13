@@ -9,10 +9,14 @@ function NewArrival() {
   return (
     <>
       <Flex className="new-arrival" gap={'20px'}>
-        <Flex width={'50%'} position={'relative'}
-        onClick={() => {
-          navigate('/p/women')
-        }}>
+        <Flex
+          width={'50%'}
+          position={'relative'}
+          cursor={'pointer'}
+          onClick={() => {
+            navigate('/p/women')
+          }}
+        >
           <Image
             src={newarrival1}
             objectFit={'cover'}
@@ -44,9 +48,14 @@ function NewArrival() {
           </Box>
         </Flex>
         <Flex gap={'20px'} flexWrap={'wrap'} width={'50%'}>
-          <Box position={'relative'} width={'100%'} onClick={() => {
-          navigate('/p/men')
-        }}>
+          <Box
+            position={'relative'}
+            width={'100%'}
+            cursor={'pointer'}
+            onClick={() => {
+              navigate('/p/men')
+            }}
+          >
             <Image
               src={newarrival2}
               objectFit={'cover'}
@@ -78,10 +87,14 @@ function NewArrival() {
             </Box>
           </Box>
 
-          <Box position={'relative'} width={'100%'}
-          onClick={() => {
-            navigate('/p/kids')
-          }}>
+          <Box
+            position={'relative'}
+            width={'100%'}
+            cursor={'pointer'}
+            onClick={() => {
+              navigate('/p/kids')
+            }}
+          >
             <Image
               src={newarrival3}
               objectFit={'cover'}

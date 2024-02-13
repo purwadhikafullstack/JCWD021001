@@ -22,8 +22,6 @@ function UserAddress() {
     fetchUserData()
   }, [user.id])
 
-  console.log('ini main address', mainAddress)
-
   return (
     <>
       <Flex
@@ -36,7 +34,7 @@ function UserAddress() {
         cursor={'pointer'}
         paddingLeft={'20px'}
         mt={'16px'}
-        _hover={{ color: 'brand.lightred', bg: 'none' }}
+        _hover={{ color: 'brand.lightred', bg: '' }}
         onClick={() => navigate('/manage-address')}
       >
         {mainAddress ? (

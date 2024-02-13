@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Flex,
-  Icon,
   Menu,
   MenuButton,
   MenuItem,
@@ -98,8 +97,8 @@ function AddressList() {
                   fontSize={{base: '12px', md:'14px'}}
                   fontWeight={'700'}
                   padding={'12px 16px'}
-                  _hover={'none'}
-                  _active={'none'}
+                  _hover={''}
+                  _active={''}
                 >
                   <Text>•••</Text>
                 </MenuButton>

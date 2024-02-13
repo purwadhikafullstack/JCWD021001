@@ -61,7 +61,6 @@ function FormCurrentLocation({ address, lat, lng }) {
     fetchCityData()
   }, [selectedProvince, address])
 
-  console.log('ini lat form', lat, 'ini lng form', lng)
   const formik = useFormik({
     initialValues: {
       specificAddress: '',
@@ -73,7 +72,6 @@ function FormCurrentLocation({ address, lat, lng }) {
     validationSchema: addressSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
-        console.log('Formik Submission Values:', values)
         await createUserAddress(
           user.id,
           values.specificAddress,

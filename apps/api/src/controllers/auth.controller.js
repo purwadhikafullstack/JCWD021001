@@ -6,6 +6,8 @@ import {
   forgotPasswordService,
   resetPasswordService,
   googleLoginService,
+  newUnverifiedEmailService,
+  verifyNewEmailService,
 } from '../services/auth.services'
 
 //POST USER REGISTRATION
@@ -95,6 +97,7 @@ export const resetPasswordController = async (req, res) => {
   try {
     const { token } = req.query
     const { password } = req.body
+    console.log("ini token", token, "ini password", password);
     const result = await resetPasswordService(token, password)
     return res.status(200).json({
       message: 'Success',
@@ -115,5 +118,40 @@ export const googleLoginController = async (req, res) => {
     })
   } catch (err){
     return res.status(500).send(err.message)
+  }
+}
+
+export const newUnverifiedEmailController = async (req, res) => {
+  try {
+    const { email } = req.body
+    const result = await newUnverifiedEmailService(String(email))
+    return res.status(200).json({
+      message: 'Success',
+      data: result,
+    })
+  } catch (err) {
+    return res.status(500).send(err.message)
+  }
+}
+
+export const verifyNewEmailController = async (req, res) => {
+  try {
+    const token = req.query.token
+    if (typeof token !== 'string') {
+      return res.status(400).json({
+        message: 'Invalid token format',
+      })
+    }
+    const { password } = req.body
+    const result = await verifyNewEmailService(token, password)
+    return res.status(200).json({
+      message: 'Success',
+      data: result,
+    })
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({
+      message: err.message,
+    })
   }
 }

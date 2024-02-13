@@ -1,4 +1,4 @@
-import { AbsoluteCenter, Box, Button, Flex, Icon, Input, InputGroup, Image, Avatar } from '@chakra-ui/react'
+import { AbsoluteCenter, Box, Button, Flex,  Input, InputGroup, Image, Avatar } from '@chakra-ui/react'
 import axios from 'axios'
 import { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -39,7 +39,6 @@ function UploadAvatar() {
           },
         },
       )
-      console.log(formData);
       dispatch(setUser(data?.data));
       toast.success(data?.message)
     } catch (err) {

@@ -1,4 +1,4 @@
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Flex, HStack, Icon, Text } from '@chakra-ui/react';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Icon } from '@chakra-ui/react';
 import { HomeIcon } from '@heroicons/react/24/outline';
 import { ChevronRightIcon } from '@chakra-ui/icons'
 export const BreadCrumbs = () => {
@@ -14,7 +14,7 @@ export const BreadCrumbs = () => {
           <BreadcrumbLink color={'brand.lightred'}
           fontWeight={'700'}
           fontSize={'12px'}
-          _hover={'brand.lightred'}
+          _hover={{color: 'brand.lightred'}}
           href='/dashboard'>
               Dashboard
           </BreadcrumbLink>

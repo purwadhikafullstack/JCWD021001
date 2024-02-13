@@ -23,8 +23,8 @@ function DeleteUser ({id, onDeletedUser}){
         fontWeight={'700'}
         padding={'4px 16px'}
         w={'72px'}
-        _hover={'none'}
-        _active={'none'}
+        _hover={''}
+        _active={''}
       >
         Delete
       </Button>
@@ -34,7 +34,7 @@ function DeleteUser ({id, onDeletedUser}){
         <ModalContent>
         <Flex flexDir={'column'} justify={'center'} align={'center'} margin={'24px 24px 8px'}>
         <ModalBody fontWeight={'700'}>
-            Are you sure you want to delete this admin?
+            Are you sure you want to delete this user?
         </ModalBody>
         <ModalFooter display={'flex'} flexDir={'column'} gap={'10px'}>
             <Button bg={'brand.lightred'}

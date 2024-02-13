@@ -10,7 +10,7 @@ import {
   Link
 } from '@chakra-ui/react'
 import model from '../../assets/images/signup-model.jpeg'
-import { instagram, gmail } from '../../assets/Icons/Icons'
+import { gmail } from '../../assets/Icons/Icons'
 import logo from '../../assets/images/logo.png'
 import { signInWithGoogle } from '../../firebase'
 import SignupForm from './components/signup-form'
@@ -24,9 +24,9 @@ function Signup() {
   const onLoginWithGoogle = async () => {
     try {
       const result = await signInWithGoogle();
-    // Ensure the structure of the user object matches what your reducer expects
+    
     const userPayload = {
-      id: result.data.data.user.id, // Make sure these fields exist
+      id: result.data.data.user.id, 
       username: result.data.data.user.username,
       email: result.data.data.user.email,
       roleId: result.data.data.user.roleId,
@@ -109,7 +109,7 @@ function Signup() {
                 padding={{base: '2px', md:'8px'}}
                 borderRadius={{base: '6px', md: '12px'}}
                 onClick={onLoginWithGoogle}
-                _hover={'#brand.redhover'}
+                _hover={{color: '#brand.redhover'}}
               >
                 <Icon as={gmail} boxSize={'38px'} color={'white'} />
               </Button>

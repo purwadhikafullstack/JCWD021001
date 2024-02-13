@@ -22,6 +22,7 @@ function CategoryList() {
             bg={'transparent'}
             position={'relative'}
             flexShrink={'0'}
+            cursor={'pointer'}
             onClick={() => {
               navigate('/p/women')
             }}
@@ -64,6 +65,7 @@ function CategoryList() {
             bg={'transparent'}
             position={'relative'}
             flexShrink={'0'}
+            cursor={'pointer'}
             onClick={() => {
               navigate('/p/men')
             }}
@@ -106,6 +108,7 @@ function CategoryList() {
             bg={'transparent'}
             position={'relative'}
             flexShrink={'0'}
+            cursor={'pointer'}
             onClick={() => {
               navigate('/p/kids')
             }}
@@ -148,6 +151,7 @@ function CategoryList() {
             bg={'transparent'}
             position={'relative'}
             flexShrink={'0'}
+            cursor={'pointer'}
             onClick={() => {
               navigate('/p/baby')
             }}

@@ -63,7 +63,7 @@ function UpdatePassword() {
         alignItems="center"
         bg={'transparent'}
         fontWeight={'500'}
-        _hover={{ color: 'brand.lightred', bg: 'none' }}
+        _hover={{ color: 'brand.lightred', bg: '' }}
         paddingLeft={'0'}
         cursor={'pointer'}
         onClick={onOpen}

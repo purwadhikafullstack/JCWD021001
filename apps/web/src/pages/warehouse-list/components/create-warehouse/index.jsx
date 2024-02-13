@@ -1,8 +1,6 @@
-import { Box, Button, Flex, Heading, Input, Select, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import FormCreateWarehouse from "./form/Index";
-// import FormWarehouse from "./form-disabled/Index";
-import { BreadCrumbs } from "../breadcrumbs";
 import { findOpenCageAndCity } from "../../services/getWarehouseList";
 import MapWarehouse from "./map";
 import ModalNotif from "./modal";
@@ -29,7 +27,6 @@ function CreateWarehouse(){
         })
     }, [])
 
-    console.log("ini latitude", latitude, "ini longitude", longitude, "ini address", address, "ini lat", lat, "ini lng", lng)
 
     useEffect(() => {
         const fetchAddress = async () => {
@@ -58,7 +55,8 @@ function CreateWarehouse(){
 
     return (
         <Box bg={'#F1F1F1'}
-        height={'100%'}>
+        height={'100%'}
+        overflowX={'hidden'}>
             <Navbar/>
             <Box padding={{base: '0px 10px', md:'0px 100px'}}
              marginBottom={'150px'}>

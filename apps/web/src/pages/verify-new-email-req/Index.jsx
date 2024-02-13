@@ -13,7 +13,7 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react'
-import model from '../../assets/images/reset-password.jpeg'
+import model from '../../assets/images/signup-model.jpeg'
 import { EnvelopeIcon } from '@heroicons/react/24/outline'
 import { useFormik } from 'formik'
 import logo from '../../assets/images/logo.png'
@@ -24,7 +24,7 @@ import { BeatLoader } from 'react-spinners'
 import { emailSchema } from './services/validation'
 import { createRequestReset } from './services/createRequestResetPassword'
 
-function RequestPasswordReset() {
+function VerifyNewEmailReq() {
   const {
     isOpen: isSuccessModalOpen,
     onOpen: openSuccessModal,
@@ -91,7 +91,6 @@ function RequestPasswordReset() {
           alignItems={{ base: 'flex-start', md: 'center' }}
           alignContent={'center'}
           width={{ md: '50%' }}
-          margin={{ md: '50' }}
           padding={{ base: '2em', md: '0' }}
           bg={'white'}
           h={'100%'}
@@ -99,17 +98,17 @@ function RequestPasswordReset() {
         >
           <Box width={'450px'}>
             <Text
-              fontWeight={'800'}
+              // fontWeight={'700'}
               color={'brand.lightred'}
               textAlign={'center'}
-              fontSize={{ base: '18px', md: '42px' }}
-              marginBottom={'40px'}
+              fontSize={{ base: '16px', md: '24px' }}
+              marginBottom={'28px'}
             >
-              RESET PASSWORD
+              Enter your new email to verify
             </Text>
             <form onSubmit={formik.handleSubmit}>
               <FormControl
-                isInvalid={!!(formik.touched.username && formik.errors.username)}
+                isInvalid={!!(formik.touched.email && formik.errors.email)}
                 marginBottom={'32px'}
               >
                 <InputGroup marginBottom={'8px'}>
@@ -142,8 +141,8 @@ function RequestPasswordReset() {
                     </Flex>
                   </InputLeftElement>
                 </InputGroup>
-                {formik.touched.username && formik.errors.username && (
-                  <FormErrorMessage>{formik.errors.username}</FormErrorMessage>
+                {formik.touched.email && formik.errors.email && (
+                  <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
                 )}
               </FormControl>
               {loading ? (
@@ -195,4 +194,4 @@ function RequestPasswordReset() {
   )
 }
 
-export default RequestPasswordReset
+export default VerifyNewEmailReq

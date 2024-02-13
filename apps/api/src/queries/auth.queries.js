@@ -158,12 +158,14 @@ export const resetPasswordQuery = async (email, password, token) => {
 
 export const checkTokenUsageQuery = async (token) => {
   try{
-    await ResetToken.findOne({
+    const res = await ResetToken.findOne({
       where: { 
         token: token,
         isUsed: true 
       }
     })
+
+    return res
   } catch (err){
     throw err
   }
