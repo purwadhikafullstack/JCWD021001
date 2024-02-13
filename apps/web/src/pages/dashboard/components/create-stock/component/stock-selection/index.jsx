@@ -50,6 +50,11 @@ export const StockSelection = (props) => {
               <Tr cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'}>
                 <Td>
                   <Select
+                    border={'2px solid lightgray'}
+                    focusBorderColor="lightgray !important"
+                    focusShadow="none !important"
+                    _hover={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
+                    _focus={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
                     w={'8em'}
                     placeholder={'Select Size'}
                     onChange={(e) => {
@@ -67,6 +72,11 @@ export const StockSelection = (props) => {
                 </Td>
                 <Td>
                   <Select
+                    border={'2px solid lightgray'}
+                    focusBorderColor="lightgray !important"
+                    focusShadow="none !important"
+                    _hover={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
+                    _focus={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
                     w={'6em'}
                     placeholder={'Select Colour'}
                     onChange={(e) => {
@@ -84,6 +94,11 @@ export const StockSelection = (props) => {
                 </Td>
                 <Td alignItems={'center'}>
                   <Input
+                    border={'2px solid lightgray'}
+                    focusBorderColor="lightgray !important"
+                    focusShadow="none !important"
+                    _hover={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
+                    _focus={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
                     w={'3.5em'}
                     type="number"
                     value={props?.stockValue}

@@ -84,7 +84,7 @@ export const Product = () => {
   }
 
   return (
-    <Box minH={'100vh'} maxW={'100vw'} overflowX={'auto'}>
+    <Box minH={'100vh'} w={'100%'} overflowX={'scroll'}>
       <Navbar
         collapseSideBar={collapseSideBar}
         setCollapseSideBar={setCollapseSideBar}
