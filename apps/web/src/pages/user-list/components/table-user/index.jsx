@@ -19,7 +19,7 @@ function TableUser({user, onUserUpdated, setSortFiled, setSortOrder}) {
 
   return (
     <>
-      <TableContainer maxWidth={'1163px'} borderRadius={'8px'}>
+      <TableContainer maxWidth={{base: '100vw', md: '80vw'}} borderRadius={'8px'}>
         <Table size={{base: 'sm', md:'md'}}>
           <Thead bgColor={'#CD0244'}>
             <Tr>
