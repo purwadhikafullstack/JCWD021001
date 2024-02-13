@@ -11,7 +11,8 @@ import { getProductCategories } from '../services/readProductCategory'
 export const Product = () => {
   // useLocation to know url route
   const location = useLocation()
-
+  const queryParams = new URLSearchParams(location.search)
+  const sortValue = queryParams.get('so')
   const { pathname } = location
   const { gender, group, category } = useParams()
   const breadCrumbs = [
@@ -44,7 +45,6 @@ export const Product = () => {
   const [productGender, setProductGender] = useState('')
   const [productGroup, setProductGroup] = useState('')
   const [productCategory, setProductCategory] = useState('')
-
   const [sortBy, setSortBy] = useState('name')
   const [orderBy, setOrderBy] = useState('ASC')
   const [pageSize, setPageSize] = useState(10)
@@ -52,6 +52,7 @@ export const Product = () => {
   useEffect(() => {
     getProduct(productName, gender, group, category, setProducts, sortBy, orderBy, 1, pageSize)
   }, [
+    sortValue,
     productName,
     productGender,
     productGroup,
@@ -83,13 +84,13 @@ export const Product = () => {
   }
 
   return (
-    <Box minH={'100vh'}>
+    <Box minH={'100vh'} maxW={'100vw'} overflowX={'auto'}>
       <Navbar
         collapseSideBar={collapseSideBar}
         setCollapseSideBar={setCollapseSideBar}
         toggleSideBar={toggleSideBar}
       />
-      <Box display={{ base: collapseSideBar ? 'block' : 'none', md: 'none' }}>
+      <Box display={{ base: collapseSideBar ? 'block' : 'none', md: 'none' }} maxW={'100%'}>
         <SideBar
           gender={gender}
           group={group}

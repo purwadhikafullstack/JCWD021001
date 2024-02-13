@@ -25,8 +25,7 @@ export const createMutation = async (
         },
       },
     )
-    const mutation = res?.data
-    return mutation
+    return res
   } catch (err) {
     throw err
   }
@@ -46,8 +45,7 @@ export const approveMutation = async (mutationId, isAccepted) => {
         },
       },
     )
-    const result = res?.data
-    return result
+    return res
   } catch (err) {
     throw err
   }

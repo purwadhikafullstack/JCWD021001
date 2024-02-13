@@ -75,7 +75,7 @@ export const FormMutation = (props) => {
         stockId,
       )
       toast({
-        title: `${res?.message}`,
+        title: `${res?.data?.message}`,
         status: 'success',
         placement: 'bottom',
       })
@@ -179,7 +179,12 @@ export const FormMutation = (props) => {
     <Box p={'1em'} bgColor={'white'} minH={'100vh'}>
       <Flex dir={'column'} justifyContent={'space-between'}>
         <VStack align={'stretch'} w={'100%'}>
-          <Heading as={'h1'} fontSize={'1.5em'}>
+          <Heading
+            as={'h1'}
+            fontSize={{ base: '1em', md: '1.5em' }}
+            fontWeight={'bold'}
+            justifyContent={'space-between'}
+          >
             Form Mutation
           </Heading>
           <form onSubmit={formik.handleSubmit}>

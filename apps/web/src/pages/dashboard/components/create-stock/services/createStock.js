@@ -12,7 +12,7 @@ export const createStockJournal = async (
   try {
     const token = localStorage.getItem('token')
     const stockJournal = await axios.post(
-      `${API_ROUTE}/stock-journal`,
+      `${API_ROUTE}stock-journal`,
       {
         productId,
         warehouseId,

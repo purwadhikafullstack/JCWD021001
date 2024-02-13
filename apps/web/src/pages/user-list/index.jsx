@@ -42,11 +42,9 @@ function UserList() {
     fetchUserList()
   }, [cityId, isVerified, username, currentPage, pageSize, sortField, sortOrder])
 
-  
-
   return (
     <Box bg={'#F1F1F1'} height={'100%'}>
-      <Box padding={{base: '0px 10px', md:'0px 30px'}} marginBottom={'150px'}>
+      <Box padding={{ base: '0px 10px', md: '0px 30px' }} marginBottom={'150px'}>
         <Box className="top-dashboard" mt={'36px'} mb={'24px'}>
           <Box display={{ base: 'block', md: 'none' }}>
             <Flex justifyContent={'space-between'} align={'center'} mb={'10px'}>
@@ -63,7 +61,7 @@ function UserList() {
               <FilterUser setCityId={setCityId} setIsVerified={setIsVerified} />
             </Flex>
           </Box>
-          
+
           <Box display={{ base: 'none', md: 'block' }}>
             <Flex justifyContent={'space-between'}>
               <Flex>
