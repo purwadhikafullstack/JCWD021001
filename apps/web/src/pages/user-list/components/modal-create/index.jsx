@@ -42,7 +42,6 @@ function CreateUser({ onUserUpdated }) {
     validationSchema: userSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
-        console.log('Formik Submission Values:', values)
         await createUser(values.email, values.username, values.roleId, setLoading)
         onUserUpdated()
       onClose()

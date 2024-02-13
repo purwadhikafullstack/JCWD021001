@@ -18,7 +18,6 @@ import {
 import schedule from 'node-schedule'
 import moment from 'moment'
 
-
 const calcTotalPrice = (products) => {
   return products.reduce((total, product) => {
     return total + product.priceProduct * product.quantity

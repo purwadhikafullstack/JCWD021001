@@ -13,6 +13,7 @@ import {
   Grid,
   VStack,
   useToast,
+  Heading,
 } from '@chakra-ui/react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
@@ -37,10 +38,13 @@ export const CreateProduct = () => {
 
   // Validation Schema
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
+    name: Yup.string().trim().required('Name is required').min(1, 'Field cannot be empty'),
     price: Yup.number().notOneOf([0], 'Price cannot be 0').required('Price is required'),
     productCategoryId: Yup.number().required('Category is required'),
-    description: Yup.string().required('Description is required'),
+    description: Yup.string()
+      .trim()
+      .required('Description is required')
+      .min(1, 'Field cannot be empty'),
   })
 
   // Category value to shown in input
@@ -137,8 +141,12 @@ export const CreateProduct = () => {
       setCategoryValue('')
       resetForm()
     } catch (err) {
+      const errorMessage =
+        err.response && err.response.data && err.response.data.message
+          ? err.response.data.message
+          : 'An unexpected error occurred'
       toast({
-        title: `${err?.message}`,
+        title: `${errorMessage}`,
         status: 'error',
       })
     }
@@ -161,9 +169,14 @@ export const CreateProduct = () => {
 
   return (
     <Box p={'1em'} bgColor={'white'}>
-      <Text fontWeight={'bold'} mb={'2em'}>
+      <Heading
+        as={'h1'}
+        fontSize={{ base: '1em', md: '1.5em' }}
+        fontWeight={'bold'}
+        justifyContent={'space-between'}
+      >
         Create Product
-      </Text>
+      </Heading>
       <form onSubmit={formik.handleSubmit}>
         <VStack direction="column" align="center">
           <FormControl isRequired>

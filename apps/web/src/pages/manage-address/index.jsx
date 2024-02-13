@@ -1,16 +1,16 @@
-import { Box, Button, Flex, Heading, Icon, Input, Select, Text } from '@chakra-ui/react'
+import { Box, Button, Flex, Heading, Icon, Text } from '@chakra-ui/react'
 import { BreadCrumbs } from './components/breadcrumbs'
 import Footer from '../../components/Footer/Footer'
 import { PlusIcon } from '@heroicons/react/24/outline'
-import AddressList from "./components/address-list";
-import { useNavigate } from "react-router-dom";
-import { Navbar } from "../../components/Navbar";
+import AddressList from './components/address-list'
+import { useNavigate } from 'react-router-dom'
+import { Navbar } from '../../components/Navbar'
 
 function ManageAddress() {
   const navigate = useNavigate()
 
   return (
-    <Box bg={'#F1F1F1'} height={'100%'} maxW={'100vw'}>
+    <Box bg={'#F1F1F1'} height={'100%'} maxW={'100vw'} overflowX={'hidden'}>
       <Navbar/>
       <Box padding={{ base: '0px 20px', md: '0px 100px' }} marginBottom={'150px'}>
         <Flex

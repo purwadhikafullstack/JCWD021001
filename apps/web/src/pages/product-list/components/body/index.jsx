@@ -89,7 +89,7 @@ export const Body = (props) => {
     )
   })
   return (
-    <Box p={'1em'} bgColor={'grey.50'} minH={'100vh'} w={'100%'}>
+    <Box p={'1em'} bgColor={'grey.50'} minH={'100vh'} maxW={'100vw'}>
       <VStack align={'stretch'} spacing={'1.5em'}>
         <Box>
           <Text fontWeight={'bold'}>{capitalize.words(props?.gender)}</Text>
@@ -115,16 +115,13 @@ export const Body = (props) => {
             />
           </Box>
           <Box w={'100%'} p={{ base: 'none', md: '.5em' }}>
-            <Flex alignItems={'center'} justifyContent={'space-between'} mb={'1em'}>
-              <Box fontWeight={'bold'}>
-                <Text>
-                  <Text as={'span'} color={'redPure.500'}>
-                    {props?.products.length} {''}
-                  </Text>
-                  Results
-                </Text>
-              </Box>
-              <Box>
+            <Flex
+              alignItems={'center'}
+              flexDir={'row-reverse'}
+              justifyContent={'space-between'}
+              mb={'1em'}
+            >
+              <Box alignSelf={'flex-end'}>
                 <Menu autoSelect={false}>
                   <MenuButton
                     p={'.5em 1em'}

@@ -1,4 +1,3 @@
-import { createPayment } from '../../../pages/order/services/createPayment'
 import { createOrder } from '../../../pages/order/services/createOrder'
 import { deleteCart } from '../../../pages/cart/services/deleteCart'
 import toast from 'react-hot-toast'

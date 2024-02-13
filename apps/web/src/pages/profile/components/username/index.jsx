@@ -11,21 +11,17 @@ import {
   ModalFooter,
   FormControl,
   FormLabel,
-  Text,
-  Select,
-  Link,
   FormErrorMessage,
   Icon,
   Flex,
 } from '@chakra-ui/react'
 import { useFormik } from 'formik'
-import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import { updateUsername } from '../../services/updateProfile'
 import { setUser } from '../../../../redux/reducer/authReducer'
 import { UsernameScheme } from '../../services/validation'
-import toast from 'react-hot-toast'
+
 
 function UpdateUsername() {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -44,7 +40,7 @@ function UpdateUsername() {
         }
         onClose()
       } catch (err) {
-        toast.error(err?.response?.data?.message)
+        console.log(err);
       }
     },
   })
@@ -59,7 +55,7 @@ function UpdateUsername() {
         bg={'transparent'}
         paddingLeft={'20px'}
         cursor={'pointer'}
-        _hover={{ color: 'brand.lightred', bg: 'none' }}
+        _hover={{ color: 'brand.lightred', bg: '' }}
         fontWeight={'500'}
         onClick={onOpen}
         fontSize={{ base: '12px', md: '16px' }}
@@ -79,7 +75,6 @@ function UpdateUsername() {
                   <FormLabel fontSize={{ base: '12px', md: '16px' }}>Username</FormLabel>
                   <Input
                     name="username"
-                    // placeholder='Enter username'
                     value={formik.values.username}
                     onChange={formik.handleChange}
                   />

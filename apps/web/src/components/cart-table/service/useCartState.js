@@ -56,6 +56,46 @@ const useCartState = (cartData, onCartUpdated) => {
     fetchAndUpdateStockData()
   }, [cartData])
 
+  //  // Function to fetch stock data for a product
+  //  const getStock = async (productId, sizeId, colourId) => {
+  //   try {
+  //     const res = await axios.get(
+  //       `${API_ROUTE}/stock/stock/qty?productId=${productId}&sizeId=${sizeId}&colourId=${colourId}`,
+  //     );
+  //     return res?.data?.data || 0; // Return stock quantity or 0 if not available
+  //   } catch (err) {
+  //     console.error('Error fetching stock:', err);
+  //     return 0; // Return 0 in case of error
+  //   }
+  // };
+
+  // // Function to fetch stock data for all products in the cart
+  // const fetchStockData = async (cartData) => {
+  //   const newData = {};
+  //   for (const cartItem of cartData) {
+  //     for (const item of cartItem.CartProducts) {
+  //       const stock = await getStock(item.productId, item.sizeId, item.colourId);
+  //       newData[item.id] = stock;
+  //       console.log('lala', item);
+  //     }
+  //   }
+  //   console.log('newData', newData);
+  //   return newData;
+  // };
+
+  // // State to store stock data
+  // const [stockData, setStockData] = useState({});
+  // console.log('stock', stockData);
+
+  // // Fetch stock data when cart data changes
+  // useEffect(() => {
+  //   const fetchAndUpdateStockData = async () => {
+  //     const newData = await fetchStockData(cartData);
+  //     setStockData(newData);
+  //   };
+  //   fetchAndUpdateStockData();
+  // }, [cartData]);
+
   const updateProductData = (newProductData) => {
     // Update state dan simpan ke localStorage
     setProductData(newProductData)

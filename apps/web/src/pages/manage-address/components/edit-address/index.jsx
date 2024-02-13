@@ -49,7 +49,6 @@ function FormEditAddress({
       getCity(selectedProvince).then((data) => {
         setCityList(data)
         setSelectedCity(cityId)
-        console.log(data)
       })
     }
   }, [selectedProvince])
@@ -65,7 +64,6 @@ function FormEditAddress({
     validationSchema: addressSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
-        console.log('Formik Submission Values:', values)
         await updateUserAddress(
           id,
           values.specificAddress,
@@ -95,8 +93,8 @@ function FormEditAddress({
         fontSize={{ base: '12px', md: '14px' }}
         fontWeight={'700'}
         padding={{ base: '10px 14px', md: '12px 16px' }}
-        _hover={'none'}
-        _active={'none'}
+        _hover={''}
+        _active={''}
       >
         Edit Address
       </Button>

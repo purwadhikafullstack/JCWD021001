@@ -2,7 +2,6 @@ import {
   AbsoluteCenter,
   Box,
   Button,
-  Divider,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -14,7 +13,7 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react'
-import model from '../../assets/images/signup-model.jpeg'
+import model from '../../assets/images/reset-password.jpeg'
 import { EnvelopeIcon } from '@heroicons/react/24/outline'
 import { useFormik } from 'formik'
 import logo from '../../assets/images/logo.png'
@@ -164,7 +163,7 @@ function RequestPasswordReset() {
                       color={'#ffffff'}
                       loading={loading}
                       cssOverride={override}
-                      size={{ base: 7, md: 10 }}
+                      size={10}
                       aria-label="spiner"
                       data-testid="loader"
                     />

@@ -1,23 +1,18 @@
-import { Box, Button, Flex, Input, Select, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import FormCreateWarehouse from "./form/Index";
-// import FormWarehouse from "./form-disabled/Index";
 import { findOpenCageAndCity } from "../../services/getWarehouseList";
 import MapWarehouse from "./map";
 import ModalNotif from "./modal";
-import FormInitialWarehouse from "./form-disabled/Index";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation} from "react-router-dom";
 import { BreadCrumbsEditWarehouse } from "./breadcrumbs";
 import Footer from "../../../../components/Footer/Footer";
-import { Navbar } from "../../../../components/navbar";
+import { Navbar } from "../../../../components/Navbar";
 
 function EditWarehousePage(){
 
     const location = useLocation()
     const {warehouse} = location.state
-    console.log("ini harusnya data warehouse", warehouse);
-
-    const [formCurrentLocation, setFormCurrentLocation] = useState(false)
     const [latitude, setLatitude] = useState(null)
     const [longitude, setLongitude] = useState(null)
     const [address, setAddress] = useState('');
@@ -37,8 +32,7 @@ function EditWarehousePage(){
         })}
     }, [])
 
-    console.log("ini latitude", latitude, "ini longitude", longitude, "ini address", address, "ini lat", lat, "ini lng", lng)
-
+    
     useEffect(() => {
         const fetchAddress = async () => {
           if (latitude && longitude) {
@@ -57,7 +51,8 @@ function EditWarehousePage(){
 
     return (
         <Box bg={'#F1F1F1'}
-        height={'100%'}>
+        height={'100%'}
+        overflowX={'hidden'}>
             <Navbar/>
             <Box padding={'0px 100px'}
              marginBottom={'150px'}>
@@ -89,7 +84,6 @@ function EditWarehousePage(){
                     marginBottom={'33px'}>
                         <MapWarehouse lat={latitude} lng={longitude} 
                         setSelectedAddress={setSelectedAddress} 
-                        setFormCurrentLocation={setFormCurrentLocation} 
                         marker={marker}
                         setMarker={setMarker}
                         setLat={setLat}
@@ -102,14 +96,11 @@ function EditWarehousePage(){
                     mb={'24px'}>
                         CONTACT
                     </Text>
-                    {/* {formCurrentLocation ?  */}
                         <FormCreateWarehouse 
                         warehouse={warehouse}
                         address={selectedAddress || address} 
                         lat={lat || latitude} 
                         lng={lng || longitude}/> 
-                    {/* : 
-                        <FormInitialWarehouse/>} */}
                 </Box>
             </Box>
             <Footer/>

@@ -37,6 +37,7 @@ export const init = (sequelize) => {
       sequelize,
       modelName: 'ProductCategory',
       timestamps: false,
+      paranoid: false,
     },
   )
 }

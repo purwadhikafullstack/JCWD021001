@@ -9,8 +9,6 @@ export const getStockJournals = async (
   pageSize = 10,
 ) => {
   try {
-    console.log('getStockJournals.js', startDate)
-    console.log('getStockJournals.js', endDate)
     const token = localStorage.getItem('token')
     const stockJournals = await axios.get(
       `${API_ROUTE}/stock-journal/${warehouseId}/${stockId}?startDate=${startDate}&endDate=${endDate}&page=${page}&pageSize=${pageSize}`,

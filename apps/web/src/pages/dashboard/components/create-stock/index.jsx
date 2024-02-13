@@ -1,12 +1,12 @@
-import { Box, Button, Input, Text, VStack, useToast } from '@chakra-ui/react'
+import { Box, Button, Heading, Input, Text, VStack, useToast } from '@chakra-ui/react'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { getProduct } from '../../../product-list/services/readProduct'
-import { getColours } from './services/readColour'
 import { ProductList } from './component/product-list'
 import { StockSelection } from './component/stock-selection'
 import { createStockJournal } from './services/createStock'
 import { useLocation } from 'react-router-dom'
+import { checkStock } from './services/readStock'
 
 export const CreateStock = (props) => {
   // LOCATION
@@ -84,13 +84,17 @@ export const CreateStock = (props) => {
     try {
       const res = await createStockJournal(productId, warehouseId, sizeId, colourId, qty, isUpdate)
       toast({
-        title: `${res?.data?.title}`,
+        title: `${res?.data?.message}`,
         status: 'success',
         placement: 'bottom',
       })
     } catch (err) {
+      const errorMessage =
+        err.response && err.response.data && err.response.data.message
+          ? err.response.data.message
+          : 'An unexpected error occurred'
       toast({
-        title: `${err?.message}`,
+        title: `${errorMessage}`,
         status: 'error',
       })
     }
@@ -99,7 +103,14 @@ export const CreateStock = (props) => {
   return (
     <Box p={'1em'} h={'100%'} w={'100%'} bgColor={'white'}>
       <VStack align={'stretch'}>
-        <Text>Create Stock</Text>
+        <Heading
+          as={'h1'}
+          fontSize={{ base: '1em', md: '1.5em' }}
+          fontWeight={'bold'}
+          justifyContent={'space-between'}
+        >
+          Create Stock
+        </Heading>
         <form onSubmit={formik.handleSubmit}>
           <VStack align={'stretch'}>
             <Input
@@ -135,19 +146,39 @@ export const CreateStock = (props) => {
               _hover={{ bg: '#f50f5a' }}
               _active={{ opacity: '70%' }}
               onClick={async () => {
-                await handleCreateStockJournal(
-                  productId,
-                  warehouseValue ? warehouseValue : warehouseId,
-                  sizeId,
-                  colourId,
-                  Number(stockValue),
-                  false,
-                )
-                setProductId(0)
-                setWarehouseId(warehouseId)
-                setSizeId(0)
-                setColourId(0)
-                setStockValue(0)
+                try {
+                  const res = await checkStock(
+                    productId,
+                    warehouseValue ? warehouseValue : warehouseId,
+                    sizeId,
+                    colourId,
+                  )
+                  if (res?.data?.data) throw new Error('Stock is exist')
+                  await handleCreateStockJournal(
+                    productId,
+                    warehouseValue ? warehouseValue : warehouseId,
+                    sizeId,
+                    colourId,
+                    Number(stockValue),
+                    false,
+                  )
+                  setProductId(0)
+                  setWarehouseId(warehouseId)
+                  setSizeId(0)
+                  setColourId(0)
+                  setStockValue(0)
+                } catch (err) {
+                  const errorMessage =
+                    err.message && err.response && err.response.data && err.response.data.message
+                      ? err.response.data.message
+                      : 'An unexpected error occurred'
+                  if (err.message === 'Stock is exist') {
+                    toast({
+                      title: 'Stock already exists',
+                      status: 'error', // or 'info' depending on your design
+                    })
+                  }
+                }
               }}
             >
               Create

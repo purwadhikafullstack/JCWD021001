@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Modal, ModalBody, ModalContent, ModalFooter, ModalOverlay, useDisclosure } from "@chakra-ui/react"
+import {  Button, Flex, Modal, ModalBody, ModalContent, ModalFooter, ModalOverlay, useDisclosure } from "@chakra-ui/react"
 import { deleteAdminFunction } from "../../services/deleteAdmin";
 
 function DeleteAdmin ({id, onDeletedAdmin}){
@@ -23,8 +23,8 @@ function DeleteAdmin ({id, onDeletedAdmin}){
         fontWeight={'700'}
         padding={'4px 16px'}
         w={'72px'}
-        _hover={'none'}
-        _active={'none'}
+        _hover={''}
+        _active={''}
       >
         Delete
       </Button>

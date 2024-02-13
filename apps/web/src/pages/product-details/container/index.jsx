@@ -12,7 +12,7 @@ export const ProductDetails = () => {
     getProductDetails(id).then((data) => setProduct(data))
   }, [])
   return (
-    <Box>
+    <Box maxW={'100vw'} overflow={'hidden'}>
       <Navbar />
       <Body product={product} />
     </Box>

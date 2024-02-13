@@ -1,7 +1,7 @@
 import { InputGroup, Input, InputRightElement, Icon } from '@chakra-ui/react'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+
 export const SearchAdmin = ({setUsername}) => {
   const [inputValue, setInputValue] = useState('');
 

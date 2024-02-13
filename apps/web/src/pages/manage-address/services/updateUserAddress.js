@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 export const updateUserAddress = async (id, specificAddress, cityId, fullName, phoneNumber, postalCode) => {
     const token = localStorage.getItem("token")
     try{
-        await axios.patch(`${import.meta.env.VITE_API_URL}/user-address/update-user-address/${id}`, {
+        await axios.patch(`${import.meta.env.VITE_API_URL}user-address/update-user-address/${id}`, {
             specificAddress, 
             cityId, 
             fullName, 

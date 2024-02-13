@@ -4,7 +4,7 @@ import toast from "react-hot-toast"
 const token = localStorage.getItem("token")
 export const findUserAddress = async (id) => {
     try{
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/user-address/address/4`, 
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}user-address/address/${id}`, 
         {
             headers: {
               Authorization: `Bearer ${token}`

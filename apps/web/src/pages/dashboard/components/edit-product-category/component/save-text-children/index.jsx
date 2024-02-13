@@ -9,8 +9,13 @@ export const SaveChildren = (props) => {
       fontWeight={'bold'}
       color={'redPure.600'}
       cursor={'pointer'}
-      onClick={() => {
-        editProductCategory(props?.id, props?.formik.values[`childName_${props?.id}`], props?.toast)
+      onClick={async () => {
+        await editProductCategory(
+          props?.id,
+          props?.formik.values[`childName_${props?.id}`],
+          props?.toast,
+        )
+        props?.setTrigger(!props?.trigger)
       }}
     >
       Save

@@ -2,7 +2,6 @@ import { Box, Button, FormControl, FormLabel, Select, VStack, useToast } from '@
 import { useEffect, useState } from 'react'
 import { getColours } from '../../../create-stock/services/readColour'
 import { useFormik } from 'formik'
-import * as Yup from 'yup'
 import { createProductColour } from './services/createColour'
 
 export const CreateColour = (props) => {
@@ -25,11 +24,17 @@ export const CreateColour = (props) => {
         status: 'success',
         placement: 'bottom',
       })
+      props?.setTrigger(!props?.trigger)
     } catch (err) {
+      const errorMessage =
+        err.response && err.response.data && err.response.data.message
+          ? err.response.data.message
+          : 'An unexpected error occurred'
       toast({
-        title: `${err?.message}`,
+        title: `${errorMessage}`,
         status: 'error',
       })
+      props?.setTrigger(!props?.trigger)
     }
   }
 

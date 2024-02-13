@@ -24,6 +24,11 @@ import { CartProvider } from './components/cart-table/service/cartContext'
 import CreateWarehouse from './pages/warehouse-list/components/create-warehouse'
 import EditWarehousePage from './pages/warehouse-list/components/edit-warehouses'
 import OrderDetails from './pages/order-details'
+import OrderManagementDetails from './pages/order-management-details'
+import VerifyNewEmailReq from './pages/verify-new-email-req/Index'
+import VerifyNewEmail from './pages/verify-new-email/Index'
+
+
 
 function App() {
   return (
@@ -32,6 +37,8 @@ function App() {
         <CartProvider>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/new-unverified-email" element={<VerifyNewEmailReq />} />
+            <Route path="/verify-new-email" element={<VerifyNewEmail />} />
             <Route
               path="/signup"
               element={

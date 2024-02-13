@@ -46,8 +46,8 @@ function Footer() {
             color={'brand.grey300'}
           >
             <Link _hover={{color: 'brand.lightred'}} href='/'>Home</Link>
-            <Link _hover={{color: 'brand.lightred'}} href='/'>Category</Link>
-            <Link _hover={{color: 'brand.lightred'}} href='/'>Cart</Link>
+            <Link _hover={{color: 'brand.lightred'}} href='/p/women'>Category</Link>
+            <Link _hover={{color: 'brand.lightred'}} href='/cart'>Cart</Link>
             <Link _hover={{color: 'brand.lightred'}} href='/'>Favourite</Link>
             <Link _hover={{color: 'brand.lightred'}} href='/profile'>My Profile</Link>
           </Flex>

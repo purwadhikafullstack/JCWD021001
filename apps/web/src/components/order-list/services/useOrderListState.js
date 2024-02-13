@@ -112,6 +112,10 @@ const useOrderListState = ({
           handleTabClick(5)
         }, 2000)
       }
+      setTimeout(() => {
+        handleTabChange(3);
+        handleTabClick(5);
+      }, 2000);
     } catch (err) {
       toast.error(err)
     }

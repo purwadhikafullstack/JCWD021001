@@ -5,8 +5,8 @@ export const CreateButton = (props) => {
   const navigate = useNavigate()
   return (
     <Button
-      h={'3em'}
-      w={'10em'}
+      h={'2.5em'}
+      w={{ md: '10em' }}
       _hover={{
         bgColor: 'redPure.600',
       }}

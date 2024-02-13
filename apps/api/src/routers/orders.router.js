@@ -10,7 +10,7 @@ import {
   getOrderDetailController, 
   getAllOrderByCategoryController, // by putu
   getAllOrderByProductController, // by putu
-  getAllOrderController,// by putu
+  getAllOrderController, // by putu
 } from '../controllers/orders.controller'
 import { checkRoleSuperAdminAdmin, checkRoleUser, verifyToken } from '../middleware/auth.middleware'
 
@@ -22,7 +22,7 @@ orderRouter.get('/management', verifyToken, checkRoleSuperAdminAdmin, getOrderMa
 orderRouter.get('/warehouse', verifyToken, checkRoleSuperAdminAdmin, getWarehouseController)
 orderRouter.get('/stock', verifyToken, checkRoleUser, productToStockIdController)
 orderRouter.get('/:userId', verifyToken, checkRoleUser, getOrderController)
-orderRouter.get('/detail/:orderId', getOrderDetailController)
+orderRouter.get('/detail/:orderId', verifyToken, getOrderDetailController)
 orderRouter.get(
   '/stock/:orderId',
   verifyToken,

@@ -60,6 +60,7 @@ export const getStockJournalQuery = async (
           as: 'product',
         },
       ],
+      order: [['createdAt', 'DESC']],
       subQuery: false,
       limit: +pageSize,
       offset: offset,

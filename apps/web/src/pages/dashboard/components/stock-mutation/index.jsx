@@ -3,6 +3,7 @@ import {
   Button,
   Flex,
   HStack,
+  Heading,
   Table,
   TableContainer,
   Tbody,
@@ -187,12 +188,19 @@ export const StockMutation = (props) => {
       <Flex flexDir={'column'} justifyContent={'space-between'} h={'100%'}>
         <VStack align={'stretch'}>
           <Flex alignItems={'center'} justifyContent={'space-between'}>
-            <Text fontWeight={'bold'}>Stock Mutation</Text>
+            <Heading
+              as={'h1'}
+              fontSize={{ base: '1em', md: '1.5em' }}
+              fontWeight={'bold'}
+              justifyContent={'space-between'}
+            >
+              Stock Mutation
+            </Heading>
             <Button
               _hover={{
                 bgColor: 'redPure.600',
               }}
-              h={'3em'}
+              h={'2.5em'}
               w={'10em'}
               bgColor={'redPure.600'}
               color={'white'}

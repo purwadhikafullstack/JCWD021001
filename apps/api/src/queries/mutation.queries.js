@@ -23,6 +23,7 @@ export const getMutationQuery = async (
   try {
     const offset = (page - 1) * pageSize
     const filter = {}
+    const order = [['createdAt', 'DESC']]
     if (requesterWarehouseId)
       filter.where = {
         requesterWarehouseId: {
@@ -63,6 +64,7 @@ export const getMutationQuery = async (
       ],
       ...filter,
       subQuery: false,
+      order: order,
       limit: +pageSize,
       offset: offset,
     })

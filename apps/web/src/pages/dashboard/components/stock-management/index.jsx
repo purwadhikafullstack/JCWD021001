@@ -8,12 +8,10 @@ import {
   Table,
   TableContainer,
   Tbody,
-  Text,
   Th,
   Thead,
   Tr,
   VStack,
-  useToast,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -60,10 +58,12 @@ export const StockManagement = (props) => {
 
   // Handle Toggle
   const changeBoxToggle = (id) => {
-    setBoxToggle((set) => ({
-      [id]: !set[id],
-      [!id]: set[id],
-    }))
+    if (pageValue != id) {
+      setBoxToggle((set) => ({
+        [id]: !set[id],
+        [!id]: set[id],
+      }))
+    }
   }
 
   // Warehouse lists
@@ -90,11 +90,16 @@ export const StockManagement = (props) => {
   })
 
   return (
-    <Box p={'1em'} h={'100%'} w={'100%'}>
+    <Box height={'100%'} w={'100%'} minH={'100vh'}>
       <Flex flexDir={'column'} justifyContent={'space-between'} h={'100%'}>
         <VStack align={'stretch'}>
           <Flex alignItems={'center'} justifyContent={'space-between'}>
-            <Heading as={'h1'} fontSize={'1.5em'} fontWeight={'bold'}>
+            <Heading
+              as={'h1'}
+              fontSize={{ base: '1em', md: '1.5em' }}
+              fontWeight={'bold'}
+              justifyContent={'space-between'}
+            >
               Stock Management
             </Heading>
             <HStack>
@@ -104,9 +109,11 @@ export const StockManagement = (props) => {
                   id={'recipientWarehouseAddress'}
                   name={'recipientWarehouseAddress'}
                   type={'text'}
-                  borderColor={'transparent'}
-                  focusBorderColor={'transparent'}
-                  bgColor={'grey.50'}
+                  border={'2px solid lightgray'}
+                  focusBorderColor="lightgray !important"
+                  focusShadow="none !important"
+                  _hover={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
+                  _focus={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
                   onChange={async (e) => {
                     setWarehouseId(e?.target?.value)
                     {
@@ -123,7 +130,7 @@ export const StockManagement = (props) => {
                 _hover={{
                   bgColor: 'redPure.600',
                 }}
-                h={'3em'}
+                h={'2.5em'}
                 w={'10em'}
                 bgColor={'redPure.600'}
                 color={'white'}
@@ -140,7 +147,10 @@ export const StockManagement = (props) => {
             </HStack>
           </Flex>
           <Box
-            h={'70vh'}
+            maxW={'100%'}
+            boxShadow={'md'}
+            h={'27em'}
+            borderRadius={'.5em'}
             overflowX={'scroll'}
             overflowY={'scroll'}
             sx={{
@@ -197,6 +207,7 @@ export const StockManagement = (props) => {
         </VStack>
         <PaginationList
           boxToggle={boxToggle}
+          warehouseValue={warehouseValue}
           changeBoxToggle={changeBoxToggle}
           location={location}
           pathName={pathName}

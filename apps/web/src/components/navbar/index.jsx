@@ -8,16 +8,11 @@ import {
   Spacer,
   Center,
   Button,
-  Input,
-  InputGroup,
-  InputRightElement,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
   Text,
-  Select,
-  Avatar,
   AspectRatio,
 } from '@chakra-ui/react'
 import { XMarkIcon, ChevronDownIcon } from '@heroicons/react/24/outline'
@@ -35,30 +30,29 @@ export const Navbar = (props) => {
   const user = useSelector((state) => state.AuthReducer.user)
   const isLogin = useSelector((state) => state.AuthReducer.isLogin)
   const location = useLocation()
+  const isDashboardPage = location.pathname.includes('dashboard')
   const navigate = useNavigate()
   // edit by andri
   const { cartData, cartCount } = useCart()
 
   return (
-    <Box p={'1em 2em'} bg={'white'} maxW={'100vw'}>
+    <Box p={'1em 2em'} bg={'white'} maxW={'100vw'} boxShadow={'md'}>
       <Flex alignItems={'center'} justifyContent={'space-between'}>
         <HStack spacing={'2em'}>
           <AspectRatio ratio={1} cursor={'pointer'} w={'3em'} onClick={() => navigate('/')}>
             <Image src={pure} alt="Pure Logo" />
           </AspectRatio>
-          <Box display={{ base: 'none', md: 'block' }}>
-            <SearchMenu />
-          </Box>
+          <Box display={{ base: 'none', md: 'block' }}>{!isDashboardPage && <SearchMenu />}</Box>
         </HStack>
         <Spacer />
         <HStack visibility={props?.collapseSideBar ? 'hidden' : 'visible'}>
           <HStack fontSize={'1.5em'} spacing={'.5em'}>
-            <SearchModal />
+            {!isDashboardPage && <SearchModal />}
             <HStack fontSize={'1.5em'} spacing={'.5em'} position="relative">
               {/* andri */}
               {user?.roleId === 3 && (
                 <Box>
-                  <ShoppingCartBox cartData={cartData} cartCount={cartCount} /> 
+                  <ShoppingCartBox cartData={cartData} cartCount={cartCount} />
                 </Box>
               )}
             </HStack>
