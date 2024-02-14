@@ -123,7 +123,7 @@ export const FormMutation = (props) => {
       qty: yup
         .number()
         .required('Input quantity')
-        .test('maxValue', 'Value must be less than or equal to max value', (value) => {
+        .test('maxValue', 'Value must be less than or equal to recipient stocks', (value) => {
           return value <= stockQty
         })
         .test('notZero', 'Qty cannot be zero', (value) => {

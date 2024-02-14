@@ -83,11 +83,7 @@ export const Body = (props) => {
           </AdminBiasaRoute>
         )
       case 'stock-report':
-        return (
-          <AdminBiasaRoute>
-            <StockReport user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
-          </AdminBiasaRoute>
-        )
+        return <StockReport user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
       case 'order-management':
         return (
           <LoggedInRoute>

@@ -10,7 +10,7 @@ import { useCart } from '../../../../components/cart-table/service/cartContext' 
 import { ColourBox } from '../colour-box'
 import { SizeBox } from '../size-box'
 import { useSelector } from 'react-redux'
-import { debounce } from 'lodash'
+import { API_ROUTE } from '../../../../services/route'
 
 export const Body = (props) => {
   // Location
@@ -43,12 +43,13 @@ export const Body = (props) => {
 
   // Get stock
   const [stock, setStock] = useState(null)
+  const [qty, setQty] = useState(1)
 
   const getStock = async (productId, sizeId, colourId, setStock) => {
     try {
       const token = localStorage.getItem('token')
       const res = await axios.get(
-        `http://localhost:8000/api/stock/stock/qty?productId=${productId}&sizeId=${sizeId}&colourId=${colourId}`,
+        `${API_ROUTE}stock/stock/qty?productId=${productId}&sizeId=${sizeId}&colourId=${colourId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -77,19 +78,30 @@ export const Body = (props) => {
       toast.error('Please login first')
       return
     }
+    if (user?.roleId == 1) {
+      toast.error('Super Admin not add to cart')
+      return
+    }
+    if (user?.roleId == 2) {
+      toast.error('Admin not add to cart')
+      return
+    }
     const newItem = {
       userId: user?.id,
       productId: props?.product?.id,
       colourId: colourValue,
       sizeId: sizeValue,
       price: props?.product?.price,
-      quantity: 1,
+      quantity: qty,
     }
 
     const existingCart = cartData.find((cartItem) => cartItem.userId === user?.id)
     if (existingCart && existingCart.CartProducts) {
       const isProductInCart = existingCart.CartProducts.some(
-        (product) => product.product.id === newItem.productId,
+        (product) =>
+          product.product.id == newItem.productId &&
+          product.colourId == newItem.colourId &&
+          product.sizeId == newItem.sizeId,
       )
 
       if (isProductInCart) {
@@ -131,8 +143,6 @@ export const Body = (props) => {
       [!id]: set[id],
     }))
   }
-
-  const [qty, setQty] = useState(1)
 
   const handleAdd = () => {
     if (stock) {
