@@ -66,19 +66,19 @@ function Profile() {
             <Text marginBottom={'24px'} fontSize={{base: '14px', md:'24px'}} fontWeight={'700'}>
               Profile Setting
             </Text>
-            <Flex alignItems={'center'} mb={'10px'}>
+            <Flex alignItems={'center'} mb={'16px'}>
               <Flex w={'100px'} alignContent={'center'}>
                 <Text fontSize={{base: '12px', md: '16px'}}>Username</Text>
               </Flex>
               <UpdateUsername />
             </Flex>
-            <Flex alignItems={'center'}>
+            <Flex alignItems={'center'} mb={'16px'}>
               <Flex w={'100px'}>
                 <Text fontSize={{base: '12px', md: '16px'}}>Email</Text>
               </Flex>
               <UpdateEmail />
             </Flex>
-            <Flex alignItems={'center'}>
+            <Flex alignItems={'flex-start'} mb={'16px'}>
               <Flex w={'100px'}>
                 <Text fontSize={{base: '12px', md: '16px'}}>Address</Text>
               </Flex>

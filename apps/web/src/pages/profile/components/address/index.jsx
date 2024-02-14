@@ -28,12 +28,12 @@ function UserAddress() {
         w={'100%'}
         display="flex"
         justifyContent="space-between"
-        alignItems="center"
         bg={'transparent'}
         fontWeight={'500'}
         cursor={'pointer'}
+        paddingTop={'0'}
+        paddingBottom={'0'}
         paddingLeft={'20px'}
-        mt={'16px'}
         _hover={{ color: 'brand.lightred', bg: '' }}
         onClick={() => navigate('/manage-address')}
       >
@@ -48,7 +48,6 @@ function UserAddress() {
                 flexWrap={'wrap'}
                 fontSize={{ base: '12px', md: '16px' }}
                 textAlign={'left'}
-                mb={'20px'}
               >
                 {mainAddress?.specificAddress ?? ''}, {mainAddress?.City?.name},{' '}
                 {mainAddress?.City?.Province?.name} {mainAddress?.postalCode ?? ''}
