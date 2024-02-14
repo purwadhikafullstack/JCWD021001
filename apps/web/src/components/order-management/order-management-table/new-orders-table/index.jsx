@@ -27,7 +27,7 @@ const NewOrderTable = ({
   const navigate = useNavigate()
   return (
     <Box>
-      <TableContainer display={{ base: 'none', xl: 'block' }} borderRadius={'8px'}>
+      <TableContainer minW={'100%'} display={{ base: 'none', xl: 'block' }} borderRadius={'8px'}>
         <Table>
           <Thead bgColor={'#CD0244'}>
             <Tr>
@@ -43,12 +43,7 @@ const NewOrderTable = ({
               </Td>
               <Td>
                 <Text fontFamily={'body'} fontWeight={'700'} fontSize={'14px'} color={'white'}>
-                  Order Number
-                </Text>
-              </Td>
-              <Td>
-                <Text fontFamily={'body'} fontWeight={'700'} fontSize={'14px'} color={'white'}>
-                  Customer’s Name
+                  No. Order & Name
                 </Text>
               </Td>
               <Td>
@@ -63,11 +58,6 @@ const NewOrderTable = ({
               </Td>
               <Td>
                 <Text fontFamily={'body'} fontWeight={'700'} fontSize={'14px'} color={'white'}>
-                  Status Payment
-                </Text>
-              </Td>
-              <Td>
-                <Text fontFamily={'body'} fontWeight={'700'} fontSize={'14px'} color={'white'}>
                   Action
                 </Text>
               </Td>
@@ -75,63 +65,42 @@ const NewOrderTable = ({
           </Thead>
           <Tbody>
             {orderData.map((items, index) => (
-              <Tr
-                key={index}
-                bg={index % 2 === 0 ? '#FFF1F5' : 'white'}
-                // _hover={{ bg: '#FED7E2' }}
-              >
-                <Td
-                  cursor={'pointer'}
-                  onClick={() =>
-                    navigate('/dashboard/order-management/details', {
-                      state: { orderId: items?.id },
-                    })
-                  }
-                >
+              <Tr key={index} bg={index % 2 === 0 ? '#FFF1F5' : 'white'}>
+                <Td>
                   <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
                     {formatDate(items?.orderDate)}
                   </Text>
                 </Td>
-                <Td
-                  cursor={'pointer'}
-                  onClick={() =>
-                    navigate('/dashboard/order-management/details', {
-                      state: { orderId: items?.id },
-                    })
-                  }
-                >
+                <Td>
                   <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
                     {items?.warehouse?.id}
                   </Text>
                 </Td>
-                <Td
-                  cursor={'pointer'}
-                  onClick={() =>
-                    navigate('/dashboard/order-management/details', {
-                      state: { orderId: items?.id },
-                    })
-                  }
-                >
-                  <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
-                    {items?.orderNumber}
-                  </Text>
-                </Td>
-                <Td
-                  cursor={'pointer'}
-                  onClick={() =>
-                    navigate('/dashboard/order-management/details', {
-                      state: { orderId: items?.id },
-                    })
-                  }
-                >
-                  <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
-                    {items?.User?.username}
-                  </Text>
+                <Td>
+                  <Box display={'flex'} flexDirection={'column'} gap={'12px'}>
+                    <Text
+                      fontFamily={'body'}
+                      fontWeight={'600'}
+                      fontSize={'14px'}
+                      cursor={'pointer'}
+                      onClick={() =>
+                        navigate('/dashboard/order-management/details', {
+                          state: { orderId: items?.id },
+                        })
+                      }
+                    >
+                      {items?.orderNumber}
+                    </Text>
+                    <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
+                      {items?.User?.username}
+                    </Text>
+                  </Box>
                 </Td>
                 <Td>
                   <Box display={'flex'} flexDirection={'column'} gap={'8px'}>
                     <Box display={'flex'} gap={'8px'}>
                       <Box
+                        display={{ base: 'none', '2xl': 'block' }}
                         w={'66px'}
                         h={'66px'}
                         bgColor={'#D9D9D9'}
@@ -220,14 +189,14 @@ const NewOrderTable = ({
                   </Box>
                 </Td>
                 <Td>
-                  <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
-                    {toRupiah(+items?.Payment?.grossAmount, { floatingPoint: 0 })}
-                  </Text>
-                </Td>
-                <Td>
-                  <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
-                    {items?.Payment?.paymentStatus}
-                  </Text>
+                  <Box display={'flex'} flexDirection={'column'} gap={'8px'}>
+                    <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
+                      {`${toRupiah(+items?.Payment?.grossAmount, { floatingPoint: 0 })}`}
+                    </Text>
+                    <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
+                      {`(${items?.Payment?.paymentStatus})`}
+                    </Text>
+                  </Box>
                 </Td>
                 <Td>
                   <Box display={'flex'} gap={'8px'}>

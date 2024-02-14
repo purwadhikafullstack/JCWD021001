@@ -144,9 +144,7 @@ export const Sidebar = (props) => {
             <VStack align={'stretch'} spacing={'1.5em'}>
               <Text
                 onClick={() => {
-                  navigate('/dashboard/order-management', {
-                    state: { refresh: true, activeTab: 0, status: [2] },
-                  })
+                  navigate('/dashboard/order-management', { state: { refresh: true, activeTab: 0, status: [2] } })
                 }}
                 cursor={'pointer'}
               >
