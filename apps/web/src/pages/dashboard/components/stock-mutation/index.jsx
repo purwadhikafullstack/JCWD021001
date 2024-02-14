@@ -4,6 +4,7 @@ import {
   Flex,
   HStack,
   Heading,
+  Select,
   Table,
   TableContainer,
   Tbody,
@@ -22,14 +23,15 @@ import { approveMutation } from './services/createMutation'
 import { PaginationList } from '../product-list/components/pagination-list'
 import { ApproveButton } from './component/approve-button'
 import { RejectButton } from './component/reject-button'
+import { getWarehouses } from '../form-mutation/services/readWarehouse'
 
 export const StockMutation = (props) => {
   // LOCATION
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
-
+  const warehouseValue = queryParams.get('wa')
   // WAREHOUSE ID
-  const [warehouseId, setWarehouseId] = useState(props?.user?.warehouseId)
+  const [warehouseId, setWarehouseId] = useState(0)
   const [requesterWarehouseId, setRequesterWarehouseId] = useState(0)
   const [recipientWarehouseId, setRecipientWarehouseId] = useState(0)
 
@@ -108,13 +110,28 @@ export const StockMutation = (props) => {
     changeBoxToggle(pageValue)
     handleJuragan(recipientWarehouseId, warehouseId)
     handleRequestApproval(filterValue)
-    setWarehouseId(props?.user?.warehouseId)
-    if (warehouseId) {
+    if (props?.isSuperAdmin) {
+      setWarehouseId(warehouseValue)
+      getMutations(warehouseId, recipientWarehouseId, pageValue, 10).then((data) => {
+        setMutations(data)
+      })
+    }
+    if (!props?.isSuperAdmin) {
+      setWarehouseId(props?.user?.warehouseId)
       getMutations(requesterWarehouseId, recipientWarehouseId, pageValue, 10).then((data) => {
         setMutations(data)
       })
     }
-  }, [pageValue, filterValue, requesterWarehouseId, recipientWarehouseId, warehouseId, trigger])
+  }, [
+    pageValue,
+    filterValue,
+    requesterWarehouseId,
+    recipientWarehouseId,
+    warehouseId,
+    trigger,
+    warehouseValue,
+  ])
+  console.log('stock-mutation', mutations)
   const renderedTableBody = mutations?.rows?.map((mutation, index) => {
     return (
       <Tr key={index} cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'}>
@@ -182,7 +199,28 @@ export const StockMutation = (props) => {
       }))
     }
   }
+  // Warehouse lists
+  const [warehouses, setWarehouses] = useState([])
 
+  useEffect(() => {
+    getWarehouses('').then((data) => {
+      setWarehouses(data)
+    })
+  }, [])
+
+  // Warehouse options
+  const warehouseOptions = warehouses?.map((warehouse, index) => {
+    return (
+      <option
+        key={index}
+        id={warehouse?.id}
+        value={warehouse?.id}
+        selected={warehouse?.id === +warehouseValue}
+      >
+        {warehouse?.WarehouseAddress?.location}
+      </option>
+    )
+  })
   return (
     <Box p={'1em'} h={'100%'} w={'100%'}>
       <Flex flexDir={'column'} justifyContent={'space-between'} h={'100%'}>
@@ -196,20 +234,47 @@ export const StockMutation = (props) => {
             >
               Stock Mutation
             </Heading>
-            <Button
-              _hover={{
-                bgColor: 'redPure.600',
-              }}
-              h={'2.5em'}
-              w={'10em'}
-              bgColor={'redPure.600'}
-              color={'white'}
-              onClick={() => {
-                navigate('/dashboard/stock-mutation/form-mutation?pa=1')
-              }}
-            >
-              Form Mutation
-            </Button>
+            <HStack>
+              {props?.isSuperAdmin && (
+                <Select
+                  placeholder={'Select warehouse'}
+                  id={'recipientWarehouseAddress'}
+                  name={'recipientWarehouseAddress'}
+                  type={'text'}
+                  bg={'white'}
+                  border={'1px solid lightgray'}
+                  focusBorderColor={'lightgray'}
+                  onChange={async (e) => {
+                    setWarehouseId(e?.target?.value)
+                    {
+                      e?.target?.value
+                        ? navigate(`${pathName}?pa=1&wa=${e?.target?.value}`)
+                        : navigate(`${pathName}?pa=1`)
+                    }
+                  }}
+                >
+                  {warehouseOptions}
+                </Select>
+              )}
+              <Button
+                _hover={{
+                  bgColor: 'redPure.600',
+                }}
+                h={'2.5em'}
+                w={'10em'}
+                bgColor={'redPure.600'}
+                color={'white'}
+                onClick={() => {
+                  navigate(
+                    `/dashboard/stock-mutation/form-mutation?pa=1${
+                      warehouseValue ? `&wa=${warehouseValue}` : ''
+                    }`,
+                  )
+                }}
+              >
+                Form Mutation
+              </Button>
+            </HStack>
           </Flex>
           <HStack fontWeight={'bold'} spacing={'1.5em'}>
             <Text
@@ -221,7 +286,11 @@ export const StockMutation = (props) => {
               cursor={'pointer'}
               onClick={() => {
                 changeTextToggle(document.getElementById('req')?.innerText)
-                navigate(`${pathName}?pa=${pageValue}&sta=req`)
+                navigate(
+                  `${pathName}?pa=${pageValue}&sta=req${
+                    warehouseValue ? `&wa=${warehouseValue}` : ''
+                  }`,
+                )
                 handleRequestApproval(filterValue)
               }}
             >
@@ -236,7 +305,11 @@ export const StockMutation = (props) => {
               cursor={'pointer'}
               onClick={() => {
                 changeTextToggle(document.getElementById('app')?.innerText)
-                navigate(`${pathName}?pa=${pageValue}&sta=app`)
+                navigate(
+                  `${pathName}?pa=${pageValue}&sta=app${
+                    warehouseValue ? `&wa=${warehouseValue}` : ''
+                  }`,
+                )
                 handleRequestApproval(filterValue)
               }}
             >
@@ -293,6 +366,7 @@ export const StockMutation = (props) => {
           </Box>
         </VStack>
         <PaginationList
+          mutValue={warehouseValue}
           boxToggle={boxToggle}
           changeBoxToggle={changeBoxToggle}
           location={location}

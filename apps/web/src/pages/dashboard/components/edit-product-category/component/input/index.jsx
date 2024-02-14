@@ -85,7 +85,7 @@ export const NewGroupInput = (props) => {
         focusBorderColor={'transparent'}
         bgColor={'grey.50'}
         value={props?.findById(props?.genderId)}
-        onFocus={(e) => props?.onFocusInput(genderId, e.target.value)}
+        onFocus={(e) => props?.onFocusInput(props?.genderId, e.target.value)}
         onBlur={() => {
           props?.setInput([{}])
         }}
