@@ -35,8 +35,13 @@ export const CreateStock = (props) => {
   // COLOUR
   const colours = productSelected?.colour
   useEffect(() => {
-    setWarehouseId(props?.user?.warehouseId)
-    getProduct(productNameFilter, '', '', '', setProducts, 'name', 'ASC', 1)
+    if (props?.superAdmin) {
+      setWarehouseId(warehouseValue)
+      getProduct(productNameFilter, '', '', '', setProducts, 'name', 'ASC', 1)
+    } else {
+      setWarehouseId(props?.user?.warehouseId)
+      getProduct(productNameFilter, '', '', '', setProducts, 'name', 'ASC', 1)
+    }
   }, [productNameFilter, setProductSelected])
 
   //   PRODUCT SIZES
@@ -54,7 +59,7 @@ export const CreateStock = (props) => {
   //   PRODUCT ID WILL BE SENT
   const [productId, setProductId] = useState(0)
   const [productName, setProductName] = useState('')
-
+  console.log('colour', productId, warehouseId, sizeId, colourId)
   //   FORMIK
   const formik = useFormik({
     initialValues: {
@@ -82,6 +87,16 @@ export const CreateStock = (props) => {
     isUpdate,
   ) => {
     try {
+      const check = await checkStock(
+        productId,
+        warehouseValue ? warehouseValue : warehouseId,
+        sizeId,
+        colourId,
+      )
+      console.log('CHECK', !!check?.data?.data)
+      if (!!check?.data?.data) throw new Error('Stock Exist')
+      if (productId == 0) throw new Error('Select Colour')
+      if (productId == 0) throw new Error('Select Colour')
       const res = await createStockJournal(productId, warehouseId, sizeId, colourId, qty, isUpdate)
       toast({
         title: `${res?.data?.message}`,
@@ -89,10 +104,13 @@ export const CreateStock = (props) => {
         placement: 'bottom',
       })
     } catch (err) {
-      const errorMessage =
+      let errorMessage =
         err.response && err.response.data && err.response.data.message
           ? err.response.data.message
           : 'An unexpected error occurred'
+      if (err.message === 'Stock Exist') {
+        errorMessage = 'Stock already exists'
+      }
       toast({
         title: `${errorMessage}`,
         status: 'error',
@@ -148,13 +166,6 @@ export const CreateStock = (props) => {
               _active={{ opacity: '70%' }}
               onClick={async () => {
                 try {
-                  const res = await checkStock(
-                    productId,
-                    warehouseValue ? warehouseValue : warehouseId,
-                    sizeId,
-                    colourId,
-                  )
-                  if (res?.data?.data) throw new Error('Stock is exist')
                   await handleCreateStockJournal(
                     productId,
                     warehouseValue ? warehouseValue : warehouseId,
@@ -163,22 +174,13 @@ export const CreateStock = (props) => {
                     Number(stockValue),
                     false,
                   )
-                  setProductId(0)
                   setWarehouseId(warehouseId)
-                  setSizeId(0)
-                  setColourId(0)
                   setStockValue(0)
                 } catch (err) {
                   const errorMessage =
                     err.message && err.response && err.response.data && err.response.data.message
                       ? err.response.data.message
                       : 'An unexpected error occurred'
-                  if (err.message === 'Stock is exist') {
-                    toast({
-                      title: 'Stock already exists',
-                      status: 'error', // or 'info' depending on your design
-                    })
-                  }
                 }
               }}
             >

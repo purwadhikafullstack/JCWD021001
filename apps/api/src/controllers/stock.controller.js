@@ -26,7 +26,7 @@ export const getStockController = async (req, res) => {
 
 export const getSpesificStockController = async (req, res) => {
   try {
-    const { productId, warehouseId, sizeId, colourId } = req.body
+    const { productId, warehouseId, sizeId, colourId } = req.query
     const result = await getSpesificStockQuery(productId, warehouseId, sizeId, colourId)
     return res.status(200).json({
       message: 'Get Stock Success',
