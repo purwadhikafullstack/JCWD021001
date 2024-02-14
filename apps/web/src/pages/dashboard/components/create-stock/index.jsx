@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Input, Text, VStack, useToast } from '@chakra-ui/react'
+import { Box, Button, FormControl, Heading, Input, Text, VStack, useToast } from '@chakra-ui/react'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { getProduct } from '../../../product-list/services/readProduct'
@@ -7,7 +7,7 @@ import { StockSelection } from './component/stock-selection'
 import { createStockJournal } from './services/createStock'
 import { useLocation } from 'react-router-dom'
 import { checkStock } from './services/readStock'
-
+import * as yup from 'yup'
 export const CreateStock = (props) => {
   // LOCATION
   const location = useLocation()
@@ -42,7 +42,7 @@ export const CreateStock = (props) => {
       setWarehouseId(props?.user?.warehouseId)
       getProduct(productNameFilter, '', '', '', setProducts, 'name', 'ASC', 1)
     }
-  }, [productNameFilter, setProductSelected])
+  }, [productNameFilter, setProductSelected, warehouseValue])
 
   //   PRODUCT SIZES
   const [sizes, setSizes] = useState([])
@@ -59,13 +59,36 @@ export const CreateStock = (props) => {
   //   PRODUCT ID WILL BE SENT
   const [productId, setProductId] = useState(0)
   const [productName, setProductName] = useState('')
-  console.log('colour', productId, warehouseId, sizeId, colourId)
   //   FORMIK
   const formik = useFormik({
     initialValues: {
-      stock: '',
+      productId: '',
+      colourId: '',
+      sizeId: '',
+      stock: 0,
     },
+    validateOnChange: true,
+    validateOnBlur: true,
+    validationSchema: yup.object({
+      productId: yup.number().required('Select product'),
+      colourId: yup.number().required('Select colour'),
+      sizeId: yup.number().required('Select size'),
+      stock: yup
+        .number()
+        .required('Input quantity')
+        .test('notZero', 'Qty cannot be zero', (value) => {
+          return value !== 0
+        }),
+    }),
     onSubmit: async (values, { resetForm }) => {
+      await handleCreateStockJournal(
+        values.productId,
+        warehouseValue ? warehouseValue : warehouseId,
+        values.sizeId,
+        values.colourId,
+        values.stock,
+        false,
+      )
       try {
       } catch (err) {
         throw err
@@ -73,6 +96,9 @@ export const CreateStock = (props) => {
       resetForm({
         values: {
           stock: '',
+          colourId: '',
+          sizeId: '',
+          productId: '',
         },
       })
     },
@@ -131,17 +157,23 @@ export const CreateStock = (props) => {
         </Heading>
         <form onSubmit={formik.handleSubmit}>
           <VStack align={'stretch'}>
-            <Input
-              borderColor={'transparent'}
-              focusBorderColor={'transparent'}
-              placeholder="Product Name"
-              _placeholder={{ color: 'brand.grey350' }}
-              bg={'brand.grey100'}
-              mb={'24px'}
-              value={productName}
-              isReadOnly
-            />
+            <FormControl>
+              <Input
+                id={'productId'}
+                name={'productId'}
+                borderColor={'transparent'}
+                focusBorderColor={'transparent'}
+                placeholder="Product Name"
+                _placeholder={{ color: 'brand.grey350' }}
+                bg={'brand.grey100'}
+                mb={'24px'}
+                value={productName}
+                isReadOnly
+              />
+              {formik.errors.productId && <Text color="red">{formik.errors.productId}</Text>}
+            </FormControl>
             <ProductList
+              formik={formik}
               setProductId={setProductId}
               products={products}
               setProductName={setProductName}
@@ -149,6 +181,7 @@ export const CreateStock = (props) => {
               setProductSelected={setProductSelected}
             />
             <StockSelection
+              formik={formik}
               sizes={sizes}
               colours={colours}
               setColourId={setColourId}
@@ -164,25 +197,7 @@ export const CreateStock = (props) => {
               color={'white'}
               _hover={{ bg: '#f50f5a' }}
               _active={{ opacity: '70%' }}
-              onClick={async () => {
-                try {
-                  await handleCreateStockJournal(
-                    productId,
-                    warehouseValue ? warehouseValue : warehouseId,
-                    sizeId,
-                    colourId,
-                    Number(stockValue),
-                    false,
-                  )
-                  setWarehouseId(warehouseId)
-                  setStockValue(0)
-                } catch (err) {
-                  const errorMessage =
-                    err.message && err.response && err.response.data && err.response.data.message
-                      ? err.response.data.message
-                      : 'An unexpected error occurred'
-                }
-              }}
+              type={'submit'}
             >
               Create
             </Button>
