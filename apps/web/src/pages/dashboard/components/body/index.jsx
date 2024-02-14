@@ -83,7 +83,11 @@ export const Body = (props) => {
           </AdminBiasaRoute>
         )
       case 'stock-report':
-        return <StockReport user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+        return (
+          <AdminBiasaRoute>
+            <StockReport user={props?.user} isSuperAdmin={props?.isSuperAdmin} />
+          </AdminBiasaRoute>
+        )
       case 'order-management':
         return (
           <LoggedInRoute>
@@ -158,6 +162,7 @@ export const Body = (props) => {
     <Box
       bgColor={'grey.50'}
       w={'100%'}
+      h={'100%'}
       p={'1em'}
       display={!props?.collapseSidebar ? 'block' : 'none'}
     >

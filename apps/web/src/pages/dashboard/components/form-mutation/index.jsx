@@ -26,7 +26,7 @@ import { getStock } from '../stock-management/services/readStock'
 import { useLocation } from 'react-router-dom'
 import { createMutation } from '../stock-mutation/services/createMutation'
 import { getWarehouses } from './services/readWarehouse'
-import { SearchInput } from '../create-stock/component/search-input'
+import { SearchInput } from './component'
 
 export const FormMutation = (props) => {
   // LOCATION
@@ -194,11 +194,7 @@ export const FormMutation = (props) => {
                   Warehouse Destination
                 </FormLabel>
                 <Select
-                  border={'2px solid lightgray'}
-                  focusBorderColor="lightgray !important"
-                  focusShadow="none !important"
-                  _hover={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
-                  _focus={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
+                  border={'1px solid lightgray'}
                   placeholder={'Select warehouse'}
                   id={'recipientWarehouseAddress'}
                   name={'recipientWarehouseAddress'}
@@ -232,17 +228,14 @@ export const FormMutation = (props) => {
                 </Flex>
                 <Input
                   mt={'1em'}
+                  border={'1px solid lightgray'}
+                  focusBorderColor={'lightgray'}
                   placeholder={'Select product'}
                   id={'productName'}
                   name={'productName'}
                   type={'text'}
                   value={formik.values.productName}
                   onChange={formik.handleChange}
-                  border={'2px solid lightgray'}
-                  focusBorderColor="lightgray !important"
-                  focusShadow="none !important"
-                  _hover={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
-                  _focus={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
                   onKeyDown={handleKeyDown}
                   isReadOnly
                 />

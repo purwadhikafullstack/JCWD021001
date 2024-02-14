@@ -89,4 +89,3 @@ export const getWarehousesService = async (warehouseId) => {
     throw err
   }
 }
-

@@ -37,9 +37,8 @@ export const SearchModal = (props) => {
                   <Icon as={MagnifyingGlassIcon} />
                 </InputLeftElement>
                 <Input
-                  border={'none'}
-                  // _focus={{ border: 'none' }}
-                  focusBorderColor={'transparent'}
+                  border={'1px solid lightgray'}
+                  focusBorderColor={'lightgray'}
                   height={'2em'}
                   variant={'outline'}
                   placeholder={'Search a product here'}
