@@ -143,26 +143,27 @@ export const updateProductCategoryQuery = async (name, parentId = null, id) => {
 export const deleteProductCategoryQuery = async (id, parentId, grandParentId = null) => {
   try {
     if (grandParentId) {
+      // If grandparent is delete
       const checkChildren = await ProductCategory.findAll({
         where: {
           parentId: grandParentId,
         },
       })
-
       const childrenId = checkChildren.map((item) => item.id)
       const group = await ProductCategory.findAll({
         where: { parentId: childrenId },
       })
       // return group
       const groupId = group.map((item) => item.id)
-
       const sizes = await Size.findAll({
         where: {
           productCategoryId: childrenId,
         },
       })
-
       const sizeId = sizes.map((item) => item.id)
+      if (sizes.length > 0) {
+        throw new Error('Stocks still have the size that connect product categories')
+      }
       await Size.destroy({
         where: {
           id: sizeId,
@@ -177,7 +178,7 @@ export const deleteProductCategoryQuery = async (id, parentId, grandParentId = n
         // Iterate through each product and update
         for (const product of products) {
           await product.update({
-            productCategoryId: null, // Assuming you want to set productCategoryId to null
+            productCategoryId: null,
           })
         }
       } else {
@@ -200,7 +201,6 @@ export const deleteProductCategoryQuery = async (id, parentId, grandParentId = n
       })
       return res
     }
-
     const check = await ProductCategory.findAll({
       where: {
         parentId: {
@@ -208,7 +208,6 @@ export const deleteProductCategoryQuery = async (id, parentId, grandParentId = n
         },
       },
     })
-
     const checkParent = await ProductCategory.findAll({
       where: {
         parentId: {
@@ -226,7 +225,6 @@ export const deleteProductCategoryQuery = async (id, parentId, grandParentId = n
         },
       },
     })
-
     if (checkLastChild.length === 1) {
       if (checkParent.length <= 1) throw new Error('You cant delete the last category')
       const products = await Product.findAll({
@@ -234,6 +232,14 @@ export const deleteProductCategoryQuery = async (id, parentId, grandParentId = n
           productCategoryId: id,
         },
       })
+      const sizes = await Size.findAll({
+        where: {
+          productCategoryId: parentId,
+        },
+      })
+      if (sizes.length > 0) {
+        throw new Error('Stocks still have the size that connect product categories')
+      }
       for (const product of products) {
         await product.update({
           productCategoryId: null, // Assuming you want to set productCategoryId to null
@@ -246,13 +252,15 @@ export const deleteProductCategoryQuery = async (id, parentId, grandParentId = n
       })
       return res
     }
-
     if (check) {
       const sizes = await Size.findAll({
         where: {
-          productCategoryId: id,
+          productCategoryId: parentId,
         },
       })
+      if (sizes.length > 0) {
+        throw new Error('Stocks still have the size that connect product categories')
+      }
       const sizeId = sizes.map((item) => item.id)
       await Size.destroy({
         where: {
