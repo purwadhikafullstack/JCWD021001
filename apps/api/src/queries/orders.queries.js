@@ -428,7 +428,7 @@ export const getAllOrderQuery = async (
 FROM 
     orders
 WHERE 
-    orderDate >= '${startDate}' AND orderDate <= '${endDate}' AND warehouseId = ${warehouseId}
+    orderDate >= '${startDate}' AND orderDate <= '${endDate}' AND warehouseId = ${warehouseId} AND orders.orderStatusId<>1
 LIMIT ${pageSize} OFFSET ${offset};`)
     return res
   } catch (err) {
@@ -450,8 +450,10 @@ export const getAllOrderByCategoryQuery = async (warehouseId, startDate, endDate
       JOIN productCategories AS parent_category ON child_category.parentId = parent_category.id
       JOIN productCategories AS grandparent_category ON parent_category.parentId = grandparent_category.id
       WHERE orders.orderDate >= '${startDate}' AND orders.orderDate <= '${endDate}'
-      AND orders.warehouseId = ${warehouseId}
-      GROUP BY parent_category.id;`)
+      AND orders.warehouseId = ${warehouseId} AND orders.orderStatusId <> 1
+      GROUP BY parent_category.id
+      ORDER BY child, ordercount
+      ;`)
     return res
   } catch (err) {
     throw err
@@ -477,7 +479,9 @@ JOIN products as p ON st.productId = p.id
 WHERE o.orderDate >= '${startDate}' 
   AND o.orderDate <= '${endDate}' 
   AND o.warehouseId = ${Number(warehouseId)}
+   AND o.orderStatusId <> 1
 GROUP BY p.id
+order by sold
 LIMIT ${pageSize} OFFSET ${offset};
 `)
     return res
