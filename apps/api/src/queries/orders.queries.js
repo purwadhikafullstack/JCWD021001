@@ -15,6 +15,7 @@ import OrderStatuses from '../models/orderStatuses.model'
 import WarehouseAddress from '../models/warehouseAddress.model'
 import ProductCategory from '../models/productCategory.model'
 import moment from 'moment'
+import ProductImage from '../models/productImage.model'
 
 export const createOrderQuery = async (
   userId,
@@ -164,7 +165,11 @@ export const getOrderQuery = async ({
               model: Stock,
               as: 'stocks',
               include: [
-                { model: Product, as: 'product' },
+                {
+                  model: Product,
+                  as: 'product',
+                  include: [{ model: ProductImage, as: 'picture' }],
+                },
                 { model: Size, as: 'size' },
                 { model: Colour, as: 'colour' },
               ],
@@ -255,7 +260,11 @@ export const getOrderManagementQuery = async ({
               model: Stock,
               as: 'stocks',
               include: [
-                { model: Product, as: 'product' },
+                {
+                  model: Product,
+                  as: 'product',
+                  include: [{ model: ProductImage, as: 'picture' }],
+                },
                 { model: Size, as: 'size' },
                 { model: Colour, as: 'colour' },
               ],
@@ -303,7 +312,11 @@ export const getOrderDetailQuery = async (orderId) => {
               model: Stock,
               as: 'stocks',
               include: [
-                { model: Product, as: 'product' },
+                {
+                  model: Product,
+                  as: 'product',
+                  include: [{ model: ProductImage, as: 'picture' }],
+                },
                 { model: Size, as: 'size' },
                 { model: Colour, as: 'colour' },
               ],
@@ -311,7 +324,7 @@ export const getOrderDetailQuery = async (orderId) => {
           ],
         },
       ],
-      where: {id: orderId}
+      where: { id: orderId },
     })
     return orders
   } catch (err) {

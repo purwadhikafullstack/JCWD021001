@@ -19,6 +19,7 @@ const LaptopCartTable = ({ cartData, onCartUpdated }) => {
     handleCheckout,
     stockData
   } = useCartState(cartData, onCartUpdated)
+  console.log('aaa', cartData);
 
   return (
     <Box>

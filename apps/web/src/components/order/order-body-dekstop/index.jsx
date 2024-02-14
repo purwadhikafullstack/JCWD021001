@@ -1,7 +1,8 @@
 import React from 'react'
-import { Box, Text } from '@chakra-ui/react'
+import { Box, Text, Image } from '@chakra-ui/react'
 import { Table, Thead, Tbody, Tr, Td, TableContainer } from '@chakra-ui/react'
 import toRupiah from '@develoka/angka-rupiah-js'
+import { IMAGE_API_ROUTE } from '../../../services/route'
 
 const OrderBodyDesktop = ({ orderItem }) => {
   return (
@@ -42,7 +43,12 @@ const OrderBodyDesktop = ({ orderItem }) => {
               <Tr key={item.id}>
                 <Td>
                   <Box w={'400px'} display={'flex'} gap={'16px'}>
-                    <Box minW={'64px'} h={'64px'} bgColor={'brand.grey100'} />
+                    <Box maxW={'64px'} h={'64px'} bgColor={'brand.grey100'}>
+                      {' '}
+                      <Image
+                        src={`${IMAGE_API_ROUTE}/productImages/${item?.product?.picture[0]?.imageUrl}`}
+                      />
+                    </Box>
                     <Box
                       w={'400px'}
                       overflow={'hidden'}

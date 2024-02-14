@@ -1,9 +1,7 @@
-import { useState } from 'react'
 import {
   Box,
   Icon,
   Text,
-  Button,
   Popover,
   PopoverTrigger,
   PopoverContent,
@@ -12,14 +10,9 @@ import {
   PopoverFooter,
   PopoverArrow,
   PopoverCloseButton,
-  PopoverAnchor,
 } from '@chakra-ui/react'
 import {
-  MagnifyingGlassIcon,
-  ShoppingCartIcon,
   BellIcon,
-  XMarkIcon,
-  ChevronDownIcon,
   ClockIcon,
   ArrowPathIcon,
   TruckIcon,
@@ -31,7 +24,7 @@ import { useNavigate } from 'react-router-dom'
 const NotificationBox = () => {
   const navigate = useNavigate()
   return (
-    <Popover flip='false'>
+    <Popover flip="false">
       <PopoverTrigger>
         <Box cursor={'pointer'}>
           <Icon as={BellIcon} boxSize={'24px'} />
@@ -119,7 +112,16 @@ const NotificationBox = () => {
                 Process
               </Text>
             </Box>
-            <Box display={'flex'} flexDirection={'column'} alignItems={'center'} gap={'6px'}>
+            <Box
+              display={'flex'}
+              flexDirection={'column'}
+              alignItems={'center'}
+              gap={'6px'}
+              cursor={'pointer'}
+              onClick={() =>
+                navigate('/order-list', { state: { refresh: true, activeTab: 2, status: [4] } })
+              }
+            >
               <Box
                 w={'44px'}
                 h={'44px'}
@@ -137,7 +139,16 @@ const NotificationBox = () => {
                 Delivery
               </Text>
             </Box>
-            <Box display={'flex'} flexDirection={'column'} alignItems={'center'} gap={'6px'}>
+            <Box
+              display={'flex'}
+              flexDirection={'column'}
+              alignItems={'center'}
+              gap={'6px'}
+              cursor={'pointer'}
+              onClick={() =>
+                navigate('/order-list', { state: { refresh: true, activeTab: 3, status: [5] } })
+              }
+            >
               <Box
                 w={'44px'}
                 h={'44px'}
@@ -155,7 +166,16 @@ const NotificationBox = () => {
                 Confirmed
               </Text>
             </Box>
-            <Box display={'flex'} flexDirection={'column'} alignItems={'center'} gap={'6px'}>
+            <Box
+              display={'flex'}
+              flexDirection={'column'}
+              alignItems={'center'}
+              gap={'6px'}
+              cursor={'pointer'}
+              onClick={() =>
+                navigate('/order-list', { state: { refresh: true, activeTab: 4, status: [6] } })
+              }
+            >
               <Box
                 w={'44px'}
                 h={'44px'}
