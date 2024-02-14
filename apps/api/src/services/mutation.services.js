@@ -37,6 +37,8 @@ export const acceptMutationService = async (id, isAccepted) => {
 
     if (isAccepted === 0) {
       if (isAccepted) {
+        if (recipientStock?.dataValues?.qty < mutation?.qty)
+          throw new Error('Stock is not sufficient')
         if (recipientStock?.dataValues.qty <= 0) {
           throw new Error('Sorry, stock is empty')
         }
@@ -156,13 +158,14 @@ export const createMutationService = async (
   stockId,
 ) => {
   try {
-    console.log('susu', requesterWarehouseId, recipientWarehouseId, qty, isAccepted, stockId);
+    console.log('susu', requesterWarehouseId, recipientWarehouseId, qty, isAccepted, stockId)
     //Check its an manual or automatic mutation
     if (isAccepted === 1) {
       const recipientStock = await getStockByIdQuery(stockId)
       if (!recipientStock) {
         throw new Error('Sorry, stock doesnt exist')
       } else {
+        if (recipientStock?.dataValues?.qty < qty) throw new Error('Stock is not sufficient')
         if (recipientStock?.dataValues?.qty <= 0) throw new Error('Sorry, stock is empty')
       }
       const recipientStockJournal = null // Recipient Stock Journal(the one who will send the stock)
@@ -186,6 +189,7 @@ export const createMutationService = async (
       if (!recipientStock) {
         throw new Error('Sorry, stock doesnt exist')
       } else {
+        if (recipientStock?.dataValues?.qty < qty) throw new Error('Stock is not sufficient')
         if (recipientStock?.dataValues?.qty <= 0) throw new Error('Sorry, stock is empty')
       }
 

@@ -35,7 +35,7 @@ export const PaginationList = (props) => {
                 props?.monthValue ? `&mo=${props?.monthValue}` : ''
               }${props?.filterValue ? `&sta=${props?.filterValue}` : ''}${
                 props?.warValue ? `&war=${props?.warValue}` : ''
-              }`,
+              }${props?.mutValue ? `&wa=${props?.mutValue}` : ''}`,
             )
           }}
         >

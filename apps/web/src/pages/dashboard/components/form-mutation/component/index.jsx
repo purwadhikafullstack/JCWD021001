@@ -2,23 +2,13 @@ import { InputGroup, Input, InputRightElement, Icon, useDisclosure } from '@chak
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+
 export const SearchInput = (props) => {
   // FILTER
   const [filter, setFilter] = useState('')
 
   //   HANDLE KEY PRESS
-  const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      props?.setProductNameFilter(filter)
-    }
-  }
-  const navigate = useNavigate()
-  const handleNavigate = () => {
-    if (props?.pageValue) {
-      navigate('/dashboard/product-list?pa=1')
-      props?.changeBoxToggle(props?.pageValue)
-    }
-  }
+
   return (
     <InputGroup>
       <Input
@@ -30,13 +20,10 @@ export const SearchInput = (props) => {
         focusBorderColor={'lightgray'}
         placeholder={'Search a product here'}
         onChange={(e) => {
-          setFilter(e?.target?.value)
-          props?.changeBoxToggle(1)
           props?.setProductNameFilter(e.target.value)
-          handleNavigate()
+          setFilter(e?.target?.value)
         }}
         value={filter}
-        onKeyDown={handleKeyPress}
       />
       <InputRightElement>
         <Icon as={MagnifyingGlassIcon} />

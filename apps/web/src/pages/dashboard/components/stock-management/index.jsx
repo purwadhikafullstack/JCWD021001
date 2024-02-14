@@ -109,11 +109,9 @@ export const StockManagement = (props) => {
                   id={'recipientWarehouseAddress'}
                   name={'recipientWarehouseAddress'}
                   type={'text'}
-                  border={'2px solid lightgray'}
-                  focusBorderColor="lightgray !important"
-                  focusShadow="none !important"
-                  _hover={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
-                  _focus={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
+                  bg={'white'}
+                  border={'1px solid lightgray'}
+                  focusBorderColor={'lightgray'}
                   onChange={async (e) => {
                     setWarehouseId(e?.target?.value)
                     {
