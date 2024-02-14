@@ -11,8 +11,6 @@ import { ColourBox } from '../colour-box'
 import { SizeBox } from '../size-box'
 import { useSelector } from 'react-redux'
 
-
-
 export const Body = (props) => {
   // Location
   const location = useLocation()
@@ -78,6 +76,14 @@ export const Body = (props) => {
       toast.error('Please login first')
       return
     }
+    if (user?.roleId == 1) {
+      toast.error('Super Admin not add to cart')
+      return
+    }
+    if (user?.roleId == 2) {
+      toast.error('Admin not add to cart')
+      return
+    }
     const newItem = {
       userId: user?.id,
       productId: props?.product?.id,
@@ -90,7 +96,10 @@ export const Body = (props) => {
     const existingCart = cartData.find((cartItem) => cartItem.userId === user?.id)
     if (existingCart && existingCart.CartProducts) {
       const isProductInCart = existingCart.CartProducts.some(
-        (product) => product.product.id === newItem.productId,
+        (product) =>
+          product.product.id == newItem.productId &&
+          product.colourId == newItem.colourId &&
+          product.sizeId == newItem.sizeId,
       )
 
       if (isProductInCart) {

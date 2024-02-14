@@ -151,7 +151,6 @@ const CartProductRow = ({
                     >
                       <Button
                         variant="ghost"
-                        // onClick={() => debouncedUpdateCart(item.id, Math.max(1, item.quantity - 1), onCartUpdated)}
                         onClick={() => handleButtonClick(item.id, -1)}
                         isDisabled={item?.quantity === 1}
                       >
@@ -159,10 +158,11 @@ const CartProductRow = ({
                       </Button>
                       <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
                         {productData[item.id]?.quantity || item?.quantity}
+                        {console.log('por',productData[item.id])}
+                        {console.log('item',item?.quantity)}
                       </Text>
                       <Button
                         variant="ghost"
-                        // onClick={() => debouncedUpdateCart(item.id, Math.min(10, item.quantity + 1), onCartUpdated)}
                         onClick={() => handleButtonClick(item.id, 1)}
                         isDisabled={item?.quantity === 10}
                       >
