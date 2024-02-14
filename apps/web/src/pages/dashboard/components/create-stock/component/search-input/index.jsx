@@ -1,5 +1,6 @@
 import { InputGroup, Input, InputRightElement, Icon, useDisclosure } from '@chakra-ui/react'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
+import { debounce } from 'lodash'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 export const SearchInput = (props) => {

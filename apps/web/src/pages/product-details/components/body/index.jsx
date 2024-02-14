@@ -10,8 +10,7 @@ import { useCart } from '../../../../components/cart-table/service/cartContext' 
 import { ColourBox } from '../colour-box'
 import { SizeBox } from '../size-box'
 import { useSelector } from 'react-redux'
-
-
+import { debounce } from 'lodash'
 
 export const Body = (props) => {
   // Location
@@ -133,6 +132,15 @@ export const Body = (props) => {
     }))
   }
 
+  const [qty, setQty] = useState(1)
+
+  const handleAdd = () => {
+    setQty(qty + 1)
+  }
+
+  const handleMin = () => {
+    qty > 0 && setQty(qty - 1)
+  }
   return (
     <Box p={'1em'} bgColor={'grey.50'} minH={'100vh'} maxW={'100vw'}>
       <VStack align={'sretch'}>
@@ -224,9 +232,23 @@ export const Body = (props) => {
                     border={'2px solid #f2f2f2'}
                     borderRadius={'.5em'}
                   >
-                    <Icon as={MinusIcon} color={'redPure.500'} />
-                    <Text>1</Text>
-                    <Icon as={PlusIcon} color={'redPure.500'} />
+                    <Icon
+                      as={MinusIcon}
+                      color={'redPure.500'}
+                      onClick={() => {
+                        handleMin()
+                      }}
+                      cursor={'pointer'}
+                    />
+                    <Text>{qty}</Text>
+                    <Icon
+                      as={PlusIcon}
+                      color={'redPure.500'}
+                      onClick={() => {
+                        handleAdd()
+                      }}
+                      cursor={'pointer'}
+                    />
                   </Flex>
                   <HStack alignSelf={'flex-end'} fontSize={'.75em'} fontWeight={'bold'}>
                     <Text color={'redPure.500'}>{stock}</Text>
