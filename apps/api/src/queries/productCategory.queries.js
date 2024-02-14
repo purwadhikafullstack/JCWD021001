@@ -253,6 +253,7 @@ export const deleteProductCategoryQuery = async (id, parentId, grandParentId = n
       return res
     }
     if (check) {
+      if (checkParent.length <= 1) throw new Error('You cant delete the last category')
       const sizes = await Size.findAll({
         where: {
           productCategoryId: parentId,

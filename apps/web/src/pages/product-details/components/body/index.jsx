@@ -135,11 +135,15 @@ export const Body = (props) => {
   const [qty, setQty] = useState(1)
 
   const handleAdd = () => {
-    setQty(qty + 1)
+    if (stock) {
+      if (qty < stock) {
+        setQty(qty + 1)
+      }
+    }
   }
 
   const handleMin = () => {
-    qty > 0 && setQty(qty - 1)
+    qty > 1 && setQty(qty - 1)
   }
   return (
     <Box p={'1em'} bgColor={'grey.50'} minH={'100vh'} maxW={'100vw'}>
