@@ -2,7 +2,7 @@ import { Box, Flex, Icon, Text, VStack } from '@chakra-ui/react'
 import { ChevronLeftIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
 import capitalize from 'capitalize'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import slug from 'slug'
 export const SideBar = (props) => {
   // Navigate

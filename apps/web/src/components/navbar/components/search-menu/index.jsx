@@ -25,11 +25,8 @@ export const SearchMenu = () => {
       <Input
         w={{ md: '15em', lg: '25em' }}
         variant={'outline'}
-        border={'2px solid #f2f2f2'}
-        focusBorderColor="#f2f2f2 !important"
-        focusShadow="none !important"
-        _hover={{ borderColor: '#f2f2f2 !important', boxShadow: 'none !important' }}
-        _focus={{ borderColor: '#f2f2f2 !important', boxShadow: 'none !important' }}
+        border={'1px solid lightgray'}
+        focusBorderColor="lightgray"
         placeholder={'Search a product here'}
         onChange={(e) => {
           setInputFilter(e?.target?.value)

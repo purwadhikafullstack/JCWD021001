@@ -19,7 +19,7 @@ export const Dashboard = () => {
   const isSuperAdmin = useSelector((state) => state.AuthReducer.isSuperAdmin)
 
   return (
-    <Box maxW={'100vw'} overflow={'hidden'}>
+    <Box maxW={'100vw'} minH={'100vh'} overflow={'hidden'}>
       <Navbar />
       <Box display={{ lg: 'flex' }} w={'100%'}>
         <Box display={{ lg: 'flex' }}>
@@ -30,7 +30,7 @@ export const Dashboard = () => {
             isSuperAdmin={isSuperAdmin}
           />
         </Box>
-        <Box w={'100%'} display={collapseSideBar ? 'none' : 'block'}>
+        <Box w={'100%'} h={'auto'} display={collapseSideBar ? 'none' : 'block'}>
           <Body
             user={user}
             isSuperAdmin={isSuperAdmin}

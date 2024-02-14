@@ -226,6 +226,7 @@ JOIN productCategories AS grandparent_category ON parent_category.parentId = gra
 where stocks.warehouseId = ${warehouseId} 
 AND stockJournals.createdAt>= '${startDate}' AND stockJournals.createdAt<= '${endDate}'
 GROUP BY stocks.id
+order by products.name, qty DESC
 LIMIT ${pageSize} OFFSET ${offset};`)
     return res
   } catch (err) {

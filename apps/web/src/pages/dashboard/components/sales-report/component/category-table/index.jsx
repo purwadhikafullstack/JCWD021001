@@ -39,6 +39,8 @@ export const CategoryTable = (props) => {
             <Text>{data?.grandparent_name}</Text>
             <Icon as={ChevronRightIcon} />
             <Text>{data?.group_name}</Text>
+            <Icon as={ChevronRightIcon} />
+            <Text>{data?.child}</Text>
           </HStack>
         </Td>
         <Td>{toRupiah(data?.total)}</Td>
