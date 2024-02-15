@@ -35,12 +35,13 @@ export const FormMutation = (props) => {
 
   // QUERY PARAMS
   const pageValue = queryParams.get('pa')
+  const warehouseValue = queryParams.get('wa')
 
   // PATHNAME
   const pathName = location.pathname
 
   //   WAREHOUSE ID
-  const [warehouseId, setWarehouseId] = useState(props?.user?.warehouseId)
+  const [warehouseId, setWarehouseId] = useState(warehouseValue || props?.user?.warehouseId)
 
   //   CONST RECIPIENT WAREHOUSE ID
   const [recipientWarehouseId, setRecipientWarehouseId] = useState(null)
@@ -52,7 +53,7 @@ export const FormMutation = (props) => {
   const [warehouses, setWarehouses] = useState([])
 
   useEffect(() => {
-    setWarehouseId(props?.user?.warehouseId)
+    setWarehouseId(warehouseValue || props?.user?.warehouseId)
     getWarehouses(warehouseId).then((data) => {
       setWarehouses(data)
     })
@@ -106,17 +107,28 @@ export const FormMutation = (props) => {
   })
 
   // FORMIK
+  const [stockQty, setStockQty] = useState([])
+
   const formik = useFormik({
     initialValues: {
       recipientWarehouseAddress: '',
       productName: '',
       qty: '',
     },
+
     validateOnBlur: true,
     validationSchema: yup.object({
       recipientWarehouseAddress: yup.string().required('Please select the warehouse'),
       productName: yup.string().required('Please select the product'),
-      qty: yup.number().required('Input quantity'),
+      qty: yup
+        .number()
+        .required('Input quantity')
+        .test('maxValue', 'Value must be less than or equal to recipient stocks', (value) => {
+          return value <= stockQty
+        })
+        .test('notZero', 'Qty cannot be zero', (value) => {
+          return value !== 0
+        }),
     }),
     onSubmit: async (values) => {
       handleCreateMutation(
@@ -132,7 +144,6 @@ export const FormMutation = (props) => {
   const [productNameFilter, setProductNameFilter] = useState('')
   //   STOCKS
   const [stocks, setStocks] = useState([])
-
   const handleKeyDown = (event) => {
     // Prevent form submission on Enter key press
     if (event.key === 'Enter') {
@@ -142,7 +153,7 @@ export const FormMutation = (props) => {
   useEffect(() => {
     getStock(recipientWarehouseId, productNameFilter, pageValue, 10).then((data) => setStocks(data))
   }, [pageValue, productNameFilter, recipientWarehouseId, setRecipientWarehouseId])
-
+  console.log('stocks', stocks)
   const renderedTableBody = stocks?.rows?.map((stock, index) => {
     return (
       <Tr key={index} cursor={'pointer'} p={'.875em'} bgColor={'#FAFAFA'}>
@@ -166,6 +177,7 @@ export const FormMutation = (props) => {
                 ...formData,
                 stockId: stock?.id,
               }))
+              setStockQty(stock?.qty)
             }}
           >
             Choose

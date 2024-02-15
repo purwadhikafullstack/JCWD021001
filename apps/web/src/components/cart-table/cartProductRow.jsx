@@ -1,7 +1,8 @@
-import { Box, Text, Button, Icon, Checkbox } from '@chakra-ui/react'
+import { Box, Text, Button, Icon, Checkbox, Image } from '@chakra-ui/react'
 import { Table, Thead, Tbody, Tr, Td, TableContainer } from '@chakra-ui/react'
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline'
 import toRupiah from '@develoka/angka-rupiah-js'
+import { IMAGE_API_ROUTE } from '../../services/route'
 
 const CartProductRow = ({
   cartItem,
@@ -72,7 +73,9 @@ const CartProductRow = ({
                 </Td>
                 <Td>
                   <Box w={'300px'} display={'flex'} gap={'16px'}>
-                    <Box minW={'64px'} h={'64px'} bgColor={'brand.grey100'} />
+                    <Box maxW={'64px'} h={'64px'} bgColor={'brand.grey100'} >
+                      <Image src={`${IMAGE_API_ROUTE}/productImages/${item?.product?.picture[0]?.imageUrl}`}/>
+                    </Box>
                     <Box
                       w={'220px'}
                       overflow={'hidden'}
@@ -151,7 +154,6 @@ const CartProductRow = ({
                     >
                       <Button
                         variant="ghost"
-                        // onClick={() => debouncedUpdateCart(item.id, Math.max(1, item.quantity - 1), onCartUpdated)}
                         onClick={() => handleButtonClick(item.id, -1)}
                         isDisabled={item?.quantity === 1}
                       >
@@ -159,10 +161,11 @@ const CartProductRow = ({
                       </Button>
                       <Text fontFamily={'body'} fontWeight={'600'} fontSize={'16px'}>
                         {productData[item.id]?.quantity || item?.quantity}
+                        {console.log('por',productData[item.id])}
+                        {console.log('item',item?.quantity)}
                       </Text>
                       <Button
                         variant="ghost"
-                        // onClick={() => debouncedUpdateCart(item.id, Math.min(10, item.quantity + 1), onCartUpdated)}
                         onClick={() => handleButtonClick(item.id, 1)}
                         isDisabled={item?.quantity === 10}
                       >

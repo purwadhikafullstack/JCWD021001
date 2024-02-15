@@ -102,7 +102,11 @@ export const StockReport = (props) => {
         <Td>
           <Text>{stockReport?.product}</Text>
           <Text as={'span'} fontSize={'.75em'}>
-            {stockReport?.name}
+            <HStack>
+              <Text>{stockReport?.name}</Text>
+              <Icon as={ChevronRightIcon} fontSize={'.75em'} />
+              <Text>{stockReport?.colour}</Text>
+            </HStack>
           </Text>
           <HStack fontSize={'.75em'}>
             <Text>{stockReport?.category}</Text>
@@ -154,17 +158,15 @@ export const StockReport = (props) => {
                   id={'recipientWarehouseAddress'}
                   name={'recipientWarehouseAddress'}
                   type={'text'}
-                  border={'2px solid lightgray'}
-                  focusBorderColor="lightgray !important"
-                  focusShadow="none !important"
-                  _hover={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
-                  _focus={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
+                  bg={'white'}
+                  border={'1px solid lightgray'}
+                  focusBorderColor={'lightgray'}
                   onChange={async (e) => {
                     setWarehouseId(e?.target?.value)
                     {
                       e?.target?.value
                         ? navigate(`${pathName}?pa=1&mo=${monthValue}&war=${e?.target?.value}`)
-                        : navigate(`${pathName}?pa=1`)
+                        : navigate(`${pathName}?pa=1&mo=${monthValue}`)
                     }
                   }}
                 >

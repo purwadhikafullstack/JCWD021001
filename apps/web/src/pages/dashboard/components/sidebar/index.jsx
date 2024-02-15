@@ -2,9 +2,14 @@ import { ChevronLeftIcon } from '@chakra-ui/icons'
 import { Box, Flex, HStack, Icon, Text, VStack } from '@chakra-ui/react'
 import { Squares2X2Icon } from '@heroicons/react/24/outline'
 import { SidebarButton } from '../sidebar-button'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 export const Sidebar = (props) => {
+  // LOCATION
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const warehouseValue = queryParams.get('wa') || queryParams.get('war')
+  const monthValue = queryParams.get('mo')
   // NAVIGATE
   const navigate = useNavigate()
   // NAVIGATE
@@ -110,22 +115,28 @@ export const Sidebar = (props) => {
             <VStack align={'stretch'} spacing={'1.5em'}>
               <Text
                 onClick={() => {
-                  navigate('/dashboard/stock-management?pa=1')
+                  navigate(
+                    `/dashboard/stock-management?pa=1${
+                      warehouseValue ? `&wa=${warehouseValue}` : ''
+                    }`,
+                  )
                 }}
                 cursor={'pointer'}
               >
                 Stock Management
               </Text>
-              {!props?.isSuperAdmin && (
-                <Text
-                  onClick={() => {
-                    navigate('/dashboard/stock-mutation?pa=1&sta=req')
-                  }}
-                  cursor={'pointer'}
-                >
-                  Stock Mutation
-                </Text>
-              )}
+              <Text
+                onClick={() => {
+                  navigate(
+                    `/dashboard/stock-mutation?pa=1&sta=req${
+                      warehouseValue ? `&wa=${warehouseValue}` : ''
+                    }`,
+                  )
+                }}
+                cursor={'pointer'}
+              >
+                Stock Mutation
+              </Text>
             </VStack>
           </Box>
           <SidebarButton label={'Order'} icon={Squares2X2Icon} />
@@ -133,9 +144,7 @@ export const Sidebar = (props) => {
             <VStack align={'stretch'} spacing={'1.5em'}>
               <Text
                 onClick={() => {
-                  navigate('/dashboard/order-management', {
-                    state: { refresh: true, activeTab: 0, status: [2] },
-                  })
+                  navigate('/dashboard/order-management', { state: { refresh: true, activeTab: 0, status: [2] } })
                 }}
                 cursor={'pointer'}
               >
@@ -148,7 +157,11 @@ export const Sidebar = (props) => {
             <VStack align={'stretch'} spacing={'1.5em'}>
               <Text
                 onClick={() => {
-                  navigate('/dashboard/sales-report?pa=1&cat=all&mo=jan')
+                  navigate(
+                    `/dashboard/sales-report?pa=1&cat=all&mo=${monthValue ? monthValue : 'jan'}${
+                      warehouseValue ? `&war=${warehouseValue}` : ''
+                    }`,
+                  )
                 }}
                 cursor={'pointer'}
               >
@@ -156,7 +169,11 @@ export const Sidebar = (props) => {
               </Text>
               <Text
                 onClick={() => {
-                  navigate('/dashboard/stock-report?pa=1&mo=jan')
+                  navigate(
+                    `/dashboard/stock-report?pa=1&mo=${monthValue ? monthValue : 'jan'}${
+                      warehouseValue ? `&war=${warehouseValue}` : ''
+                    }`,
+                  )
                 }}
                 cursor={'pointer'}
               >

@@ -25,8 +25,8 @@ orderRouter.get('/:userId', verifyToken, checkRoleUser, getOrderController)
 orderRouter.get('/detail/:orderId', verifyToken, getOrderDetailController)
 orderRouter.get(
   '/stock/:orderId',
-  verifyToken,
-  checkRoleSuperAdminAdmin,
+  // verifyToken,
+  // checkRoleSuperAdminAdmin,
   calculationCheckStockController,
 )
 

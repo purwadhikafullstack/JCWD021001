@@ -6,30 +6,34 @@ import User from '../models/user.model'
 import Stock from '../models/stock.model'
 import Colour from '../models/colour.model'
 import Size from '../models/size.model'
+import ProductImage from '../models/productImage.model'
 
-export const findCartStockQuery = async (userId, productId) => {
+export const findCartStockQuery = async (userId, productId, colourId, sizeId) => {
   try {
     // console.log('ddd', userId, process);
     const cart = await Carts.findOne({
       include: [{ model: CartProducts }],
       where: { userId: userId },
-    });
+    })
 
     if (cart) {
       const cartProduct = cart.CartProducts.find(
-        (cartProduct) => cartProduct.productId === productId
-      );
+        (cartProduct) =>
+          cartProduct.productId == productId &&
+          cartProduct.colourId == colourId &&
+          cartProduct.sizeId == sizeId,
+      )
 
       if (cartProduct) {
-        return cartProduct; // If the product already exists in the cart, return it
+        return cartProduct // If the product already exists in the cart, return it
       } else {
-        return null; // If the product does not exist in the cart, return null
+        return null // If the product does not exist in the cart, return null
       }
     } else {
-      return null; // If the cart does not exist, return null
+      return null // If the cart does not exist, return null
     }
   } catch (err) {
-    throw err;
+    throw err
   }
 }
 
@@ -172,7 +176,7 @@ export const getCartQuery = async (userId, stockIds) => {
           include: [
             {
               model: Product,
-              as: 'product',
+              as: 'product', include: [{model: ProductImage, as: 'picture'}]
             },
             {
               model: Colour,

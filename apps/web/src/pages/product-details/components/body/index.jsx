@@ -10,8 +10,7 @@ import { useCart } from '../../../../components/cart-table/service/cartContext' 
 import { ColourBox } from '../colour-box'
 import { SizeBox } from '../size-box'
 import { useSelector } from 'react-redux'
-
-
+import { API_ROUTE } from '../../../../services/route'
 
 export const Body = (props) => {
   // Location
@@ -44,12 +43,13 @@ export const Body = (props) => {
 
   // Get stock
   const [stock, setStock] = useState(null)
+  const [qty, setQty] = useState(1)
 
   const getStock = async (productId, sizeId, colourId, setStock) => {
     try {
       const token = localStorage.getItem('token')
       const res = await axios.get(
-        `http://localhost:8000/api/stock/stock/qty?productId=${productId}&sizeId=${sizeId}&colourId=${colourId}`,
+        `${API_ROUTE}stock/stock/qty?productId=${productId}&sizeId=${sizeId}&colourId=${colourId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -78,19 +78,30 @@ export const Body = (props) => {
       toast.error('Please login first')
       return
     }
+    if (user?.roleId == 1) {
+      toast.error('Super Admin not add to cart')
+      return
+    }
+    if (user?.roleId == 2) {
+      toast.error('Admin not add to cart')
+      return
+    }
     const newItem = {
       userId: user?.id,
       productId: props?.product?.id,
       colourId: colourValue,
       sizeId: sizeValue,
       price: props?.product?.price,
-      quantity: 1,
+      quantity: qty,
     }
 
     const existingCart = cartData.find((cartItem) => cartItem.userId === user?.id)
     if (existingCart && existingCart.CartProducts) {
       const isProductInCart = existingCart.CartProducts.some(
-        (product) => product.product.id === newItem.productId,
+        (product) =>
+          product.product.id == newItem.productId &&
+          product.colourId == newItem.colourId &&
+          product.sizeId == newItem.sizeId,
       )
 
       if (isProductInCart) {
@@ -133,6 +144,17 @@ export const Body = (props) => {
     }))
   }
 
+  const handleAdd = () => {
+    if (stock) {
+      if (qty < stock) {
+        setQty(qty + 1)
+      }
+    }
+  }
+
+  const handleMin = () => {
+    qty > 1 && setQty(qty - 1)
+  }
   return (
     <Box p={'1em'} bgColor={'grey.50'} minH={'100vh'} maxW={'100vw'}>
       <VStack align={'sretch'}>
@@ -224,9 +246,23 @@ export const Body = (props) => {
                     border={'2px solid #f2f2f2'}
                     borderRadius={'.5em'}
                   >
-                    <Icon as={MinusIcon} color={'redPure.500'} />
-                    <Text>1</Text>
-                    <Icon as={PlusIcon} color={'redPure.500'} />
+                    <Icon
+                      as={MinusIcon}
+                      color={'redPure.500'}
+                      onClick={() => {
+                        handleMin()
+                      }}
+                      cursor={'pointer'}
+                    />
+                    <Text>{qty}</Text>
+                    <Icon
+                      as={PlusIcon}
+                      color={'redPure.500'}
+                      onClick={() => {
+                        handleAdd()
+                      }}
+                      cursor={'pointer'}
+                    />
                   </Flex>
                   <HStack alignSelf={'flex-end'} fontSize={'.75em'} fontWeight={'bold'}>
                     <Text color={'redPure.500'}>{stock}</Text>

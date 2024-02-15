@@ -115,10 +115,9 @@ export const SalesReport = (props) => {
                   id={'recipientWarehouseAddress'}
                   name={'recipientWarehouseAddress'}
                   type={'text'}
-                  border={'2px solid lightgray'}
-                  focusBorderColor="lightgray !important"
-                  _hover={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
-                  _focus={{ borderColor: 'lightgray !important', boxShadow: 'none !important' }}
+                  bg={'white'}
+                  border={'1px solid lightgray'}
+                  focusBorderColor={'lightgray'}
                   onChange={async (e) => {
                     setWarehouseId(e?.target?.value)
                     {
@@ -126,7 +125,11 @@ export const SalesReport = (props) => {
                         ? navigate(
                             `${pathName}?pa=1&cat=${categoryValue}&mo=${monthValue}&war=${e?.target?.value}`,
                           )
-                        : navigate(`${pathName}?pa=1`)
+                        : navigate(
+                            `${pathName}?pa=1?&cat=${categoryValue}&mo=${monthValue}${
+                              warehouseValue ? `&war=${warehouseValue}` : ''
+                            }`,
+                          )
                     }
                   }}
                 >

@@ -15,11 +15,11 @@ export const paymentHandler = async (
   fetchCartCount,
 ) => {
   try {
-    const mappedProducts = order.CartProducts.map((product, index) => {
-      const stockId = stockOrder[index]?.id
-
+    const mappedProducts = order.CartProducts.map((product) => {
+      const stockId = stockOrder.find((product) => product?.warehouseId == nearestWarehouse?.id)
+     
       return {
-        stockId: stockId,
+        stockId: stockId?.id,
         productId: product?.product?.id,
         quantity: product?.quantity,
         price: parseFloat(product?.price),
@@ -39,6 +39,7 @@ export const paymentHandler = async (
 
     const result = await createOrder(dataOrder)
     await deleteCart(order.CartProducts.map((product) => product.id))
+    localStorage.removeItem('productData')
     await fetchCartCount()
     const midtransToken = result?.midtransToken
     const orderId = result?.order?.id

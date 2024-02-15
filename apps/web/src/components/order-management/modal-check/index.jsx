@@ -14,6 +14,7 @@ import {
 const ModalCheck = ({ checkStock, isOpen, onClose, handleAcceptButton }) => {
   const insufficientStockItems = checkStock.filter((item) => item.status === 'Insufficient Stock')
   const availableStockItems = checkStock.filter((item) => item.status === 'Available')
+  const emptyAllStock = checkStock.filter((item) => item.status === 'Empty')
   const hasInsufficientStock = insufficientStockItems.length > 0
   const hasAvailableStock = availableStockItems.length > 0
   const handleAccept = (orderId) => {
@@ -38,10 +39,17 @@ const ModalCheck = ({ checkStock, isOpen, onClose, handleAcceptButton }) => {
                   <Text>Product ID: {item.productId}</Text>
                   <Text>Quantity: {item.quantity}</Text>
                   <Text>Status: {item.status}</Text>
-                  <Box>
+                  <Text>
+                    Warehouse: {item.selectedWarehouse.name}, Qty: {item.selectedWarehouseQuantity}
+                  </Text>
+                  <Box mt={'12px'}>
                     <Text>
                       Need to move {item.needSelectedWarehouseQuantity} items to nearest warehouse (
                       {item.nearestWarehouse.name}).
+                    </Text>
+                    <Text>StockId {item.nearestWarehouse.name}: {item.stockIdNearestWarehouse} </Text>
+                    <Text>
+                      Qty {item.nearestWarehouse.name} : {item.nearestWarehouseQuantity}
                     </Text>
                   </Box>
                 </Box>
@@ -55,15 +63,19 @@ const ModalCheck = ({ checkStock, isOpen, onClose, handleAcceptButton }) => {
               </Text>
               {availableStockItems.map((item, index) => (
                 <Box key={index}>
-                  <Text>Stock ID: {item.stockId}</Text>
+                  <Text>Stock ID: {item.stockId} available</Text>
                 </Box>
               ))}
             </Box>
           )}
-          {!hasInsufficientStock && !hasAvailableStock && (
-            <Text fontSize="xl" fontWeight="bold">
-              All Products are Out of Stock
-            </Text>
+          {emptyAllStock && (
+            <Box>
+              {emptyAllStock.map((item, index) => (
+                <Box key={index}>
+                  <Text>{item.message}</Text>
+                </Box>
+              ))}
+            </Box>
           )}
           <Text mt={4}>Are you authorizing this action?</Text>
         </ModalBody>
