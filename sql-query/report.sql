@@ -114,6 +114,7 @@ AND orders.warehouseId = 4
 AND orders.orderStatusId <> 1
 GROUP BY parent_category.id;
 
+use pure;
 select * from stocks;
 select * from products;
 
@@ -211,11 +212,11 @@ WHERE o.orderDate >= '2024-02-01 00:00:00'
   AND o.warehouseId = 4
    AND o.orderStatusId <> 1
 GROUP BY p.id
-order by p.sold
+order by sold
 LIMIT 10 OFFSET 0
-
 ;
-
+select * from products;
+select * from products where productCategoryId = 207;
 
 select * from productCategories;
 select * from sizes;
@@ -236,9 +237,13 @@ AND stockJournals.createdAt>= '2024-02-01 00:00:00' AND stockJournals.createdAt<
 GROUP BY stocks.id
 order by products.name, qty DESC
 LIMIT 1;
-
-
-use pure;
+select * from productCategories;
+select * from mutations;
+select * from stockJournals;
+select * from stocks;
+select * from sizes where id = 86;
+select * from productCategories where id = 166;
+select * from sizes;
 select * from productCategories where name = 'Men';
 select * from products;
 select * from productCategories;
@@ -259,6 +264,23 @@ JOIN productCategories AS child_category ON products.productCategoryId = child_c
 JOIN productCategories AS parent_category ON child_category.parentId = parent_category.id
 JOIN productCategories AS grandparent_category ON parent_category.parentId = grandparent_category.id
 WHERE orders.orderDate >= '2024-02-01' AND orders.orderDate <= '2024-02-28'
+AND orders.orderStatusId <> 1 AND orders.orderStatusId <> 6
 AND orders.warehouseId = 4
 GROUP BY child_category.id
 ORDER BY child, ordercount;
+
+
+SELECT  grandparent_category.name as grandparent_name, parent_category.name AS group_name, parent_category.id as group_id, child_category.name as child, 
+      SUM(orderProducts.quantity) as ordercount,
+      SUM(orderProducts.price) AS total
+      FROM orders
+      JOIN orderProducts ON orders.id = orderProducts.orderId
+      JOIN stocks ON orderProducts.stockId = stocks.id
+      JOIN products ON stocks.productId = products.id
+      JOIN productCategories AS child_category ON products.productCategoryId = child_category.id
+      JOIN productCategories AS parent_category ON child_category.parentId = parent_category.id
+      JOIN productCategories AS grandparent_category ON parent_category.parentId = grandparent_category.id
+      WHERE orders.orderDate >= '2024-02-01' AND orders.orderDate <= '2024-02-29'
+      AND orders.warehouseId = 4 AND orders.orderStatusId <> 1 
+      GROUP BY parent_category.id
+      ORDER BY child, ordercount
