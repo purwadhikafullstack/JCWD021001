@@ -97,7 +97,7 @@ function FilterAdmin({ setCityId, setWarehouseId }) {
             fontSize={'14px'}
             size={'sm'}
           />
-          {cityResult.length > 0 && (
+          {cityResult?.length > 0 && (
             <RadioGroup value={selectedCity} onChange={setSelectedCity}>
               {cityResult.map((city) => (
                 <Flex
@@ -132,7 +132,7 @@ function FilterAdmin({ setCityId, setWarehouseId }) {
             mt={'10px'}
             size={'sm'}
           />
-          {warehouseResult.length > 0 && (
+          {warehouseResult?.length > 0 && (
             <RadioGroup value={selectedWarehouse} onChange={setSelectedWarehouse}>
               {warehouseResult.map((warehouse) => (
                 <Flex

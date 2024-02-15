@@ -32,7 +32,7 @@ export const getAdminList = async (
 export const getCity = async (name) => {
   try{
     const response = await axios.get(`${import.meta.env.VITE_API_URL}user-address?name=${name}`)
-    console.log("ini city", response);
+    
     return response?.data?.data
     
   } catch (err){
@@ -46,8 +46,13 @@ export const getCity = async (name) => {
 
 export const getWarehouse = async (name) => {
   try{
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}warehouse?name=${name}`)
-    console.log("ini city", response);
+    const token = localStorage.getItem("token")
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}warehouse?name=${name}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    
     return response?.data?.data
     
   } catch (err){
