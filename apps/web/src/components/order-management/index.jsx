@@ -112,20 +112,23 @@ const OrderManagementBody = ({
               handleOrderNumberKeyPress={handleOrderNumberKeyPress}
               handleOrderNumberSubmit={handleOrderNumberSubmit}
             />
-            <Box bgColor={'white'} w={'250px'} padding={'4px 12px 4px 8px'} borderRadius={'8px'}>
-              <Select
-                placeholder="Warehouse Name"
-                border={'none'}
-                value={selectedWarehouse}
-                onChange={handleSelectWarehouseChange}
-              >
-                {warehouseData.map((warehouse) => (
-                  <option key={warehouse.id} value={warehouse.id}>
-                    {warehouse.name}
-                  </option>
-                ))}
-              </Select>
-            </Box>
+            {user.roleId !== 2 && (
+              <Box bgColor={'white'} w={'250px'} padding={'4px 12px 4px 8px'} borderRadius={'8px'}>
+                <Select
+                  placeholder="Warehouse Name"
+                  border={'none'}
+                  value={selectedWarehouse}
+                  onChange={handleSelectWarehouseChange}
+                >
+                  {warehouseData.map((warehouse) => (
+                    <option key={warehouse.id} value={warehouse.id}>
+                      {warehouse.name}
+                    </option>
+                  ))}
+                </Select>
+              </Box>
+            )}
+
             <DateFilter orderDate={orderDate} handleOrderDateChange={handleOrderDateChange} />
           </Box>
           <MobileMenu

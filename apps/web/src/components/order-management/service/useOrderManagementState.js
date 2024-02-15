@@ -142,8 +142,22 @@ const useOrderManagementState = ({
                 matchingStock.nearestWarehouse.id, // recipientWarehouseId
                 matchingStock.needSelectedWarehouseQuantity, // qty
                 1, // isAccepted
-                matchingStock.stockId, // stockId
+                matchingStock.stockIdNearestWarehouse, // stockId
               )
+              // Create stock journal
+              try {
+                const res = await createStockJournal(
+                  productParams.productId,
+                  productParams.warehouseId,
+                  productParams.sizeId,
+                  productParams.colourId,
+                  productParams.qty,
+                  productParams.isUpdate,
+                )
+              } catch (error) {
+                toast.error('stock journal error')
+                // allOperationsSuccessful = false // Set flag to false if stock journal creation fails
+              }
             } catch (mutationError) {
               toast.error('mutation error')
               allOperationsSuccessful = false // Set flag to false if mutation fails

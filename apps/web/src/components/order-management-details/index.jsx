@@ -1,11 +1,12 @@
 import React from 'react'
-import { Box, Text, Icon } from '@chakra-ui/react'
+import { Box, Text, Icon, Image } from '@chakra-ui/react'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react'
 import { Table, Thead, Tbody, Tr, Td, TableContainer } from '@chakra-ui/react'
 import { HomeIcon, MapPinIcon } from '@heroicons/react/24/outline'
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import toRupiah from '@develoka/angka-rupiah-js'
 import { useNavigate } from 'react-router-dom'
+import { IMAGE_API_ROUTE } from '../../services/route'
 
 const OrderManagementDetailBody = ({ orderData }) => {
   const navigate = useNavigate()
@@ -132,7 +133,11 @@ const OrderManagementDetailBody = ({ orderData }) => {
                   <Box display={'flex'} flexDirection={'column'} gap={'24px'}>
                     {orderData?.OrderProducts?.map((item) => (
                       <Box key={item.id} w={'full'} display={'flex'} gap={'16px'}>
-                        <Box w={'64px'} h={'64px'} bgColor={'brand.grey100'} />
+                        <Box w={'64px'} h={'64px'} bgColor={'brand.grey100'}>
+                          <Image
+                            src={`${IMAGE_API_ROUTE}/productImages/${item?.stocks?.product?.picture[0]?.imageUrl}`}
+                          />
+                        </Box>
                         <Box display={'flex'} flexDirection={'column'} w={'full'}>
                           <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
                             {item?.stocks?.product?.name}
@@ -204,7 +209,11 @@ const OrderManagementDetailBody = ({ orderData }) => {
                         <Tr key={item.id}>
                           <Td>
                             <Box w={'400px'} display={'flex'} gap={'16px'}>
-                              <Box minW={'64px'} h={'64px'} bgColor={'brand.grey100'} />
+                              <Box maxW={'64px'} h={'64px'} bgColor={'brand.grey100'}>
+                                <Image
+                                  src={`${IMAGE_API_ROUTE}/productImages/${item?.stocks?.product?.picture[0]?.imageUrl}`}
+                                />
+                              </Box>
                               <Box
                                 w={'400px'}
                                 overflow={'hidden'}

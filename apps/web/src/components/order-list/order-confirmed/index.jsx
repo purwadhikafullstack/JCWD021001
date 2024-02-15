@@ -1,6 +1,7 @@
 import React from 'react'
-import { Box, Text, Button, Collapse } from '@chakra-ui/react'
+import { Box, Text, Image, Collapse } from '@chakra-ui/react'
 import toRupiah from '@develoka/angka-rupiah-js'
+import { IMAGE_API_ROUTE } from '../../../services/route'
 
 const OrderConfirmed = ({
   onConfirmedOrders,
@@ -75,7 +76,11 @@ const OrderConfirmed = ({
                     h={'112px'}
                     cursor={'pointer'}
                     onClick={() => navigate('/order-details', { state: { orderId: order?.id } })}
-                  ></Box>
+                  >
+                    <Image
+                      src={`${IMAGE_API_ROUTE}/productImages/${order?.OrderProducts[0]?.stocks?.product?.picture[0]?.imageUrl}`}
+                    />
+                  </Box>
                   <Box display={'flex'} flexDirection={'column'} gap={'6px'}>
                     <Text
                       fontFamily={'body'}
@@ -126,7 +131,11 @@ const OrderConfirmed = ({
                   <Box display={'flex'} flexDirection={'column'} gap={'16px'}>
                     {order.OrderProducts.slice(1).map((product, index) => (
                       <Box display={'flex'} gap={'16px'} key={index}>
-                        <Box bgColor={'brand.grey100'} w={'112px'} h={'112px'}></Box>
+                        <Box bgColor={'brand.grey100'} w={'112px'} h={'112px'}>
+                          <Image
+                            src={`${IMAGE_API_ROUTE}/productImages/${product?.stocks?.product?.picture[0]?.imageUrl}`}
+                          />
+                        </Box>
                         <Box display={'flex'} flexDirection={'column'} gap={'6px'}>
                           <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
                             {product?.stocks?.product?.name}
@@ -169,7 +178,7 @@ const OrderConfirmed = ({
               </Box>
             </Box>
             <Box w={'full'} display={'flex'} justifyContent={'flex-end'} gap={'16px'}>
-              <Button bgColor={'white'} color={'#CD0244'} border={'1px solid #CD0244'}>
+              {/* <Button bgColor={'white'} color={'#CD0244'} border={'1px solid #CD0244'}>
                 Buy Again
               </Button>
               <Button
@@ -178,7 +187,7 @@ const OrderConfirmed = ({
                 // onClick={() => handlePayNowClick(order.id)}
               >
                 Leave a Review
-              </Button>
+              </Button> */}
             </Box>
           </Box>
         </Box>

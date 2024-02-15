@@ -1,9 +1,8 @@
-import { useState } from 'react'
 import {
   Box,
   Icon,
   Text,
-  Button,
+  Image,
   Popover,
   PopoverTrigger,
   PopoverContent,
@@ -12,17 +11,11 @@ import {
   PopoverFooter,
   PopoverArrow,
   PopoverCloseButton,
-  PopoverAnchor,
 } from '@chakra-ui/react'
-import {
-  MagnifyingGlassIcon,
-  ShoppingCartIcon,
-  BellIcon,
-  XMarkIcon,
-  ChevronDownIcon,
-} from '@heroicons/react/24/outline'
+import { ShoppingCartIcon } from '@heroicons/react/24/outline'
 import { useNavigate } from 'react-router-dom'
-
+import { IMAGE_API_ROUTE } from '../../../../services/route'
+import toRupiah from '@develoka/angka-rupiah-js'
 
 const ShoppingCartBox = ({ cartData, cartCount }) => {
   const navigate = useNavigate()
@@ -64,9 +57,30 @@ const ShoppingCartBox = ({ cartData, cartCount }) => {
             <Box key={cartItems.id} display={'flex'} flexDirection={'column'} gap={'14px'}>
               {cartItems?.CartProducts?.slice(0, 3).map((items) => (
                 <Box key={items.id} display={'flex'} gap={'8px'}>
-                  <Box minW={'64px'} h={'64px'} bgColor={'#F1F1F1'} />
-                  <Box w={'full'} display={'flex'} flexDirection={'column'} justifyContent={'space-between'}>
-                    <Text fontFamily={'nunito'} fontWeight={'600'} fontSize={'14px'}>
+                  <Box
+                    maxW={'64px'}
+                    h={'64px'}
+                    bgColor={'#F1F1F1'}
+                    cursor={'pointer'}
+                    onClick={() => navigate('/cart')}
+                  >
+                    <Image
+                      src={`${IMAGE_API_ROUTE}/productImages/${items?.product?.picture[0]?.imageUrl}`}
+                    />
+                  </Box>
+                  <Box
+                    w={'full'}
+                    display={'flex'}
+                    flexDirection={'column'}
+                    justifyContent={'space-between'}
+                  >
+                    <Text
+                      fontFamily={'nunito'}
+                      fontWeight={'600'}
+                      fontSize={'14px'}
+                      cursor={'pointer'}
+                      onClick={() => navigate('/cart')}
+                    >
                       {items?.product?.name}
                     </Text>
                     <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
@@ -79,7 +93,7 @@ const ShoppingCartBox = ({ cartData, cartCount }) => {
                         fontSize={'14px'}
                         color={'#CD0244'}
                       >
-                        Rp {items?.price}
+                        {toRupiah(items?.price, { floatingPoint: 0 })}
                       </Text>
                     </Box>
                   </Box>
