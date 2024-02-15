@@ -102,7 +102,6 @@ const NewOrderTable = ({
                   <Box display={'flex'} flexDirection={'column'} gap={'8px'}>
                     <Box display={'flex'} gap={'8px'}>
                       <Box
-                        display={{ base: 'none', '2xl': 'block' }}
                         w={'66px'}
                         h={'66px'}
                         bgColor={'#D9D9D9'}
