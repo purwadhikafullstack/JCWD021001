@@ -6,6 +6,7 @@ import User from '../models/user.model'
 import Stock from '../models/stock.model'
 import Colour from '../models/colour.model'
 import Size from '../models/size.model'
+import ProductImage from '../models/productImage.model'
 
 export const findCartStockQuery = async (userId, productId, colourId, sizeId) => {
   try {
@@ -175,7 +176,7 @@ export const getCartQuery = async (userId, stockIds) => {
           include: [
             {
               model: Product,
-              as: 'product',
+              as: 'product', include: [{model: ProductImage, as: 'picture'}]
             },
             {
               model: Colour,

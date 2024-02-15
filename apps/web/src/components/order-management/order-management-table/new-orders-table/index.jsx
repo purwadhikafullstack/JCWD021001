@@ -11,10 +11,12 @@ import {
   Tr,
   Td,
   TableContainer,
+  Image,
 } from '@chakra-ui/react'
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
 import toRupiah from '@develoka/angka-rupiah-js'
 import { useNavigate } from 'react-router-dom'
+import { IMAGE_API_ROUTE } from '../../../../services/route'
 
 const NewOrderTable = ({
   orderData,
@@ -110,7 +112,11 @@ const NewOrderTable = ({
                             state: { orderId: items?.id },
                           })
                         }
-                      />
+                      >
+                        <Image
+                          src={`${IMAGE_API_ROUTE}/productImages/${items?.OrderProducts[0]?.stocks?.product?.picture[0]?.imageUrl}`}
+                        />
+                      </Box>
                       <Box
                         cursor={'pointer'}
                         onClick={() =>
@@ -137,7 +143,11 @@ const NewOrderTable = ({
                     <Collapse in={expandedProducts[items.id]}>
                       {items?.OrderProducts.slice(1).map((product, index) => (
                         <Box display={'flex'} gap={'8px'} key={index}>
-                          <Box w={'66px'} h={'66px'} bgColor={'#D9D9D9'} />
+                          <Box w={'66px'} h={'66px'} bgColor={'#D9D9D9'}>
+                            <Image
+                              src={`${IMAGE_API_ROUTE}/productImages/${product?.stocks?.product?.picture[0]?.imageUrl}`}
+                            />
+                          </Box>
                           <Box>
                             <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
                               {product?.stocks?.product?.name}

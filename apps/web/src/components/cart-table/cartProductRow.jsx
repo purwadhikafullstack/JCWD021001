@@ -1,7 +1,8 @@
-import { Box, Text, Button, Icon, Checkbox } from '@chakra-ui/react'
+import { Box, Text, Button, Icon, Checkbox, Image } from '@chakra-ui/react'
 import { Table, Thead, Tbody, Tr, Td, TableContainer } from '@chakra-ui/react'
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline'
 import toRupiah from '@develoka/angka-rupiah-js'
+import { IMAGE_API_ROUTE } from '../../services/route'
 
 const CartProductRow = ({
   cartItem,
@@ -72,7 +73,9 @@ const CartProductRow = ({
                 </Td>
                 <Td>
                   <Box w={'300px'} display={'flex'} gap={'16px'}>
-                    <Box minW={'64px'} h={'64px'} bgColor={'brand.grey100'} />
+                    <Box maxW={'64px'} h={'64px'} bgColor={'brand.grey100'} >
+                      <Image src={`${IMAGE_API_ROUTE}/productImages/${item?.product?.picture[0]?.imageUrl}`}/>
+                    </Box>
                     <Box
                       w={'220px'}
                       overflow={'hidden'}

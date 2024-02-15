@@ -1,6 +1,7 @@
 import React from 'react'
-import { Box, Text } from '@chakra-ui/react'
+import { Box, Text, Image } from '@chakra-ui/react'
 import toRupiah from '@develoka/angka-rupiah-js'
+import { IMAGE_API_ROUTE } from '../../../services/route'
 
 const OrderBodyMobile = ({ orderItem }) => {
   return (
@@ -19,7 +20,11 @@ const OrderBodyMobile = ({ orderItem }) => {
         <Box display={'flex'} flexDirection={'column'} gap={'24px'}>
           {orderItem?.CartProducts?.map((item) => (
             <Box key={item.id} w={'full'} display={'flex'} gap={'16px'}>
-              <Box w={'64px'} h={'64px'} bgColor={'brand.grey100'} />
+              <Box w={'64px'} h={'64px'} bgColor={'brand.grey100'}>
+                <Image
+                  src={`${IMAGE_API_ROUTE}/productImages/${item?.product?.picture[0]?.imageUrl}`}
+                />
+              </Box>
               <Box display={'flex'} flexDirection={'column'} w={'full'}>
                 <Text fontFamily={'body'} fontWeight={'600'} fontSize={'14px'}>
                   {item?.product?.name}
