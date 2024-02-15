@@ -102,7 +102,11 @@ export const StockReport = (props) => {
         <Td>
           <Text>{stockReport?.product}</Text>
           <Text as={'span'} fontSize={'.75em'}>
-            {stockReport?.name}
+            <HStack>
+              <Text>{stockReport?.name}</Text>
+              <Icon as={ChevronRightIcon} fontSize={'.75em'} />
+              <Text>{stockReport?.colour}</Text>
+            </HStack>
           </Text>
           <HStack fontSize={'.75em'}>
             <Text>{stockReport?.category}</Text>
