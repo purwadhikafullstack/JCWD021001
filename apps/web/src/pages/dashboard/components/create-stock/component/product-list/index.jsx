@@ -97,6 +97,7 @@ export const ProductList = (props) => {
                           props?.setProductId(product?.id)
                           props?.setProductName(product?.name)
                           props?.setProductSelected(productDetails)
+                          props?.formik?.setFieldValue('productId', product?.id)
                         }}
                       >
                         Choose
