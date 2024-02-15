@@ -144,7 +144,6 @@ export const FormMutation = (props) => {
   const [productNameFilter, setProductNameFilter] = useState('')
   //   STOCKS
   const [stocks, setStocks] = useState([])
-  console.log('stockQty', stockQty)
   const handleKeyDown = (event) => {
     // Prevent form submission on Enter key press
     if (event.key === 'Enter') {
