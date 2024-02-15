@@ -39,6 +39,7 @@ export const paymentHandler = async (
 
     const result = await createOrder(dataOrder)
     await deleteCart(order.CartProducts.map((product) => product.id))
+    localStorage.removeItem('productData')
     await fetchCartCount()
     const midtransToken = result?.midtransToken
     const orderId = result?.order?.id
