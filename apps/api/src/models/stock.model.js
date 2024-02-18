@@ -89,7 +89,7 @@ export const init = (sequelize) => {
       sequelize,
       modelName: 'Stock',
       timestamps: true,
-      paranoid: true,
+      paranoid: false,
     },
   )
 }
