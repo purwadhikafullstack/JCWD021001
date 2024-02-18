@@ -66,6 +66,7 @@ export const EditProductCategory = (props) => {
     )
     setFixInput(text)
   }
+
   const findById = (id) => {
     const foundObject = input.find((item) => item.id === id)
     return foundObject ? foundObject.text : null
