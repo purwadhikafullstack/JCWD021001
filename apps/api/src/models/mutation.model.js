@@ -13,14 +13,17 @@ export default class Mutation extends Model {
     Mutation.belongsTo(Warehouse, {
       as: 'requester',
       foreignKey: 'requesterWarehouseId',
+      paranoid: 'true',
     })
     Mutation.belongsTo(Warehouse, {
       as: 'recipient',
       foreignKey: 'recipientWarehouseId',
+      paranoid: 'true',
     })
     Mutation.belongsTo(Stock, {
       as: 'stock',
       foreignKey: 'stockId',
+      paranoid: 'true',
     })
   }
 }
