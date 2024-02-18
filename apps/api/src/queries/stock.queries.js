@@ -157,35 +157,37 @@ export const getStockByProductIdQuery = async (productId, sizeId, colourId) => {
 
 export const deleteStockQuery = async (id) => {
   try {
-    // const willDelete = await StockJournal.findAll({
-    //   where: {
-    //     stockId: id,
-    //   },
-    // })
-    // const idsToDelete = willDelete.map((record) => record.id)
-    // await Mutation.destroy({
-    //   where: {
-    //     [Op.or]: [
-    //       { stockJournalIdRecipient: idsToDelete },
-    //       {
-    //         stockJournalIdRequester: idsToDelete,
-    //       },
-    //       {
-    //         stockId: id,
-    //       },
-    //     ],
-    //   },
-    // })
-    // await StockJournal.destroy({
-    //   where: {
-    //     stockId: id,
-    //   },
-    // })
-    // await OrderProducts.destroy({
-    //   where: {
-    //     stockId: id,
-    //   },
-    // })
+    const willDelete = await StockJournal.findAll({
+      where: {
+        stockId: id,
+      },
+    })
+    // return willDelete
+    const idsToDelete = willDelete.map((record) => record.id)
+    // return idsToDelete
+    await Mutation.destroy({
+      where: {
+        [Op.or]: [
+          { stockJournalIdRecipient: idsToDelete },
+          {
+            stockJournalIdRequester: idsToDelete,
+          },
+          {
+            stockId: id,
+          },
+        ],
+      },
+    })
+    await StockJournal.destroy({
+      where: {
+        stockId: id,
+      },
+    })
+    await OrderProducts.destroy({
+      where: {
+        stockId: id,
+      },
+    })
     const res = await Stock.destroy({
       where: {
         id: id,
