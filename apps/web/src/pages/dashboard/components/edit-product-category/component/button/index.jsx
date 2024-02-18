@@ -136,10 +136,10 @@ export const AddNewGroupButton = (props) => {
           color={'white'}
           onClick={async () => {
             try {
-              if (props?.fixInput.trim() === '') {
+              if (props?.fixInput === null || props?.fixInput.trim() === '') {
                 throw new Error('The grandparent group cant be empty')
               }
-              if (props?.newChildren.trim() === '') {
+              if (props?.newChildren === null || props?.newChildren.trim() === '') {
                 throw new Error('The children group cant be empty')
               }
               const res = await createProductCategory(
