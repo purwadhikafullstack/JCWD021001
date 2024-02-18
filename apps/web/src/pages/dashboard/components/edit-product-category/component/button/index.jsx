@@ -108,7 +108,6 @@ export const HandleAddSubmitSizeButton = (props) => {
 
 export const AddNewGroupButton = (props) => {
   const toast = useToast()
-  console.log('addNewGroupButton', props)
   return (
     <HStack>
       <Button
