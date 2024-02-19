@@ -181,7 +181,6 @@ export const resetPasswordService = async (token, password) => {
 
     const isUsed = await checkTokenUsageQuery(token)
     if (isUsed) throw new Error('Token has been used')
-    console.log('ini ', isUsed)
 
     const salt = await bcrypt.genSalt(10)
     const hashPassword = await bcrypt.hash(password, salt)
@@ -245,7 +244,6 @@ export const verifyNewEmailService = async (token, password) => {
 
     const isUsed = await checkTokenUsageQuery(token)
     if (isUsed) throw new Error('Token has been used')
-    console.log('ini ', isUsed)
 
     const salt = await bcrypt.genSalt(10)
     const hashPassword = await bcrypt.hash(password, salt)
