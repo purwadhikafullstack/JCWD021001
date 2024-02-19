@@ -15,4 +15,3 @@ export const getWarehouses = async (warehouseId = null) => {
     throw err
   }
 }
-

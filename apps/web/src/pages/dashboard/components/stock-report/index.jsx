@@ -166,7 +166,9 @@ export const StockReport = (props) => {
                     {
                       e?.target?.value
                         ? navigate(`${pathName}?pa=1&mo=${monthValue}&war=${e?.target?.value}`)
-                        : navigate(`${pathName}?pa=1&mo=${monthValue}`)
+                        : navigate(
+                            `${pathName}?pa=1&mo=${monthValue}${warValue ? `&war=0` : `&war=0`}`,
+                          )
                     }
                   }}
                 >

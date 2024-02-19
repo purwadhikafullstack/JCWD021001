@@ -135,11 +135,18 @@ export const AddNewGroupButton = (props) => {
           color={'white'}
           onClick={async () => {
             try {
+              if (props?.fixInput === null || props?.fixInput.trim() === '') {
+                throw new Error('The grandparent group cant be empty')
+              }
+              if (props?.newChildren === null || props?.newChildren.trim() === '') {
+                throw new Error('The children group cant be empty')
+              }
               const res = await createProductCategory(
                 props?.fixInput,
                 props?.genderId,
                 props?.toast,
               )
+
               if (res?.data?.message == 'Product Category with that name is already exist') {
                 throw new Error('Group with that name already exist')
               }

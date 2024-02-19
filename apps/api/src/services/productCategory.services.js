@@ -48,19 +48,8 @@ export const updateProductCategoryService = async (name, parentId, id) => {
 
 export const deleteProductCategoryService = async (id, parentId, grandParentId) => {
   try {
-    const wait = await Product.findOne({
-      where: {
-        productCategoryId: id,
-      },
-    })
-    if (wait) {
-      await wait.update({
-        productCategoryId: null,
-      })
-    } else {
-      console.error('Record not found')
-    }
-    console.log('wait', wait)
+    console.log('grandParentId', grandParentId === null)
+
     const res = await deleteProductCategoryQuery(id, parentId, grandParentId)
     return res
   } catch (err) {
