@@ -23,7 +23,8 @@ export const init = (sequelize) => {
     {
       sequelize,
       modelName: 'Warehouse',
-      timestamps: false,
+      timestamps: true, 
+      paranoid: true,
     },
   )
 }
