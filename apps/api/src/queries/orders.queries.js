@@ -127,6 +127,10 @@ export const getOrderQuery = async ({
   try {
     const whereClause = {}
 
+    if (userId) {
+      whereClause.userId = userId
+    }
+
     if (orderNumber) {
       whereClause.orderNumber = orderNumber
     }
@@ -177,7 +181,7 @@ export const getOrderQuery = async ({
           ],
         },
       ],
-      where: Object.keys(whereClause).length > 0 ? whereClause : { userId: userId },
+      where: Object.keys(whereClause).length > 0 ? whereClause : undefined,
       limit: limit,
       offset: offset,
       order: [['orderDate', 'DESC']],
