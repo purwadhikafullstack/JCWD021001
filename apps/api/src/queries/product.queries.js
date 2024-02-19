@@ -254,6 +254,11 @@ export const deleteProductQuery = async (id) => {
         productId: id,
       },
     })
+
+    if (willDeleteStock.length > 0) {
+      throw new Error('Stocks still have this product')
+    }
+
     const willDeleteStockJournal = await StockJournal.findAll({
       where: {
         productId: id,
