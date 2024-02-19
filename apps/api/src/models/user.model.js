@@ -29,7 +29,8 @@ export const init = (sequelize) => {
     {
       sequelize,
       modelName: 'User',
-      timestamps: false,
+      timestamps: true, 
+      paranoid: true,
     },
   );
 };
