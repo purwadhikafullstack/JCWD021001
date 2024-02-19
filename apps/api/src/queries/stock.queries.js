@@ -208,24 +208,37 @@ export const getStockReportQuery = async (
 ) => {
   try {
     const offset = (page - 1) * pageSize
-    const res = await Stock.sequelize
-      .query(`SELECT stocks.id, products.name as  product, sizes.name,
-SUM(CASE WHEN isAdding = 1 THEN stockJournals.qty ELSE 0 END) AS addition,
-SUM(CASE WHEN isAdding = 0 THEN stockJournals.qty ELSE 0 END) AS reduction,
-stocks.qty, child_category.name as category, parent_category.name as grooup,grandparent_category.name as gender, colours.name as colour
-FROM stockJournals
-join stocks on stockJournals.stockId = stocks.id
-join products on stocks.productId = products.id
-join sizes on stocks.sizeId = sizes.id
-JOIN productCategories AS child_category ON products.productCategoryId = child_category.id
-JOIN productCategories AS parent_category ON child_category.parentId = parent_category.id
-JOIN productCategories AS grandparent_category ON parent_category.parentId = grandparent_category.id
-join colours on stocks.colourId = colours.id
-where stocks.warehouseId = ${warehouseId} 
-AND stockJournals.createdAt>= '${startDate}' AND stockJournals.createdAt<= '${endDate}'
-GROUP BY stocks.id
-order by products.name, qty DESC
-LIMIT ${pageSize} OFFSET ${offset};`)
+
+    let query = `SELECT 
+      p.id, 
+      p.name, 
+      grandparent_category.name as grandparent_name,
+      SUM(op.price) as total, 
+      SUM(op.quantity) as sold
+    FROM 
+      orders as o
+      JOIN orderProducts as op ON o.id = op.orderId
+      JOIN stocks as st ON op.stockId = st.id
+      JOIN products as p ON st.productId = p.id
+      JOIN productCategories AS child_category ON p.productCategoryId = child_category.id
+      JOIN productCategories AS parent_category ON child_category.parentId = parent_category.id
+      JOIN productCategories AS grandparent_category ON parent_category.parentId = grandparent_category.id
+    WHERE 
+      o.orderDate >= '${startDate}' 
+      AND o.orderDate <= '${endDate}'`
+
+    if (warehouseId != 0) {
+      query += ` AND o.warehouseId = ${Number(warehouseId)}`
+    }
+
+    query += ` AND o.orderStatusId NOT IN (1, 6)
+      GROUP BY 
+        p.id
+      ORDER BY 
+        sold
+      LIMIT ${pageSize} OFFSET ${offset};`
+
+    const res = await OrderProducts.sequelize.query(query)
     return res
   } catch (err) {
     throw err
