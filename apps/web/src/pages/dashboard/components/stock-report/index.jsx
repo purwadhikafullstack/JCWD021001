@@ -111,7 +111,7 @@ export const StockReport = (props) => {
           <HStack fontSize={'.75em'}>
             <Text>{stockReport?.category}</Text>
             <Icon as={ChevronRightIcon} fontSize={'.6em'} />
-            <Text>{stockReport?.grooup}</Text>
+            <Text>{stockReport?.group_name}</Text>
             <Icon as={ChevronRightIcon} fontSize={'.6em'} />
             <Text>{stockReport?.gender}</Text>
           </HStack>
