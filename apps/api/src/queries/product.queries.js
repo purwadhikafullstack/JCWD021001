@@ -249,52 +249,52 @@ export const updateProductQuery = async (name, price, description, productCatego
 
 export const deleteProductQuery = async (id) => {
   try {
-    // const willDeleteStock = await Stock.findAll({
-    //   where: {
-    //     productId: id,
-    //   },
-    // })
-    // const willDeleteStockJournal = await StockJournal.findAll({
-    //   where: {
-    //     productId: id,
-    //   },
-    // })
-    // const idsToDeleteStock = willDeleteStock.map((record) => record.id)
-    // const idsToDeleteStockJournal = willDeleteStockJournal.map((record) => record.id)
+    const willDeleteStock = await Stock.findAll({
+      where: {
+        productId: id,
+      },
+    })
+    const willDeleteStockJournal = await StockJournal.findAll({
+      where: {
+        productId: id,
+      },
+    })
+    const idsToDeleteStock = willDeleteStock.map((record) => record.id)
+    const idsToDeleteStockJournal = willDeleteStockJournal.map((record) => record.id)
 
-    // await Mutation.destroy({
-    //   where: {
-    //     [Op.or]: [
-    //       {
-    //         stockId: idsToDeleteStock,
-    //       },
-    //       { stockJournalIdRecipient: idsToDeleteStockJournal },
-    //       {
-    //         stockJournalIdRequester: idsToDeleteStockJournal,
-    //       },
-    //     ],
-    //   },
-    // })
+    await Mutation.destroy({
+      where: {
+        [Op.or]: [
+          {
+            stockId: idsToDeleteStock,
+          },
+          { stockJournalIdRecipient: idsToDeleteStockJournal },
+          {
+            stockJournalIdRequester: idsToDeleteStockJournal,
+          },
+        ],
+      },
+    })
 
-    // await StockJournal.destroy({
-    //   where: { productId: id },
-    // })
+    await StockJournal.destroy({
+      where: { productId: id },
+    })
 
-    // await Stock.destroy({
-    //   where: { productId: id },
-    // })
+    await Stock.destroy({
+      where: { productId: id },
+    })
 
-    // await ProductImage.destroy({
-    //   where: { productId: id },
-    // })
-    // await CartProducts.destroy({
-    //   where: { productId: id },
-    // })
-    // await ProductToColour.destroy({
-    //   where: {
-    //     productId: id,
-    //   },
-    // })
+    await ProductImage.destroy({
+      where: { productId: id },
+    })
+    await CartProducts.destroy({
+      where: { productId: id },
+    })
+    await ProductToColour.destroy({
+      where: {
+        productId: id,
+      },
+    })
     const res = await Product.destroy({
       where: {
         id: {
