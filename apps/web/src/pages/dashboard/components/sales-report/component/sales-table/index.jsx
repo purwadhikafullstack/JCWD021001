@@ -8,9 +8,12 @@ export const SalesTable = (props) => {
 
   useEffect(() => {
     if (props?.isSuperAdmin) {
-      getOrders(props?.pageValue, props?.warehouseValue, props?.startDate, props?.endDate).then(
-        (data) => setData(data),
-      )
+      getOrders(
+        props?.pageValue,
+        props?.warehouseValue || 0,
+        props?.startDate,
+        props?.endDate,
+      ).then((data) => setData(data))
     }
     if (!props?.isSuperAdmin) {
       getOrders(props?.pageValue, props?.user?.warehouseId, props?.startDate, props?.endDate).then(

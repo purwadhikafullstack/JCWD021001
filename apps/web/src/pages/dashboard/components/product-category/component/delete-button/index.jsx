@@ -45,7 +45,7 @@ export const DeleteButton = (props) => {
               color={'white'}
               mr={3}
               onClick={async () => {
-                const res = await deleteProductCategory(null, null, props?.id, props?.toast)
+                const res = await deleteProductCategory(0, null, props?.id, props?.toast)
                 if (
                   res?.data?.message ===
                   'Cannot delete or update a parent row: a foreign key constraint fails (`pure`.`stockjournals`, CONSTRAINT `stockjournals_ibfk_3` FOREIGN KEY (`sizeId`) REFERENCES `sizes` (`id`))'

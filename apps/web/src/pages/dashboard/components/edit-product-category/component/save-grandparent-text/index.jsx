@@ -10,7 +10,7 @@ export const SaveGrandParentText = (props) => {
       color={'redPure.600'}
       cursor={'pointer'}
       onClick={() => {
-        editProductCategory(props?.id, props?.formik.values[`${props.id}`], props?.toast)
+        editProductCategory(props?.id, props?.formik.values[`${props.id}`].trim(), props?.toast)
       }}
     >
       Save

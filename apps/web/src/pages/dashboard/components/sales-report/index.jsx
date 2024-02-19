@@ -126,8 +126,8 @@ export const SalesReport = (props) => {
                             `${pathName}?pa=1&cat=${categoryValue}&mo=${monthValue}&war=${e?.target?.value}`,
                           )
                         : navigate(
-                            `${pathName}?pa=1?&cat=${categoryValue}&mo=${monthValue}${
-                              warehouseValue ? `&war=${warehouseValue}` : ''
+                            `${pathName}?pa=1&cat=${categoryValue}&mo=${monthValue}${
+                              warehouseValue ? `&war=${0}` : `&war=0`
                             }`,
                           )
                     }

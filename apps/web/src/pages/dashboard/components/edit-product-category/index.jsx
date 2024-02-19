@@ -66,6 +66,7 @@ export const EditProductCategory = (props) => {
     )
     setFixInput(text)
   }
+
   const findById = (id) => {
     const foundObject = input.find((item) => item.id === id)
     return foundObject ? foundObject.text : null
@@ -213,7 +214,6 @@ export const EditProductCategory = (props) => {
                   item?.size &&
                   [...new Set(item.size.map((size) => size.id))].map((uniqueSizeId, index) => {
                     const uniqueSize = item.size.find((size) => size.id === uniqueSizeId)
-
                     return (
                       <Box key={index}>
                         <Text fontWeight="bold" fontSize=".9">
@@ -230,7 +230,6 @@ export const EditProductCategory = (props) => {
                       </Box>
                     )
                   })}
-
                 {editable[item?.id] && props?.isSuperAdmin && (
                   <FormControl>
                     <NewProductInput
@@ -250,7 +249,6 @@ export const EditProductCategory = (props) => {
                       id={item?.id}
                     />
                   )}
-
                   {editable[item?.id] && props?.isSuperAdmin && (
                     <HandleAddSubmitButton
                       setFixInput={setFixInput}

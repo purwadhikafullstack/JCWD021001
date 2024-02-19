@@ -2,6 +2,7 @@ import { Op, where } from 'sequelize'
 import ProductCategory from '../models/productCategory.model'
 import Size from '../models/size.model'
 import Product from '../models/product.model'
+import Stock from '../models/stock.model'
 
 export const getProductCategoryQuery = async (gender) => {
   const filter = {}
@@ -142,38 +143,106 @@ export const updateProductCategoryQuery = async (name, parentId = null, id) => {
 
 export const deleteProductCategoryQuery = async (id, parentId, grandParentId = null) => {
   try {
-    if (grandParentId) {
+    if (id && parentId && grandParentId === null) {
+      const checkParent = await ProductCategory.findAll({
+        where: {
+          parentId: parentId,
+        },
+      })
+
+      // return checkParent
+
+      const checkLastChild = await ProductCategory.findAll({
+        where: {
+          id: {
+            [Op.eq]: id,
+          },
+          parentId: {
+            [Op.eq]: parentId,
+          },
+        },
+      })
+      // return checkLastChild.length === 1
+
+      if (checkLastChild.length === 1) {
+        if (checkParent.length <= 1) {
+          throw new Error('You cant delete the last category')
+        }
+        const products = await Product.findAll({
+          where: {
+            productCategoryId: id,
+          },
+        })
+        // return products
+
+        for (const product of products) {
+          await product.update({
+            productCategoryId: null, // Assuming you want to set productCategoryId to null
+          })
+        }
+        const res = ProductCategory.destroy({
+          where: {
+            id: { [Op.eq]: id },
+          },
+        })
+        return res
+      }
+    }
+
+    if (grandParentId && parentId === null) {
       // If grandparent is delete
-      const checkChildren = await ProductCategory.findAll({
+      const checkParent = await ProductCategory.findAll({
         where: {
           parentId: grandParentId,
         },
       })
-      const childrenId = checkChildren.map((item) => item.id)
-      const group = await ProductCategory.findAll({
-        where: { parentId: childrenId },
+      // return checkParent
+      const parentId = checkParent.map((item) => item.id)
+      // return parentId
+      const checkChildren = await ProductCategory.findAll({
+        where: { parentId: parentId },
       })
-      // return group
-      const groupId = group.map((item) => item.id)
+
+      // return checkChildren
+      const childrenId = checkChildren.map((item) => item.id)
+
+      // return childrsenId
       const sizes = await Size.findAll({
+        where: {
+          productCategoryId: parentId,
+        },
+      })
+
+      // return sizes.length > 0
+      const sizeId = sizes.map((item) => item.id)
+      // return sizes
+
+      const checkStocks = await Stock.findAll({
+        where: {
+          sizeId: sizeId,
+        },
+      })
+
+      // return !!checkStocks.length > 0
+
+      if (checkStocks.length > 0) {
+        throw new Error('Stocks still have the size that have stocks')
+      } else {
+        await Size.destroy({
+          where: {
+            id: sizeId,
+          },
+        })
+      }
+
+      const products = await Product.findAll({
         where: {
           productCategoryId: childrenId,
         },
       })
-      const sizeId = sizes.map((item) => item.id)
-      if (sizes.length > 0) {
-        throw new Error('Stocks still have the size that connect product categories')
-      }
-      await Size.destroy({
-        where: {
-          id: sizeId,
-        },
-      })
-      const products = await Product.findAll({
-        where: {
-          productCategoryId: groupId,
-        },
-      })
+
+      // return products
+
       if (products.length > 0) {
         // Iterate through each product and update
         for (const product of products) {
@@ -184,11 +253,13 @@ export const deleteProductCategoryQuery = async (id, parentId, grandParentId = n
       } else {
         console.error('Records not found')
       }
+
       await ProductCategory.destroy({
         where: {
-          parentId: childrenId,
+          parentId: parentId,
         },
       })
+
       await ProductCategory.destroy({
         where: {
           parentId: grandParentId,
@@ -201,93 +272,79 @@ export const deleteProductCategoryQuery = async (id, parentId, grandParentId = n
       })
       return res
     }
-    const check = await ProductCategory.findAll({
-      where: {
-        parentId: {
-          [Op.eq]: id,
-        },
-      },
-    })
-    const checkParent = await ProductCategory.findAll({
-      where: {
-        parentId: {
-          [Op.eq]: parentId,
-        },
-      },
-    })
-    const checkLastChild = await ProductCategory.findAll({
-      where: {
-        id: {
-          [Op.eq]: id,
-        },
-        parentId: {
-          [Op.eq]: parentId,
-        },
-      },
-    })
-    if (checkLastChild.length === 1) {
-      if (checkParent.length <= 1) throw new Error('You cant delete the last category')
-      const products = await Product.findAll({
-        where: {
-          productCategoryId: id,
-        },
-      })
-      const sizes = await Size.findAll({
-        where: {
-          productCategoryId: parentId,
-        },
-      })
-      if (sizes.length > 0) {
-        throw new Error('Stocks still have the size that connect product categories')
-      }
-      for (const product of products) {
-        await product.update({
-          productCategoryId: null, // Assuming you want to set productCategoryId to null
-        })
-      }
-      const res = ProductCategory.destroy({
-        where: {
-          id: { [Op.eq]: id },
-        },
-      })
-      return res
-    }
-    if (check) {
-      if (checkParent.length <= 1) throw new Error('You cant delete the last category')
-      const sizes = await Size.findAll({
-        where: {
-          productCategoryId: parentId,
-        },
-      })
-      if (sizes.length > 0) {
-        throw new Error('Stocks still have the size that connect product categories')
-      }
-      const sizeId = sizes.map((item) => item.id)
-      await Size.destroy({
-        where: {
-          id: sizeId,
-        },
-      })
-      await ProductCategory.destroy({
+
+    if (id && parentId === null && grandParentId === null) {
+      const checkChildren = await ProductCategory.findAll({
         where: {
           parentId: {
             [Op.eq]: id,
           },
         },
       })
-      const parent = await ProductCategory.destroy({
+
+      const childrenId = checkChildren.map((item) => item.id)
+
+      // return childrenId
+
+      const sizes = await Size.findAll({
         where: {
-          id: {
-            [Op.eq]: id,
-          },
+          productCategoryId: id,
         },
       })
-      return parent
-    } else {
-      if (check.length <= 1) throw new Error('You cant delete the last category')
-      ProductCategory.destroy({
+
+      // return sizes
+
+      const sizeId = sizes.map((item) => item.id)
+      const checkStocks = await Stock.findAll({
         where: {
-          id: { [Op.eq]: id },
+          sizeId: sizeId,
+        },
+      })
+
+      // console.log('checkStocks', checkStocks)
+      // return checkStocks
+      // return !!checkStocks.length > 0
+
+      if (checkStocks.length > 0) {
+        throw new Error(
+          'Stocks still have the size that connect to productCategories that have size',
+        )
+      } else {
+        await Size.destroy({
+          where: {
+            id: sizeId,
+          },
+        })
+      }
+
+      const products = await Product.findAll({
+        where: {
+          productCategoryId: childrenId,
+        },
+      })
+
+      // return products
+
+      if (products.length > 0) {
+        // Iterate through each product and update
+        for (const product of products) {
+          await product.update({
+            productCategoryId: null,
+          })
+        }
+      } else {
+        console.error('Records not found')
+      }
+
+      await ProductCategory.destroy({
+        where: {
+          parentId: id,
+        },
+      })
+
+      await ProductCategory.destroy({
+        where: {
+          id: id,
         },
       })
     }
