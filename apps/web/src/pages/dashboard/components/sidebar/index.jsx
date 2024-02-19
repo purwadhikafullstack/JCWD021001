@@ -161,7 +161,7 @@ export const Sidebar = (props) => {
                 onClick={() => {
                   navigate(
                     `/dashboard/sales-report?pa=1&cat=all&mo=${monthValue ? monthValue : 'jan'}${
-                      warehouseValue ? `&war=${warehouseValue}` : `&war=0`
+                      warehouseValue ? `&war=${warehouseValue || 0}` : ``
                     }`,
                   )
                 }}
@@ -173,7 +173,7 @@ export const Sidebar = (props) => {
                 onClick={() => {
                   navigate(
                     `/dashboard/stock-report?pa=1&mo=${monthValue ? monthValue : 'jan'}${
-                      warehouseValue ? `&war=${warehouseValue}` : `&war=0`
+                      warehouseValue ? `&war=${warehouseValue || 0}` : ``
                     }`,
                   )
                 }}
