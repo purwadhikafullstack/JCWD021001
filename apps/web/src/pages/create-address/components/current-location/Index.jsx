@@ -25,11 +25,11 @@ function FormCurrentLocation({ address, lat, lng }) {
   const [selectedProvince, setSelectedProvince] = useState('')
   const navigate = useNavigate()
   const user = useSelector((state) => state.AuthReducer.user)
-
+  console.log('ini address', address);
   useEffect(() => {
     if (address && address.city) {
-      setSelectedProvince(address.city.provinceId)
-      setSelectedCity(address.city.id)
+      setSelectedProvince(address?.city?.provinceId)
+      setSelectedCity(address?.city?.id)
     }
   }, [address])
 
@@ -102,10 +102,10 @@ function FormCurrentLocation({ address, lat, lng }) {
     if (address) {
       formik.setFieldValue(
         'specificAddress',
-        `${address.address.road}, ${address.address.village}, ${address.address.municipality}`,
+        `${address?.address?.road}, ${address?.address?.village}, ${address?.address?.municipality}`,
       )
-      formik.setFieldValue('postalCode', `${address.address.postcode}`)
-      formik.setFieldValue('cityId', `${address.city.id}`)
+      formik.setFieldValue('postalCode', `${address?.address?.postcode}`)
+      formik.setFieldValue('cityId', `${address?.city?.id}`)
     }
   }, [address, formik.setFieldValue])
 
