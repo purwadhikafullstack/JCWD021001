@@ -12,6 +12,6 @@ productRouter.get('/', getProductController)
 productRouter.get('/details/:id', getProductController)
 productRouter.post('/create', verifyToken, checkRoleSuperadmin, createProductController)
 productRouter.patch('/:id', verifyToken, checkRoleSuperadmin, updateProductController)
-productRouter.delete('/:id', verifyToken, checkRoleSuperadmin, deleteProductController)
+productRouter.delete('/:id', deleteProductController)
 
 export { productRouter }

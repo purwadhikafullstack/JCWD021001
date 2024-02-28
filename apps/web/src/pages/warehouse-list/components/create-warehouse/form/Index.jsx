@@ -27,8 +27,8 @@ function FormCreateWarehouse({ address, lat, lng }) {
 
   useEffect(() => {
     if (address && address.city) {
-      setSelectedProvince(address.city.provinceId)
-      setSelectedCity(address.city.id)
+      setSelectedProvince(address?.city?.provinceId)
+      setSelectedCity(address?.city?.id)
     }
   }, [address])
 
@@ -97,10 +97,10 @@ function FormCreateWarehouse({ address, lat, lng }) {
     if (address) {
       formik.setFieldValue(
         'location',
-        `${address.address.road}, ${address.address.village}, ${address.address.municipality}`,
+        `${address?.address?.road}, ${address?.address?.village}, ${address?.address?.municipality}`,
       )
-      formik.setFieldValue('postalCode', `${address.address.postcode}`)
-      formik.setFieldValue('cityId', `${address.city.id}`)
+      formik.setFieldValue('postalCode', `${address?.address?.postcode}`)
+      formik.setFieldValue('cityId', `${address?.city?.id}`)
     }
   }, [address, formik.setFieldValue])
 

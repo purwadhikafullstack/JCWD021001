@@ -144,7 +144,9 @@ export const Sidebar = (props) => {
             <VStack align={'stretch'} spacing={'1.5em'}>
               <Text
                 onClick={() => {
-                  navigate('/dashboard/order-management', { state: { refresh: true, activeTab: 0, status: [2] } })
+                  navigate('/dashboard/order-management', {
+                    state: { refresh: true, activeTab: 0, status: [2] },
+                  })
                 }}
                 cursor={'pointer'}
               >
@@ -159,7 +161,7 @@ export const Sidebar = (props) => {
                 onClick={() => {
                   navigate(
                     `/dashboard/sales-report?pa=1&cat=all&mo=${monthValue ? monthValue : 'jan'}${
-                      warehouseValue ? `&war=${warehouseValue}` : ''
+                      warehouseValue ? `&war=${warehouseValue || 0}` : ``
                     }`,
                   )
                 }}
@@ -171,7 +173,7 @@ export const Sidebar = (props) => {
                 onClick={() => {
                   navigate(
                     `/dashboard/stock-report?pa=1&mo=${monthValue ? monthValue : 'jan'}${
-                      warehouseValue ? `&war=${warehouseValue}` : ''
+                      warehouseValue ? `&war=${warehouseValue || 0}` : ``
                     }`,
                   )
                 }}

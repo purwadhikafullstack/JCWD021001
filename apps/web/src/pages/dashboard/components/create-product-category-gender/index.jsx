@@ -66,7 +66,7 @@ export const CreateProductCategoryGender = (props) => {
 
   // HANDLE SUBMIT
   const handleSubmit = async (values, { setSubmitting }, actions) => {
-    createProductCategory(values.name)
+    createProductCategory(values.name.trim())
     setSubmitting(false)
   }
   // HANDLE SUBMIT

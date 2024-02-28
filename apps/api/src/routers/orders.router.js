@@ -7,7 +7,7 @@ import {
   getWarehouseController,
   productToStockIdController,
   updateOrderController,
-  getOrderDetailController, 
+  getOrderDetailController,
   getAllOrderByCategoryController, // by putu
   getAllOrderByProductController, // by putu
   getAllOrderController, // by putu

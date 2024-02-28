@@ -127,6 +127,10 @@ export const getOrderQuery = async ({
   try {
     const whereClause = {}
 
+    if (userId) {
+      whereClause.userId = userId
+    }
+
     if (orderNumber) {
       whereClause.orderNumber = orderNumber
     }
@@ -177,7 +181,7 @@ export const getOrderQuery = async ({
           ],
         },
       ],
-      where: Object.keys(whereClause).length > 0 ? whereClause : { userId: userId },
+      where: Object.keys(whereClause).length > 0 ? whereClause : undefined,
       limit: limit,
       offset: offset,
       order: [['orderDate', 'DESC']],
@@ -429,20 +433,27 @@ export const getAllOrderQuery = async (
   orderBy = 'DESC',
   page = 1,
   pageSize = 10,
-  warehouseId = null,
+  warehouseId = 0,
   startDate = null,
   endDate = null,
 ) => {
   try {
     const offset = (page - 1) * pageSize
-    const res = await Orders.sequelize.query(`SELECT 
-    SUM(totalPrice) AS TotalSales,
-    SUM(totalQuantity) AS TotalQuantity
-FROM 
-    orders
-WHERE 
-    orderDate >= '${startDate}' AND orderDate <= '${endDate}' AND warehouseId = ${warehouseId} AND orders.orderStatusId NOT IN (1, 6)
-LIMIT ${pageSize} OFFSET ${offset};`)
+    let query = `SELECT 
+      SUM(totalPrice) AS TotalSales,
+      SUM(totalQuantity) AS TotalQuantity
+      FROM 
+      orders
+      WHERE 
+      orderDate >= '${startDate}' AND orderDate <= '${endDate}' AND orders.orderStatusId NOT IN (1, 6)`
+
+    if (warehouseId != 0) {
+      query += ` AND warehouseId = ${warehouseId}`
+    }
+
+    query += ` LIMIT ${pageSize} OFFSET ${offset};`
+
+    const res = await Orders.sequelize.query(query)
     return res
   } catch (err) {
     throw err
@@ -451,8 +462,11 @@ LIMIT ${pageSize} OFFSET ${offset};`)
 
 export const getAllOrderByCategoryQuery = async (warehouseId, startDate, endDate) => {
   try {
-    const res = await OrderProducts.sequelize
-      .query(`SELECT  grandparent_category.name as grandparent_name, parent_category.name AS group_name, parent_category.id as group_id, child_category.name as child, 
+    let query = `SELECT 
+      grandparent_category.name as grandparent_name,
+      parent_category.name AS group_name,
+      parent_category.id as group_id,
+      child_category.name as child,
       SUM(orderProducts.quantity) as ordercount,
       SUM(orderProducts.price) AS total
       FROM orders
@@ -462,11 +476,16 @@ export const getAllOrderByCategoryQuery = async (warehouseId, startDate, endDate
       JOIN productCategories AS child_category ON products.productCategoryId = child_category.id
       JOIN productCategories AS parent_category ON child_category.parentId = parent_category.id
       JOIN productCategories AS grandparent_category ON parent_category.parentId = grandparent_category.id
-      WHERE orders.orderDate >= '${startDate}' AND orders.orderDate <= '${endDate}'
-      AND orders.warehouseId = ${warehouseId} AND orders.orderStatusId NOT IN (1, 6)
-      GROUP BY child_category.id
-      ORDER BY child, ordercount
-      ;`)
+      WHERE orders.orderDate >= '${startDate}' AND orders.orderDate <= '${endDate}' AND orders.orderStatusId NOT IN (1, 6)`
+
+    if (warehouseId != 0) {
+      query += ` AND orders.warehouseId = ${warehouseId}`
+    }
+
+    query += ` GROUP BY child_category.id
+      ORDER BY child, ordercount;`
+
+    const res = await OrderProducts.sequelize.query(query)
     return res
   } catch (err) {
     throw err
@@ -482,25 +501,35 @@ export const getAllOrderByProductQuery = async (
 ) => {
   try {
     const offset = (page - 1) * pageSize
-    const res = await OrderProducts.sequelize
-      .query(`SELECT p.id, p.name, grandparent_category.name as grandparent_name,
-  SUM(op.price) as total, 
-  SUM(op.quantity) as sold
-FROM orders as o
-JOIN orderProducts as op ON o.id = op.orderId
-JOIN stocks as st ON op.stockId = st.id
-JOIN products as p ON st.productId = p.id
-JOIN productCategories AS child_category ON p.productCategoryId = child_category.id
-JOIN productCategories AS parent_category ON child_category.parentId = parent_category.id
-JOIN productCategories AS grandparent_category ON parent_category.parentId = grandparent_category.id
-WHERE o.orderDate >= '${startDate}' 
-  AND o.orderDate <= '${endDate}' 
-  AND o.warehouseId = ${Number(warehouseId)}
-   AND o.orderStatusId NOT IN (1, 6)
-GROUP BY p.id
-order by sold
-LIMIT ${pageSize} OFFSET ${offset};
-`)
+
+    let query = `SELECT 
+      p.id, 
+      p.name, 
+      grandparent_category.name as grandparent_name,
+      SUM(op.price) as total, 
+      SUM(op.quantity) as sold
+    FROM 
+      orders as o
+      JOIN orderProducts as op ON o.id = op.orderId
+      JOIN stocks as st ON op.stockId = st.id
+      JOIN products as p ON st.productId = p.id
+      JOIN productCategories AS child_category ON p.productCategoryId = child_category.id
+      JOIN productCategories AS parent_category ON child_category.parentId = parent_category.id
+      JOIN productCategories AS grandparent_category ON parent_category.parentId = grandparent_category.id
+    WHERE 
+      o.orderDate >= '${startDate}' 
+      AND o.orderDate <= '${endDate}' 
+      AND o.orderStatusId NOT IN (1, 6)`
+
+    if (warehouseId != 0) {
+      query += ` AND o.warehouseId = ${Number(warehouseId)}`
+    }
+
+    query += ` GROUP BY p.id
+      ORDER BY sold
+      LIMIT ${pageSize} OFFSET ${offset};`
+
+    const res = await OrderProducts.sequelize.query(query)
     return res
   } catch (err) {
     throw err

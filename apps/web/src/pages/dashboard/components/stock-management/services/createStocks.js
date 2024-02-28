@@ -11,6 +11,7 @@ export const createStockJournal = async (
   isAdding,
 ) => {
   try {
+    if (qty < 0) throw new Error('Qty cant be less than 0')
     const token = localStorage.getItem('token')
     const res = await axios.post(
       `${API_ROUTE}/stock-journal`,
